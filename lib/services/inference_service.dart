@@ -102,6 +102,10 @@ class InferenceService {
         }
       }
 
+      // Debug — print all scores to terminal
+      print('Output scores: $outputBuffer');
+      print('Max score: $maxScore at index $maxIndex');
+
       // Convert uint8 score to percentage
       final confidence = ((maxScore / 255.0) * 100).toStringAsFixed(1);
       final label = maxIndex < _labels.length
