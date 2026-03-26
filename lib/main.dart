@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'services/image_service.dart';
 import 'services/inference_service.dart';
+import 'screens/result_screen.dart';
 
 void main() {
   runApp(
@@ -42,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final ImageService _imageService = ImageService();
   final InferenceService _inferenceService = InferenceService();
   File? _selectedImage;
-  Map<String, dynamic>? _result;
   bool _isLoading = false;
   bool _modelLoaded = false;
 
@@ -59,18 +59,29 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Future<void> _diagnoseImage(File image) async {
+  Future<void> _diagnoseImage(File imageFile) async {
     setState(() {
       _isLoading = true;
-      _result = null;
     });
 
-    final result = await _inferenceService.diagnose(image);
+    final result = await _inferenceService.diagnose(imageFile);
 
     setState(() {
       _isLoading = false;
-      _result = result;
     });
+
+    if (result != null && mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            image: imageFile,
+            label: result['label'] ?? 'Unknown',
+            confidence: result['confidence'] ?? '0',
+          ),
+        ),
+      );
+    }
   }
 
   void _showImageOptions() {
@@ -81,8 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.camera_alt,
-                  color: Color(0xFF2D6A4F)),
+              leading: const Icon(
+                Icons.camera_alt,
+                color: Color(0xFF2D6A4F),
+              ),
               title: const Text('Take a Photo'),
               onTap: () async {
                 Navigator.pop(context);
@@ -96,8 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.photo_library,
-                  color: Color(0xFF2D6A4F)),
+              leading: const Icon(
+                Icons.photo_library,
+                color: Color(0xFF2D6A4F),
+              ),
               title: const Text('Choose from Gallery'),
               onTap: () async {
                 Navigator.pop(context);
@@ -134,17 +149,17 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 60),
                   const Icon(
                     Icons.eco,
-                    size: 80,
+                    size: 100,
                     color: Colors.white,
                   ),
                   const SizedBox(height: 24),
                   const Text(
                     'Nolifa Grow',
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 36,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -157,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.white70,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 60),
                   if (_selectedImage != null) ...[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
@@ -184,54 +199,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const SizedBox(height: 24),
                   ],
-                  if (_result != null) ...[
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Diagnosis Result',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF2D6A4F),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            _result!['label'] ?? 'Unknown',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Confidence: ${_result!['confidence']}%',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                  ],
                   ElevatedButton.icon(
-                    onPressed: _modelLoaded ? _showImageOptions : null,
+                    onPressed: _modelLoaded && !_isLoading
+                        ? _showImageOptions
+                        : null,
                     icon: const Icon(Icons.camera_alt),
-                    label: Text(
-                      _selectedImage == null
-                          ? 'Scan Your Plant'
-                          : 'Scan Again',
-                    ),
+                    label: const Text('Scan Your Plant'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: const Color(0xFF2D6A4F),
