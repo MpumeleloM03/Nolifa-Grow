@@ -6,12 +6,14 @@ class ResultScreen extends StatelessWidget {
   final File image;
   final String label;
   final String confidence;
+  final bool offlineMode;
 
   const ResultScreen({
     super.key,
     required this.image,
     required this.label,
     required this.confidence,
+    this.offlineMode = false,
   });
 
   Color _getSeverityColor(String colorName) {
@@ -60,7 +62,6 @@ class ResultScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Plant image
             SizedBox(
               width: double.infinity,
               height: 220,
@@ -69,13 +70,11 @@ class ResultScreen extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Disease name
                   Text(
                     info.plainName,
                     style: const TextStyle(
@@ -84,10 +83,7 @@ class ResultScreen extends StatelessWidget {
                       color: Colors.black87,
                     ),
                   ),
-
                   const SizedBox(height: 8),
-
-                  // Confidence
                   Text(
                     'Confidence: $confidence%',
                     style: const TextStyle(
@@ -95,10 +91,43 @@ class ResultScreen extends StatelessWidget {
                       color: Colors.black45,
                     ),
                   ),
-
                   const SizedBox(height: 16),
 
-                  // Severity banner
+                  // Offline warning
+                  if (offlineMode) ...[
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF3E0),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: const Color(0xFFFFB74D),
+                        ),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.wifi_off,
+                            color: Color(0xFFE65100),
+                            size: 20,
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              'You are offline. Connect to the internet for a more accurate diagnosis.',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Color(0xFFE65100),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
@@ -133,10 +162,7 @@ class ResultScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 20),
-
-                  // Description
                   const Text(
                     'What this means',
                     style: TextStyle(
@@ -154,10 +180,7 @@ class ResultScreen extends StatelessWidget {
                       height: 1.5,
                     ),
                   ),
-
                   const SizedBox(height: 24),
-
-                  // Treatment steps
                   const Text(
                     'What to do right now',
                     style: TextStyle(
@@ -167,7 +190,6 @@ class ResultScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-
                   ...info.treatment.asMap().entries.map(
                     (entry) => Padding(
                       padding: const EdgeInsets.only(bottom: 12),
@@ -207,10 +229,7 @@ class ResultScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 24),
-
-                  // Home remedy
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
@@ -254,10 +273,7 @@ class ResultScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 32),
-
-                  // Scan again button
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
@@ -267,7 +283,8 @@ class ResultScreen extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF2D6A4F),
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding:
+                            const EdgeInsets.symmetric(vertical: 16),
                         textStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -275,7 +292,6 @@ class ResultScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 24),
                 ],
               ),

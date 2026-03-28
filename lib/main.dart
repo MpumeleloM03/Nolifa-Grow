@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'services/image_service.dart';
 import 'services/inference_service.dart';
+import 'services/plant_id_service.dart';
 import 'screens/result_screen.dart';
 
 void main() {
@@ -42,9 +44,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ImageService _imageService = ImageService();
   final InferenceService _inferenceService = InferenceService();
+  final PlantIdService _plantIdService = PlantIdService();
   File? _selectedImage;
   bool _isLoading = false;
   bool _modelLoaded = false;
+  bool _isOnline = false;
 
   @override
   void initState() {
@@ -64,7 +68,22 @@ class _HomeScreenState extends State<HomeScreen> {
       _isLoading = true;
     });
 
-    final result = await _inferenceService.diagnose(imageFile);
+    final connectivityResult = await Connectivity().checkConnectivity();
+    _isOnline = connectivityResult.contains(ConnectivityResult.wifi) ||
+        connectivityResult.contains(ConnectivityResult.mobile);
+        
+    Map<String, dynamic>? result;
+
+    if (_isOnline) {
+      result = await _plantIdService.diagnose(imageFile);
+    }
+
+    if (result == null) {
+      result = await _inferenceService.diagnose(imageFile);
+      if (result != null) {
+        result['offlineMode'] = true;
+      }
+    }
 
     setState(() {
       _isLoading = false;
@@ -76,8 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
         MaterialPageRoute(
           builder: (context) => ResultScreen(
             image: imageFile,
-            label: result['label'] ?? 'Unknown',
+            label: result!['label'] ?? 'Unknown',
             confidence: result['confidence'] ?? '0',
+            offlineMode: result['offlineMode'] ?? false,
           ),
         ),
       );
@@ -211,8 +231,6 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 40),
-
-                // Header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -251,10 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 40),
-
-                // Main scan card
                 GestureDetector(
                   onTap: _modelLoaded && !_isLoading
                       ? _showImageOptions
@@ -325,10 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                   ),
                 ),
-
                 const SizedBox(height: 32),
-
-                // How it works section
                 const Text(
                   'How it works',
                   style: TextStyle(
@@ -337,9 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.white,
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
                 _buildStep(
                   '1',
                   'Take a photo',
@@ -360,7 +370,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Follow the step by step treatment guide',
                   Icons.healing,
                 ),
-
                 const SizedBox(height: 40),
               ],
             ),
