@@ -85,7 +85,9 @@ class ResultScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Confidence: $confidence%',
+                    offlineMode
+                        ? 'Offline mode — connect for accurate results'
+                        : 'Confidence: $confidence%',
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.black45,
@@ -293,6 +295,20 @@ class ResultScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  // Disclaimer
+                  const Text(
+                    'This diagnosis is AI-generated and is intended as a guide only. Always consult a qualified agricultural expert or extension officer for serious crop concerns.',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.black38,
+                      fontStyle: FontStyle.italic,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+
+                  const SizedBox(height: 32),
                 ],
               ),
             ),

@@ -6,6 +6,7 @@ import 'services/image_service.dart';
 import 'services/inference_service.dart';
 import 'services/plant_id_service.dart';
 import 'screens/result_screen.dart';
+import 'screens/about_screen.dart';
 
 void main() {
   runApp(
@@ -71,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final connectivityResult = await Connectivity().checkConnectivity();
     _isOnline = connectivityResult.contains(ConnectivityResult.wifi) ||
         connectivityResult.contains(ConnectivityResult.mobile);
-        
+
     Map<String, dynamic>? result;
 
     if (_isOnline) {
@@ -253,18 +254,35 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.white60,
                           ),
                         ),
+                        SizedBox(height: 6),
+                        Text(
+                          'Every plant has a story. We help you hear it.',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white38,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
                       ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white12,
-                        borderRadius: BorderRadius.circular(12),
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AboutScreen(),
+                        ),
                       ),
-                      child: const Icon(
-                        Icons.eco,
-                        color: Colors.white,
-                        size: 28,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white12,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.info_outline,
+                          color: Colors.white,
+                          size: 28,
+                        ),
                       ),
                     ),
                   ],
