@@ -90,7 +90,7 @@ class AboutScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Disclaimer section
+            // Disclaimer
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -179,6 +179,29 @@ class AboutScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // ✅ COPYRIGHT FOOTER
+            const Text(
+              '© 2025 Nolifa Technologies (Pty) Ltd',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white38,
+                fontSize: 12,
+              ),
+            ),
+
+            const SizedBox(height: 6),
+
+            const Text(
+              'All rights reserved.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white24,
+                fontSize: 11,
               ),
             ),
 

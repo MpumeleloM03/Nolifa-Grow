@@ -2,11 +2,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:uuid/uuid.dart';
 import 'services/image_service.dart';
 import 'services/inference_service.dart';
 import 'services/plant_id_service.dart';
+import 'services/history_service.dart';
 import 'screens/result_screen.dart';
 import 'screens/about_screen.dart';
+import 'screens/history_screen.dart';
+import 'models/diagnosis_record.dart';
+import 'models/disease_info.dart';
 
 void main() {
   runApp(
@@ -46,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ImageService _imageService = ImageService();
   final InferenceService _inferenceService = InferenceService();
   final PlantIdService _plantIdService = PlantIdService();
+  final HistoryService _historyService = HistoryService();
   File? _selectedImage;
   bool _isLoading = false;
   bool _modelLoaded = false;
@@ -91,6 +97,18 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     if (result != null && mounted) {
+      final info = DiseaseDatabase.getInfo(result['label'] ?? 'Unknown');
+      final record = DiagnosisRecord(
+        id: const Uuid().v4(),
+        label: result['label'] ?? 'Unknown',
+        plainName: info.plainName,
+        confidence: result['confidence'] ?? '0',
+        imagePath: imageFile.path,
+        date: DateTime.now(),
+        offlineMode: result['offlineMode'] ?? false,
+      );
+      await _historyService.saveRecord(record);
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -234,56 +252,84 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'Nolifa Grow',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Nolifa Grow',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Plant Disease Detector',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white60,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            'Every plant has a story. We help you hear it.',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white38,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HistoryScreen(),
+                            ),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white12,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.history,
+                              color: Colors.white,
+                              size: 28,
+                            ),
                           ),
                         ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Plant Disease Detector',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white60,
+                        const SizedBox(width: 8),
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AboutScreen(),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 6),
-                        Text(
-                          'Every plant has a story. We help you hear it.',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white38,
-                            fontStyle: FontStyle.italic,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white12,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.info_outline,
+                              color: Colors.white,
+                              size: 28,
+                            ),
                           ),
                         ),
                       ],
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AboutScreen(),
-                        ),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.info_outline,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                      ),
                     ),
                   ],
                 ),
