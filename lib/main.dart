@@ -12,6 +12,9 @@ import 'screens/about_screen.dart';
 import 'screens/history_screen.dart';
 import 'models/diagnosis_record.dart';
 import 'models/disease_info.dart';
+import 'utils/language_provider.dart';
+import 'utils/translations.dart';
+import 'widgets/language_toggle.dart';
 
 void main() {
   runApp(
@@ -21,11 +24,11 @@ void main() {
   );
 }
 
-class NolifaGrowApp extends StatelessWidget {
+class NolifaGrowApp extends ConsumerWidget {
   const NolifaGrowApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'Nolifa Grow',
       debugShowCheckedModeBanner: false,
@@ -40,14 +43,14 @@ class NolifaGrowApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ImageService _imageService = ImageService();
   final InferenceService _inferenceService = InferenceService();
   final PlantIdService _plantIdService = PlantIdService();
@@ -123,7 +126,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _showImageOptions() {
+  void _showImageOptions(String lang) {
+    final t = AppTranslations.get;
     showModalBottomSheet(
       context: context,
       builder: (context) => SafeArea(
@@ -135,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.camera_alt,
                 color: Color(0xFF2D6A4F),
               ),
-              title: const Text('Take a Photo'),
+              title: Text(t('take_photo', lang)),
               onTap: () async {
                 Navigator.pop(context);
                 final image = await _imageService.pickFromCamera();
@@ -152,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.photo_library,
                 color: Color(0xFF2D6A4F),
               ),
-              title: const Text('Choose from Gallery'),
+              title: Text(t('choose_gallery', lang)),
               onTap: () async {
                 Navigator.pop(context);
                 final image = await _imageService.pickFromGallery();
@@ -240,6 +244,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final lang = ref.watch(languageProvider);
+    final t = AppTranslations.get;
+
     return Scaffold(
       backgroundColor: const Color(0xFF1B4332),
       body: SafeArea(
@@ -252,82 +259,87 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Nolifa Grow',
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Plant Disease Detector',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white60,
-                            ),
-                          ),
-                          SizedBox(height: 6),
-                          Text(
-                            'Every plant has a story. We help you hear it.',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.white38,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HistoryScreen(),
-                            ),
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white12,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.history,
-                              color: Colors.white,
-                              size: 28,
-                            ),
+                        Text(
+                          t('app_name', lang),
+                          style: const TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        GestureDetector(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AboutScreen(),
-                            ),
+                        const SizedBox(height: 4),
+                        Text(
+                          t('tagline', lang),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.white60,
                           ),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white12,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.info_outline,
-                              color: Colors.white,
-                              size: 28,
-                            ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          t('catchphrase', lang),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white38,
+                            fontStyle: FontStyle.italic,
                           ),
+                        ),
+                        const SizedBox(height: 12),
+                        const LanguageToggle(),
+                      ],
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HistoryScreen(),
+                                ),
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white12,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.history,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AboutScreen(),
+                                ),
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white12,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.info_outline,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -336,7 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 40),
                 GestureDetector(
                   onTap: _modelLoaded && !_isLoading
-                      ? _showImageOptions
+                      ? () => _showImageOptions(lang)
                       : null,
                   child: Container(
                     width: double.infinity,
@@ -350,16 +362,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     child: _isLoading
-                        ? const Column(
+                        ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              CircularProgressIndicator(
+                              const CircularProgressIndicator(
                                 color: Colors.white,
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               Text(
-                                'Analysing your plant...',
-                                style: TextStyle(
+                                t('analysing', lang),
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                 ),
@@ -376,26 +388,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: double.infinity,
                                 ),
                               )
-                            : const Column(
+                            : Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.camera_alt_outlined,
                                     color: Colors.white54,
                                     size: 56,
                                   ),
-                                  SizedBox(height: 12),
+                                  const SizedBox(height: 12),
                                   Text(
-                                    'Tap to scan your plant',
-                                    style: TextStyle(
+                                    t('tap_to_scan', lang),
+                                    style: const TextStyle(
                                       color: Colors.white70,
                                       fontSize: 16,
                                     ),
                                   ),
-                                  SizedBox(height: 4),
+                                  const SizedBox(height: 4),
                                   Text(
-                                    'Camera or gallery',
-                                    style: TextStyle(
+                                    t('camera_or_gallery', lang),
+                                    style: const TextStyle(
                                       color: Colors.white38,
                                       fontSize: 13,
                                     ),
@@ -405,9 +417,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Text(
-                  'How it works',
-                  style: TextStyle(
+                Text(
+                  t('how_it_works', lang),
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -416,22 +428,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 16),
                 _buildStep(
                   '1',
-                  'Take a photo',
-                  'Point your camera at the affected leaf or plant',
+                  t('step1_title', lang),
+                  t('step1_sub', lang),
                   Icons.camera_alt,
                 ),
                 const SizedBox(height: 12),
                 _buildStep(
                   '2',
-                  'Get a diagnosis',
-                  'Our AI identifies the disease instantly',
+                  t('step2_title', lang),
+                  t('step2_sub', lang),
                   Icons.search,
                 ),
                 const SizedBox(height: 12),
                 _buildStep(
                   '3',
-                  'Treat your plant',
-                  'Follow the step by step treatment guide',
+                  t('step3_title', lang),
+                  t('step3_sub', lang),
                   Icons.healing,
                 ),
                 const SizedBox(height: 40),
