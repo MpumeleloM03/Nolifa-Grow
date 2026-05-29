@@ -10,6 +10,7 @@ import 'services/history_service.dart';
 import 'screens/result_screen.dart';
 import 'screens/about_screen.dart';
 import 'screens/history_screen.dart';
+import 'screens/map_screen.dart';
 import 'models/diagnosis_record.dart';
 import 'models/disease_info.dart';
 import 'utils/language_provider.dart';
@@ -296,50 +297,56 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const HistoryScreen(),
-                                ),
-                              ),
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white12,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Icon(
-                                  Icons.history,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
+                        PopupMenuButton<String>(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          onSelected: (value) {
+                            Widget page;
+                            switch (value) {
+                              case 'history':
+                                page = const HistoryScreen();
+                                break;
+                              case 'map':
+                                page = const MapScreen();
+                                break;
+                              case 'about':
+                                page = const AboutScreen();
+                                break;
+                              default:
+                                return;
+                            }
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => page),
+                            );
+                          },
+                          itemBuilder: (context) => [
+                            const PopupMenuItem(
+                              value: 'history',
+                              child: Text('History'),
                             ),
-                            const SizedBox(width: 8),
-                            GestureDetector(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const AboutScreen(),
-                                ),
-                              ),
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white12,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Icon(
-                                  Icons.info_outline,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
+                            const PopupMenuItem(
+                              value: 'map',
+                              child: Text('Map'),
+                            ),
+                            const PopupMenuItem(
+                              value: 'about',
+                              child: Text('About'),
                             ),
                           ],
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white12,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.more_vert,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
                         ),
                       ],
                     ),
