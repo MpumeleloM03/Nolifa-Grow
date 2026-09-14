@@ -1,4 +1,4 @@
-class DiagnosisRecord {
+lass DiagnosisRecord {
   final String id;
   final String label;
   final String plainName;
@@ -6,6 +6,10 @@ class DiagnosisRecord {
   final String imagePath;
   final DateTime date;
   final bool offlineMode;
+  final String? region;
+  final double? latitude;
+  final double? longitude;
+  final String? cropType;
 
   DiagnosisRecord({
     required this.id,
@@ -15,6 +19,10 @@ class DiagnosisRecord {
     required this.imagePath,
     required this.date,
     required this.offlineMode,
+    this.region,
+    this.latitude,
+    this.longitude,
+    this.cropType,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +34,10 @@ class DiagnosisRecord {
       'imagePath': imagePath,
       'date': date.toIso8601String(),
       'offlineMode': offlineMode,
+      'region': region,
+      'latitude': latitude,
+      'longitude': longitude,
+      'cropType': cropType,
     };
   }
 
@@ -38,6 +50,10 @@ class DiagnosisRecord {
       imagePath: map['imagePath'],
       date: DateTime.parse(map['date']),
       offlineMode: map['offlineMode'] ?? false,
+      region: map['region'] as String?,
+      latitude: (map['latitude'] as num?)?.toDouble(),
+      longitude: (map['longitude'] as num?)?.toDouble(),
+      cropType: map['cropType'] as String?,
     );
   }
 }
