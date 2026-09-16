@@ -20,7 +20,7 @@ dependencies:
   firebase_storage: ^12.0.0
 
   # TFLite Inference
-  tflite_flutter: ^0.10.4
+  tflite_flutter: ^0.12.0
 
   # Image Acquisition
   camera: ^0.11.0
@@ -76,7 +76,7 @@ flutter:
   
 flutter_launcher_icons:
   android: true
-  ios: false
+  ios: true
   image_path: "assets/images/app_icon.png"
   min_sdk_android: 26
 
@@ -85,4 +85,4 @@ flutter_native_splash:
   color: "#2D6A4F"
   image: assets/images/app_icon.png
   android: true
-  ios: false
+  ios: true
