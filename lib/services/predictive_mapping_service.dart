@@ -1,4 +1,4 @@
-mport 'package:latlong2/latlong.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../models/diagnosis_record.dart';
 import '../models/disease_info.dart';

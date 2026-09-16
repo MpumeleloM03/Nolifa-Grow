@@ -1,4 +1,4 @@
-lass DiagnosisRecord {
+class DiagnosisRecord {
   final String id;
   final String label;
   final String plainName;

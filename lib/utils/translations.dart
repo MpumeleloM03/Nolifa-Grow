@@ -1,4 +1,4 @@
-lass AppTranslations {
+class AppTranslations {
   static const Map<String, Map<String, String>> _translations = {
     'en': {
       'app_name': 'Nolifa Grow',
