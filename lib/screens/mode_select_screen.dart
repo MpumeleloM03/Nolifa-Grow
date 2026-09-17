@@ -17,9 +17,9 @@ class ModeSelectScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authServiceProvider).current;
-    final name = (user?.displayName?.trim().isNotEmpty ?? false)
-        ? user!.displayName!.split(' ').first
+    final user = ref.watch(currentUserProvider);
+    final name = (user?.name.trim().isNotEmpty ?? false)
+        ? user!.name.trim().split(' ').first
         : 'there';
 
     return Scaffold(

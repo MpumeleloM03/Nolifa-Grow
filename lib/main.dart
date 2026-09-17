@@ -19,6 +19,7 @@ import 'services/auth_service.dart';
 import 'services/outbreak_service.dart';
 import 'services/region_service.dart';
 import 'services/firebase_boot.dart';
+import 'services/local_backend.dart';
 import 'theme/app_theme.dart';
 import 'theme/glass.dart';
 import 'utils/language_provider.dart';
@@ -28,6 +29,7 @@ import 'widgets/language_toggle.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseBoot.init();
+  if (!FirebaseBoot.ready) await LocalBackend.instance.init();
   runApp(
     const ProviderScope(
       child: NolifaGrowApp(),
@@ -140,8 +142,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   /// whose farm it came from. Failures here are silent — a farmer waiting on a
   /// diagnosis should never be blocked by a map write.
   void _contributeToMap(String disease, String severityColor) {
-    final region = ref.read(userProfileProvider).valueOrNull?.region;
-    if (region == null) return;
+    final region = ref.read(currentUserProvider)?.region;
+    if (region == null || region.isEmpty) return;
     final centre = RegionService.findByName(region)?.center;
     if (centre == null) return;
 

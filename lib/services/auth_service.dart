@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/app_user.dart';
 import 'firebase_boot.dart';
+import 'local_backend.dart';
 
 class AuthException implements Exception {
   final String message;
@@ -11,24 +12,60 @@ class AuthException implements Exception {
   String toString() => message;
 }
 
+/// Accounts, backed by Firebase when it is configured and by on-device storage
+/// when it is not.
+///
+/// Callers only ever see [AppUser], so nothing above this layer knows or cares
+/// which backend is live.
 class AuthService {
-  FirebaseAuth get _auth => FirebaseAuth.instance;
+  fb.FirebaseAuth get _auth => fb.FirebaseAuth.instance;
   FirebaseFirestore get _db => FirebaseFirestore.instance;
+  LocalBackend get _local => LocalBackend.instance;
 
-  Stream<User?> authState() {
-    if (!FirebaseBoot.ready) return const Stream.empty();
-    return _auth.authStateChanges();
+  bool get isLocal => !FirebaseBoot.ready;
+
+  AppUser? _cached;
+  AppUser? get current => _cached;
+
+  Stream<AppUser?> authState() {
+    if (isLocal) {
+      return _local.watchSession().map((u) {
+        _cached = u;
+        return u;
+      });
+    }
+    return _auth.authStateChanges().asyncMap((u) async {
+      if (u == null) {
+        _cached = null;
+        return null;
+      }
+      _cached = await profile(u.uid) ??
+          AppUser(
+            uid: u.uid,
+            name: u.displayName ?? '',
+            email: u.email ?? '',
+            region: '',
+            farmType: 'both',
+          );
+      return _cached;
+    });
   }
 
-  User? get current => FirebaseBoot.ready ? _auth.currentUser : null;
-
   Future<void> signIn(String email, String password) async {
+    if (isLocal) {
+      try {
+        await _local.signIn(email);
+      } catch (e) {
+        throw AuthException(e.toString().replaceFirst('Exception: ', ''));
+      }
+      return;
+    }
     try {
       await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
+    } on fb.FirebaseAuthException catch (e) {
       throw AuthException(_readable(e));
     }
   }
@@ -40,6 +77,19 @@ class AuthService {
     required String region,
     required String farmType,
   }) async {
+    if (isLocal) {
+      try {
+        await _local.signUp(
+          name: name,
+          email: email,
+          region: region,
+          farmType: farmType,
+        );
+      } catch (e) {
+        throw AuthException(e.toString().replaceFirst('Exception: ', ''));
+      }
+      return;
+    }
     try {
       final cred = await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
@@ -57,29 +107,34 @@ class AuthService {
             ).toMap()
               ..['createdAt'] = FieldValue.serverTimestamp(),
           );
-    } on FirebaseAuthException catch (e) {
+    } on fb.FirebaseAuthException catch (e) {
       throw AuthException(_readable(e));
     }
   }
 
-  Future<void> signOut() => _auth.signOut();
+  Future<void> signOut() => isLocal ? _local.signOut() : _auth.signOut();
 
   Future<void> sendReset(String email) async {
+    if (isLocal) {
+      throw const AuthException(
+          'Password reset needs Firebase. In local mode, just sign in with your email.');
+    }
     try {
       await _auth.sendPasswordResetEmail(email: email.trim());
-    } on FirebaseAuthException catch (e) {
+    } on fb.FirebaseAuthException catch (e) {
       throw AuthException(_readable(e));
     }
   }
 
   Future<AppUser?> profile(String uid) async {
+    if (isLocal) return _local.currentUser();
     final snap = await _db.collection('users').doc(uid).get();
     final data = snap.data();
     return data == null ? null : AppUser.fromMap(data);
   }
 
   /// Firebase's raw codes are not something a farmer should ever read.
-  String _readable(FirebaseAuthException e) {
+  String _readable(fb.FirebaseAuthException e) {
     switch (e.code) {
       case 'invalid-email':
         return 'That email address does not look right.';
@@ -105,15 +160,11 @@ class AuthService {
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
 
-final authStateProvider = StreamProvider<User?>(
+final authStateProvider = StreamProvider<AppUser?>(
   (ref) => ref.watch(authServiceProvider).authState(),
 );
 
-/// The signed-in farmer's stored profile, including the region their reports
-/// are attributed to on the outbreak map.
-final userProfileProvider = FutureProvider<AppUser?>((ref) async {
-  // Re-reads whenever sign-in state changes.
-  final auth = ref.watch(authStateProvider).valueOrNull;
-  if (auth == null) return null;
-  return ref.read(authServiceProvider).profile(auth.uid);
-});
+/// The signed-in farmer. Null when signed out.
+final currentUserProvider = Provider<AppUser?>(
+  (ref) => ref.watch(authStateProvider).valueOrNull,
+);

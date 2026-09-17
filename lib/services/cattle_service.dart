@@ -3,6 +3,8 @@ import 'package:csv/csv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/cattle.dart';
 import 'auth_service.dart';
+import 'firebase_boot.dart';
+import 'local_backend.dart';
 
 class ImportResult {
   final int added;
@@ -22,18 +24,26 @@ class CattleService {
   CollectionReference<Map<String, dynamic>> _herd(String uid) =>
       _db.collection('users').doc(uid).collection('cattle');
 
-  Stream<List<Cattle>> watch(String uid) => _herd(uid)
+  Stream<List<Cattle>> watch(String uid) => FirebaseBoot.ready
+      ? _herdStream(uid)
+      : LocalBackend.instance.watchHerd();
+
+  Stream<List<Cattle>> _herdStream(String uid) => _herd(uid)
       .orderBy('tagNumber')
       .snapshots()
       .map((s) => s.docs.map(Cattle.fromDoc).toList());
 
-  Future<void> add(String uid, Cattle c) =>
-      _herd(uid).add(c.toMap()..['createdAt'] = FieldValue.serverTimestamp());
+  Future<void> add(String uid, Cattle c) => FirebaseBoot.ready
+      ? _herd(uid).add(c.toMap()..['createdAt'] = FieldValue.serverTimestamp())
+      : LocalBackend.instance.addCattle(c);
 
-  Future<void> update(String uid, Cattle c) =>
-      _herd(uid).doc(c.id).update(c.toMap());
+  Future<void> update(String uid, Cattle c) => FirebaseBoot.ready
+      ? _herd(uid).doc(c.id).update(c.toMap())
+      : LocalBackend.instance.updateCattle(c);
 
-  Future<void> remove(String uid, String id) => _herd(uid).doc(id).delete();
+  Future<void> remove(String uid, String id) => FirebaseBoot.ready
+      ? _herd(uid).doc(id).delete()
+      : LocalBackend.instance.removeCattle(id);
 
   /// Vendor exports rarely agree on header names, so each field accepts the
   /// spellings Allflex, Datamars and Shearwell actually emit.
@@ -92,12 +102,14 @@ class CattleService {
       return row[i].toString().trim();
     }
 
-    final existing = (await _herd(uid).get())
-        .docs
-        .map((d) => (d.data()['tagNumber'] as String? ?? '').toLowerCase())
-        .toSet();
+    final existing = FirebaseBoot.ready
+        ? (await _herd(uid).get())
+            .docs
+            .map((d) => (d.data()['tagNumber'] as String? ?? '').toLowerCase())
+            .toSet()
+        : await LocalBackend.instance.existingTags();
 
-    final batch = _db.batch();
+    final batch = FirebaseBoot.ready ? _db.batch() : null;
     var added = 0;
     var skipped = 0;
     final problems = <String>[];
@@ -127,15 +139,19 @@ class CattleService {
         notes: cell(row, 'notes'),
       );
 
-      batch.set(
-        _herd(uid).doc(),
-        animal.toMap()..['createdAt'] = FieldValue.serverTimestamp(),
-      );
+      if (batch != null) {
+        batch.set(
+          _herd(uid).doc(),
+          animal.toMap()..['createdAt'] = FieldValue.serverTimestamp(),
+        );
+      } else {
+        await LocalBackend.instance.addCattle(animal);
+      }
       existing.add(tag.toLowerCase());
       added++;
     }
 
-    if (added > 0) await batch.commit();
+    if (added > 0 && batch != null) await batch.commit();
     return ImportResult(added, skipped, problems);
   }
 
@@ -193,7 +209,7 @@ class CattleService {
 final cattleServiceProvider = Provider<CattleService>((ref) => CattleService());
 
 final herdProvider = StreamProvider<List<Cattle>>((ref) {
-  final uid = ref.watch(authServiceProvider).current?.uid;
+  final uid = ref.watch(currentUserProvider)?.uid;
   if (uid == null) return Stream.value(const []);
   return ref.watch(cattleServiceProvider).watch(uid);
 });

@@ -57,7 +57,7 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
 
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
-    final uid = ref.read(authServiceProvider).current?.uid;
+    final uid = ref.read(currentUserProvider)?.uid;
     if (uid == null) return;
 
     setState(() => _busy = true);
@@ -96,7 +96,7 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
   }
 
   Future<void> _delete() async {
-    final uid = ref.read(authServiceProvider).current?.uid;
+    final uid = ref.read(currentUserProvider)?.uid;
     if (uid == null || widget.existing == null) return;
 
     final confirmed = await showDialog<bool>(

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/chat_message.dart';
 import 'auth_service.dart';
+import 'firebase_boot.dart';
+import 'local_backend.dart';
 
 /// Regional chat rooms, stored at chatRooms/{region}/messages.
 ///
@@ -14,6 +16,7 @@ class ChatService {
       _db.collection('chatRooms').doc(region).collection('messages');
 
   Stream<List<ChatMessage>> watch(String region, {int limit = 100}) {
+    if (!FirebaseBoot.ready) return LocalBackend.instance.watchChat(region);
     return _room(region)
         .orderBy('createdAt', descending: true)
         .limit(limit)
@@ -28,6 +31,15 @@ class ChatService {
     required String text,
     String kind = 'message',
   }) {
+    if (!FirebaseBoot.ready) {
+      return LocalBackend.instance.sendChat(
+        region: region,
+        uid: uid,
+        authorName: authorName,
+        text: text.trim(),
+        kind: kind,
+      );
+    }
     return _room(region).add({
       'uid': uid,
       'authorName': authorName,
@@ -53,8 +65,8 @@ final chatStreamProvider =
 
 /// Convenience for screens that need the signed-in farmer's display name.
 final currentFarmerProvider = Provider<({String uid, String name})?>((ref) {
-  final u = ref.watch(authServiceProvider).current;
+  final u = ref.watch(currentUserProvider);
   if (u == null) return null;
-  final n = u.displayName?.trim();
-  return (uid: u.uid, name: (n == null || n.isEmpty) ? 'Farmer' : n);
+  final n = u.name.trim();
+  return (uid: u.uid, name: n.isEmpty ? 'Farmer' : n);
 });

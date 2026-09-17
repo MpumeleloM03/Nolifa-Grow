@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/outbreak_report.dart';
 import 'firebase_boot.dart';
+import 'local_backend.dart';
 
 /// Community disease sightings, stored flat at outbreaks/.
 ///
@@ -15,7 +16,7 @@ class OutbreakService {
       _db.collection('outbreaks');
 
   Stream<List<OutbreakReport>> watchRecent({int days = 60}) {
-    if (!FirebaseBoot.ready) return Stream.value(const []);
+    if (!FirebaseBoot.ready) return LocalBackend.instance.watchOutbreaks();
     final cutoff = DateTime.now().subtract(Duration(days: days));
     return _col
         .where('reportedAt', isGreaterThan: Timestamp.fromDate(cutoff))
@@ -30,7 +31,15 @@ class OutbreakService {
     required LatLng exactLocation,
     required String region,
   }) {
-    if (!FirebaseBoot.ready) return Future.value();
+    if (!FirebaseBoot.ready) {
+      return LocalBackend.instance.addOutbreak(
+        disease: disease,
+        severity: severity,
+        kind: kind,
+        location: OutbreakReport.coarsen(exactLocation),
+        region: region,
+      );
+    }
     return _col.add(
       OutbreakReport(
         id: '',

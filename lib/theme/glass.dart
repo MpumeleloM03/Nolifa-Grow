@@ -328,3 +328,37 @@ class GlassBar extends StatelessWidget {
     );
   }
 }
+
+/// Marks the app as running without a cloud backend.
+///
+/// Shown wherever a farmer might reasonably assume their data is reaching other
+/// people. In local mode nothing leaves the phone, and implying otherwise would
+/// be worse than the missing feature.
+class LocalModeBadge extends StatelessWidget {
+  final String detail;
+  const LocalModeBadge({super.key, required this.detail});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppTheme.s3, vertical: AppTheme.s2),
+      decoration: BoxDecoration(
+        color: AppTheme.warn.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(AppTheme.rChip),
+        border: Border.all(color: AppTheme.warn.withValues(alpha: 0.38)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.phone_iphone_rounded, size: 14, color: AppTheme.warn),
+          const SizedBox(width: AppTheme.s2),
+          Flexible(
+            child: Text(detail,
+                style: AppTheme.caption.copyWith(color: AppTheme.warn)),
+          ),
+        ],
+      ),
+    );
+  }
+}

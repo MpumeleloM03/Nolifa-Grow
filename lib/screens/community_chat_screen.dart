@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/chat_message.dart';
+import '../services/auth_service.dart';
 import '../services/chat_service.dart';
 import '../services/region_service.dart';
 import '../theme/app_theme.dart';
@@ -139,7 +140,12 @@ class _Header extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Community', style: AppTheme.title2),
-                    Text('Talk to farmers near you', style: AppTheme.footnote),
+                    Text(
+                      ref.watch(authServiceProvider).isLocal
+                          ? 'Local mode — messages stay on this phone'
+                          : 'Talk to farmers near you',
+                      style: AppTheme.footnote,
+                    ),
                   ],
                 ),
               ),

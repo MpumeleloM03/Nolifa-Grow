@@ -67,7 +67,7 @@ class _HerdScreenState extends ConsumerState<HerdScreen> {
     );
 
     if (go != true || controller.text.trim().isEmpty) return;
-    final uid = ref.read(authServiceProvider).current?.uid;
+    final uid = ref.read(currentUserProvider)?.uid;
     if (uid == null) return;
 
     final result =

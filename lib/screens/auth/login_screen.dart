@@ -86,6 +86,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       'Every plant has a story.\nWe help you hear it.',
                       style: AppTheme.callout,
                     ),
+                    if (ref.watch(authServiceProvider).isLocal) ...[
+                      const SizedBox(height: AppTheme.s4),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: LocalModeBadge(
+                            detail: 'Local mode — saved on this phone only'),
+                      ),
+                    ],
                     const SizedBox(height: AppTheme.s8),
                     GlassCard(
                       padding: const EdgeInsets.all(AppTheme.s6),
