@@ -1,0 +1,55 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    // A farmer's own profile. Readable by other signed-in users so their name
+    // can appear on community messages, but only writable by themselves.
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create, update: if isOwner(uid);
+      allow delete: if false;
+
+      // The herd register is private to its owner.
+      match /cattle/{animalId} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    // Regional chat. Anyone signed in can read and post; you may only post as
+    // yourself, and may only delete your own messages.
+    match /chatRooms/{region}/messages/{messageId} {
+      allow read: if signedIn();
+
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 1000
+        && request.resource.data.kind in ['message', 'alert'];
+
+      allow update: if false;
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // Community disease sightings feeding the heat map.
+    // Append-only: a report may not be edited or removed after the fact, so the
+    // outbreak history cannot be quietly rewritten.
+    match /outbreaks/{reportId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.lat is number
+        && request.resource.data.lng is number
+        && request.resource.data.severity in ['green', 'orange', 'red'];
+      allow update, delete: if false;
+    }
+  }
+}

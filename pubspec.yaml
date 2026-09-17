@@ -44,6 +44,9 @@ dependencies:
 
   http: ^1.2.1
 
+  # Herd import/export from other tag vendors
+  csv: ^6.0.0
+
   shared_preferences: ^2.3.2
 
   flutter_tts: ^4.0.2

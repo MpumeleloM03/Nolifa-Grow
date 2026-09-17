@@ -13,11 +13,21 @@ import 'screens/history_screen.dart';
 import 'screens/map_screen.dart';
 import 'models/diagnosis_record.dart';
 import 'models/disease_info.dart';
+import 'models/outbreak_report.dart';
+import 'screens/auth/auth_gate.dart';
+import 'services/auth_service.dart';
+import 'services/outbreak_service.dart';
+import 'services/region_service.dart';
+import 'services/firebase_boot.dart';
+import 'theme/app_theme.dart';
+import 'theme/glass.dart';
 import 'utils/language_provider.dart';
 import 'utils/translations.dart';
 import 'widgets/language_toggle.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseBoot.init();
   runApp(
     const ProviderScope(
       child: NolifaGrowApp(),
@@ -33,13 +43,8 @@ class NolifaGrowApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Nolifa Grow',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2D6A4F),
-        ),
-        useMaterial3: true,
-      ),
-      home: const HomeScreen(),
+      theme: AppTheme.build(),
+      home: const AuthGate(),
     );
   }
 }
@@ -112,6 +117,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         offlineMode: result['offlineMode'] ?? false,
       );
       await _historyService.saveRecord(record);
+      _contributeToMap(result['label'] ?? 'Unknown', info.severityColor);
 
       Navigator.push(
         context,
@@ -125,6 +131,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       );
     }
+  }
+
+  /// Adds this diagnosis to the community outbreak map.
+  ///
+  /// The point is placed inside the farmer's region rather than at their
+  /// coordinates, so the map shows where disease is active without exposing
+  /// whose farm it came from. Failures here are silent — a farmer waiting on a
+  /// diagnosis should never be blocked by a map write.
+  void _contributeToMap(String disease, String severityColor) {
+    final region = ref.read(userProfileProvider).valueOrNull?.region;
+    if (region == null) return;
+    final centre = RegionService.findByName(region)?.center;
+    if (centre == null) return;
+
+    ref.read(outbreakServiceProvider).report(
+          disease: disease,
+          severity: severityColor,
+          kind: OutbreakKind.plant,
+          exactLocation: RegionService.jitter(centre, disease + region),
+          region: region,
+        );
   }
 
   void _showImageOptions(String lang) {
@@ -249,7 +276,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final t = AppTranslations.get;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1B4332),
+      backgroundColor: AppTheme.forestDeep,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -257,7 +284,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 12),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: GhostButton(
+                    label: 'Home',
+                    icon: Icons.arrow_back_ios_new_rounded,
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

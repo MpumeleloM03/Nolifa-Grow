@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import '../models/outbreak_report.dart';
+import '../services/outbreak_service.dart';
+import '../theme/app_theme.dart';
+import '../widgets/heat_layer.dart';
 import '../utils/translations.dart';
 import '../utils/language_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,6 +33,41 @@ class MapScreen extends ConsumerStatefulWidget {
 }
 
 class _MapScreenState extends ConsumerState<MapScreen> {
+  bool _showHeat = true;
+
+  static const _months = {
+    'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6,
+    'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12,
+  };
+
+  static DateTime _parseDate(String raw) {
+    final parts = raw.split(' ');
+    if (parts.length == 3) {
+      final month = _months[parts[1].toLowerCase().substring(0, 3)];
+      final day = int.tryParse(parts[0]);
+      final year = int.tryParse(parts[2]);
+      if (month != null && day != null && year != null) {
+        return DateTime(year, month, day);
+      }
+    }
+    return DateTime.now();
+  }
+
+  /// The heat layer reads from both the seeded regional data and whatever the
+  /// community has reported since, so the map is useful before it has users.
+  List<OutbreakReport> _heatReports(List<OutbreakReport> live) => [
+        ..._filteredPoints.map((p) => OutbreakReport(
+              id: '',
+              disease: p.disease,
+              severity: p.severity,
+              kind: OutbreakKind.plant,
+              location: p.location,
+              region: p.region,
+              reportedAt: _parseDate(p.date),
+            )),
+        ...live,
+      ];
+
   // Demonstration data across KZN regions
   final List<DiseasePoint> _points = const [
     // Greater Durban — mixed
@@ -155,6 +194,12 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                       urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       userAgentPackageName: 'com.nolifagrow.nolifa_grow',
                     ),
+                    if (_showHeat)
+                      HeatLayer(
+                        reports: _heatReports(
+                          ref.watch(outbreaksProvider).valueOrNull ?? const [],
+                        ),
+                      ),
                     CircleLayer(
                       circles: _filteredPoints.map((point) {
                         return CircleMarker(
@@ -198,6 +243,54 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                       }).toList(),
                     ),
                   ],
+                ),
+
+                // Heat toggle
+                Positioned(
+                  top: 12,
+                  right: 12,
+                  child: GestureDetector(
+                    onTap: () => setState(() => _showHeat = !_showHeat),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.forestDeep.withValues(alpha: 0.82),
+                        borderRadius: BorderRadius.circular(AppTheme.rControl),
+                        border: Border.all(
+                          color: _showHeat
+                              ? AppTheme.warn
+                              : AppTheme.glassBorder,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            _showHeat
+                                ? Icons.local_fire_department_rounded
+                                : Icons.local_fire_department_outlined,
+                            size: 17,
+                            color: _showHeat
+                                ? AppTheme.warn
+                                : AppTheme.textTertiary,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Heat',
+                            style: AppTheme.footnote.copyWith(
+                              color: _showHeat
+                                  ? AppTheme.textPrimary
+                                  : AppTheme.textTertiary,
+                              fontWeight: _showHeat
+                                  ? FontWeight.w600
+                                  : FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
 
                 // Demo watermark
