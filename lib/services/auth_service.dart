@@ -41,7 +41,13 @@ class AuthService {
         _cached = null;
         return null;
       }
-      _cached = await profile(u.id) ??
+      AppUser? saved;
+      try {
+        saved = await profile(u.id);
+      } catch (_) {
+        // A slow profile read must never lock a signed-in farmer out.
+      }
+      _cached = saved ??
           AppUser(
             uid: u.id,
             name: (u.userMetadata?['name'] as String?) ?? '',
