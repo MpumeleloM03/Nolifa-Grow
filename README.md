@@ -14,7 +14,7 @@ A farmer registers a business, is verified and pays for a plan before selling.
 Each farm chooses to deliver orders itself or use Nolifa Delivery. Payments sit in
 escrow and release when the customer gives the 4-digit PIN.
 
-All apps run on the phone with Firebase off. See `docs/FIREBASE_HANDOFF.md` to
+All apps run on the phone with Supabase off. See `docs/SUPABASE_SETUP.md` to
 connect the shared backend. Business model, security notes and judge answers are in `docs/`.
 
 ## Run

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
 
 enum OutbreakKind { plant, livestock }
@@ -55,13 +54,12 @@ class OutbreakReport {
         'lat': location.latitude,
         'lng': location.longitude,
         'region': region,
-        'reportedAt': FieldValue.serverTimestamp(),
+        'reportedAt': reportedAt.millisecondsSinceEpoch,
       };
 
-  factory OutbreakReport.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
-    final d = doc.data() ?? {};
+  factory OutbreakReport.fromMap(String id, Map<String, dynamic> d) {
     return OutbreakReport(
-      id: doc.id,
+      id: id,
       disease: d['disease'] as String? ?? 'Unknown',
       severity: d['severity'] as String? ?? 'orange',
       kind: d['kind'] == 'livestock' ? OutbreakKind.livestock : OutbreakKind.plant,
@@ -70,7 +68,7 @@ class OutbreakReport {
         (d['lng'] as num?)?.toDouble() ?? 0,
       ),
       region: d['region'] as String? ?? '',
-      reportedAt: (d['reportedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      reportedAt: DateTime.fromMillisecondsSinceEpoch(((d['reportedAt'] as num?) ?? DateTime.now().millisecondsSinceEpoch).toInt()),
     );
   }
 }

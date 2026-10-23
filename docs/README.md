@@ -13,5 +13,5 @@
 | [REAL_VS_SIMULATED.md](REAL_VS_SIMULATED.md) | The full list of what is real, what is not, and how to set up staff and certifiers |
 | [STORE_READINESS.md](STORE_READINESS.md) | Delivery by local run or hub, what blocks a store launch, how accuracy improves |
 | [WATER_ROADMAP.md](WATER_ROADMAP.md) | What water data is real today, what is not, and the steps to make the rest real |
-| [FIREBASE_HANDOFF.md](FIREBASE_HANDOFF.md) | What is built for the backend, how to switch it on, known problems, what is left |
-| [../FIREBASE_SETUP.md](../FIREBASE_SETUP.md) | Connecting Firebase, demo and live mode, testing the rules |
+| [SUPABASE_SETUP.md](SUPABASE_SETUP.md) | What is built for the backend, how to switch it on, known problems, what is left |
+| [SUPABASE_SETUP.md](SUPABASE_SETUP.md) | Creating the Supabase project, building the apps against it, adding staff, running the database tests |

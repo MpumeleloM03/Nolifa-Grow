@@ -8,7 +8,7 @@ Honest status of what stands between the prototype and the App Store and Google 
 - **Farm delivers.** The farm's own fee.
 - The app works out the distance from the farm and the buyer's address, picks the route, shows the price and what the buyer saves against one driver going the whole way (for example R35 instead of about R175 for an 85 km run). With no address it quotes R25 and says it is an estimate.
 - **Hub flow (built):** the order stays hidden from drivers until it has passed through the hub. The farm packs it, writes a 4-digit code on the packing slip and taps "I dropped it at the hub". Hub staff open the Hub desk (Nolifa Delivery, Jobs page), type the code to check it in, then release it. Only then does it become a last-mile job, collected at the hub. The customer sees each step on the tracking page. In the demo a pretend farm and hub move orders along after 8, 20 and 32 seconds unless someone acts first.
-- **Not built yet:** the hubs themselves (sites, staff, a real place to store goods), the farm to hub collection run, hub staff accounts (the `hub` permission is read from the sign-in token but nothing issues it yet), and the staff query for hub orders on the shared backend. The hub code is derived from the order number, so on the real backend the server must check it. The hub rules tests are written but unrun (no Java).
+- **Not built yet:** the hubs themselves (sites, staff, a real place to store goods), the farm to hub collection run, a real hub staff onboarding flow (staff are added by hand to the `staff` table). The hub code is derived from the order number, so on the real backend the server must check it. The hub database tests pass.
 
 ## The Nolifa warehouse (built)
 A warehouse owned by Nolifa where farms deposit supply, and where far-away orders are packed from.
@@ -26,12 +26,12 @@ A warehouse owned by Nolifa where farms deposit supply, and where far-away order
 ## Islilo Farming and Fatboy Butcheries
 - The catalogue now has Fatboy Butcheries (uMhlanga), owned by Islilo Farming, with ten products taken from its own online shop at their shop prices (mince, fillet, stew, T-bone, brisket, sausage and chicken cuts). In the demo it has stock in the warehouse, so an order shows the tagged-stock flow.
 - A real Islilo account: sign up in Nolifa Grow, set the farm name to Fatboy Butcheries and the suburb to uMhlanga, finish business, verification and plan, and (for meat) the inspection. Then Orders, "Quick start: add the Fatboy Butcheries range" lists the ten products as its own.
-- Real shared accounts need the Firebase backend, which is off. Accounts made now live only on the phone they are created on. Creating production users in the shared Firebase project is a decision for the backend owner, so none were created.
+- Real shared accounts need the Supabase backend, which is off. Accounts made now live only on the phone they are created on. Creating production users in the shared Supabase project is a decision for the backend owner, so none were created.
 
 ## What blocks a real store launch
 | Item | Status | What is needed |
 |---|---|---|
-| Shared backend (accounts, orders, water, road alerts, warehouse) | On: the apps use the Nolifa Firebase project and the rules are deployed. 172 rules tests pass in the emulator | Check on real phones (the iOS 27 simulator cannot reach Firestore, see FIREBASE_HANDOFF) |
+| Shared backend (accounts, orders, water, road alerts, warehouse) | Built and tested against a local Supabase: 176 database tests and 9 live tests pass. Needs the cloud project created and the migrations pushed (see SUPABASE_SETUP.md) | Check on real phones. Sign-up on the iOS 27 simulator works against the local database |
 | Real payments and escrow | Simulated | Licensed provider (FNB). Server decides release |
 | Identity checks (farm, driver) | Simulated | KYC provider |
 | Hubs and line-haul | Not built | Partner or own site, staff app |

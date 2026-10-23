@@ -1,27 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/outbreak_report.dart';
-import 'firebase_boot.dart';
 import 'local_backend.dart';
 
-/// Community disease sightings, stored flat at outbreaks/.
+/// Community disease sightings, stored flat in the `outbreaks` table.
 ///
 /// Readable by every signed-in farmer — the whole point is that your
 /// neighbour's report warns you before the disease reaches your fence.
 class OutbreakService {
-  FirebaseFirestore get _db => FirebaseFirestore.instance;
-
-  CollectionReference<Map<String, dynamic>> get _col =>
-      _db.collection('outbreaks');
+  SupabaseClient get _db => SupabaseBoot.client;
 
   Stream<List<OutbreakReport>> watchRecent({int days = 60}) {
-    if (!FirebaseBoot.ready) return LocalBackend.instance.watchOutbreaks();
+    if (!SupabaseBoot.ready) return LocalBackend.instance.watchOutbreaks();
     final cutoff = DateTime.now().subtract(Duration(days: days));
-    return _col
-        .where('reportedAt', isGreaterThan: Timestamp.fromDate(cutoff))
-        .snapshots()
-        .map((s) => s.docs.map(OutbreakReport.fromDoc).toList());
+    return _db.from('outbreaks').stream(primaryKey: ['id']).map((rows) => [
+          for (final r in rows)
+            OutbreakReport.fromMap(r['id'] as String, Map<String, dynamic>.from(r['data'] as Map)),
+        ].where((o) => o.reportedAt.isAfter(cutoff)).toList());
   }
 
   Future<void> report({
@@ -31,7 +28,7 @@ class OutbreakService {
     required LatLng exactLocation,
     required String region,
   }) {
-    if (!FirebaseBoot.ready) {
+    if (!SupabaseBoot.ready) {
       return LocalBackend.instance.addOutbreak(
         disease: disease,
         severity: severity,
@@ -40,8 +37,8 @@ class OutbreakService {
         region: region,
       );
     }
-    return _col.add(
-      OutbreakReport(
+    return _db.from('outbreaks').insert({
+      'data': OutbreakReport(
         id: '',
         disease: disease,
         severity: severity,
@@ -50,7 +47,7 @@ class OutbreakService {
         region: region,
         reportedAt: DateTime.now(),
       ).toMap(),
-    );
+    });
   }
 }
 

@@ -1,4 +1,4 @@
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'shared_fakes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'open_store.dart';
@@ -322,9 +322,9 @@ void main() {
     });
 
     test('a real farm collects its own order, delivers with the PIN and keeps the fee', () async {
-      final db = FakeFirebaseFirestore();
-      final farmer = Phone('farmer', FirestoreMarketRepository(db: db));
-      final buyer = Phone('buyer', FirestoreMarketRepository(db: db));
+      final db = SharedMarketDb();
+      final farmer = Phone('farmer', FakeSharedMarketRepository(db));
+      final buyer = Phone('buyer', FakeSharedMarketRepository(db));
       await settle();
 
       farmer.store.updateProfile(const ProfileSettings(

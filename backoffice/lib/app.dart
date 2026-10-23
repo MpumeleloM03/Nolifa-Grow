@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide User;
+import 'package:supabase_flutter/supabase_flutter.dart' as sb show User, AuthException;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
@@ -11,20 +11,22 @@ import 'pages/rooms_page.dart';
 import 'pages/scan_page.dart';
 import 'pages/stock_page.dart';
 
-final authUserProvider = StreamProvider<User?>((ref) => FirebaseAuth.instance.authStateChanges());
+SupabaseClient get _db => SupabaseBoot.client;
+
+final authUserProvider = StreamProvider<sb.User?>((ref) => _db.auth.onAuthStateChange.map((e) => e.session?.user));
 
 /// Wires the shared package into the staff member's own sign-in and the shared
-/// Firestore. No demo content, ever.
+/// Supabase database. No demo content, ever.
 List<Override> backOfficeOverrides() => [
       ...liveOverrides(() => true),
-      marketUidProvider.overrideWith((ref) => ref.watch(authUserProvider).valueOrNull?.uid ?? 'guest'),
+      marketUidProvider.overrideWith((ref) => ref.watch(authUserProvider).valueOrNull?.id ?? 'guest'),
       marketNameProvider.overrideWith((ref) {
         final u = ref.watch(authUserProvider).valueOrNull;
-        final n = (u?.displayName ?? u?.email ?? 'Staff').split('@').first;
+        final n = ((u?.userMetadata?['name'] as String?) ?? u?.email ?? 'Staff').split('@').first;
         return n.isEmpty ? 'Staff' : n;
       }),
-      marketRepositoryProvider.overrideWith((ref) => FirestoreMarketRepository()),
-      waterRepositoryProvider.overrideWith((ref) => FirestoreWaterRepository()),
+      marketRepositoryProvider.overrideWith((ref) => SupabaseMarketRepository()),
+      waterRepositoryProvider.overrideWith((ref) => SupabaseWaterRepository()),
     ];
 
 class BackOfficeApp extends StatelessWidget {
@@ -75,11 +77,11 @@ class _Access extends ConsumerWidget {
                       Text('No access yet', style: AppTheme.title1),
                       const SizedBox(height: 8),
                       Text(
-                          'You are signed in as ${FirebaseAuth.instance.currentUser?.email}. A Nolifa admin has to add you as warehouse staff or a certifier before you can use the back office. '
-                          'Send them this ID: ${FirebaseAuth.instance.currentUser?.uid}',
+                          'You are signed in as ${_db.auth.currentUser?.email}. A Nolifa admin has to add you as warehouse staff or a certifier before you can use the back office. '
+                          'Send them this ID: ${_db.auth.currentUser?.id}',
                           style: AppTheme.callout),
                       const SizedBox(height: 16),
-                      OutlinedButton(onPressed: FirebaseAuth.instance.signOut, child: const Text('Sign out')),
+                      OutlinedButton(onPressed: _db.auth.signOut, child: const Text('Sign out')),
                     ]),
                   ),
                 ),
@@ -108,11 +110,13 @@ class _LoginPageState extends State<LoginPage> {
       _error = null;
     });
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email.text.trim(), password: _pass.text);
-    } on FirebaseAuthException catch (e) {
-      setState(() => _error = e.code == 'invalid-credential' || e.code == 'wrong-password' || e.code == 'user-not-found'
+      await _db.auth.signInWithPassword(email: _email.text.trim(), password: _pass.text);
+    } on sb.AuthException catch (e) {
+      setState(() => _error = e.message.toLowerCase().contains('invalid')
           ? 'Check your email and password.'
-          : 'Could not sign in (${e.code}).');
+          : 'Could not sign in (${e.message}).');
+    } catch (_) {
+      setState(() => _error = 'We could not reach the server. Check your connection, then try again.');
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -177,8 +181,8 @@ class _ShellState extends ConsumerState<Shell> {
       appBar: AppBar(
         title: Text('Nolifa Back Office  -  Durban hub'),
         actions: [
-          Center(child: Text(FirebaseAuth.instance.currentUser?.email ?? '', style: const TextStyle(fontSize: 13))),
-          IconButton(tooltip: 'Sign out', icon: const Icon(Icons.logout_rounded), onPressed: FirebaseAuth.instance.signOut),
+          Center(child: Text(_db.auth.currentUser?.email ?? '', style: const TextStyle(fontSize: 13))),
+          IconButton(tooltip: 'Sign out', icon: const Icon(Icons.logout_rounded), onPressed: _db.auth.signOut),
         ],
       ),
       body: Row(children: [
@@ -203,17 +207,17 @@ class _ShellState extends ConsumerState<Shell> {
 }
 
 /// All orders that go through the hub, newest first. Staff can read these
-/// because the rules allow hub staff to read orders whose route is hub.
+/// because row level security lets hub staff read orders whose route is hub.
 final hubOrdersProvider = StreamProvider<List<Order>>((ref) {
   final uid = ref.watch(marketUidProvider);
-  return FirebaseFirestore.instance.collection('marketOrders').where('route', isEqualTo: 'hub').snapshots().map((q) {
-    final list = [for (final d in q.docs) orderFromJson(d.data(), uid)];
+  return _db.from('market_orders').stream(primaryKey: ['id']).eq('route', 'hub').map((rows) {
+    final list = [for (final r in rows) orderFromJson(Map<String, dynamic>.from(r['data'] as Map), uid)];
     list.sort((a, b) => b.placed.compareTo(a.placed));
     return list;
   });
 });
 
-/// Moves a hub order on one step. The rules only allow the staff steps
+/// Moves a hub order on one step. The database only allows the staff steps
 /// droppedOff to received and received to released.
 Future<void> setHubStage(Order o, String stage) =>
-    FirebaseFirestore.instance.collection('marketOrders').doc(o.id).update({'hubStage': stage, 'rev': o.rev + 1});
+    _db.rpc('set_hub_stage', params: {'p_id': o.id, 'p_stage': stage});

@@ -74,7 +74,7 @@ Short version: *an early-warning system for farms, joined to a trusted neighbour
 
 ## 7. Cost structure
 
-- Cloud (Firebase, SMS, maps).
+- Cloud (Supabase, SMS, maps).
 - Payment and escrow costs with the banking partner.
 - Driver payouts (80% of delivery fees, passed through).
 - Vet and extension network for verification.

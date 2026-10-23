@@ -10,10 +10,10 @@
 ## Not real yet (and labelled)
 - **Tap-level outages.** DWS publishes dams, not taps. Whether your street has water is not in any public feed.
 - **Municipal restrictions and planned shutdowns.** eThekwini and uMgungundlovu post these as notices and social posts, not as data.
-- **Household votes.** The demo seeds are simulated. Live votes need the Firebase backend.
+- **Household votes.** The demo seeds are simulated. Live votes need the Supabase backend.
 
 ## Road map
-1. **Backend job (week 1 after Firebase).** A scheduled Cloud Function fetches DWS every Monday, parses it with the same parser, writes `waterZones/{id}` with `source: "DWS"`. Phones stop scraping and read Firestore. Add a second province per release.
+1. **Backend job (week 1 after Supabase).** A scheduled Supabase Edge Function fetches DWS every Monday, parses it with the same parser, writes `water_zones` with `source: "DWS"`. Phones stop scraping and read Supabase. Add a second province per release.
 2. **Municipal readings (month 1).** Ask eThekwini Water and Sanitation and uMngeni-uThukela Water for a read-only feed of reservoir levels and planned shutdowns. Until then, the provider desk lets a verified municipal user post it by hand.
 3. **Household reports as signal (month 1-2).** Dry-tap and low-pressure reports from verified phones, rounded to about 5 km, become the tap-level layer. A zone turns amber when three or more verified households in it report in 24 hours.
 4. **Local sensors (month 3+).** A R300 ultrasonic tank sensor with an ESP32 posts litres to the farm record. Farm tanks become measured instead of typed.

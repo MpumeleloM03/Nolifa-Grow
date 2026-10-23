@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math' show Random;
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot;
 import 'package:csv/csv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/cattle.dart';
 import '../models/species.dart';
 import 'auth_service.dart';
-import 'firebase_boot.dart';
 import 'local_backend.dart';
 
 class ImportResult {
@@ -15,36 +16,40 @@ class ImportResult {
   const ImportResult(this.added, this.skipped, this.problems);
 }
 
-/// The herd register, stored at users/{uid}/cattle.
+/// The herd register, stored in the `cattle` table.
 ///
-/// Scoped under the owner rather than a global collection so a farmer's herd
-/// is private by default and the security rules stay a single ownership check.
+/// Every row carries its owner's uid, so a farmer's herd is private by default
+/// and the row level security is a single ownership check.
 class CattleService {
-  FirebaseFirestore get _db => FirebaseFirestore.instance;
+  SupabaseClient get _db => SupabaseBoot.client;
 
-  CollectionReference<Map<String, dynamic>> _herd(String uid) =>
-      _db.collection('users').doc(uid).collection('cattle');
+  static bool get _live => SupabaseBoot.ready;
 
-  Stream<List<Cattle>> watch(String uid) => FirebaseBoot.ready
-      ? _herdStream(uid)
-      : LocalBackend.instance.watchHerd();
+  static String _newId() =>
+      '${DateTime.now().microsecondsSinceEpoch}-${Random().nextInt(1 << 31)}';
 
-  Stream<List<Cattle>> _herdStream(String uid) => _herd(uid)
-      .orderBy('tagNumber')
-      .snapshots()
-      .map((s) => s.docs.map(Cattle.fromDoc).toList());
+  Map<String, dynamic> _row(String uid, String id, Cattle c) => {
+        'uid': uid,
+        'id': id,
+        'data': c.toMap()..['createdAt'] = DateTime.now().toUtc().toIso8601String(),
+      };
 
-  Future<void> add(String uid, Cattle c) => FirebaseBoot.ready
-      ? _herd(uid).add(c.toMap()..['createdAt'] = FieldValue.serverTimestamp())
-      : LocalBackend.instance.addCattle(c);
+  Stream<List<Cattle>> watch(String uid) => _live ? _herdStream(uid) : LocalBackend.instance.watchHerd();
 
-  Future<void> update(String uid, Cattle c) => FirebaseBoot.ready
-      ? _herd(uid).doc(c.id).update(c.toMap())
+  Stream<List<Cattle>> _herdStream(String uid) =>
+      _db.from('cattle').stream(primaryKey: ['uid', 'id']).eq('uid', uid).map((rows) => [
+            for (final r in rows) Cattle.fromMap(r['id'] as String, Map<String, dynamic>.from(r['data'] as Map)),
+          ]..sort((a, b) => a.tagNumber.compareTo(b.tagNumber)));
+
+  Future<void> add(String uid, Cattle c) =>
+      _live ? _db.from('cattle').insert(_row(uid, _newId(), c)) : LocalBackend.instance.addCattle(c);
+
+  Future<void> update(String uid, Cattle c) => _live
+      ? _db.from('cattle').update({'data': c.toMap()}).eq('uid', uid).eq('id', c.id)
       : LocalBackend.instance.updateCattle(c);
 
-  Future<void> remove(String uid, String id) => FirebaseBoot.ready
-      ? _herd(uid).doc(id).delete()
-      : LocalBackend.instance.removeCattle(id);
+  Future<void> remove(String uid, String id) =>
+      _live ? _db.from('cattle').delete().eq('uid', uid).eq('id', id) : LocalBackend.instance.removeCattle(id);
 
   /// Vendor exports rarely agree on header names, so each field accepts the
   /// spellings Allflex, Datamars and Shearwell actually emit.
@@ -107,14 +112,14 @@ class CattleService {
       return row[i].toString().trim();
     }
 
-    final existing = FirebaseBoot.ready
-        ? (await _herd(uid).get())
-            .docs
-            .map((d) => (d.data()['tagNumber'] as String? ?? '').toLowerCase())
-            .toSet()
+    final existing = _live
+        ? [
+            for (final r in await _db.from('cattle').select('data').eq('uid', uid))
+              ((r['data'] as Map)['tagNumber'] as String? ?? '').toLowerCase()
+          ].toSet()
         : await LocalBackend.instance.existingTags();
 
-    final batch = FirebaseBoot.ready ? _db.batch() : null;
+    final batch = _live ? <Map<String, dynamic>>[] : null;
     var added = 0;
     var skipped = 0;
     final problems = <String>[];
@@ -149,10 +154,7 @@ class CattleService {
       );
 
       if (batch != null) {
-        batch.set(
-          _herd(uid).doc(),
-          animal.toMap()..['createdAt'] = FieldValue.serverTimestamp(),
-        );
+        batch.add(_row(uid, _newId(), animal));
       } else {
         await LocalBackend.instance.addCattle(animal);
       }
@@ -160,7 +162,7 @@ class CattleService {
       added++;
     }
 
-    if (added > 0 && batch != null) await batch.commit();
+    if (added > 0 && batch != null) await _db.from('cattle').insert(batch);
     return ImportResult(added, skipped, problems);
   }
 

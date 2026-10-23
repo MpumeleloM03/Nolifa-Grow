@@ -1,4 +1,4 @@
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'shared_fakes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,11 +30,11 @@ Future<void> settle() async {
 
 void main() {
   test('a far farm: drop-off, hub check-in, release, then a driver can take it', () async {
-    final db = FakeFirebaseFirestore();
-    final farmer = Phone('farmer', FirestoreMarketRepository(db: db));
-    final buyer = Phone('buyer', FirestoreMarketRepository(db: db));
-    final hub = Phone('hub', FirestoreMarketRepository(db: db));
-    final driver = Phone('driver', FirestoreMarketRepository(db: db));
+    final db = SharedMarketDb();
+    final farmer = Phone('farmer', FakeSharedMarketRepository(db));
+    final buyer = Phone('buyer', FakeSharedMarketRepository(db));
+    final hub = Phone('hub', FakeSharedMarketRepository(db));
+    final driver = Phone('driver', FakeSharedMarketRepository(db));
     await settle();
 
     // A farm near Howick sells to a buyer in Umlazi, about 90 km away.
@@ -89,10 +89,10 @@ void main() {
   });
 
   test('a driver cannot take a hub order that is still at the hub', () async {
-    final db = FakeFirebaseFirestore();
-    final farmer = Phone('farmer', FirestoreMarketRepository(db: db));
-    final buyer = Phone('buyer', FirestoreMarketRepository(db: db));
-    final driver = Phone('driver', FirestoreMarketRepository(db: db));
+    final db = SharedMarketDb();
+    final farmer = Phone('farmer', FakeSharedMarketRepository(db));
+    final buyer = Phone('buyer', FakeSharedMarketRepository(db));
+    final driver = Phone('driver', FakeSharedMarketRepository(db));
     await settle();
     farmer.store.updateProfile(const ProfileSettings(farmName: 'Howick Greens', suburb: 'Howick'));
     farmer.store.openAndList(const Product(
@@ -113,9 +113,9 @@ void main() {
   });
 
   test('a nearby farm skips the hub entirely', () async {
-    final db = FakeFirebaseFirestore();
-    final farmer = Phone('farmer', FirestoreMarketRepository(db: db));
-    final buyer = Phone('buyer', FirestoreMarketRepository(db: db));
+    final db = SharedMarketDb();
+    final farmer = Phone('farmer', FakeSharedMarketRepository(db));
+    final buyer = Phone('buyer', FakeSharedMarketRepository(db));
     await settle();
     farmer.store.updateProfile(const ProfileSettings(farmName: 'Westville Veg', suburb: 'Westville'));
     farmer.store.openAndList(const Product(

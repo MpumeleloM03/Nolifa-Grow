@@ -4,7 +4,7 @@ Four risks were raised by the team. Here is each one, what the apps do now, and 
 
 | # | Risk | What the apps do now | Still needed |
 |---|---|---|---|
-| 1 | 4-digit PIN can be guessed | 3 tries, then the order locks, a dispute opens and the money stays frozen until a mediator rules | Run the rules tests on the emulator. Mediator tooling |
+| 1 | 4-digit PIN can be guessed | 3 tries, then the order locks, a dispute opens and the money stays frozen until a mediator rules | Database tests (`supabase test db`). Mediator tooling |
 | 2 | Escrow runs on the device | Rules say who may write what. The prototype still simulates the release | A licensed provider (FNB) holds the money and a server function releases it. See below |
 | 3 | Personal data in local storage | Sealed with AES-256-GCM, key in the Keychain or Keystore | Server-side encryption and retention rules when the backend is on |
 | 4 | One person, many accounts, many votes | Only verified people vote on water or confirm an outbreak | The backend issues the `verified` claim and allows one verified number per account |
@@ -13,7 +13,7 @@ Four risks were raised by the team. Here is each one, what the apps do now, and 
 - A wrong PIN counts. The third wrong try locks the order, opens a dispute with the reason "Delivery PIN entered wrongly 3 times", and the payment stays frozen.
 - Even the right PIN stops working once locked. A mediator decides. In the demo a pretend mediator refunds the buyer. Live, a person rules.
 - The PIN is stored only as a salted hash in the shared order. The plain PIN stays on the buyer's phone.
-- Rules (`firestore.rules`): the assigned driver can add one try at a time, cannot reset or skip the count, and the third try must open a `pinLocked` dispute in the same write. Tests are in `firebase/rules-tests/market.rules.test.js`. **They have not been run yet** because the emulator needs Java, which is not installed on the build Mac. Run `npm test` in `firebase/rules-tests` once it is.
+- Database (`supabase/migrations`, `market_orders_guard`): the assigned driver can add one try at a time, cannot reset or skip the count, and the third try must open a `pinLocked` dispute in the same write. Tests are in `supabase/tests/database/orders.test.sql` and pass.
 - Code: `tryPin` in `market_store.dart`.
 
 ## 2. Escrow must not run on the device
@@ -21,7 +21,7 @@ Four risks were raised by the team. Here is each one, what the apps do now, and 
 
 **The fix.** Money moves only on a server that a licensed provider controls.
 1. The customer pays into an account held by FNB or another licensed provider, not by Nolifa and not on a phone.
-2. A server function (for example a Cloud Function) is the only thing that can release funds.
+2. A server function (a Supabase Edge Function or database function) is the only thing that can release funds.
 3. The driver's phone sends the PIN to the server. The server checks the hash, counts the tries and either releases or locks. The phone never decides.
 4. The server releases after the customer confirms, or after the protection window, unless a dispute is open.
 5. Client writes to `released`, `status: delivered` and `deliveredAt` are removed from the rules, so a modified app cannot do it either.

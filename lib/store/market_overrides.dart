@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart'
     show
-        FirestoreMarketRepository,
-        FirestoreWaterRepository,
+        SupabaseBoot,
+        SupabaseMarketRepository,
+        SupabaseWaterRepository,
         liveOverrides,
         LocalMarketRepository,
         LocalWaterRepository,
@@ -12,27 +13,26 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         waterRepositoryProvider,
         waterUtilityProvider;
 import '../services/auth_service.dart';
-import '../services/firebase_boot.dart';
 import '../water/supplier_store.dart';
 
 /// Plugs the shared Nolifa Drop package into Nolifa's own sign-in and storage,
-/// so a farmer is the same person in both apps and shares the same Firestore.
+/// so a farmer is the same person in both apps and shares the same Supabase database.
 ///
-/// Firebase is checked when each provider is first read, not here, because
-/// this list is built before the app knows whether Firebase came up.
+/// Supabase is checked when each provider is first read, not here, because
+/// this list is built before the app knows whether it came up.
 List<Override> marketOverrides() => [
-      ...liveOverrides(() => FirebaseBoot.ready),
+      ...liveOverrides(() => SupabaseBoot.ready),
       marketUidProvider.overrideWith(
           (ref) => ref.watch(currentUserProvider)?.uid ?? 'guest'),
       marketNameProvider.overrideWith((ref) {
         final name = ref.watch(currentUserProvider)?.name.trim() ?? '';
         return name.isEmpty ? 'Neighbour' : name.split(' ').first;
       }),
-      marketRepositoryProvider.overrideWith((ref) => FirebaseBoot.ready
-          ? FirestoreMarketRepository()
+      marketRepositoryProvider.overrideWith((ref) => SupabaseBoot.ready
+          ? SupabaseMarketRepository()
           : LocalMarketRepository()),
-      waterRepositoryProvider.overrideWith((ref) => FirebaseBoot.ready
-          ? FirestoreWaterRepository()
+      waterRepositoryProvider.overrideWith((ref) => SupabaseBoot.ready
+          ? SupabaseWaterRepository()
           : LocalWaterRepository()),
       // A farm that registers as a water supplier can answer community requests.
       waterUtilityProvider.overrideWith((ref) => ref.watch(supplierProvider).supplier.enabled),

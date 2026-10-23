@@ -1,7 +1,7 @@
 /// Shared code for Nolifa Drop and Nolifa Grow.
 library;
 
-export 'roads/firestore_road_repository.dart';
+export 'roads/supabase_road_repository.dart';
 export 'roads/road_models.dart';
 export 'roads/road_repository.dart';
 export 'roads/road_screens.dart';
@@ -28,7 +28,7 @@ export 'market/farm_screen.dart';
 export 'market/farm_widgets.dart';
 export 'market/glass_tab_bar.dart';
 export 'market/honesty.dart';
-export 'market/firestore_market_repository.dart';
+export 'market/supabase_market_repository.dart';
 export 'market/market_codec.dart';
 export 'market/market_hub.dart';
 export 'market/market_models.dart';
@@ -46,7 +46,7 @@ export 'warehouse/warehouse_repository.dart';
 export 'warehouse/warehouse_screens.dart';
 export 'warehouse/warehouse_store.dart';
 export 'water/dws_feed.dart';
-export 'water/firestore_water_repository.dart';
+export 'water/supabase_water_repository.dart';
 export 'water/low_water_prompt.dart';
 export 'water/provider_desk.dart';
 export 'water/water_forecast.dart';
@@ -55,3 +55,4 @@ export 'water/water_repository.dart';
 export 'water/water_screens.dart';
 export 'water/water_widgets.dart' show WaterRadarChart, forecastColor, forecastHeadline;
 export 'water/water_store.dart';
+export 'supabase/supabase_boot.dart';

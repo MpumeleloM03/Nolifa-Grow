@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../supabase/supabase_boot.dart';
 import '../market/market_repository.dart' show KeyValue, MemoryKv, PrefsKv;
 import 'warehouse_models.dart';
 
@@ -101,41 +102,43 @@ class LocalWarehouseRepository implements WarehouseRepository {
   }
 }
 
-/// Shared records in `warehouseLots/{id}` and `warehouseReadings/{id}`.
-class FirestoreWarehouseRepository implements WarehouseRepository {
-  FirestoreWarehouseRepository({FirebaseFirestore? db}) : _db = db ?? FirebaseFirestore.instance;
-  final FirebaseFirestore _db;
+/// Shared records in `warehouse_lots`, `warehouse_readings` and `warehouse_certs`.
+class SupabaseWarehouseRepository implements WarehouseRepository {
+  SupabaseWarehouseRepository({SupabaseClient? db}) : _db = db ?? SupabaseBoot.client;
+  final SupabaseClient _db;
+
+  Map<String, dynamic> _doc(Map<String, dynamic> r) =>
+      {...Map<String, dynamic>.from(r['data'] as Map), 'id': r['id']};
 
   @override
   bool get shared => true;
 
   @override
-  Stream<List<StockLot>> watchLots() => _db
-      .collection('warehouseLots')
-      .snapshots()
-      .map((q) => [for (final d in q.docs) StockLot.fromJson({...d.data(), 'id': d.id})]);
+  Stream<List<StockLot>> watchLots() =>
+      liveTable(_db, 'warehouse_lots').map((rows) => [for (final r in rows) StockLot.fromJson(_doc(r))]);
 
   @override
-  Stream<List<TempReading>> watchReadings() => _db
-      .collection('warehouseReadings')
-      .orderBy('at', descending: true)
-      .limit(200)
-      .snapshots()
-      .map((q) => [for (final d in q.docs) TempReading.fromJson(d.data())]);
+  Stream<List<TempReading>> watchReadings() => liveTable(_db, 'warehouse_readings').map((rows) {
+        final list = [for (final r in rows) TempReading.fromJson(Map<String, dynamic>.from(r['data'] as Map))]
+          ..sort((a, b) => b.at.compareTo(a.at));
+        return list.take(200).toList();
+      });
 
   @override
-  Stream<List<WarehouseCert>> watchCerts() => _db
-      .collection('warehouseCerts')
-      .snapshots()
-      .map((q) => [for (final d in q.docs) WarehouseCert.fromJson({...d.data(), 'id': d.id})]);
+  Stream<List<WarehouseCert>> watchCerts() =>
+      liveTable(_db, 'warehouse_certs').map((rows) => [for (final r in rows) WarehouseCert.fromJson(_doc(r))]);
 
   @override
-  Future<void> putCert(WarehouseCert c) => _db.collection('warehouseCerts').doc(c.id).set(c.toJson());
+  Future<void> putCert(WarehouseCert c) => _db.from('warehouse_certs').upsert({'id': c.id, 'data': c.toJson()});
 
   @override
-  Future<void> putLot(StockLot lot) => _db.collection('warehouseLots').doc(lot.id).set(lot.toJson());
+  Future<void> putLot(StockLot lot) =>
+      _db.rpc('save_lot', params: {'p_id': lot.id, 'p_data': lot.toJson()});
 
   @override
-  Future<void> putReading(TempReading r) =>
-      _db.collection('warehouseReadings').doc('${r.hub}-${r.zone.name}-${r.at.millisecondsSinceEpoch}').set(r.toJson());
+  Future<void> putReading(TempReading r) => _db.from('warehouse_readings').upsert({
+        'id': '${r.hub}-${r.zone.name}-${r.at.millisecondsSinceEpoch}',
+        'at': r.at.millisecondsSinceEpoch,
+        'data': r.toJson(),
+      });
 }

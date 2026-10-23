@@ -36,7 +36,7 @@ Delivery completes only when the buyer's 4-digit PIN is entered. The PIN is neve
 The buyer taps Report a problem. Payment freezes immediately. A mediator reviews the GPS trail, pickup photo, PIN log and evidence, and decides within 48 hours. Outcomes: order never arrived, full refund. Damaged or wrong items, 50% of items refunded. Late, delivery fee refunded. Driver conduct, delivery fee refunded and the driver is reviewed. A second review can be requested, then escalation to FNB customer care. In the prototype the mediator step is simulated in demo mode; in live mode cases wait for a person.
 
 **Is the app actually secure, or just says so?**
-We test it. The security rules are tested in the real Firestore emulator with 37 allow and deny cases (editing money, spoofing users, driver releasing money, buyer resolving own dispute, reporter verifying own case). A contract test replays every write the app makes against those rules. The gaps we have not closed yet are listed openly in the SSDLC document, with a plan for each.
+We test it. The database rules run in a real Postgres database with 176 allow and deny checks (editing money, spoofing users, a driver releasing money, a buyer resolving their own dispute, a reporter verifying their own case, one vote per person, warehouse staff only). A second suite signs in several real people and replays what the apps write. The gaps we have not closed yet are listed openly in the SSDLC document, with a plan for each.
 
 ## Fairness and privacy
 
@@ -76,7 +76,7 @@ The order still goes through escrow. The farmer packs it, marks it out for deliv
 Real: the app, offline storage, the fee and escrow rules, PIN delivery, disputes logic, outbreak verification logic, the backend layer and the security rules with their tests. Simulated: FNB payments and identity checks, vet and mediator decisions, neighbour drivers in demo mode, and the weather and forecast feed. A switch in the app turns demo mode off to show only real data.
 
 **What happens next?**
-Phase 1: connect Firebase, add the trusted backend for totals and settlement, mediator and vet consoles. Phase 2: pilot with FNB payments and identity in one district. Phase 3: scale to more districts and bring the Supply Radar to the first business customers.
+Phase 1: connect Supabase, add the trusted backend for totals and settlement, mediator and vet consoles. Phase 2: pilot with FNB payments and identity in one district. Phase 3: scale to more districts and bring the Supply Radar to the first business customers.
 
 ## Water
 

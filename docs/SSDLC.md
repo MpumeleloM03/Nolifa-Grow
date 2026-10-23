@@ -1,6 +1,6 @@
 # Secure Software Development Lifecycle (SSDLC)
 
-*Nolifa Drop x Nolifa Grow. Applies to the Flutter app, the Firebase backend and the Firestore security rules.*
+*Nolifa Drop x Nolifa Grow. Applies to the Flutter app, the Supabase backend and the Supabase security rules.*
 
 This document says what we do at each stage, shows the evidence from the current build, and lists what is not done yet. Claims here are limited to things that exist in the repository.
 
@@ -25,7 +25,7 @@ This document says what we do at each stage, shows the evidence from the current
 
 - **Product owner:** sets security requirements and accepts risk.
 - **Developers:** write code, write tests, review each other's changes.
-- **Security lead (named in the team):** owns the threat model, the rules tests and release sign-off.
+- **Security lead (named in the team):** owns the threat model, the database tests and release sign-off.
 - **Mediators and vets (production):** staff with special permissions, given by trusted admin tooling only.
 
 ## 3. Stage by stage
@@ -43,8 +43,8 @@ Security requirements are written before features. The ones that shaped the buil
 8. Sharing farm data with FNB or businesses is optional and reversible.
 
 ### 3.2 Design
-- **Architecture:** Flutter app, Riverpod state, a repository layer with two implementations (on-device storage, Firestore). The app never calls Firestore directly.
-- **Trust boundaries:** the device is untrusted. Anything that matters is enforced by Firestore rules or, in the next phase, by trusted backend code.
+- **Architecture:** Flutter app, Riverpod state, a repository layer with two implementations (on-device storage, Supabase). The app never calls Supabase directly.
+- **Trust boundaries:** the device is untrusted. Anything that matters is enforced by database rules or, in the next phase, by trusted backend code.
 - **Data model:** private state in `marketProfiles/{uid}`, shared data in `marketProducts`, `marketOrders`, `marketCases`. Orders carry a participants list so each person can only query their own.
 - **Threat model (STRIDE):**
 
@@ -52,9 +52,9 @@ Security requirements are written before features. The ones that shaped the buil
 |---|---|---|---|
 | **S**poofing | Fake driver or farm | FNB ID, selfie, payout account, vehicle checks before any job or listing | App flow, KYC gating tests |
 | **S**poofing | Writing as another user | `request.auth.uid` must match the actor in every rule | Rules tests |
-| **T**ampering | Edit fees or items after ordering | Money fields are immutable after create | 6 rules tests, one per field |
+| **T**ampering | Edit fees or items after ordering | Money fields are immutable after create | Database tests, one per field |
 | **T**ampering | Driver releases money early | Only buyer (or anyone after 2 hours) can release | Rules tests |
-| **T**ampering | Two drivers take one job | Atomic claim, loser is rolled back | Claim tests (local and Firestore) |
+| **T**ampering | Two drivers take one job | Atomic claim, loser is rolled back | Claim tests (local and Supabase) |
 | **T**ampering | Stale write overwrites newer order | Revision check on every write | Stale write test |
 | **R**epudiation | "I never delivered" | GPS trail, pickup photo, PIN log, dispute timeline | Order model and UI |
 | **I**nformation disclosure | Driver reads the PIN | Only a hash is stored in the shared order; the plain PIN stays on the buyer's device | Test checks the stored document has no PIN |
@@ -67,7 +67,7 @@ Security requirements are written before features. The ones that shaped the buil
 
 ### 3.3 Implementation
 - Secure coding rules: validate on the way in, never trust the client for money or permissions, no secrets in the repository, least privilege everywhere.
-- The Firebase project config and keys are generated per environment (`flutterfire configure`) and are not committed with real production values.
+- The Supabase project config and keys are generated per environment (`flutterfire configure`) and are not committed with real production values.
 - Dependencies are pinned by `pubspec.lock` and `package-lock.json`.
 - Every change is reviewed by a second person before merging.
 - Static analysis (`flutter analyze`) must report zero errors and zero warnings.
@@ -78,31 +78,32 @@ Current evidence:
 | Check | What it proves | Result |
 |---|---|---|
 | App tests (`flutter test`) | Fee maths, escrow, PIN, disputes, report rules, persistence, two-phone sync, Radar | See section 6 |
-| Security rules tests in the real Firestore emulator | 37 allow and deny cases across profiles, products, orders, drivers, buyer protection and cases | All passing |
+| Row level security tests in a real Postgres (pgTAP) | 176 allow and deny checks across profiles, products, orders, drivers, hub, water, road warnings, warehouse and cases | All passing |
 | Contract test | Replays every write the real app makes in a full lifecycle against the rules, so app and rules cannot drift | All passing |
 | Static analysis | No errors or warnings | Clean |
 | Build | iOS simulator build succeeds | Passing |
 
-Run the rules tests yourself:
+Run the database tests yourself (needs Docker):
 
 ```bash
-export JAVA_HOME=/opt/homebrew/opt/openjdk@21 PATH=/opt/homebrew/opt/openjdk@21/bin:$PATH
-cd firebase/rules-tests && npm install && npm test
+supabase start
+supabase test db
+supabase/run_live_tests.sh   # signs in real users and replays what the apps write
 ```
 
-Planned: dependency vulnerability scanning in CI, SAST on the Flutter code, a third-party penetration test before public launch, and a dynamic test of the production Firebase project.
+Planned: dependency vulnerability scanning in CI, SAST on the Flutter code, a third-party penetration test before public launch, and a dynamic test of the production Supabase project.
 
 ### 3.5 Release
 - Release only from a green build: zero analyzer issues, all tests passing.
-- Separate Firebase projects for development, staging and production.
-- Rules are deployed from the repository, never edited in the console.
-- Enforce Firebase App Check so only the genuine app can reach the backend.
+- Separate Supabase projects for development, staging and production.
+- Migrations are deployed from the repository (`supabase db push`), never edited in the dashboard.
+- Turn on CAPTCHA and email confirmation for sign-up, and rate limits, in the Supabase dashboard.
 - Staged rollout: internal, a small farmer group, then wider.
 
 ### 3.6 Operations
 - Monitor failed permissions, spikes in disputes, unusual payout patterns and sign-in abuse.
 - Incident response: contain (disable the affected feature or account), assess, notify users and the regulator when personal information is affected (POPIA), fix, then review.
-- Backups and point-in-time recovery for Firestore.
+- Backups and point-in-time recovery for Supabase.
 - A published contact for reporting vulnerabilities.
 
 ### 3.7 Maintenance
@@ -138,7 +139,7 @@ Being honest about these is part of the lifecycle.
 | Gap | Risk | Plan |
 |---|---|---|
 | Order totals are computed on the phone | A modified app could write wrong totals | Trusted backend recomputes totals from product prices and rejects mismatches |
-| Disputes are decided by a mediator claim, but no mediator console exists yet | Live disputes wait in review | Build the staff console; use the Firebase Admin SDK to grant the claim |
+| Disputes are decided by a mediator claim, but no mediator console exists yet | Live disputes wait in review | Build the staff console; use the Supabase Admin SDK to grant the claim |
 | Vet verification has no console yet | Live cases stop at neighbour confirmation | Vet portal and claim, same approach |
 | Farm plan is stored in the user's own profile | A user could claim a cheaper commission | Plan written only by the billing backend |
 | Balances and ledger are computed on the device | Only a display, but not authoritative | Backend writes the ledger when it settles money; app only reads it |
@@ -153,12 +154,12 @@ Being honest about these is part of the lifecycle.
 ## 6. Test evidence, current build
 
 - Shared package (`ubuntu_core`): 196 tests (fee and escrow rules, PIN, disputes, outbreak reports, stock, persistence, farms and the one-farm basket, business gating, water forecast, the real dam feed against a saved DWS page, voting rules on both storage backends, road hazard lifetime, geometry, verified-only reporting and the shared backend, encryption, the demo flow, and the shop, farm, business, settings, water and road screens).
-- Nolifa Grow: 211 tests (the four tabs, stock, orders received, farm self-delivery with the buyer PIN, crop health advisor, the irrigation AI against hand-worked water balances, farm setup, valve and autopilot, impact evidence maths, four-species livestock with health records and the herd map, proof-backed community, hexagon map, alarm, water provider, weather, notifications, settings).
+- Nolifa Grow: 212 tests (the four tabs, stock, orders received, farm self-delivery with the buyer PIN, crop health advisor, the irrigation AI against hand-worked water balances, farm setup, valve and autopilot, impact evidence maths, four-species livestock with health records and the herd map, proof-backed community, hexagon map, alarm, water provider, weather, notifications, settings).
 - Nolifa Drop: 36 tests (sign-in with device accounts, onboarding, the three tabs, the menu, settings, the Water tab).
 - Nolifa Delivery: 28 tests (sign-in, driver onboarding, jobs, earnings, account, and the job route map with road warnings ahead and the report sheet).
-- Security rules: more than 100 allow and deny cases in the real Firestore emulator (the new `roads.rules.test.js` and the `healthLog` rule are written but not yet run, because this machine has no Java), including water votes (one per person, only while a community is Low or Critical, no skipping stages) and the water provider's allowed steps, plus contract tests replaying what the apps write.
+- Database rules: 176 pgTAP checks in a real Postgres, including water votes (one per person, only while a community is Low or Critical, no skipping stages) and the water provider's allowed steps, plus 9 live tests that sign in real people and replay what the apps write.
 - Static analysis: no errors or warnings in any of the four projects.
-- Firebase is switched off by default; see `docs/FIREBASE_HANDOFF.md`.
+- Supabase is switched off by default; see `docs/SUPABASE_SETUP.md`.
 
 ### Water module threats
 | Threat | Control |

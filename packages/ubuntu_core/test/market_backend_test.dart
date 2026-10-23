@@ -1,8 +1,7 @@
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'shared_fakes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'open_store.dart';
-import 'package:ubuntu_core/market/firestore_market_repository.dart';
 import 'package:ubuntu_core/market/market_models.dart';
 import 'package:ubuntu_core/market/market_repository.dart';
 import 'package:ubuntu_core/market/market_store.dart';
@@ -133,12 +132,12 @@ void main() {
       await claimsAreExclusive(LocalMarketRepository.memory(), 'local');
     });
 
-    test('only the first driver gets a job (firestore)', () async {
-      await claimsAreExclusive(FirestoreMarketRepository(db: FakeFirebaseFirestore()), 'firestore');
+    test('only the first driver gets a job (shared fake)', () async {
+      await claimsAreExclusive(FakeSharedMarketRepository(SharedMarketDb()), 'shared');
     });
 
     test('a stale write cannot overwrite a newer order', () async {
-      final repo = FirestoreMarketRepository(db: FakeFirebaseFirestore());
+      final repo = FakeSharedMarketRepository(SharedMarketDb());
       final base = Order(
         id: 'UD-REV',
         lines: const [OrderLine('Eggs', '🥚', 1, 80)],
@@ -181,11 +180,11 @@ void main() {
 
   group('two phones on a shared backend', () {
     test('farmer lists, buyer orders, driver delivers, everyone is paid once', () async {
-      final db = FakeFirebaseFirestore();
-      final farmer = Phone('farmer', FirestoreMarketRepository(db: db));
-      final buyer = Phone('buyer', FirestoreMarketRepository(db: db));
-      final driver = Phone('driver', FirestoreMarketRepository(db: db));
-      final driver2 = Phone('driver2', FirestoreMarketRepository(db: db));
+      final db = SharedMarketDb();
+      final farmer = Phone('farmer', FakeSharedMarketRepository(db));
+      final buyer = Phone('buyer', FakeSharedMarketRepository(db));
+      final driver = Phone('driver', FakeSharedMarketRepository(db));
+      final driver2 = Phone('driver2', FakeSharedMarketRepository(db));
       await settle();
 
       // Farmer lists produce. The buyer's phone sees it.
@@ -215,7 +214,7 @@ void main() {
       expect(driver.s.orderById(id), isNull); // not an open job yet
 
       // The PIN itself is never in the shared document.
-      final doc = (await db.collection('marketOrders').doc(id).get()).data()!;
+      final doc = db.orders[id]!;
       expect(doc.containsKey('pin'), isFalse);
       expect(doc['pinHash'], isNotNull);
       expect(doc.toString().contains(pin), isFalse);
@@ -269,11 +268,11 @@ void main() {
     });
 
     test('a case needs two different neighbours, and one person counts once', () async {
-      final db = FakeFirebaseFirestore();
-      final reporter = Phone('r', FirestoreMarketRepository(db: db));
-      final n1 = Phone('n1', FirestoreMarketRepository(db: db));
-      final n2 = Phone('n2', FirestoreMarketRepository(db: db));
-      final fake = Phone('fake', FirestoreMarketRepository(db: db));
+      final db = SharedMarketDb();
+      final reporter = Phone('r', FakeSharedMarketRepository(db));
+      final n1 = Phone('n1', FakeSharedMarketRepository(db));
+      final n2 = Phone('n2', FakeSharedMarketRepository(db));
+      final fake = Phone('fake', FakeSharedMarketRepository(db));
       await settle();
       // Only verified farmers can confirm. The unverified account cannot.
       for (final p in [reporter, n1, n2]) {
@@ -310,10 +309,10 @@ void main() {
     });
 
     test('a dispute freezes money on every phone and waits for a mediator', () async {
-      final db = FakeFirebaseFirestore();
-      final farmer = Phone('farmer', FirestoreMarketRepository(db: db));
-      final buyer = Phone('buyer', FirestoreMarketRepository(db: db));
-      final driver = Phone('driver', FirestoreMarketRepository(db: db));
+      final db = SharedMarketDb();
+      final farmer = Phone('farmer', FakeSharedMarketRepository(db));
+      final buyer = Phone('buyer', FakeSharedMarketRepository(db));
+      final driver = Phone('driver', FakeSharedMarketRepository(db));
       await settle();
       farmer.store.openAndList(const Product(
           id: 'eggs',

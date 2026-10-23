@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthException;
+import 'package:supabase_flutter/supabase_flutter.dart' as sb show AuthException;
+import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/app_user.dart';
-import 'firebase_boot.dart';
 import 'local_backend.dart';
 
 class AuthException implements Exception {
@@ -12,17 +12,17 @@ class AuthException implements Exception {
   String toString() => message;
 }
 
-/// Accounts, backed by Firebase when it is configured and by on-device storage
+/// Accounts, backed by Supabase when it is configured and by on-device storage
 /// when it is not.
 ///
 /// Callers only ever see [AppUser], so nothing above this layer knows or cares
 /// which backend is live.
 class AuthService {
-  fb.FirebaseAuth get _auth => fb.FirebaseAuth.instance;
-  FirebaseFirestore get _db => FirebaseFirestore.instance;
+  SupabaseClient get _db => SupabaseBoot.client;
+  GoTrueClient get _auth => _db.auth;
   LocalBackend get _local => LocalBackend.instance;
 
-  bool get isLocal => !FirebaseBoot.ready;
+  bool get isLocal => !SupabaseBoot.ready;
 
   AppUser? _cached;
   AppUser? get current => _cached;
@@ -34,15 +34,17 @@ class AuthService {
         return u;
       });
     }
-    return _auth.authStateChanges().asyncMap((u) async {
+    // The first event carries the saved session, so a returning farmer stays in.
+    return _auth.onAuthStateChange.asyncMap((e) async {
+      final u = e.session?.user;
       if (u == null) {
         _cached = null;
         return null;
       }
-      _cached = await profile(u.uid) ??
+      _cached = await profile(u.id) ??
           AppUser(
-            uid: u.uid,
-            name: u.displayName ?? '',
+            uid: u.id,
+            name: (u.userMetadata?['name'] as String?) ?? '',
             email: u.email ?? '',
             region: '',
             farmType: 'both',
@@ -61,12 +63,11 @@ class AuthService {
       return;
     }
     try {
-      await _auth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password,
-      );
-    } on fb.FirebaseAuthException catch (e) {
+      await _auth.signInWithPassword(email: email.trim(), password: password);
+    } on sb.AuthException catch (e) {
       throw AuthException(_readable(e));
+    } catch (e) {
+      throw AuthException(_offline(e));
     }
   }
 
@@ -91,24 +92,32 @@ class AuthService {
       return;
     }
     try {
-      final cred = await _auth.createUserWithEmailAndPassword(
+      final res = await _auth.signUp(
         email: email.trim(),
         password: password,
+        data: {'name': name.trim()},
       );
-      final uid = cred.user!.uid;
-      await cred.user!.updateDisplayName(name.trim());
-      await _db.collection('users').doc(uid).set(
-            AppUser(
-              uid: uid,
-              name: name.trim(),
-              email: email.trim(),
-              region: region,
-              farmType: farmType,
-            ).toMap()
-              ..['createdAt'] = FieldValue.serverTimestamp(),
-          );
-    } on fb.FirebaseAuthException catch (e) {
+      final user = res.user;
+      if (user == null) throw const AuthException('Could not create the account. Try again.');
+      if (res.session == null) {
+        throw const AuthException('Check your email to confirm the account, then sign in.');
+      }
+      await _db.from('users').upsert({
+        'uid': user.id,
+        'data': AppUser(
+          uid: user.id,
+          name: name.trim(),
+          email: email.trim(),
+          region: region,
+          farmType: farmType,
+        ).toMap(),
+      });
+    } on AuthException {
+      rethrow;
+    } on sb.AuthException catch (e) {
       throw AuthException(_readable(e));
+    } catch (e) {
+      throw AuthException(_offline(e));
     }
   }
 
@@ -124,12 +133,19 @@ class AuthService {
     }
     final u = _auth.currentUser;
     if (u == null) return;
-    await u.updateDisplayName(name.trim());
-    await _db.collection('users').doc(u.uid).set({
-      'name': name.trim(),
-      'region': region,
-      'farmType': farmType,
-    }, SetOptions(merge: true));
+    await _auth.updateUser(UserAttributes(data: {'name': name.trim()}));
+    final old = (await _db.from('users').select('data').eq('uid', u.id).maybeSingle())?['data'] as Map?;
+    await _db.from('users').upsert({
+      'uid': u.id,
+      'data': {
+        ...?old?.cast<String, dynamic>(),
+        'uid': u.id,
+        'email': u.email ?? '',
+        'name': name.trim(),
+        'region': region,
+        'farmType': farmType,
+      },
+    });
   }
 
   Future<void> signOut() => isLocal ? _local.signOut() : _auth.signOut();
@@ -137,44 +153,48 @@ class AuthService {
   Future<void> sendReset(String email) async {
     if (isLocal) {
       throw const AuthException(
-          'Password reset needs Firebase. In local mode, just sign in with your email.');
+          'Password reset needs the shared database. In local mode, just sign in with your email.');
     }
     try {
-      await _auth.sendPasswordResetEmail(email: email.trim());
-    } on fb.FirebaseAuthException catch (e) {
+      await _auth.resetPasswordForEmail(email.trim());
+    } on sb.AuthException catch (e) {
       throw AuthException(_readable(e));
+    } catch (e) {
+      throw AuthException(_offline(e));
     }
   }
 
   Future<AppUser?> profile(String uid) async {
     if (isLocal) return _local.currentUser();
-    final snap = await _db.collection('users').doc(uid).get();
-    final data = snap.data();
-    return data == null ? null : AppUser.fromMap(data);
+    final row = await _db.from('users').select('data').eq('uid', uid).maybeSingle();
+    final data = row?['data'];
+    return data == null ? null : AppUser.fromMap(Map<String, dynamic>.from(data as Map));
   }
 
-  /// Firebase's raw codes are not something a farmer should ever read.
-  String _readable(fb.FirebaseAuthException e) {
-    switch (e.code) {
-      case 'invalid-email':
-        return 'That email address does not look right.';
-      case 'user-disabled':
-        return 'This account has been disabled. Contact support.';
-      case 'user-not-found':
-      case 'wrong-password':
-      case 'invalid-credential':
-        return 'Email or password is incorrect.';
-      case 'email-already-in-use':
-        return 'An account already exists for that email.';
-      case 'weak-password':
-        return 'Password is too weak. Use at least 6 characters.';
-      case 'network-request-failed':
-        return 'No internet connection. Check your signal and try again.';
-      case 'too-many-requests':
-        return 'Too many attempts. Wait a moment and try again.';
-      default:
-        return e.message ?? 'Something went wrong. Try again.';
+  String _offline(Object e) => 'We could not reach the server. Check your connection, then try again.';
+
+  /// Raw server codes are not something a farmer should ever read.
+  String _readable(sb.AuthException e) {
+    final m = e.message.toLowerCase();
+    if (m.contains('invalid login') || m.contains('invalid credentials')) {
+      return 'Email or password is incorrect.';
     }
+    if (m.contains('already registered') || m.contains('already been registered')) {
+      return 'An account already exists for that email.';
+    }
+    if (m.contains('password') && (m.contains('least') || m.contains('weak'))) {
+      return 'Password is too weak. Use at least 6 characters.';
+    }
+    if (m.contains('valid email') || m.contains('invalid email')) {
+      return 'That email address does not look right.';
+    }
+    if (m.contains('rate limit') || m.contains('too many')) {
+      return 'Too many attempts. Wait a moment and try again.';
+    }
+    if (m.contains('not confirmed')) {
+      return 'Confirm your email first, then sign in.';
+    }
+    return e.message;
   }
 }
 

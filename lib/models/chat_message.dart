@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatMessage {
   final String id;
@@ -19,15 +18,13 @@ class ChatMessage {
     required this.kind,
   });
 
-  factory ChatMessage.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
-    final d = doc.data() ?? {};
+  factory ChatMessage.fromMap(String id, Map<String, dynamic> d) {
     return ChatMessage(
-      id: doc.id,
+      id: id,
       uid: d['uid'] as String? ?? '',
       authorName: d['authorName'] as String? ?? 'Farmer',
       text: d['text'] as String? ?? '',
-      // Pending writes have a null serverTimestamp until the server confirms.
-      createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: DateTime.tryParse(d['createdAt'] as String? ?? '') ?? DateTime.now(),
       kind: d['kind'] as String? ?? 'message',
     );
   }

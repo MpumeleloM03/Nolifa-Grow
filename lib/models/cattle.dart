@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'species.dart';
 
 /// How an animal is identified in the field.
@@ -92,32 +91,31 @@ class Cattle {
         'breed': breed,
         'sex': sex,
         'birthDate':
-            birthDate == null ? null : Timestamp.fromDate(birthDate!),
+            birthDate?.toIso8601String(),
         'status': status.name,
         'notes': notes,
         'camp': camp,
         'lat': lat,
         'lng': lng,
-        'locatedAt': locatedAt == null ? null : Timestamp.fromDate(locatedAt!),
+        'locatedAt': locatedAt?.toIso8601String(),
       };
 
-  factory Cattle.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
-    final d = doc.data() ?? {};
+  factory Cattle.fromMap(String id, Map<String, dynamic> d) {
     return Cattle(
-      id: doc.id,
+      id: id,
       tagNumber: d['tagNumber'] as String? ?? '',
       tagStandard: TagStandard.parse(d['tagStandard'] as String?),
       species: Species.parse(d['species'] as String?),
       name: d['name'] as String? ?? '',
       breed: d['breed'] as String? ?? '',
       sex: d['sex'] as String? ?? 'cow',
-      birthDate: (d['birthDate'] as Timestamp?)?.toDate(),
+      birthDate: DateTime.tryParse(d['birthDate'] as String? ?? ''),
       status: CattleStatus.parse(d['status'] as String?),
       notes: d['notes'] as String? ?? '',
       camp: d['camp'] as String? ?? '',
       lat: (d['lat'] as num?)?.toDouble(),
       lng: (d['lng'] as num?)?.toDouble(),
-      locatedAt: (d['locatedAt'] as Timestamp?)?.toDate(),
+      locatedAt: DateTime.tryParse(d['locatedAt'] as String? ?? ''),
     );
   }
 

@@ -33,4 +33,4 @@
 
 **If it fails,** listings pause. The inspector's notes say what to fix, and the farm books again.
 
-**In the prototype** the visit date is an estimate and a demo button simulates the inspector's result. Live, only the inspection backend writes the result (see `FIREBASE_HANDOFF.md`). The rules are in `packages/ubuntu_core/lib/market/market_models.dart` (`Inspection`) and `market_store.dart` (`canSell`, `listBlock`).
+**In the prototype** the visit date is an estimate and a demo button simulates the inspector's result. Live, only the inspection backend writes the result (see `SUPABASE_SETUP.md`). The rules are in `packages/ubuntu_core/lib/market/market_models.dart` (`Inspection`) and `market_store.dart` (`canSell`, `listBlock`).

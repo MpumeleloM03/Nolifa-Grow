@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'shared_fakes.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
 
@@ -172,9 +172,9 @@ void main() {
 
   group('shared backend', () {
     test('two phones see each other\'s warnings and sightings', () async {
-      final db = FakeFirebaseFirestore();
-      final a = FirestoreRoadRepository(db: db, clock: () => _t0);
-      final b = FirestoreRoadRepository(db: db, clock: () => _t0);
+      final db = SharedRoadDb();
+      final a = FakeSharedRoadRepository(db, clock: () => _t0);
+      final b = FakeSharedRoadRepository(db, clock: () => _t0);
       expect(a.shared, isTrue);
       final seenOnB = b.watch();
       final done = expectLater(
@@ -188,8 +188,8 @@ void main() {
     });
 
     test('warnings older than any kind can live are not listened to', () async {
-      final db = FakeFirebaseFirestore();
-      final repo = FirestoreRoadRepository(db: db, clock: () => _t0);
+      final db = SharedRoadDb();
+      final repo = FakeSharedRoadRepository(db, clock: () => _t0);
       await repo.save(_h('old', HazardKind.pothole, 0, 0, ageMin: 60 * 80));
       await repo.save(_h('new', HazardKind.pothole, 0, 0, ageMin: 5));
       final list = await repo.watch().first;

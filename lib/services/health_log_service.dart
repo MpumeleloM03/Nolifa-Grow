@@ -1,26 +1,24 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ubuntu_core/ubuntu_core.dart' show SecurePrefs;
+import 'package:ubuntu_core/ubuntu_core.dart' show SecurePrefs, SupabaseBoot;
 import '../models/health_event.dart';
 import '../models/livestock_disease.dart' show Urgency;
 import 'auth_service.dart';
-import 'firebase_boot.dart';
 
 /// Every animal's health record. Kept sealed on the phone, or in
-/// users/{uid}/healthLog once Firebase is on. Health records of livestock are
+/// the `health_log` table once the shared database is on. Health records of livestock are
 /// the farmer's own and never shared.
 class HealthLogService {
   static String _key(String uid) => 'herd_health_$uid';
 
-  CollectionReference<Map<String, dynamic>> _col(String uid) =>
-      FirebaseFirestore.instance.collection('users').doc(uid).collection('healthLog');
+  SupabaseClient get _db => SupabaseBoot.client;
 
   Future<List<HealthEvent>> load(String uid) async {
-    if (FirebaseBoot.ready) {
-      final q = await _col(uid).get();
-      return [for (final d in q.docs) HealthEvent.fromJson({...d.data(), 'id': d.id})];
+    if (SupabaseBoot.ready) {
+      final q = await _db.from('health_log').select().eq('uid', uid);
+      return [for (final r in q) HealthEvent.fromJson({...Map<String, dynamic>.from(r['data'] as Map), 'id': r['id']})];
     }
     final raw = await SecurePrefs.getString(_key(uid));
     if (raw == null) return const [];
@@ -32,19 +30,16 @@ class HealthLogService {
   }
 
   Future<void> add(String uid, HealthEvent e, List<HealthEvent> all) async {
-    if (FirebaseBoot.ready) {
-      await _col(uid).doc(e.id).set(e.toJson());
+    if (SupabaseBoot.ready) {
+      await _db.from('health_log').upsert({'uid': uid, 'id': e.id, 'data': e.toJson()});
       return;
     }
     await SecurePrefs.setString(_key(uid), jsonEncode([for (final x in all) x.toJson()]));
   }
 
   Future<void> removeForAnimal(String uid, String animalId, List<HealthEvent> remaining) async {
-    if (FirebaseBoot.ready) {
-      final q = await _col(uid).where('animalId', isEqualTo: animalId).get();
-      for (final d in q.docs) {
-        await d.reference.delete();
-      }
+    if (SupabaseBoot.ready) {
+      await _db.from('health_log').delete().eq('uid', uid).eq('data->>animalId', animalId);
       return;
     }
     await SecurePrefs.setString(_key(uid), jsonEncode([for (final x in remaining) x.toJson()]));

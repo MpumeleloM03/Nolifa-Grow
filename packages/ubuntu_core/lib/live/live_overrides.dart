@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../market/market_store.dart' show marketStartsLiveProvider;
-import '../roads/firestore_road_repository.dart';
+import '../roads/supabase_road_repository.dart';
 import '../roads/road_repository.dart';
 import '../roads/road_store.dart' show roadRepositoryProvider;
 import '../warehouse/warehouse_repository.dart';
@@ -15,14 +15,14 @@ import 'location.dart';
 /// shared database once it is connected (on the phone until then).
 ///
 /// [ready] is asked when each provider is first read, because the apps do not
-/// know whether Firebase came up when this list is built.
+/// know whether Supabase came up when this list is built.
 List<Override> liveOverrides(bool Function() ready) => [
       marketStartsLiveProvider.overrideWithValue(true),
       userLocationProvider.overrideWith((ref) => deviceLocation()),
       roadRepositoryProvider.overrideWith(
-          (ref) => ready() ? FirestoreRoadRepository() : LocalRoadRepository(seeds: false)),
+          (ref) => ready() ? SupabaseRoadRepository() : LocalRoadRepository(seeds: false)),
       hubStaffProvider.overrideWith((ref) => ready() && (ref.watch(staffRolesProvider).valueOrNull?.hub ?? false)),
       certifierProvider.overrideWith((ref) => ready() && (ref.watch(staffRolesProvider).valueOrNull?.certifier ?? false)),
       warehouseRepositoryProvider.overrideWith(
-          (ref) => ready() ? FirestoreWarehouseRepository() : LocalWarehouseRepository()),
+          (ref) => ready() ? SupabaseWarehouseRepository() : LocalWarehouseRepository()),
     ];

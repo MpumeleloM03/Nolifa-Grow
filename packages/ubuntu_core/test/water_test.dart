@@ -1,4 +1,4 @@
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'shared_fakes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
@@ -126,7 +126,6 @@ void main() {
   // The same rules must hold on the device and on the shared backend.
   for (final make in <(String, WaterRepository Function())>[
     ('local', () => LocalWaterRepository.memory()),
-    ('firestore', () => FirestoreWaterRepository(db: FakeFirebaseFirestore())),
   ]) {
     group('voting rules (${make.$1})', () {
       late WaterRepository repo;

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:printing/printing.dart';
@@ -18,8 +17,8 @@ class CutLine {
 }
 
 final cutsProvider = StreamProvider.family<Map<String, CutLine>, String>((ref, orderId) =>
-    FirebaseFirestore.instance.collection('warehousePicks').doc(orderId).snapshots().map((s) {
-      final m = (s.data()?['lines'] as Map?) ?? const {};
+    SupabaseBoot.client.from('warehouse_picks').stream(primaryKey: ['id']).eq('id', orderId).map((rows) {
+      final m = (rows.isEmpty ? null : (rows.first['data'] as Map?)?['lines'] as Map?) ?? const {};
       return {
         for (final e in m.entries)
           e.key as String: CutLine(
@@ -103,17 +102,16 @@ class PickCard extends ConsumerWidget {
       if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Not enough in a room that is in range. Nothing was taken.')));
       return;
     }
-    await FirebaseFirestore.instance.collection('warehousePicks').doc(o.id).set({
-      'orderId': o.id,
-      'lines': {
-        '$i': {
-          'product': line.name,
-          'kg': kg,
-          'tags': [for (final p in picks) p.tag],
-          'useBy': lots.isEmpty ? null : lots.first.useBy.millisecondsSinceEpoch,
-        }
+    await SupabaseBoot.client.rpc('save_pick', params: {
+      'p_order': o.id,
+      'p_index': '$i',
+      'p_line': {
+        'product': line.name,
+        'kg': kg,
+        'tags': [for (final p in picks) p.tag],
+        'useBy': lots.isEmpty ? null : lots.first.useBy.millisecondsSinceEpoch,
       },
-    }, SetOptions(merge: true));
+    });
   }
 
   @override
