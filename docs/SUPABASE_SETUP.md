@@ -37,7 +37,7 @@ supabase db push
 
 ## 3. Build the apps against the real project
 
-The apps read two build settings. With neither set they run on the phone alone.
+The project is `Nolifa Suite` (ref `ysjitrdzraofzfqhbcfp`, eu-north-1). Its URL and public anon key are the build defaults, so a plain `flutter build` already talks to it. The settings below only override that (for example `--dart-define=SUPABASE_URL=` empty keeps an app on the phone alone).
 
 ```bash
 flutter build ios --dart-define=SUPABASE_URL=https://<ref>.supabase.co --dart-define=SUPABASE_ANON_KEY=<anon key>
@@ -75,3 +75,9 @@ The person signs out and in again to pick up the new token.
 - Verification: today a person is "verified" only when you add them to `verified_users`. Phone code checks (Supabase supports Twilio) or farm verification can fill that table automatically later.
 - Payments: escrow is still bookkeeping inside the app and database. Real money needs a payment partner (see STORE_READINESS.md).
 - Order totals are checked in the app, not recomputed on the server yet (listed in SSDLC.md).
+
+## Current state of the cloud project
+
+- Migrations are pushed. The 9 live tests passed against it, then the test data was removed.
+- Email confirmation is OFF (`mailer_autoconfirm`) so judges can sign up at once. The built in mail sender allows only a few emails an hour. Before public launch add your own SMTP, then turn confirmation and CAPTCHA on.
+- No staff, certifier or verified rows exist yet. Add yours with the SQL in section 4.

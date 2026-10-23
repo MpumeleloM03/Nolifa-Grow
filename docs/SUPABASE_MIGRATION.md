@@ -5,9 +5,9 @@ Why: Firebase kept failing ("We could not reach the server"), the iOS 27 simulat
 Status key: [x] done, [ ] to do, [!] needs something from you.
 
 ## A. Project and tools
-- [!] Create the Supabase project (needs your Supabase access token, or you create it and give me the project URL, the anon key and the database password). I cannot log in as you.
+- [x] Cloud project `Nolifa Suite` created by you, migrations pushed and live tests passed against it.
 - [x] Run Supabase on this computer with Docker to build and test everything first.
-- [ ] Push the migrations to the cloud project.
+- [x] Push the migrations to the cloud project.
 - [ ] Turn on email sign-in, set the site URL, and decide whether sign-up needs email confirmation.
 - [ ] Create the first staff and certifier rows.
 
