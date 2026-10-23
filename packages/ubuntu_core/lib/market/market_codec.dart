@@ -138,6 +138,9 @@ Map<String, dynamic> orderToJson(Order o, String uid) {
     'dispute': o.dispute == null ? null : _disputeToJson(o.dispute!),
     'rating': o.rating,
     'selfDelivery': o.selfDelivery,
+    'route': o.route,
+    'hub': o.hub,
+    'distanceKm': o.distanceKm,
     'rev': o.rev,
   };
 }
@@ -177,6 +180,9 @@ Order orderFromJson(Map<String, dynamic> m, String uid, {bool seed = false}) => 
       rating: (m['rating'] as num?)?.toInt() ?? 0,
       rev: (m['rev'] as num?)?.toInt() ?? 0,
       selfDelivery: m['selfDelivery'] as bool? ?? false,
+      route: m['route'] as String? ?? 'local',
+      hub: m['hub'] as String?,
+      distanceKm: (m['distanceKm'] as num?)?.toDouble() ?? 0,
       seed: seed,
     );
 

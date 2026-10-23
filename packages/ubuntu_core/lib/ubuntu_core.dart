@@ -13,6 +13,7 @@ export 'theme/glass.dart';
 export 'market/account_screens.dart';
 export 'market/alert_actions.dart';
 export 'notify/notifier.dart';
+export 'delivery/delivery_plan.dart';
 export 'market/drive_page.dart';
 export 'market/farm_art.dart';
 export 'market/farm_models.dart';

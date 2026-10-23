@@ -216,7 +216,7 @@ class DrivePage extends ConsumerWidget {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('${jobs[i].pickup}  →  ${jobs[i].dropArea}',
+                                  Text('${jobs[i].driverPickup}  →  ${jobs[i].dropArea}',
                                       style: AppTheme.headline),
                                   Text(
                                       '${jobs[i].lines.fold<int>(0, (a, l) => a + l.qty)} items  •  ${jobs[i].method.label}',
@@ -309,7 +309,7 @@ class _ActiveJob extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.read(marketProvider.notifier);
     final toFarm = order.status == OrderStatus.assigned;
-    final destination = toFarm ? order.pickup : order.dropArea;
+    final destination = toFarm ? order.driverPickup : order.dropArea;
 
     Future<void> navigate() async {
       HapticFeedback.selectionClick();
@@ -345,7 +345,7 @@ class _ActiveJob extends ConsumerWidget {
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(toFarm ? 'Go to ${order.pickup}' : 'Deliver to ${order.dropArea}',
+              Text(toFarm ? 'Go to ${order.driverPickup}' : 'Deliver to ${order.dropArea}',
                   style: AppTheme.headline),
               Text('${order.id}  •  you earn ${rand(order.driverPay)}',
                   style: AppTheme.footnote),

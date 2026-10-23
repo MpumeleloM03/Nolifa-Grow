@@ -318,7 +318,7 @@ class OrderTile extends StatelessWidget {
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('${order.id}  •  ${rand(order.total)}', style: AppTheme.headline),
-            Text('${order.lines.length} item${order.lines.length == 1 ? '' : 's'} from ${order.pickup}',
+            Text('${order.lines.length} item${order.lines.length == 1 ? '' : 's'} from ${order.pickup}${order.route == 'hub' ? ' via ${order.hub}' : ''}',
                 style: AppTheme.footnote),
           ]),
         ),
@@ -409,10 +409,21 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                         children: [
                                           Text('From ${s.cartFarm}', style: AppTheme.headline),
                                           Text(
-                                              s.cartSelfDelivery
-                                                  ? 'The farm brings it to you'
-                                                  : 'A Nolifa Delivery neighbour brings it to you',
+                                              s.deliveryPlan?.summary ??
+                                                  (s.cartSelfDelivery
+                                                      ? 'The farm brings it to you'
+                                                      : 'A Nolifa Delivery neighbour brings it to you'),
                                               style: AppTheme.footnote),
+                                          if (s.deliveryPlan != null)
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: AppTheme.s2),
+                                              child: Wrap(spacing: 6, runSpacing: 6, children: [
+                                                Pill(s.deliveryPlan!.route.label, color: AppTheme.sprout),
+                                                Pill('Arrives: ${s.deliveryPlan!.eta}', color: AppTheme.textSecondary),
+                                                if (s.deliveryPlan!.saving >= 5 && !s.deliveryPlan!.estimated)
+                                                  Pill('You save ${rand(s.deliveryPlan!.saving, decimals: 0)} on delivery', color: AppTheme.warn),
+                                              ]),
+                                            ),
                                         ]),
                                   ),
                                 ]),

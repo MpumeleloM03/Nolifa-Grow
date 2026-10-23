@@ -317,6 +317,12 @@ class Order {
   final String? driverId;
   final bool seed; // demo-only order, never synced
   final bool selfDelivery; // the farm brings it, no Nolifa driver
+
+  /// How it travels: 'local', 'hub' or 'farm'. For a hub order, [hub] is the
+  /// depot the last-mile driver collects from, and [distanceKm] the farm to door road distance.
+  final String route;
+  final String? hub;
+  final double distanceKm;
   final int rev; // bumped on every write so devices can tell which copy is newer
 
   const Order({
@@ -348,6 +354,9 @@ class Order {
     this.driverId,
     this.seed = false,
     this.selfDelivery = false,
+    this.route = 'local',
+    this.hub,
+    this.distanceKm = 0,
     this.rev = 0,
   });
 
@@ -443,8 +452,14 @@ class Order {
         driverId: driverId ?? this.driverId,
         seed: seed,
         selfDelivery: selfDelivery,
+        route: route,
+        hub: hub,
+        distanceKm: distanceKm,
         rev: rev ?? this.rev,
       );
+
+  /// Where the driver collects: the hub for a hub order, otherwise the farm.
+  String get driverPickup => hub ?? pickup;
 }
 
 // ------------------------------------------------------------- alerts

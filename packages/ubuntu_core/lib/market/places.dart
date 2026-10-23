@@ -25,6 +25,10 @@ const placeCoords = <String, (double, double)>{
   'zulu co-op': (-29.9400, 30.8900),
   'nolifa depot': (-29.8650, 31.0100),
   'your farm': (-29.8140, 30.8590),
+  // Planned Nolifa hubs.
+  'durban hub': (-29.8650, 31.0100),
+  'pietermaritzburg hub': (-29.6010, 30.3794),
+  'richards bay hub': (-28.7830, 32.0380),
 };
 
 const durbanCentre = (-29.8587, 31.0218);

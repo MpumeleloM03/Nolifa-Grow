@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../delivery/delivery_plan.dart';
 import 'market_codec.dart';
+import 'places.dart';
 import 'farm_models.dart';
 import 'market_models.dart';
 import 'market_repository.dart';
@@ -455,13 +457,26 @@ class MarketState {
   String? get cartFarm => cartFirst?.farm;
   bool get cartSelfDelivery => cartFirst?.delivery == DeliveryMode.self;
 
-  double get deliveryFee {
+  /// How this basket would travel and what it costs: local when the farm is
+  /// near the buyer's address, through a hub when it is far, or by the farm
+  /// itself. Null for an empty basket.
+  DeliveryPlan? get deliveryPlan {
     final first = cartFirst;
-    if (first == null) return 0;
-    if (first.delivery == DeliveryMode.self) return first.deliveryFee ?? 0;
-    final groupDiscount = cart.keys.any((id) => joined.contains(id)) ? 0.5 : 1.0;
-    return Fees.baseDelivery * groupDiscount;
+    if (first == null) return null;
+    final from = lookupPlace(first.farm);
+    final to = profile.addressLine.isEmpty ? null : lookupPlace(profile.addressLine);
+    final groupFactor = cart.keys.any((id) => joined.contains(id)) ? 0.5 : 1.0;
+    return planDelivery(
+      farm: from,
+      buyer: to,
+      fallbackKm: first.km > 0 ? first.km : 10,
+      farmDelivers: first.delivery == DeliveryMode.self,
+      farmFee: first.deliveryFee ?? 0,
+      groupFactor: groupFactor,
+    );
   }
+
+  double get deliveryFee => deliveryPlan?.fee ?? 0;
 
   List<Farm> get farms => groupFarms(products);
 
@@ -1248,6 +1263,7 @@ class MarketStore extends Notifier<MarketState> {
     // produce go straight to the driver queue.
     final needsFarmer = first.ownerId != null && first.ownerId != _uid;
     final selfDelivery = first.delivery == DeliveryMode.self;
+    final plan = state.deliveryPlan!;
     final order = Order(
       id: id,
       lines: lines,
@@ -1260,6 +1276,9 @@ class MarketStore extends Notifier<MarketState> {
       pickup: first.farm,
       dropArea: state.profile.addressLine.isEmpty ? 'Your street' : state.profile.addressLine,
       selfDelivery: selfDelivery,
+      route: plan.route.name,
+      hub: plan.route == DeliveryRoute.hub ? plan.hub?.name : null,
+      distanceKm: double.parse(plan.farmKm.toStringAsFixed(1)),
       pin: pin,
       pinHash: hashPin(id, pin),
       placed: DateTime.now(),
