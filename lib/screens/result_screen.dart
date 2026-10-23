@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import '../impact/impact_screen.dart';
 import '../models/disease_info.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -7,9 +8,11 @@ class ResultScreen extends StatelessWidget {
   final String label;
   final String confidence;
   final bool offlineMode;
+  final String? scanId;
 
   const ResultScreen({
     super.key,
+    this.scanId,
     required this.image,
     required this.label,
     required this.confidence,
@@ -275,6 +278,10 @@ class ResultScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  if (scanId != null) ...[
+                    const SizedBox(height: 24),
+                    FeedbackBar(id: scanId!, kind: 'crop', label: label, plainName: info.plainName, confidence: confidence),
+                  ],
                   const SizedBox(height: 32),
                   SizedBox(
                     width: double.infinity,

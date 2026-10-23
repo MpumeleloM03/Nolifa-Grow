@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../theme/app_theme.dart';
 import '../utils/language_provider.dart';
 
 class LanguageToggle extends ConsumerWidget {
@@ -15,10 +16,10 @@ class LanguageToggle extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white12,
+          color: AppTheme.glassFill,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: Colors.white24,
+            color: AppTheme.glassBorder,
             width: 1,
           ),
         ),
@@ -27,8 +28,8 @@ class LanguageToggle extends ConsumerWidget {
           children: [
             Text(
               isZulu ? 'EN' : 'ZU',
-              style: const TextStyle(
-                color: Colors.white70,
+              style: TextStyle(
+                color: AppTheme.textSecondary,
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
               ),
@@ -41,7 +42,7 @@ class LanguageToggle extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(8),
                 color: isZulu
                     ? const Color(0xFF52B788)
-                    : Colors.white24,
+                    : AppTheme.glassBorder,
               ),
               child: AnimatedAlign(
                 duration: const Duration(milliseconds: 200),
@@ -52,8 +53,8 @@ class LanguageToggle extends ConsumerWidget {
                   width: 12,
                   height: 12,
                   margin: const EdgeInsets.symmetric(horizontal: 2),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: AppTheme.textPrimary,
                     shape: BoxShape.circle,
                   ),
                 ),

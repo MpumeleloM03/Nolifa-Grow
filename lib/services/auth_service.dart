@@ -112,6 +112,26 @@ class AuthService {
     }
   }
 
+  /// Saves the details a farmer can change in Settings.
+  Future<void> updateProfile({
+    required String name,
+    required String region,
+    required String farmType,
+  }) async {
+    if (isLocal) {
+      await _local.updateUser(name: name, region: region, farmType: farmType);
+      return;
+    }
+    final u = _auth.currentUser;
+    if (u == null) return;
+    await u.updateDisplayName(name.trim());
+    await _db.collection('users').doc(u.uid).set({
+      'name': name.trim(),
+      'region': region,
+      'farmType': farmType,
+    }, SetOptions(merge: true));
+  }
+
   Future<void> signOut() => isLocal ? _local.signOut() : _auth.signOut();
 
   Future<void> sendReset(String email) async {

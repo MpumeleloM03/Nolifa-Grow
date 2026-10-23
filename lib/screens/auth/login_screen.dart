@@ -83,7 +83,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Text('Nolifa Grow', style: AppTheme.largeTitle),
                     const SizedBox(height: AppTheme.s2),
                     Text(
-                      'Every plant has a story.\nWe help you hear it.',
+                      'Keep your farm healthy. Keep your community resilient.',
                       style: AppTheme.callout,
                     ),
                     if (ref.watch(authServiceProvider).isLocal) ...[
@@ -201,7 +201,7 @@ class _ErrorNote extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline_rounded,
+          Icon(Icons.error_outline_rounded,
               color: AppTheme.danger, size: 18),
           const SizedBox(width: AppTheme.s2),
           Expanded(

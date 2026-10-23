@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import '../theme/app_theme.dart';
 import '../models/diagnosis_record.dart';
 import '../models/disease_info.dart';
 import '../services/history_service.dart';
@@ -93,7 +94,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1B4332),
+      backgroundColor: AppTheme.pageGreen,
       appBar: AppBar(
         backgroundColor: const Color(0xFF1B4332),
         foregroundColor: Colors.white,
@@ -112,33 +113,33 @@ class _HistoryScreenState extends State<HistoryScreen> {
         ],
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(color: Colors.white),
+          ? Center(
+              child: CircularProgressIndicator(color: AppTheme.textPrimary),
             )
           : _history.isEmpty
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.history,
-                        color: Colors.white24,
+                        color: AppTheme.glassBorder,
                         size: 80,
                       ),
                       const SizedBox(height: 16),
-                      const Text(
+                      Text(
                         'No diagnoses yet',
                         style: TextStyle(
-                          color: Colors.white54,
+                          color: AppTheme.textSecondary,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
+                      Text(
                         'Your plant diagnoses will appear here',
                         style: TextStyle(
-                          color: Colors.white38,
+                          color: AppTheme.textTertiary,
                           fontSize: 14,
                         ),
                       ),
@@ -163,6 +164,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             MaterialPageRoute(
                               builder: (context) => ResultScreen(
                                 image: imageFile,
+                                scanId: record.id,
                                 label: record.label,
                                 confidence: record.confidence,
                                 offlineMode: record.offlineMode,
@@ -182,7 +184,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 12),
                         decoration: BoxDecoration(
-                          color: Colors.white10,
+                          color: AppTheme.glassFill,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
@@ -203,10 +205,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   : Container(
                                       width: 90,
                                       height: 90,
-                                      color: Colors.white10,
-                                      child: const Icon(
+                                      color: AppTheme.glassFill,
+                                      child: Icon(
                                         Icons.image_not_supported,
-                                        color: Colors.white24,
+                                        color: AppTheme.glassBorder,
                                       ),
                                     ),
                             ),
@@ -221,8 +223,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   children: [
                                     Text(
                                       info.plainName,
-                                      style: const TextStyle(
-                                        color: Colors.white,
+                                      style: TextStyle(
+                                        color: AppTheme.textPrimary,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 13,
                                       ),
@@ -264,15 +266,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           record.offlineMode
                                               ? 'Offline scan'
                                               : 'Confidence: ${record.confidence}%',
-                                          style: const TextStyle(
-                                            color: Colors.white38,
+                                          style: TextStyle(
+                                            color: AppTheme.textTertiary,
                                             fontSize: 11,
                                           ),
                                         ),
                                         Text(
                                           _formatDate(record.date),
-                                          style: const TextStyle(
-                                            color: Colors.white38,
+                                          style: TextStyle(
+                                            color: AppTheme.textTertiary,
                                             fontSize: 11,
                                           ),
                                         ),
@@ -284,11 +286,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             ),
 
                             // Arrow
-                            const Padding(
-                              padding: EdgeInsets.only(right: 12),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 12),
                               child: Icon(
                                 Icons.chevron_right,
-                                color: Colors.white24,
+                                color: AppTheme.glassBorder,
                               ),
                             ),
                           ],

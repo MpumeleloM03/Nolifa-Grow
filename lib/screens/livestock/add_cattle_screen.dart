@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:latlong2/latlong.dart';
 import '../../models/cattle.dart';
+import '../../models/species.dart';
 import '../../services/auth_service.dart';
+import '../../services/region_service.dart';
+import 'location_picker_screen.dart';
 import '../../services/cattle_service.dart';
+import '../../services/health_log_service.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/glass.dart';
 
 class AddCattleScreen extends ConsumerStatefulWidget {
   final Cattle? existing;
-  const AddCattleScreen({super.key, this.existing});
+
+  /// The species to start on when adding a new animal.
+  final Species initialSpecies;
+  const AddCattleScreen({super.key, this.existing, this.initialSpecies = Species.cattle});
 
   @override
   ConsumerState<AddCattleScreen> createState() => _AddCattleScreenState();
@@ -21,14 +29,16 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
   late final TextEditingController _name;
   late final TextEditingController _breed;
   late final TextEditingController _notes;
+  late final TextEditingController _camp;
 
+  late Species _species;
+  double? _lat;
+  double? _lng;
   late TagStandard _standard;
   late String _sex;
   late CattleStatus _status;
   DateTime? _birth;
   bool _busy = false;
-
-  static const _sexes = ['cow', 'bull', 'heifer', 'steer', 'calf'];
 
   bool get _editing => widget.existing != null;
 
@@ -40,8 +50,12 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
     _name = TextEditingController(text: e?.name ?? '');
     _breed = TextEditingController(text: e?.breed ?? '');
     _notes = TextEditingController(text: e?.notes ?? '');
+    _camp = TextEditingController(text: e?.camp ?? '');
+    _species = e?.species ?? widget.initialSpecies;
+    _lat = e?.lat;
+    _lng = e?.lng;
     _standard = e?.tagStandard ?? TagStandard.visual;
-    _sex = e?.sex ?? 'cow';
+    _sex = e?.sex ?? _species.defaultSex;
     _status = e?.status ?? CattleStatus.active;
     _birth = e?.birthDate;
   }
@@ -52,6 +66,7 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
     _name.dispose();
     _breed.dispose();
     _notes.dispose();
+    _camp.dispose();
     super.dispose();
   }
 
@@ -64,6 +79,7 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
     final service = ref.read(cattleServiceProvider);
     final animal = Cattle(
       id: widget.existing?.id ?? '',
+      species: _species,
       tagNumber: _tag.text.trim(),
       tagStandard: _standard,
       name: _name.text.trim(),
@@ -72,6 +88,14 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
       birthDate: _birth,
       status: _status,
       notes: _notes.text.trim(),
+      camp: _camp.text.trim(),
+      lat: _lat,
+      lng: _lng,
+      locatedAt: _lat == null
+          ? null
+          : (widget.existing != null && widget.existing!.lat == _lat && widget.existing!.lng == _lng
+              ? widget.existing!.locatedAt
+              : DateTime.now()),
     );
 
     try {
@@ -95,6 +119,26 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
     }
   }
 
+  Future<void> _pickOnMap() async {
+    final region = ref.read(currentUserProvider)?.region ?? '';
+    final centre = (RegionService.findByName(region) ?? RegionService.regions.first).center;
+    final picked = await Navigator.push<LatLng>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => LocationPickerScreen(
+          start: LatLng(centre.latitude, centre.longitude),
+          current: _lat == null ? null : LatLng(_lat!, _lng!),
+        ),
+      ),
+    );
+    if (picked != null && mounted) {
+      setState(() {
+        _lat = picked.latitude;
+        _lng = picked.longitude;
+      });
+    }
+  }
+
   Future<void> _delete() async {
     final uid = ref.read(currentUserProvider)?.uid;
     if (uid == null || widget.existing == null) return;
@@ -102,7 +146,7 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: AppTheme.forest,
+        backgroundColor: AppTheme.sheet,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppTheme.rCard)),
         title: Text('Remove animal?', style: AppTheme.title3),
@@ -126,6 +170,7 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
 
     if (confirmed != true) return;
     await ref.read(cattleServiceProvider).remove(uid, widget.existing!.id);
+    await ref.read(healthLogProvider.notifier).forgetAnimal(widget.existing!.id);
     if (mounted) Navigator.pop(context);
   }
 
@@ -149,7 +194,7 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
                 actions: [
                   if (_editing)
                     IconButton(
-                      icon: const Icon(Icons.delete_outline_rounded,
+                      icon: Icon(Icons.delete_outline_rounded,
                           size: 22, color: AppTheme.danger),
                       onPressed: _delete,
                     ),
@@ -166,6 +211,24 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          Text('What kind of animal?', style: AppTheme.headline),
+                          const SizedBox(height: AppTheme.s3),
+                          Wrap(
+                            spacing: AppTheme.s2,
+                            runSpacing: AppTheme.s2,
+                            children: [
+                              for (final sp in Species.values)
+                                _Pill(
+                                  label: '${sp.emoji} ${sp.singular}',
+                                  selected: _species == sp,
+                                  onTap: () => setState(() {
+                                    _species = sp;
+                                    if (!sp.sexes.contains(_sex)) _sex = sp.defaultSex;
+                                  }),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: AppTheme.s5),
                           GlassField(
                             controller: _tag,
                             label: 'Tag number',
@@ -202,13 +265,22 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
                             icon: Icons.category_outlined,
                             textInputAction: TextInputAction.next,
                           ),
+                          const SizedBox(height: AppTheme.s2),
+                          Wrap(
+                            spacing: AppTheme.s2,
+                            runSpacing: AppTheme.s2,
+                            children: [
+                              for (final b in _species.breeds)
+                                _Pill(label: b, selected: _breed.text == b, onTap: () => setState(() => _breed.text = b)),
+                            ],
+                          ),
                           const SizedBox(height: AppTheme.s5),
                           Text('Class', style: AppTheme.headline),
                           const SizedBox(height: AppTheme.s3),
                           Wrap(
                             spacing: AppTheme.s2,
                             runSpacing: AppTheme.s2,
-                            children: _sexes
+                            children: _species.sexes
                                 .map((s) => _Pill(
                                       label: s,
                                       selected: _sex == s,
@@ -227,9 +299,9 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
                                 lastDate: DateTime.now(),
                                 builder: (ctx, child) => Theme(
                                   data: Theme.of(ctx).copyWith(
-                                    colorScheme: const ColorScheme.dark(
+                                    colorScheme: (AppTheme.isLight ? const ColorScheme.light() : const ColorScheme.dark()).copyWith(
                                       primary: AppTheme.livestockAccent,
-                                      surface: AppTheme.forest,
+                                      surface: AppTheme.sheet,
                                     ),
                                   ),
                                   child: child!,
@@ -253,6 +325,47 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
                                       onTap: () => setState(() => _status = s),
                                     ))
                                 .toList(),
+                          ),
+                          const SizedBox(height: AppTheme.s5),
+                          Text('Where is it kept?', style: AppTheme.headline),
+                          const SizedBox(height: AppTheme.s3),
+                          GlassField(
+                            controller: _camp,
+                            label: 'Camp or paddock name (optional)',
+                            icon: Icons.fence_rounded,
+                            textInputAction: TextInputAction.next,
+                          ),
+                          const SizedBox(height: AppTheme.s3),
+                          GestureDetector(
+                            onTap: _pickOnMap,
+                            child: Container(
+                              padding: const EdgeInsets.all(AppTheme.s4),
+                              decoration: BoxDecoration(
+                                color: AppTheme.glassFill,
+                                borderRadius: BorderRadius.circular(AppTheme.rControl),
+                                border: Border.all(color: AppTheme.glassBorder),
+                              ),
+                              child: Row(children: [
+                                Icon(Icons.location_on_outlined, size: 20, color: AppTheme.textTertiary),
+                                const SizedBox(width: AppTheme.s3),
+                                Expanded(
+                                  child: Text(
+                                    _lat == null ? 'Drop a pin on the map (optional)' : 'Pin set. Tap to move it.',
+                                    style: _lat == null
+                                        ? AppTheme.subhead
+                                        : AppTheme.subhead.copyWith(color: AppTheme.textPrimary),
+                                  ),
+                                ),
+                                if (_lat != null)
+                                  GestureDetector(
+                                    onTap: () => setState(() {
+                                      _lat = null;
+                                      _lng = null;
+                                    }),
+                                    child: Icon(Icons.close_rounded, size: 18, color: AppTheme.textTertiary),
+                                  ),
+                              ]),
+                            ),
                           ),
                           const SizedBox(height: AppTheme.s5),
                           GlassField(
@@ -403,7 +516,7 @@ class _DateRow extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.cake_outlined,
+            Icon(Icons.cake_outlined,
                 size: 20, color: AppTheme.textTertiary),
             const SizedBox(width: AppTheme.s3),
             Expanded(
@@ -419,7 +532,7 @@ class _DateRow extends StatelessWidget {
             if (date != null)
               GestureDetector(
                 onTap: onClear,
-                child: const Icon(Icons.close_rounded,
+                child: Icon(Icons.close_rounded,
                     size: 18, color: AppTheme.textTertiary),
               ),
           ],

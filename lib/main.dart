@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter/services.dart' show SystemUiOverlayStyle;
+import 'package:ubuntu_core/ubuntu_core.dart' show notifierProvider, AppearanceController, AppearanceScope;
 import 'services/image_service.dart';
 import 'services/inference_service.dart';
 import 'services/plant_id_service.dart';
@@ -20,6 +22,8 @@ import 'services/outbreak_service.dart';
 import 'services/region_service.dart';
 import 'services/firebase_boot.dart';
 import 'services/local_backend.dart';
+import 'services/phone_notifier.dart';
+import 'store/market_overrides.dart';
 import 'theme/app_theme.dart';
 import 'theme/glass.dart';
 import 'utils/language_provider.dart';
@@ -28,11 +32,13 @@ import 'widgets/language_toggle.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AppearanceController.instance.load();
   await FirebaseBoot.init();
   if (!FirebaseBoot.ready) await LocalBackend.instance.init();
   runApp(
-    const ProviderScope(
-      child: NolifaGrowApp(),
+    ProviderScope(
+      overrides: [...marketOverrides(), notifierProvider.overrideWithValue(PhoneNotifier.instance)],
+      child: const NolifaGrowApp(),
     ),
   );
 }
@@ -42,11 +48,19 @@ class NolifaGrowApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
-      title: 'Nolifa Grow',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.build(),
-      home: const AuthGate(),
+    return AppearanceScope(
+      builder: (context, light, dark, mode) => MaterialApp(
+        title: 'Nolifa Grow',
+        debugShowCheckedModeBanner: false,
+        theme: light,
+        darkTheme: dark,
+        themeMode: mode,
+        builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+          value: AppearanceScope.overlay,
+          child: child!,
+        ),
+        home: const AuthGate(),
+      ),
     );
   }
 }

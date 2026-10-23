@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/app_user.dart';
 import '../models/cattle.dart';
+import '../models/species.dart';
 import '../models/chat_message.dart';
 import '../models/outbreak_report.dart';
 import '../models/outbreak_report.dart' show OutbreakKind;
 import 'package:latlong2/latlong.dart';
+import 'package:ubuntu_core/ubuntu_core.dart' show SecurePrefs;
 
 /// On-device stand-in for Firebase, used whenever the cloud project is absent.
 ///
@@ -48,12 +50,12 @@ class LocalBackend {
   // ── Accounts ──────────────────────────────────────────────────────────────
 
   Future<Map<String, dynamic>> _accounts() async {
-    final raw = (await _p).getString(_kAccounts);
+    final raw = await SecurePrefs.getString(_kAccounts);
     return raw == null ? {} : jsonDecode(raw) as Map<String, dynamic>;
   }
 
   Future<AppUser?> currentUser() async {
-    final uid = (await _p).getString(_kSession);
+    final uid = await SecurePrefs.getString(_kSession);
     if (uid == null) return null;
     final acc = await _accounts();
     final data = acc[uid];
@@ -71,7 +73,6 @@ class LocalBackend {
     required String region,
     required String farmType,
   }) async {
-    final p = await _p;
     final acc = await _accounts();
     final key = email.trim().toLowerCase();
 
@@ -87,8 +88,8 @@ class LocalBackend {
       farmType: farmType,
     );
     acc[user.uid] = user.toMap();
-    await p.setString(_kAccounts, jsonEncode(acc));
-    await p.setString(_kSession, user.uid);
+    await SecurePrefs.setString(_kAccounts, jsonEncode(acc));
+    await SecurePrefs.setString(_kSession, user.uid);
     _session.add(user);
     return user;
   }
@@ -104,9 +105,34 @@ class LocalBackend {
       orElse: () => throw Exception('No local account for that email. Create one first.'),
     );
     final user = AppUser.fromMap(Map<String, dynamic>.from(match.value));
-    await (await _p).setString(_kSession, user.uid);
+    await SecurePrefs.setString(_kSession, user.uid);
     _session.add(user);
     return user;
+  }
+
+  /// Saves new account details for the signed-in person.
+  Future<AppUser?> updateUser({
+    required String name,
+    required String region,
+    required String farmType,
+  }) async {
+    final uid = await SecurePrefs.getString(_kSession);
+    if (uid == null) return null;
+    final acc = await _accounts();
+    final cur = acc[uid];
+    if (cur == null) return null;
+    final user = AppUser.fromMap(Map<String, dynamic>.from(cur));
+    final next = AppUser(
+      uid: user.uid,
+      name: name.trim(),
+      email: user.email,
+      region: region,
+      farmType: farmType,
+    );
+    acc[uid] = next.toMap();
+    await SecurePrefs.setString(_kAccounts, jsonEncode(acc));
+    _session.add(next);
+    return next;
   }
 
   Future<void> signOut() async {
@@ -117,7 +143,7 @@ class LocalBackend {
   // ── Chat ──────────────────────────────────────────────────────────────────
 
   Future<List<Map<String, dynamic>>> _rawChat() async {
-    final raw = (await _p).getString(_kChat);
+    final raw = await SecurePrefs.getString(_kChat);
     if (raw == null) return [];
     return (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
   }
@@ -160,14 +186,14 @@ class LocalBackend {
       'kind': kind,
       'at': DateTime.now().millisecondsSinceEpoch,
     });
-    await (await _p).setString(_kChat, jsonEncode(all));
+    await SecurePrefs.setString(_kChat, jsonEncode(all));
     _chat.add(null);
   }
 
   // ── Herd ──────────────────────────────────────────────────────────────────
 
   Future<List<Map<String, dynamic>>> _rawHerd() async {
-    final raw = (await _p).getString(_kHerd);
+    final raw = await SecurePrefs.getString(_kHerd);
     if (raw == null) return [];
     return (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
   }
@@ -188,6 +214,7 @@ class LocalBackend {
         id: m['id'] as String,
         tagNumber: m['tagNumber'] as String? ?? '',
         tagStandard: TagStandard.parse(m['tagStandard'] as String?),
+        species: Species.parse(m['species'] as String?),
         name: m['name'] as String? ?? '',
         breed: m['breed'] as String? ?? '',
         sex: m['sex'] as String? ?? 'cow',
@@ -196,24 +223,33 @@ class LocalBackend {
             : DateTime.fromMillisecondsSinceEpoch(m['birthDate'] as int),
         status: CattleStatus.parse(m['status'] as String?),
         notes: m['notes'] as String? ?? '',
+        camp: m['camp'] as String? ?? '',
+        lat: (m['lat'] as num?)?.toDouble(),
+        lng: (m['lng'] as num?)?.toDouble(),
+        locatedAt: m['locatedAt'] == null ? null : DateTime.fromMillisecondsSinceEpoch(m['locatedAt'] as int),
       );
 
   static Map<String, dynamic> _cattleTo(Cattle c, String id) => {
         'id': id,
         'tagNumber': c.tagNumber,
         'tagStandard': c.tagStandard.name,
+        'species': c.species.name,
         'name': c.name,
         'breed': c.breed,
         'sex': c.sex,
         'birthDate': c.birthDate?.millisecondsSinceEpoch,
         'status': c.status.name,
         'notes': c.notes,
+        'camp': c.camp,
+        'lat': c.lat,
+        'lng': c.lng,
+        'locatedAt': c.locatedAt?.millisecondsSinceEpoch,
       };
 
   Future<void> addCattle(Cattle c) async {
     final all = await _rawHerd();
     all.add(_cattleTo(c, 'c${DateTime.now().microsecondsSinceEpoch}'));
-    await (await _p).setString(_kHerd, jsonEncode(all));
+    await SecurePrefs.setString(_kHerd, jsonEncode(all));
     _herd.add(null);
   }
 
@@ -221,14 +257,14 @@ class LocalBackend {
     final all = await _rawHerd();
     final i = all.indexWhere((m) => m['id'] == c.id);
     if (i != -1) all[i] = _cattleTo(c, c.id);
-    await (await _p).setString(_kHerd, jsonEncode(all));
+    await SecurePrefs.setString(_kHerd, jsonEncode(all));
     _herd.add(null);
   }
 
   Future<void> removeCattle(String id) async {
     final all = await _rawHerd();
     all.removeWhere((m) => m['id'] == id);
-    await (await _p).setString(_kHerd, jsonEncode(all));
+    await SecurePrefs.setString(_kHerd, jsonEncode(all));
     _herd.add(null);
   }
 
@@ -238,7 +274,7 @@ class LocalBackend {
   // ── Outbreaks ─────────────────────────────────────────────────────────────
 
   Future<List<Map<String, dynamic>>> _rawOutbreaks() async {
-    final raw = (await _p).getString(_kOutbreaks);
+    final raw = await SecurePrefs.getString(_kOutbreaks);
     if (raw == null) return [];
     return (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
   }
@@ -282,7 +318,7 @@ class LocalBackend {
       'region': region,
       'at': DateTime.now().millisecondsSinceEpoch,
     });
-    await (await _p).setString(_kOutbreaks, jsonEncode(all));
+    await SecurePrefs.setString(_kOutbreaks, jsonEncode(all));
     _outbreaks.add(null);
   }
 
@@ -295,7 +331,7 @@ class LocalBackend {
     int ago(int hours) =>
         now.subtract(Duration(hours: hours)).millisecondsSinceEpoch;
 
-    await p.setString(_kChat, jsonEncode([
+    await SecurePrefs.setString(_kChat, jsonEncode([
       {
         'id': 's1', 'region': 'Greater Durban', 'uid': 'demo-1',
         'authorName': 'Thandeka M.',
@@ -334,7 +370,7 @@ class LocalBackend {
       },
     ]));
 
-    await p.setString(_kHerd, jsonEncode([
+    await SecurePrefs.setString(_kHerd, jsonEncode([
       {'id': 'c1', 'tagNumber': 'ZA-0014', 'tagStandard': 'iso11784', 'name': 'Nandi', 'breed': 'Nguni', 'sex': 'cow', 'birthDate': DateTime(2021, 3, 14).millisecondsSinceEpoch, 'status': 'active', 'notes': ''},
       {'id': 'c2', 'tagNumber': 'ZA-0015', 'tagStandard': 'iso11784', 'name': '', 'breed': 'Nguni', 'sex': 'heifer', 'birthDate': DateTime(2024, 8, 2).millisecondsSinceEpoch, 'status': 'active', 'notes': ''},
       {'id': 'c3', 'tagNumber': 'ZA-0016', 'tagStandard': 'visual', 'name': 'Bheki', 'breed': 'Brahman', 'sex': 'bull', 'birthDate': DateTime(2020, 11, 9).millisecondsSinceEpoch, 'status': 'active', 'notes': 'Herd sire'},
@@ -343,7 +379,7 @@ class LocalBackend {
       {'id': 'c6', 'tagNumber': 'ZA-0009', 'tagStandard': 'brand', 'name': 'Thuli', 'breed': 'Nguni', 'sex': 'cow', 'birthDate': DateTime(2019, 1, 30).millisecondsSinceEpoch, 'status': 'sold', 'notes': 'Sold at Dundee auction'},
     ]));
 
-    await p.setString(_kOutbreaks, jsonEncode([
+    await SecurePrefs.setString(_kOutbreaks, jsonEncode([
       {'id': 'o1', 'disease': 'Late Blight', 'severity': 'red', 'kind': 'plant', 'lat': -29.60, 'lng': 30.40, 'region': 'KZN Midlands', 'at': ago(30)},
       {'id': 'o2', 'disease': 'Late Blight', 'severity': 'red', 'kind': 'plant', 'lat': -29.55, 'lng': 30.35, 'region': 'KZN Midlands', 'at': ago(48)},
       {'id': 'o3', 'disease': 'Early Blight', 'severity': 'orange', 'kind': 'plant', 'lat': -29.85, 'lng': 31.00, 'region': 'Greater Durban', 'at': ago(20)},

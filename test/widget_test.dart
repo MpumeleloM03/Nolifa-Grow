@@ -4,7 +4,8 @@ import 'package:nolifa_grow/theme/app_theme.dart';
 import 'package:nolifa_grow/theme/glass.dart';
 
 void main() {
-  testWidgets('GlassButton shows its label and fires onPressed', (tester) async {
+  testWidgets('GlassButton shows its label and fires onPressed',
+      (tester) async {
     var taps = 0;
     await tester.pumpWidget(MaterialApp(
       theme: AppTheme.build(),

@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/cattle.dart';
+import '../../models/health_event.dart';
+import '../../models/species.dart';
 import '../../services/auth_service.dart';
 import '../../services/cattle_service.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/glass.dart';
 import 'add_cattle_screen.dart';
+import 'animal_detail_screen.dart';
+import 'herd_widgets.dart';
 
 class HerdScreen extends ConsumerStatefulWidget {
   const HerdScreen({super.key});
@@ -17,13 +21,14 @@ class HerdScreen extends ConsumerStatefulWidget {
 
 class _HerdScreenState extends ConsumerState<HerdScreen> {
   String _query = '';
+  Species? _species; // null shows every species
 
   Future<void> _import() async {
     final controller = TextEditingController();
     final go = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: AppTheme.forest,
+        backgroundColor: AppTheme.sheet,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppTheme.rCard)),
         title: Text('Import herd', style: AppTheme.title3),
@@ -109,13 +114,13 @@ class _HerdScreenState extends ConsumerState<HerdScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: AppTheme.livestockAccent,
-        foregroundColor: const Color(0xFF07150F),
+        foregroundColor: AppTheme.onAccent,
         onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const AddCattleScreen()),
+          MaterialPageRoute(builder: (_) => AddCattleScreen(initialSpecies: _species ?? Species.cattle)),
         ),
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Add animal'),
+        label: Text(_species == null ? 'Add animal' : 'Add ${_species!.singular.toLowerCase()}'),
       ),
       body: AppBackdrop(
         tint: AppTheme.livestockAccent,
@@ -152,23 +157,28 @@ class _HerdScreenState extends ConsumerState<HerdScreen> {
                   onChanged: (v) => setState(() => _query = v.toLowerCase()),
                   style: AppTheme.subhead.copyWith(color: AppTheme.textPrimary),
                   decoration: InputDecoration(
-                    hintText: 'Search tag, name or breed',
+                    hintText: 'Search tag, name, breed or camp',
                     hintStyle: AppTheme.subhead,
-                    prefixIcon: const Icon(Icons.search_rounded,
+                    prefixIcon: Icon(Icons.search_rounded,
                         size: 20, color: AppTheme.textTertiary),
                     filled: true,
                     fillColor: AppTheme.glassFill,
                     isDense: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(AppTheme.rControl),
-                      borderSide: const BorderSide(color: AppTheme.glassBorder),
+                      borderSide: BorderSide(color: AppTheme.glassBorder),
                     ),
                   ),
                 ),
               ),
+              if (herd.valueOrNull?.isNotEmpty ?? false)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(AppTheme.s4, 0, AppTheme.s4, AppTheme.s3),
+                  child: SpeciesChips(herd: herd.value!, selected: _species, onChanged: (s) => setState(() => _species = s)),
+                ),
               Expanded(
                 child: herd.when(
-                  loading: () => const Center(
+                  loading: () => Center(
                       child: CircularProgressIndicator(
                           color: AppTheme.livestockAccent)),
                   error: (e, _) => _Message(
@@ -177,9 +187,11 @@ class _HerdScreenState extends ConsumerState<HerdScreen> {
                       body: '$e'),
                   data: (list) {
                     final shown = list.where((c) {
+                      if (_species != null && c.species != _species) return false;
                       if (_query.isEmpty) return true;
                       return c.tagNumber.toLowerCase().contains(_query) ||
                           c.name.toLowerCase().contains(_query) ||
+                          c.camp.toLowerCase().contains(_query) ||
                           c.breed.toLowerCase().contains(_query);
                     }).toList();
 
@@ -192,10 +204,12 @@ class _HerdScreenState extends ConsumerState<HerdScreen> {
                       );
                     }
                     if (shown.isEmpty) {
-                      return const _Message(
+                      return _Message(
                         icon: Icons.search_off_rounded,
                         title: 'No match',
-                        body: 'Nothing in your herd matches that search.',
+                        body: _species != null && _query.isEmpty
+                            ? 'You have no ${_species!.plural.toLowerCase()} on the register yet.'
+                            : 'Nothing in your herd matches that search.',
                       );
                     }
 
@@ -219,17 +233,18 @@ class _HerdScreenState extends ConsumerState<HerdScreen> {
   }
 }
 
-class _CattleRow extends StatelessWidget {
+class _CattleRow extends ConsumerWidget {
   final Cattle animal;
   const _CattleRow({required this.animal});
 
   @override
-  Widget build(BuildContext context) {
-    final age = animal.ageMonths;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = stateOf(ref.watch(animalHealthProvider), animal);
     final details = [
       if (animal.breed.isNotEmpty) animal.breed,
       animal.sex,
-      if (age != null) age >= 24 ? '${(age / 12).floor()} yrs' : '$age mo',
+      if (ageText(animal).isNotEmpty) ageText(animal),
+      if (animal.camp.isNotEmpty) animal.camp,
     ].join(' · ');
 
     return GlassCard(
@@ -237,7 +252,7 @@ class _CattleRow extends StatelessWidget {
       padding: const EdgeInsets.all(AppTheme.s4),
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => AddCattleScreen(existing: animal)),
+        MaterialPageRoute(builder: (_) => AnimalDetailScreen(animalId: animal.id)),
       ),
       child: Row(
         children: [
@@ -249,13 +264,7 @@ class _CattleRow extends StatelessWidget {
               color: AppTheme.livestockAccent.withValues(alpha: 0.16),
               borderRadius: BorderRadius.circular(AppTheme.rChip),
             ),
-            child: Icon(
-              animal.tagStandard == TagStandard.iso11784
-                  ? Icons.nfc_rounded
-                  : Icons.sell_outlined,
-              size: 19,
-              color: AppTheme.livestockAccent,
-            ),
+            child: Text(animal.species.emoji, style: const TextStyle(fontSize: 22)),
           ),
           const SizedBox(width: AppTheme.s4),
           Expanded(
@@ -274,6 +283,10 @@ class _CattleRow extends StatelessWidget {
               ],
             ),
           ),
+          if (state != HealthState.unknown) ...[
+            HealthDot(state),
+            const SizedBox(width: AppTheme.s2),
+          ],
           if (animal.status != CattleStatus.active)
             Container(
               padding: const EdgeInsets.symmetric(

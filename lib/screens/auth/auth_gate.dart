@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/glass.dart';
-import '../mode_select_screen.dart';
+import '../../shell/grow_shell.dart';
 import 'login_screen.dart';
 
 /// Decides whether the app opens on sign-in or the mode chooser.
@@ -17,16 +17,20 @@ class AuthGate extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(authStateProvider).when(
           loading: () => const _Splash(),
-          error: (e, _) => _Splash(message: e.toString()),
+          error: (e, _) => _Splash(
+            message: 'We could not reach the server. Check your connection, then try again.',
+            onRetry: () => ref.invalidate(authStateProvider),
+          ),
           data: (user) =>
-              user == null ? const LoginScreen() : const ModeSelectScreen(),
+              user == null ? const LoginScreen() : const GrowShell(),
         );
   }
 }
 
 class _Splash extends StatelessWidget {
   final String? message;
-  const _Splash({this.message});
+  final VoidCallback? onRetry;
+  const _Splash({this.message, this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class _Splash extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircularProgressIndicator(color: AppTheme.sprout),
+              CircularProgressIndicator(color: AppTheme.sprout),
               if (message != null) ...[
                 const SizedBox(height: AppTheme.s4),
                 Padding(
@@ -44,6 +48,10 @@ class _Splash extends StatelessWidget {
                   child: Text(message!,
                       textAlign: TextAlign.center, style: AppTheme.footnote),
                 ),
+              ],
+              if (onRetry != null) ...[
+                const SizedBox(height: AppTheme.s4),
+                GhostButton(label: 'Try again', icon: Icons.refresh_rounded, onPressed: onRetry),
               ],
             ],
           ),

@@ -1,0 +1,27 @@
+name: ubuntu_core
+description: Shared code for Ubuntu Drop and Nolifa Grow - market rules, storage, water radar and theme.
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  cloud_firestore: ^5.0.0
+  shared_preferences: ^2.3.2
+  crypto: ^3.0.7
+  cryptography: ^2.9.0
+  flutter_secure_storage: ^11.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  fake_cloud_firestore: ^3.1.0
+
+flutter:
+  assets:
+    - assets/farms/

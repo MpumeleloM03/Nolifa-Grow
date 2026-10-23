@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_theme.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -6,7 +7,7 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1B4332),
+      backgroundColor: AppTheme.pageGreen,
       appBar: AppBar(
         backgroundColor: const Color(0xFF1B4332),
         foregroundColor: Colors.white,
@@ -41,22 +42,22 @@ class AboutScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // App name
-            const Text(
+            Text(
               'Nolifa Grow',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: AppTheme.textPrimary,
               ),
             ),
 
             const SizedBox(height: 8),
 
-            const Text(
+            Text(
               'Every plant has a story. We help you hear it.',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white60,
+                color: AppTheme.textSecondary,
                 fontStyle: FontStyle.italic,
               ),
               textAlign: TextAlign.center,
@@ -64,11 +65,11 @@ class AboutScreen extends StatelessWidget {
 
             const SizedBox(height: 8),
 
-            const Text(
+            Text(
               'Version 1.0.0',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.white38,
+                color: AppTheme.textTertiary,
               ),
             ),
 
@@ -95,36 +96,36 @@ class AboutScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white10,
+                color: AppTheme.glassFill,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white24),
+                border: Border.all(color: AppTheme.glassBorder),
               ),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Icon(
                         Icons.info_outline,
-                        color: Colors.white60,
+                        color: AppTheme.textSecondary,
                         size: 18,
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(
                         'Important Disclaimer',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppTheme.textPrimary,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Nolifa Grow provides AI-generated diagnoses intended as a guide only. Results should not replace professional agricultural advice. Always consult a qualified agricultural expert or extension officer for serious crop concerns or before making significant treatment decisions.',
                     style: TextStyle(
-                      color: Colors.white60,
+                      color: AppTheme.textSecondary,
                       fontSize: 13,
                       height: 1.5,
                     ),
@@ -185,22 +186,22 @@ class AboutScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             // ✅ COPYRIGHT FOOTER
-            const Text(
+            Text(
               '© 2025 Nolifa Technologies (Pty) Ltd',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white38,
+                color: AppTheme.textTertiary,
                 fontSize: 12,
               ),
             ),
 
             const SizedBox(height: 6),
 
-            const Text(
+            Text(
               'All rights reserved.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white24,
+                color: AppTheme.glassBorder,
                 fontSize: 11,
               ),
             ),
@@ -217,7 +218,7 @@ class AboutScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white10,
+        color: AppTheme.glassFill,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -225,8 +226,8 @@ class AboutScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppTheme.textPrimary,
               fontWeight: FontWeight.bold,
               fontSize: 15,
             ),
@@ -234,8 +235,8 @@ class AboutScreen extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             content,
-            style: const TextStyle(
-              color: Colors.white60,
+            style: TextStyle(
+              color: AppTheme.textSecondary,
               fontSize: 13,
               height: 1.6,
             ),

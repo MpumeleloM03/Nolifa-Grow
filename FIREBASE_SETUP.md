@@ -132,3 +132,79 @@ Everything here runs on the Spark (free) plan: 50k document reads, 20k writes an
 1 GiB stored per day. A few hundred farmers chatting and logging herds stays well
 inside that. You would only need the paid Blaze plan for Cloud Functions or
 Storage-heavy photo uploads.
+
+---
+
+# Nolifa Drop (marketplace) on Firebase
+
+Nolifa Drop works with no Firebase at all: everything is saved on the phone. Once
+steps 1 to 6 above are done it switches itself to Firestore and **orders,
+listings and outbreak cases are shared between phones in real time**. No code
+change is needed. The rules from step 6 already include the marketplace.
+
+## What lives where
+
+| Collection | Contents | Who can read |
+|---|---|---|
+| `marketProfiles/{uid}` | Balances, plan, verification checks, ledger | Only that user |
+| `marketProducts/{id}` | Produce listed by farmers | Any signed-in user |
+| `marketOrders/{id}` | Orders. Delivery PIN is stored as a hash only | Buyer, farmer, driver; open jobs to any signed-in driver |
+| `marketCases/{id}` | Outbreak reports and verification stage | Any signed-in user |
+
+## Demo mode and live mode
+
+Open **Trust & Safety** (shield icon) and use the **App mode** switch.
+
+- **Demo mode (default):** seeded farms, simulated neighbour drivers and a
+  12-second protection window, so one person can watch the whole loop.
+  Orders from demo farms stay on the phone and never reach Firestore.
+- **Live mode:** only real people and real listings, with the real 2-hour window.
+
+To show the real multi-phone flow with two phones signed into two accounts:
+a farmer lists produce, a buyer orders it, the farmer packs it, a driver on a
+third phone claims it, collects, enters the buyer's PIN, and the buyer confirms.
+Each phone shows its own side of the same order.
+
+## Test the rules (no Firebase project needed)
+
+The rules are tested in the local Firestore emulator. It needs Java.
+
+```bash
+brew install openjdk@21
+export JAVA_HOME=/opt/homebrew/opt/openjdk@21 PATH=/opt/homebrew/opt/openjdk@21/bin:$PATH
+cd firebase/rules-tests
+npm install
+npm test
+```
+
+You should see 38 tests pass: 37 allow/deny cases, plus one that replays every
+write the real app makes.
+
+If you change what the app writes, regenerate the recorded writes first:
+
+```bash
+flutter test test/export_rules_fixture_test.dart
+```
+
+## Special accounts: mediators and vets
+
+Disputes and vet verification are decided by people with a custom claim that
+only trusted admin code can set. Grant one with the Firebase Admin SDK, for
+example in a one-off Node script:
+
+```js
+await admin.auth().setCustomUserClaims(uid, { mediator: true }); // or { vet: true }
+```
+
+The staff consoles that use these claims are not built yet (see `docs/SSDLC.md`,
+section 5). Until then, live disputes wait in review.
+
+## Not done yet (be honest about this with judges)
+
+- Order totals are calculated on the phone. A trusted backend (Cloud Functions,
+  needs the Blaze plan) should recompute them and settle money.
+- Payments, ID checks and mediation are simulated.
+- Escrow release is timed by whichever phone is open; a scheduled function
+  should do it.
+
+Full list and plan: `docs/SSDLC.md`.

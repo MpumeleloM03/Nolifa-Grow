@@ -1,0 +1,44 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8089
+    },
+    "ui": {
+      "enabled": false
+    }
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "nolifa-grow-f3df9",
+          "appId": "1:989124834212:android:3746b044e2fd224cfdc731",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "nolifa-grow-f3df9",
+          "appId": "1:989124834212:ios:3052290fc128f93dfdc731",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "nolifa-grow-f3df9",
+          "configurations": {
+            "android": "1:989124834212:android:3746b044e2fd224cfdc731",
+            "ios": "1:989124834212:ios:3052290fc128f93dfdc731"
+          }
+        }
+      }
+    }
+  }
+}

@@ -13,6 +13,10 @@ dependencies:
   # State Management
   flutter_riverpod: ^2.5.1
 
+  # Shared with the Ubuntu Drop app
+  ubuntu_core:
+    path: packages/ubuntu_core
+
   # Firebase
   firebase_core: ^3.1.0
   firebase_auth: ^5.1.0
@@ -53,6 +57,8 @@ dependencies:
   
   flutter_map: ^6.1.0
   latlong2: ^0.9.0
+  crypto: ^3.0.7
+  flutter_local_notifications: ^22.3.2
 
 
 
@@ -63,9 +69,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   flutter_lints: ^4.0.0
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.0
+  fake_cloud_firestore: ^3.1.0
+  firebase_auth_mocks: ^0.14.2
 
 
 

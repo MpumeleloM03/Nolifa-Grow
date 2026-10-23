@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/cattle.dart';
+import '../../models/health_event.dart';
 import '../../services/cattle_service.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/glass.dart';
+import 'animal_detail_screen.dart';
+import 'herd_map_screen.dart';
 import 'herd_screen.dart';
+import 'herd_widgets.dart';
 import 'symptom_checker_screen.dart';
 
 class LivestockHomeScreen extends ConsumerWidget {
@@ -41,8 +45,12 @@ class LivestockHomeScreen extends ConsumerWidget {
                       error: (_, __) => const _HerdSummary(total: null),
                       data: (list) => _HerdSummary(
                         total: list.where((c) => c.status == CattleStatus.active).length,
-                        breakdown: _countBySex(list),
+                        breakdown: _countBySpecies(list),
                       ),
+                    ),
+                    herd.maybeWhen(
+                      data: (list) => _Attention(list),
+                      orElse: () => const SizedBox.shrink(),
                     ),
                     const SizedBox(height: AppTheme.s4),
                     _ActionCard(
@@ -55,6 +63,16 @@ class LivestockHomeScreen extends ConsumerWidget {
                           context,
                           MaterialPageRoute(builder: (_) => const HerdScreen()),
                         );
+                      },
+                    ),
+                    const SizedBox(height: AppTheme.s3),
+                    _ActionCard(
+                      title: 'Herd map',
+                      subtitle: 'See where every animal is, coloured by health',
+                      icon: Icons.map_rounded,
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const HerdMapScreen()));
                       },
                     ),
                     const SizedBox(height: AppTheme.s3),
@@ -81,12 +99,57 @@ class LivestockHomeScreen extends ConsumerWidget {
     );
   }
 
-  static Map<String, int> _countBySex(List<Cattle> list) {
+  static Map<String, int> _countBySpecies(List<Cattle> list) {
     final counts = <String, int>{};
     for (final c in list.where((c) => c.status == CattleStatus.active)) {
-      counts[c.sex] = (counts[c.sex] ?? 0) + 1;
+      final k = '${c.species.emoji} ${c.species.plural.toLowerCase()}';
+      counts[k] = (counts[k] ?? 0) + 1;
     }
     return counts;
+  }
+}
+
+/// Animals the health record says need a vet or a watch, so they are not missed.
+class _Attention extends ConsumerWidget {
+  final List<Cattle> herd;
+  const _Attention(this.herd);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final health = ref.watch(animalHealthProvider);
+    final flagged = [
+      for (final a in herd)
+        if (a.status == CattleStatus.active &&
+            (stateOf(health, a) == HealthState.sick || stateOf(health, a) == HealthState.watch))
+          a
+    ]..sort((a, b) => stateOf(health, a) == HealthState.sick ? -1 : 1);
+    if (flagged.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: AppTheme.s4),
+      child: GlassCard(
+        tint: AppTheme.danger.withValues(alpha: 0.10),
+        padding: const EdgeInsets.all(AppTheme.s5),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text('Needs attention', style: AppTheme.headline),
+          const SizedBox(height: AppTheme.s2),
+          for (final a in flagged.take(5))
+            InkWell(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AnimalDetailScreen(animalId: a.id))),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppTheme.s2),
+                child: Row(children: [
+                  Text(a.species.emoji, style: const TextStyle(fontSize: 22)),
+                  const SizedBox(width: AppTheme.s3),
+                  Expanded(child: Text(a.label, style: AppTheme.subhead.copyWith(color: AppTheme.textPrimary))),
+                  HealthDot(stateOf(health, a)),
+                  const SizedBox(width: 6),
+                  Text(stateOf(health, a).label, style: AppTheme.caption),
+                ]),
+              ),
+            ),
+        ]),
+      ),
+    );
   }
 }
 
@@ -110,14 +173,14 @@ class _HerdSummary extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
-                total?.toString() ?? '—',
+                total?.toString() ?? '-',
                 style: AppTheme.largeTitle.copyWith(
                   fontSize: 48,
                   color: AppTheme.livestockAccent,
                 ),
               ),
               const SizedBox(width: AppTheme.s2),
-              Text('head of cattle', style: AppTheme.callout),
+              Text('head of livestock', style: AppTheme.callout),
             ],
           ),
           if (breakdown.isNotEmpty) ...[
@@ -179,7 +242,7 @@ class _ActionCard extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded,
+          Icon(Icons.chevron_right_rounded,
               color: AppTheme.textTertiary, size: 20),
         ],
       ),

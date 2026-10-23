@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/cattle.dart';
+import '../models/species.dart';
 import 'auth_service.dart';
 import 'firebase_boot.dart';
 import 'local_backend.dart';
@@ -53,13 +54,15 @@ class CattleService {
       'electronic id', 'visual id', 'vid', 'animal id', 'animalid', 'id',
       'rfid', 'nlis', 'management tag',
     ],
-    'tagStandard': ['tag standard', 'tag_standard', 'tagstandard', 'tag type', 'type'],
+    'tagStandard': ['tag standard', 'tag_standard', 'tagstandard', 'tag type'],
+    'species': ['species', 'animal', 'animal type', 'type', 'kind'],
     'name': ['name', 'animal name', 'nickname'],
     'breed': ['breed', 'breed name'],
     'sex': ['sex', 'gender', 'class'],
     'birthDate': ['birth date', 'birth_date', 'birthdate', 'dob', 'date of birth'],
     'status': ['status', 'state', 'disposal'],
     'notes': ['notes', 'note', 'comment', 'comments', 'remarks'],
+    'camp': ['camp', 'paddock', 'field', 'location'],
   };
 
   static String _normalise(String h) =>
@@ -78,8 +81,10 @@ class CattleService {
   /// Rows without a tag number are skipped rather than imported blank, since a
   /// tagless record cannot be matched back to an animal in the kraal.
   Future<ImportResult> importCsv(String uid, String raw) async {
-    final rows = const CsvToListConverter(shouldParseNumbers: false)
-        .convert(raw.trim());
+    // Text pasted on a phone ends its lines with \n, while the parser expects
+    // \r\n, so make them all the same first.
+    final text = raw.trim().replaceAll('\r\n', '\n').replaceAll('\r', '\n');
+    final rows = const CsvToListConverter(shouldParseNumbers: false, eol: '\n').convert(text);
     if (rows.length < 2) {
       return const ImportResult(0, 0, ['Need a header row and at least one animal.']);
     }
@@ -127,13 +132,17 @@ class CattleService {
         continue;
       }
 
+      // The species column wins; otherwise a class word like "ewe" tells us.
+      final species = Species.fromWord(cell(row, 'species')) ?? Species.fromWord(cell(row, 'sex')) ?? Species.cattle;
       final animal = Cattle(
         id: '',
+        species: species,
         tagNumber: tag,
         tagStandard: _standardFrom(cell(row, 'tagStandard')),
         name: cell(row, 'name'),
         breed: cell(row, 'breed'),
-        sex: _sexFrom(cell(row, 'sex')),
+        camp: cell(row, 'camp'),
+        sex: _sexFrom(cell(row, 'sex'), species),
         birthDate: _dateFrom(cell(row, 'birthDate')),
         status: CattleStatus.parse(cell(row, 'status').toLowerCase()),
         notes: cell(row, 'notes'),
@@ -157,9 +166,10 @@ class CattleService {
 
   String exportCsv(List<Cattle> herd) {
     final rows = <List<String>>[
-      ['tag_number', 'tag_standard', 'name', 'breed', 'sex', 'birth_date', 'status', 'notes'],
+      ['tag_number', 'species', 'tag_standard', 'name', 'breed', 'sex', 'birth_date', 'status', 'camp', 'notes'],
       ...herd.map((c) => [
             c.tagNumber,
+            c.species.name,
             c.tagStandard.name,
             c.name,
             c.breed,
@@ -168,6 +178,7 @@ class CattleService {
                 ? ''
                 : '${c.birthDate!.year}-${c.birthDate!.month.toString().padLeft(2, '0')}-${c.birthDate!.day.toString().padLeft(2, '0')}',
             c.status.name,
+            c.camp,
             c.notes,
           ]),
     ];
@@ -184,12 +195,14 @@ class CattleService {
     return TagStandard.visual;
   }
 
-  static String _sexFrom(String raw) {
+  static String _sexFrom(String raw, Species species) {
     final v = raw.toLowerCase();
-    for (final s in ['heifer', 'steer', 'calf', 'bull', 'cow']) {
+    // Longer words first so "heifer" is not read as "if".
+    final options = [...species.sexes]..sort((a, b) => b.length.compareTo(a.length));
+    for (final s in options) {
       if (v.contains(s)) return s;
     }
-    return 'cow';
+    return species.defaultSex;
   }
 
   /// Handles ISO dates plus the day-first formats common in South African exports.
