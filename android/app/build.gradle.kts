@@ -14,6 +14,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -39,7 +40,8 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            // Falls back to the debug key until the real release key is added.
+            signingConfig = if (file("nolifa-release-key.jks").exists()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -48,6 +50,10 @@ android {
             )
         }
     }
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
 
 flutter {
