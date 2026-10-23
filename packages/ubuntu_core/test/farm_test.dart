@@ -35,7 +35,7 @@ void main() {
       final p = Phone('u', LocalMarketRepository.memory(), demo: true);
       final farms = p.s.farms;
       expect(farms.map((f) => f.name).first, 'Nolifa Depot');
-      expect(farms.length, 7);
+      expect(farms.length, 8);
       expect(farms.map((f) => f.km).toList(), [...farms.map((f) => f.km)]..sort());
       final mkhize = farms.firstWhere((f) => f.name == 'Mkhize Family Farm');
       expect(mkhize.products.length, 3);

@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
+import '../delivery/delivery_plan.dart';
+import '../warehouse/warehouse_store.dart';
 import 'market_models.dart';
 import 'market_store.dart';
 import 'drive_page.dart' show trackMapProvider;
@@ -358,12 +360,29 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   PayMethod _method = PayMethod.fnbPay;
   bool _paying = false;
 
+  @override
+  void initState() {
+    super.initState();
+    // In the demo the warehouse already holds some stock from the demo butchery.
+    if (ref.read(marketProvider).demoMode) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(warehouseProvider.notifier).seedDemoIfEmpty());
+    }
+  }
+
   Future<void> _pay() async {
     setState(() => _paying = true);
     HapticFeedback.mediumImpact();
     await Future.delayed(const Duration(milliseconds: 1400));
     if (!mounted) return;
-    final id = ref.read(marketProvider.notifier).place(_method);
+    final ms = ref.read(marketProvider);
+    final plan = ms.deliveryPlan;
+    final farmName = ms.cartFarm;
+    // Goods already in the Nolifa warehouse skip the farm drop-off.
+    final wh = ref.read(warehouseProvider);
+    final fromStock = plan?.route == DeliveryRoute.hub &&
+        farmName != null &&
+        ms.cart.entries.every((e) => wh.available(farmName, ms.products.firstWhere((p) => p.id == e.key).name) >= e.value);
+    final id = ref.read(marketProvider.notifier).place(_method, fromStock: fromStock);
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (_) => TrackingScreen(orderId: id, fresh: true)));
   }
@@ -426,6 +445,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                               child: Wrap(spacing: 6, runSpacing: 6, children: [
                                                 Pill(s.deliveryPlan!.route.label, color: AppTheme.sprout),
                                                 Pill('Arrives: ${s.deliveryPlan!.eta}', color: AppTheme.textSecondary),
+                                                if (s.deliveryPlan!.route == DeliveryRoute.hub &&
+                                                    s.cartFarm != null &&
+                                                    s.cart.entries.every((e) =>
+                                                        ref.watch(warehouseProvider).available(
+                                                            s.cartFarm!, s.products.firstWhere((p) => p.id == e.key).name) >=
+                                                        e.value))
+                                                  Pill('In the Nolifa warehouse', color: AppTheme.sprout, icon: Icons.ac_unit_rounded),
                                                 if (s.deliveryPlan!.saving >= 5 && !s.deliveryPlan!.estimated)
                                                   Pill('You save ${rand(s.deliveryPlan!.saving, decimals: 0)} on delivery', color: AppTheme.warn),
                                               ]),

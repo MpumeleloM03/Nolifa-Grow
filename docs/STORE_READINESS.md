@@ -10,6 +10,21 @@ Honest status of what stands between the prototype and the App Store and Google 
 - **Hub flow (built):** the order stays hidden from drivers until it has passed through the hub. The farm packs it, writes a 4-digit code on the packing slip and taps "I dropped it at the hub". Hub staff open the Hub desk (Nolifa Delivery, Jobs page), type the code to check it in, then release it. Only then does it become a last-mile job, collected at the hub. The customer sees each step on the tracking page. In the demo a pretend farm and hub move orders along after 8, 20 and 32 seconds unless someone acts first.
 - **Not built yet:** the hubs themselves (sites, staff, a real place to store goods), the farm to hub collection run, hub staff accounts (the `hub` permission is read from the sign-in token but nothing issues it yet), and the staff query for hub orders on the shared backend. The hub code is derived from the order number, so on the real backend the server must check it. The hub rules tests are written but unrun (no Java).
 
+## The Nolifa warehouse (built)
+A warehouse owned by Nolifa where farms deposit supply, and where far-away orders are packed from.
+- **Deposit.** A farm announces what it is bringing (product, kg, room, use-by date, arrival day) from Settings, Nolifa warehouse. It sees every deposit with its status.
+- **Check-in.** Warehouse staff (Nolifa Delivery, Jobs, Hub desk, Warehouse) weigh the goods and take the temperature. Goods outside the room's band (chilled 0 to 4 C, frozen -25 to -15 C, cool room 8 to 12 C, dry store 10 to 25 C, with 1 degree of slack) are turned away with the reason. Accepted goods get a tag (`NLF-DBN-0001`), a bay (`C1-01`) and a history that logs every movement.
+- **Stock by room.** Tagged lots are listed per room, soonest use-by first. Past use-by lots are written off. Goods expire first out first (FEFO).
+- **Rooms.** Each room shows its temperature against its band. A reading out of range raises an alarm and holds that room's goods back from orders. In the demo the sensors are simulated and a "Door left open" button shows the alarm.
+- **Orders.** If the whole basket is already in the warehouse, a hub order skips the farm drop-off. Staff pick from the oldest lots and release it to a last-mile driver, and the lot history shows the order.
+- **The farm sees it.** Its own lots, tags, remaining quantity, temperature at check-in and history.
+- **Not built:** real temperature probes (readings are simulated or typed in), printed tags and barcode scanning, bay maps, stock counts and shrinkage reports, a back-office website. The same data sits in `warehouseLots` and `warehouseReadings`, so a web back office can be built on it. Meat also needs real regulatory paperwork (abattoir and health certificates, cold-chain records) before a real launch.
+
+## Islilo Farming and Fatboy Butcheries
+- The catalogue now has Fatboy Butcheries (uMhlanga), owned by Islilo Farming, with ten products taken from its own online shop at their shop prices (mince, fillet, stew, T-bone, brisket, sausage and chicken cuts). In the demo it has stock in the warehouse, so an order shows the tagged-stock flow.
+- A real Islilo account: sign up in Nolifa Grow, set the farm name to Fatboy Butcheries and the suburb to uMhlanga, finish business, verification and plan, and (for meat) the inspection. Then Orders, "Quick start: add the Fatboy Butcheries range" lists the ten products as its own.
+- Real shared accounts need the Firebase backend, which is off. Accounts made now live only on the phone they are created on. Creating production users in the shared Firebase project is a decision for the backend owner, so none were created.
+
 ## What blocks a real store launch
 | Item | Status | What is needed |
 |---|---|---|

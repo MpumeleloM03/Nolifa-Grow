@@ -17,7 +17,7 @@ String hubCodeFor(String id) {
 
 double r2(double v) => (v * 100).roundToDouble() / 100;
 
-enum Category { veg, fruit, grain, dairy, water, essentials }
+enum Category { veg, fruit, grain, dairy, meat, water, essentials }
 
 extension CategoryX on Category {
   String get label => switch (this) {
@@ -25,6 +25,7 @@ extension CategoryX on Category {
         Category.fruit => 'Fruit',
         Category.grain => 'Grain',
         Category.dairy => 'Dairy & eggs',
+        Category.meat => 'Meat & poultry',
         Category.water => 'Water',
         Category.essentials => 'Essentials',
       };
@@ -33,6 +34,7 @@ extension CategoryX on Category {
         Category.fruit => '🍊',
         Category.grain => '🌽',
         Category.dairy => '🥚',
+        Category.meat => '🥩',
         Category.water => '💧',
         Category.essentials => '🔦',
       };
@@ -343,6 +345,10 @@ class Order {
   /// in with the hub code), 'released' (sorted and open to last-mile drivers).
   /// Null for orders that do not use a hub.
   final String? hubStage;
+
+  /// True when the goods were already in the Nolifa warehouse when the order
+  /// was placed, so no farm drop-off is needed.
+  final bool fromStock;
   final int rev; // bumped on every write so devices can tell which copy is newer
 
   const Order({
@@ -378,6 +384,7 @@ class Order {
     this.hub,
     this.distanceKm = 0,
     this.hubStage,
+    this.fromStock = false,
     this.rev = 0,
   });
 
@@ -478,6 +485,7 @@ class Order {
         hub: hub,
         distanceKm: distanceKm,
         hubStage: hubStage ?? this.hubStage,
+        fromStock: fromStock,
         rev: rev ?? this.rev,
       );
 
@@ -855,7 +863,7 @@ enum InspectionStatus { none, requested, scheduled, passed, failed }
 class Inspection {
   static const provisionalDays = 45;
   static const provisionalCap = 2000.0; // Rand of sales
-  static const highRisk = {Category.dairy, Category.essentials};
+  static const highRisk = {Category.dairy, Category.meat, Category.essentials};
 }
 
 class BusinessProfile {

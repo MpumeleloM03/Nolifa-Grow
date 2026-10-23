@@ -148,3 +148,9 @@ The register holds cattle, goats, sheep and horses, each with its own classes an
 
 **A driver should not drive 70 km to a farm and 90 km back. How does delivery work?**
 Like a big online shop. If the farm is within 25 road km of the buyer, one driver collects and delivers the same day. Further away, the order goes through the Nolifa hub nearest the buyer and a local driver brings the last stretch, usually in 1 to 2 days. The app works out the distance from the farm and the buyer's address, chooses the route, and shows the price and the saving (about R35 instead of about R175 for an 85 km run). What is not built yet: the hubs themselves and the farm to hub leg. They need a partner and are listed in `docs/STORE_READINESS.md`.
+
+**What is the warehouse?**
+A Nolifa-owned cold store. Farms deposit supply, staff check each delivery in (weight and temperature), and goods that arrive outside the room's band are turned away. Accepted goods get a tag and a bay, sit in a chilled, frozen, cool or dry room, and every movement is logged on the lot. Orders from far away are picked from the oldest stock first. The farm sees its own lots and their history. In the prototype the temperature sensors are simulated, and there is no printed tag or barcode scanner yet.
+
+**Who is Fatboy Butcheries?**
+A real butchery in uMhlanga owned by Islilo Farming. The demo catalogue uses ten of its products with the prices from its own online shop. Orders for them travel through the warehouse because uMhlanga is far from many buyers.

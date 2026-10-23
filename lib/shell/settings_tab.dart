@@ -5,6 +5,7 @@ import 'package:ubuntu_core/ubuntu_core.dart'
     show
         AppearancePicker,
         BusinessScreen,
+        FarmerWarehouseScreen,
         ProfileForm,
         Reveal,
         SectionTitle,
@@ -95,6 +96,8 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
             const SectionTitle('🚜', 'Farm'),
             _Row(Icons.agriculture_rounded, 'My farm', 'Size, soil, water sources and irrigation systems',
                 () => _push(const FarmSetupScreen())),
+            _Row(Icons.ac_unit_rounded, 'Nolifa warehouse', 'Deposit stock, see it tagged and cold-stored',
+                () => _push(const FarmerWarehouseScreen())),
             const SectionTitle('🛒', 'Selling'),
             _Row(Icons.storefront_rounded, 'Sell on Nolifa Drop',
                 'Registration, verification, plan and delivery', () => _push(const BusinessScreen())),

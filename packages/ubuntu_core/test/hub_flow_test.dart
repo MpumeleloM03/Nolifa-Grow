@@ -158,7 +158,7 @@ void main() {
       prev?.call(d);
     };
     addTearDown(() => FlutterError.onError = prev);
-    t.view.physicalSize = const Size(1206, 3000);
+    t.view.physicalSize = const Size(1206, 6000);
     t.view.devicePixelRatio = 3;
     addTearDown(t.view.reset);
     final c = ProviderContainer(overrides: [

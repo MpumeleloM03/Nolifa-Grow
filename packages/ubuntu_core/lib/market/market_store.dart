@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../delivery/delivery_plan.dart';
+import 'fatboy_range.dart';
 import 'market_codec.dart';
 import 'places.dart';
 import 'farm_models.dart';
@@ -14,6 +15,7 @@ import 'market_repository.dart';
 Duration protectionWindow = const Duration(seconds: 12);
 
 const _products = <Product>[
+  ...fatboyRange,
   // Mkhize Family Farm delivers itself.
   Product(
       id: 'p-spinach',
@@ -1031,6 +1033,26 @@ class MarketStore extends Notifier<MarketState> {
     return null;
   }
 
+  /// Lists a whole range of products as this farm's own, each with [stock]
+  /// units on the shelf. Returns why it could not, or null when it worked.
+  String? listRange(List<Product> range, {int stock = 40}) {
+    for (final p in range) {
+      final r = list(Product(
+        id: 'own-${p.id}-$_uid',
+        name: p.name,
+        emoji: p.emoji,
+        category: p.category,
+        farm: p.farm,
+        km: 1,
+        price: p.price,
+        unit: p.unit,
+        stock: stock,
+      ));
+      if (r != null) return r;
+    }
+    return null;
+  }
+
   /// Change one of my own listings: restock, reprice, or pause it.
   void updateProduct(String id, {int? stock, double? price, bool? available, bool? rescue}) {
     final cur = state.products.where((p) => p.id == id && p.mine);
@@ -1299,7 +1321,9 @@ class MarketStore extends Notifier<MarketState> {
     return 'UD-${List.generate(5, (_) => a[_rng.nextInt(a.length)]).join()}';
   }
 
-  String place(PayMethod method) {
+  /// Places the order. [fromStock] says the goods are already in the Nolifa
+  /// warehouse, so a hub order skips the farm drop-off.
+  String place(PayMethod method, {bool fromStock = false}) {
     final lines = [
       for (final e in state.cart.entries)
         () {
@@ -1332,7 +1356,8 @@ class MarketStore extends Notifier<MarketState> {
       route: plan.route.name,
       hub: plan.route == DeliveryRoute.hub ? plan.hub?.name : null,
       distanceKm: double.parse(plan.farmKm.toStringAsFixed(1)),
-      hubStage: plan.route == DeliveryRoute.hub ? 'toHub' : null,
+      hubStage: plan.route == DeliveryRoute.hub ? (fromStock ? 'received' : 'toHub') : null,
+      fromStock: plan.route == DeliveryRoute.hub && fromStock,
       pin: pin,
       pinHash: hashPin(id, pin),
       placed: DateTime.now(),

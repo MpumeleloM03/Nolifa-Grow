@@ -290,6 +290,38 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // ─────────────────────────── Nolifa warehouse ───────────────────────────
+    //
+    // A farm announces a deposit (status `expected`, nothing in storage yet).
+    // Only warehouse staff (the `hub` permission) check it in, tag it, pick
+    // from it, or write it off. A farm reads only its own lots; staff read all.
+    // Temperature readings are written by staff and read by staff.
+    match /warehouseLots/{lotId} {
+      allow read: if signedIn() && (resource.data.farmerId == request.auth.uid || isHubStaff());
+
+      allow create: if isVerified()
+        && request.resource.data.farmerId == request.auth.uid
+        && request.resource.data.status == 'expected'
+        && request.resource.data.remaining == 0
+        && request.resource.data.tag == null
+        && request.resource.data.qty is number && request.resource.data.qty > 0
+        && request.resource.data.zone in ['frozen', 'chilled', 'cool', 'ambient'];
+
+      allow update: if isHubStaff()
+        && request.resource.data.farmerId == resource.data.farmerId
+        && request.resource.data.product == resource.data.product
+        && request.resource.data.zone == resource.data.zone
+        && request.resource.data.useBy == resource.data.useBy;
+
+      allow delete: if false;
+    }
+
+    match /warehouseReadings/{readingId} {
+      allow read: if isHubStaff();
+      allow create: if isHubStaff();
+      allow update, delete: if false;
+    }
+
     // ─────────────────────────── Road hazards (drivers) ───────────────────────────
     //
     // Drivers warn each other about potholes, floods, crashes and roadblocks.

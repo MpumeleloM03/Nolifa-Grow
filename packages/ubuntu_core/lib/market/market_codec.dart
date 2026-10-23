@@ -144,6 +144,7 @@ Map<String, dynamic> orderToJson(Order o, String uid) {
     'hub': o.hub,
     'distanceKm': o.distanceKm,
     'hubStage': o.hubStage,
+    'fromStock': o.fromStock,
     'rev': o.rev,
   };
 }
@@ -187,6 +188,7 @@ Order orderFromJson(Map<String, dynamic> m, String uid, {bool seed = false}) => 
       hub: m['hub'] as String?,
       distanceKm: (m['distanceKm'] as num?)?.toDouble() ?? 0,
       hubStage: m['hubStage'] as String?,
+      fromStock: m['fromStock'] as bool? ?? false,
       seed: seed,
     );
 

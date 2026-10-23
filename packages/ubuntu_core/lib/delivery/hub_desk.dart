@@ -6,6 +6,8 @@ import '../market/market_store.dart';
 import '../market/market_widgets.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
+import '../warehouse/warehouse_screens.dart';
+import '../warehouse/warehouse_store.dart';
 
 /// True when the signed-in person works at a hub (the `hub` permission). Apps
 /// override this from the sign-in token. In demo mode the desk is open to
@@ -88,6 +90,21 @@ class HubDeskScreen extends ConsumerWidget {
                       ),
                     ),
                   const SizedBox(height: AppTheme.s4),
+                  GlassCard(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const WarehouseDeskScreen())),
+                    child: Row(children: [
+                      const Text('🧊', style: TextStyle(fontSize: 28)),
+                      const SizedBox(width: AppTheme.s3),
+                      Expanded(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text('Warehouse: receiving, stock, rooms', style: AppTheme.headline),
+                          Text('Check farm deposits in, see tagged stock and the cold room temperatures.', style: AppTheme.footnote),
+                        ]),
+                      ),
+                      Icon(Icons.chevron_right_rounded, color: AppTheme.textTertiary),
+                    ]),
+                  ),
+                  const SizedBox(height: AppTheme.s4),
                   if (list.isEmpty)
                     GlassCard(child: Text('No orders are passing through a hub right now.', style: AppTheme.callout))
                   else
@@ -139,7 +156,7 @@ class _HubOrderState extends ConsumerState<_HubOrder> {
     final (stageText, color) = switch (o.hubStage) {
       'toHub' => ('On its way from the farm', AppTheme.textSecondary),
       'droppedOff' => ('Dropped off, waiting to be checked in', AppTheme.warn),
-      'received' => ('Checked in, ready to sort', AppTheme.sprout),
+      'received' => (o.fromStock ? 'In storage, ready to pick' : 'Checked in, ready to sort', AppTheme.sprout),
       _ => ('', AppTheme.textSecondary),
     };
     return GlassCard(
@@ -180,14 +197,30 @@ class _HubOrderState extends ConsumerState<_HubOrder> {
         if (o.hubStage == 'received') ...[
           const SizedBox(height: AppTheme.s3),
           GlassButton(
-            label: 'Release to drivers',
+            label: o.fromStock ? 'Pick from storage and release' : 'Release to drivers',
             icon: Icons.local_shipping_rounded,
             accent: AppTheme.livestockAccent,
-            onPressed: () {
+            onPressed: () async {
               HapticFeedback.mediumImpact();
+              if (o.fromStock) {
+                final wh = ref.read(warehouseProvider.notifier);
+                final picks = <String>[];
+                for (final l in o.lines) {
+                  final p = await wh.dispatch(o.pickup, l.name, l.qty.toDouble(), o.id);
+                  if (p == null) {
+                    setState(() => _error = 'Not enough ${l.name} in a room that is in range. Ask the farm to deposit more.');
+                    return;
+                  }
+                  picks.addAll([for (final x in p) '${l.name}: ${x.qty.round()} from ${x.tag}']);
+                }
+                if (!context.mounted) return;
+                setState(() => _error = null);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Picked  ${picks.join('  |  ')}')));
+              }
               store.hubRelease(o.id);
             },
           ),
+          if (_error != null) Padding(padding: const EdgeInsets.only(top: 6), child: Text(_error!, style: AppTheme.footnote.copyWith(color: AppTheme.danger))),
         ],
       ]),
     );

@@ -34,7 +34,10 @@ const _emojis = [
   '🥦',
   '🍯',
   '🥭',
-  '🍉'
+  '🍉',
+  '🥩',
+  '🍗',
+  '🌭'
 ];
 const _units = ['kg', 'bunch', 'bag', 'pack', 'tray', 'dozen', 'litre', 'each'];
 

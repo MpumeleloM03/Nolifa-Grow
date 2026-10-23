@@ -5,6 +5,7 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         BusinessScreen,
         CountUp,
         DeliveryModeX,
+        fatboyRange,
         MarketState,
         Order,
         OrderStatus,
@@ -130,6 +131,19 @@ class OrdersTab extends ConsumerWidget {
                 onPressed: () => startAddStock(context, ref),
               ),
             ),
+            if (s.canSell && stock.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppTheme.s3),
+                child: GhostButton(
+                  label: 'Quick start: add the Fatboy Butcheries range',
+                  icon: Icons.restaurant_rounded,
+                  onPressed: () {
+                    final why = ref.read(marketProvider.notifier).listRange(fatboyRange);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(why ?? 'Added ${fatboyRange.length} products from the Fatboy Butcheries shop.')));
+                  },
+                ),
+              ),
             if (stock.isEmpty)
               GlassCard(
                 onTap: () => startAddStock(context, ref),
