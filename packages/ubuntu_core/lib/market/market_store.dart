@@ -463,8 +463,10 @@ class MarketState {
   DeliveryPlan? get deliveryPlan {
     final first = cartFirst;
     if (first == null) return null;
-    final from = lookupPlace(first.farm);
-    final to = profile.addressLine.isEmpty ? null : lookupPlace(profile.addressLine);
+    final from = lookupPlace(first.place ?? '') ?? lookupPlace(first.farm);
+    // The demo buyer lives in Umlazi until they add an address, so the hub and
+    // local routes can be shown.
+    final to = lookupPlace(profile.addressLine.isEmpty ? (demoMode ? 'Umlazi' : '') : profile.addressLine);
     final groupFactor = cart.keys.any((id) => joined.contains(id)) ? 0.5 : 1.0;
     return planDelivery(
       farm: from,
@@ -551,9 +553,16 @@ class MarketState {
 
   List<Order> get myOrders => orders.where((o) => o.customerIsMe).toList();
   List<Order> get farmOrders => orders.where((o) => o.farmIsMe).toList();
+  /// Jobs a driver can take. A hub order only opens once hub staff release it.
   List<Order> get openJobs => orders
-      .where((o) => o.status == OrderStatus.findingDriver && o.driver == null)
+      .where((o) =>
+          o.status == OrderStatus.findingDriver &&
+          o.driver == null &&
+          (o.hubStage == null || o.hubStage == 'released'))
       .toList();
+
+  /// Hub orders still passing through the hub, newest first.
+  List<Order> get hubOrders => orders.where((o) => o.atHubWork).toList();
   List<Order> get myJobs =>
       orders.where((o) => o.driverIsMe && o.status != OrderStatus.delivered).toList();
 
@@ -606,6 +615,7 @@ class MarketStore extends Notifier<MarketState> {
   final _timers = <Timer>[];
   final _subs = <StreamSubscription<dynamic>>[];
   final _simmed = <String>{};
+  final _hubSimmed = <String>{};
   final _releasing = <String>{};
   final _disputing = <String>{};
   final _caseSim = <String, ReportCase>{}; // demo progress the server never sees
@@ -1014,6 +1024,7 @@ class MarketStore extends Notifier<MarketState> {
       farm: _farmName,
       delivery: state.profile.delivery,
       deliveryFee: state.profile.deliveryFee,
+      place: state.profile.addressLine,
     );
     state = state.copyWith(products: [mine, ...state.products]);
     _guard(_repo.putProduct(mine, _uid));
@@ -1079,6 +1090,48 @@ class MarketStore extends Notifier<MarketState> {
     _observe(state.orderById(id)!);
   }
 
+  // ------------------------------------------------------------- hub
+
+  /// The farm says the order is at the hub. Only the farm that sells it, and
+  /// only once it has packed it.
+  bool dropAtHub(String id) {
+    final o = state.orderById(id);
+    if (o == null || !o.farmIsMe || o.hubStage != 'toHub' || o.status == OrderStatus.newOrder) return false;
+    _patch(id, (x) => x.copyWith(hubStage: 'droppedOff'));
+    return true;
+  }
+
+  /// Hub staff check an order in by typing the code on its packing slip.
+  bool hubReceive(String id, String code) {
+    final o = state.orderById(id);
+    if (o == null || o.hubStage != 'droppedOff' || code.trim() != o.hubCode) return false;
+    _patch(id, (x) => x.copyWith(hubStage: 'received'));
+    return true;
+  }
+
+  /// Hub staff sort the order into the last-mile bin. It becomes a job.
+  bool hubRelease(String id) {
+    final o = state.orderById(id);
+    if (o == null || o.hubStage != 'received') return false;
+    _patch(id, (x) => x.copyWith(hubStage: 'released'));
+    _observe(state.orderById(id)!);
+    return true;
+  }
+
+  /// Demo only: a pretend farm drop-off and hub desk, slow enough for a judge
+  /// to act first. Each step does nothing if a person already did it.
+  void _simHub(String id) {
+    void step(int secs, String from, String to) => _later(Duration(seconds: secs), () {
+          final o = state.orderById(id);
+          if (o == null || o.hubStage != from) return;
+          _patch(id, (x) => x.copyWith(hubStage: to));
+          if (to == 'released') _observe(state.orderById(id)!);
+        });
+    step(8, 'toHub', 'droppedOff');
+    step(20, 'droppedOff', 'received');
+    step(32, 'received', 'released');
+  }
+
   /// Saves personal and farm-store details. A farm's public name and how it
   /// delivers follow it onto every product it sells.
   void updateProfile(ProfileSettings p) {
@@ -1090,7 +1143,7 @@ class MarketStore extends Notifier<MarketState> {
         next.add(x);
         continue;
       }
-      final u = x.copyWith(farm: farm, delivery: p.delivery, deliveryFee: p.deliveryFee);
+      final u = x.copyWith(farm: farm, delivery: p.delivery, deliveryFee: p.deliveryFee, place: p.addressLine);
       next.add(u);
       _guard(_repo.putProduct(u, _uid));
     }
@@ -1274,11 +1327,12 @@ class MarketStore extends Notifier<MarketState> {
       status: needsFarmer ? OrderStatus.newOrder : OrderStatus.findingDriver,
       customer: _display,
       pickup: first.farm,
-      dropArea: state.profile.addressLine.isEmpty ? 'Your street' : state.profile.addressLine,
+      dropArea: state.profile.addressLine.isEmpty ? (state.demoMode ? 'Umlazi' : 'Your street') : state.profile.addressLine,
       selfDelivery: selfDelivery,
       route: plan.route.name,
       hub: plan.route == DeliveryRoute.hub ? plan.hub?.name : null,
       distanceKm: double.parse(plan.farmKm.toStringAsFixed(1)),
+      hubStage: plan.route == DeliveryRoute.hub ? 'toHub' : null,
       pin: pin,
       pinHash: hashPin(id, pin),
       placed: DateTime.now(),
@@ -1317,6 +1371,7 @@ class MarketStore extends Notifier<MarketState> {
   void accept(String id) {
     final o = state.orderById(id);
     if (o == null) return;
+    if (o.hubStage != null && o.hubStage != 'released') return; // still at the hub
     final claimOnServer = _repo.shared && !o.seed;
     // On a shared backend only the atomic claim may write, so a driver who
     // loses the race can never overwrite the winner.
@@ -1475,7 +1530,11 @@ class MarketStore extends Notifier<MarketState> {
     }
     final involved = o.customerIsMe || o.farmIsMe;
     // Only device-only demo orders are simulated. Real orders wait for real people.
-    if (state.demoMode && o.seed && involved) {
+    final atHub = o.hubStage != null && o.hubStage != 'released';
+    if (state.demoMode && o.seed && involved && atHub && o.status == OrderStatus.findingDriver && _hubSimmed.add(o.id)) {
+      _simHub(o.id);
+    }
+    if (state.demoMode && o.seed && involved && !atHub) {
       if (o.status == OrderStatus.findingDriver && o.driver == null && _simmed.add(o.id)) {
         _simDriver(o.id);
       } else if ((o.status == OrderStatus.assigned || o.status == OrderStatus.pickedUp) &&

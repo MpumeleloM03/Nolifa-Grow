@@ -88,12 +88,12 @@ void main() {
     final c = await mount(tester);
     final id = order(c);
     final o = c.read(marketProvider).orderById(id)!;
-    // R45 water + R29 candles = R74. Delivery R25. Service fee 3% = R2.22.
+    // R45 water + R29 candles = R74. Service fee 3% = R2.22. Delivery is priced by distance.
     expect(o.subtotal, 74);
     expect(o.serviceFee, 2.22);
-    expect(o.total, 101.22);
+    expect(o.total, r2(74 + o.deliveryFee + 2.22));
     expect(r2(o.farmNet + o.driverPay + o.platformTake), o.total);
-    expect(o.driverPay, 20); // 80% of the R25 delivery fee
+    expect(o.driverPay, r2(o.deliveryFee * 0.8)); // 80% of the delivery fee
     await settle(tester);
   });
 
@@ -101,7 +101,7 @@ void main() {
     final c = await mount(tester);
     final store = c.read(marketProvider.notifier);
     final id = order(c);
-    expect(c.read(marketProvider).escrowHeld, 101.22);
+    expect(c.read(marketProvider).escrowHeld, c.read(marketProvider).orderById(id)!.total);
 
     await tester.pump(const Duration(seconds: 6));
     expect(c.read(marketProvider).orderById(id)!.status, OrderStatus.assigned);
@@ -112,7 +112,7 @@ void main() {
     expect(delivered.status, OrderStatus.delivered);
     // Delivered but still protected: nobody has been paid yet.
     expect(delivered.released, isFalse);
-    expect(c.read(marketProvider).escrowHeld, 101.22);
+    expect(c.read(marketProvider).escrowHeld, c.read(marketProvider).orderById(id)!.total);
 
     store.confirmReceived(id, 5);
     final done = c.read(marketProvider).orderById(id)!;

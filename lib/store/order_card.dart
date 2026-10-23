@@ -153,6 +153,39 @@ class OrderCard extends ConsumerWidget {
             },
           ),
         ],
+        if (o.route == 'hub' && o.farmIsMe && o.status == OrderStatus.findingDriver && o.hubStage != null && o.hubStage != 'released') ...[
+          const SizedBox(height: AppTheme.s3),
+          GlassCard(
+            tint: AppTheme.warn.withValues(alpha: 0.12),
+            padding: const EdgeInsets.all(AppTheme.s4),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                  o.hubStage == 'toHub'
+                      ? 'Take this to the ${o.hub ?? 'hub'}'
+                      : o.hubStage == 'droppedOff'
+                          ? 'At the hub, waiting to be checked in'
+                          : 'Checked in at the hub',
+                  style: AppTheme.headline),
+              const SizedBox(height: 2),
+              Text(
+                  o.hubStage == 'toHub'
+                      ? 'This buyer is ${o.distanceKm.round()} km away, so a hub driver brings it the last stretch. Write this code on the packing slip: ${o.hubCode}'
+                      : 'Hub code ${o.hubCode}. A last-mile driver collects it once the hub releases it.',
+                  style: AppTheme.footnote),
+              if (o.hubStage == 'toHub') ...[
+                const SizedBox(height: AppTheme.s3),
+                GlassButton(
+                  label: 'I dropped it at the hub',
+                  icon: Icons.inventory_2_rounded,
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    ref.read(marketProvider.notifier).dropAtHub(o.id);
+                  },
+                ),
+              ],
+            ]),
+          ),
+        ],
         if (o.selfDelivery && o.farmIsMe && o.driverIsMe && o.status == OrderStatus.assigned) ...[
           const SizedBox(height: AppTheme.s3),
           GlassButton(

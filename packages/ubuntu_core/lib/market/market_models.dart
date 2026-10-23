@@ -7,6 +7,14 @@ import 'package:flutter/material.dart';
 String hashPin(String orderId, String pin) =>
     sha256.convert(utf8.encode('$orderId:$pin')).toString();
 
+String hubCodeFor(String id) {
+  var h = 7;
+  for (final c in id.codeUnits) {
+    h = (h * 31 + c) % 9000;
+  }
+  return '${1000 + h}';
+}
+
 double r2(double v) => (v * 100).roundToDouble() / 100;
 
 enum Category { veg, fruit, grain, dairy, water, essentials }
@@ -128,6 +136,9 @@ class Product {
   final DeliveryMode delivery;
   final double? deliveryFee; // only used when the farm delivers itself
 
+  /// Where the farm is, as an address or suburb the delivery planner can place.
+  final String? place;
+
   const Product({
     required this.id,
     required this.name,
@@ -147,6 +158,7 @@ class Product {
     this.available = true,
     this.delivery = DeliveryMode.platform,
     this.deliveryFee,
+    this.place,
   });
 
   bool get soldOut => stock != null && stock! <= 0;
@@ -165,6 +177,7 @@ class Product {
     String? farm,
     DeliveryMode? delivery,
     double? deliveryFee,
+    String? place,
   }) =>
       Product(
         id: id,
@@ -185,6 +198,7 @@ class Product {
         available: available ?? this.available,
         delivery: delivery ?? this.delivery,
         deliveryFee: deliveryFee ?? this.deliveryFee,
+        place: place ?? this.place,
       );
 }
 
@@ -323,6 +337,12 @@ class Order {
   final String route;
   final String? hub;
   final double distanceKm;
+
+  /// Where a hub order is on its way through the hub: 'toHub' (farm to bring it
+  /// in), 'droppedOff' (farm says it is there), 'received' (hub staff checked it
+  /// in with the hub code), 'released' (sorted and open to last-mile drivers).
+  /// Null for orders that do not use a hub.
+  final String? hubStage;
   final int rev; // bumped on every write so devices can tell which copy is newer
 
   const Order({
@@ -357,6 +377,7 @@ class Order {
     this.route = 'local',
     this.hub,
     this.distanceKm = 0,
+    this.hubStage,
     this.rev = 0,
   });
 
@@ -422,6 +443,7 @@ class Order {
     String? driverId,
     int? rev,
     String? pin,
+    String? hubStage,
   }) =>
       Order(
         id: id,
@@ -455,8 +477,15 @@ class Order {
         route: route,
         hub: hub,
         distanceKm: distanceKm,
+        hubStage: hubStage ?? this.hubStage,
         rev: rev ?? this.rev,
       );
+
+  bool get atHubWork => route == 'hub' && hubStage != null && hubStage != 'released' && status != OrderStatus.delivered;
+
+  /// The 4-digit code on the farm's packing slip. Hub staff type it to check an
+  /// order in, so only the order the farm actually dropped can be received.
+  String get hubCode => hubCodeFor(id);
 
   /// Where the driver collects: the hub for a hub order, otherwise the farm.
   String get driverPickup => hub ?? pickup;

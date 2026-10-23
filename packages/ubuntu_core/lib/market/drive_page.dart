@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
+import '../delivery/hub_desk.dart';
 import '../roads/road_screens.dart';
 import 'market_models.dart';
 import 'market_store.dart';
@@ -173,6 +174,8 @@ class DrivePage extends ConsumerWidget {
             ),
             const SizedBox(height: AppTheme.s3),
             const Reveal(index: 3, child: RoadAlertsCard()),
+            const SizedBox(height: AppTheme.s3),
+            const Reveal(index: 3, child: HubDeskCard()),
             if (mine.isNotEmpty) ...[
               const SectionTitle('🚦', 'Your active job'),
               for (final o in mine)

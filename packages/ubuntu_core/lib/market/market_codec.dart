@@ -33,6 +33,7 @@ Map<String, dynamic> productToJson(Product p) => {
       'available': p.available,
       'delivery': p.delivery.name,
       'deliveryFee': p.deliveryFee,
+      'place': p.place,
     };
 
 Product productFromJson(Map<String, dynamic> m, String uid) => Product(
@@ -54,6 +55,7 @@ Product productFromJson(Map<String, dynamic> m, String uid) => Product(
       delivery: DeliveryMode.values.firstWhere((d) => d.name == m['delivery'],
           orElse: () => DeliveryMode.platform),
       deliveryFee: (m['deliveryFee'] as num?)?.toDouble(),
+      place: m['place'] as String?,
       mine: m['ownerId'] != null && m['ownerId'] == uid,
     );
 
@@ -141,6 +143,7 @@ Map<String, dynamic> orderToJson(Order o, String uid) {
     'route': o.route,
     'hub': o.hub,
     'distanceKm': o.distanceKm,
+    'hubStage': o.hubStage,
     'rev': o.rev,
   };
 }
@@ -183,6 +186,7 @@ Order orderFromJson(Map<String, dynamic> m, String uid, {bool seed = false}) => 
       route: m['route'] as String? ?? 'local',
       hub: m['hub'] as String?,
       distanceKm: (m['distanceKm'] as num?)?.toDouble() ?? 0,
+      hubStage: m['hubStage'] as String?,
       seed: seed,
     );
 

@@ -3,11 +3,12 @@
 Honest status of what stands between the prototype and the App Store and Google Play, and how the accuracy of weather, roads and AI gets better.
 
 ## Delivery model (built)
-- **Local delivery.** Farm within 25 road km of the buyer: one driver, farm to door, same day. Price R15 plus R2.50 a km after the first 3 km.
+- **Local delivery.** Farm within 25 road km of the buyer: one driver, farm to door, same day. Price R15 for the first 5 km, then R2 a km.
 - **Hub delivery.** Farm further away: the order goes to the Nolifa hub nearest the buyer (Durban, Pietermaritzburg, Richards Bay, planned sites), and a last-mile driver brings it. R35 flat within 30 km of the hub, then R1 a km. Arrives in 1 to 2 days.
 - **Farm delivers.** The farm's own fee.
-- The app works out the distance from the farm and the buyer's address, picks the route, shows the price and what the buyer saves against one driver going the whole way (for example R35 instead of about R200 for an 85 km run). With no address it quotes R25 and says it is an estimate.
-- **Not built yet:** the leg from farm to hub. Today the plan assumes the farm drops off at the hub or a shared collection run picks up; that run is not in the app and the hubs do not exist. Hub staff screens (receive, sort, release to a driver) are not built. This is the next piece of work and needs a real hub partner.
+- The app works out the distance from the farm and the buyer's address, picks the route, shows the price and what the buyer saves against one driver going the whole way (for example R35 instead of about R175 for an 85 km run). With no address it quotes R25 and says it is an estimate.
+- **Hub flow (built):** the order stays hidden from drivers until it has passed through the hub. The farm packs it, writes a 4-digit code on the packing slip and taps "I dropped it at the hub". Hub staff open the Hub desk (Nolifa Delivery, Jobs page), type the code to check it in, then release it. Only then does it become a last-mile job, collected at the hub. The customer sees each step on the tracking page. In the demo a pretend farm and hub move orders along after 8, 20 and 32 seconds unless someone acts first.
+- **Not built yet:** the hubs themselves (sites, staff, a real place to store goods), the farm to hub collection run, hub staff accounts (the `hub` permission is read from the sign-in token but nothing issues it yet), and the staff query for hub orders on the shared backend. The hub code is derived from the order number, so on the real backend the server must check it. The hub rules tests are written but unrun (no Java).
 
 ## What blocks a real store launch
 | Item | Status | What is needed |

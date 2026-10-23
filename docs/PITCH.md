@@ -27,6 +27,7 @@ All data is labelled demo. Nothing is faked silently.
 
 ## Extra beats for a longer demo
 - **A bad road.** In Nolifa Delivery accept a job. The map shows the route to the farm and the customer. Tap the amber button, tap Flooding. The next driver on that road sees "Flooding in 1.4 km" and is asked "still there?" when close.
+- **The hub.** In Drop, order tomatoes from Sithole Growers (far from Umlazi): checkout says Hub delivery, 1 to 2 days, and shows what you save. In Delivery, Jobs, Hub desk: the order is dropped off, check it in with the code, release it, and only then does a driver see the job.
 - **Water you can trust.** Water page, Real dam levels today: Midmar and the others from the Department of Water and Sanitation, with the date.
 - **The AI that waters.** Irrigation AI: one plot is told to water today with the litres and the minutes, another can wait because the soil still holds enough or rain is coming. Tap Why the AI says this.
 - **A herd, not just cows.** Livestock: goats, sheep and a horse, each with its own symptoms, a health record and a pin on the herd map.

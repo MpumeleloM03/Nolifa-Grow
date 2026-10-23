@@ -331,7 +331,13 @@ class OrderTile extends StatelessWidget {
 
 (String, Color) statusLabel(Order o) => o.disputed
     ? ('Case open', AppTheme.warn)
-    : switch (o.status) {
+    : o.atHubWork && o.status == OrderStatus.findingDriver
+        ? switch (o.hubStage) {
+            'toHub' => ('Heading to the hub', AppTheme.warn),
+            'droppedOff' => ('At the hub', AppTheme.warn),
+            _ => ('Sorting at the hub', AppTheme.sprout),
+          }
+        : switch (o.status) {
       OrderStatus.newOrder => ('New', AppTheme.warn),
       OrderStatus.findingDriver => ('Finding driver', AppTheme.warn),
       OrderStatus.assigned => ('Driver on the way', AppTheme.sprout),
@@ -591,13 +597,31 @@ class TrackingScreen extends ConsumerWidget {
     final o = s.orderById(orderId);
     if (o == null) return const Scaffold();
     final (label, color) = statusLabel(o);
-    final steps = [
-      ('Order placed', OrderStatus.findingDriver),
-      ('Driver assigned', OrderStatus.assigned),
-      ('Picked up at the farm', OrderStatus.pickedUp),
-      ('Delivered', OrderStatus.delivered),
-    ];
-    final idx = OrderStatus.values.indexOf(o.status).clamp(1, 4) - 1;
+    final hubOrder = o.route == 'hub';
+    final steps = hubOrder
+        ? [
+            ('Order placed', OrderStatus.findingDriver),
+            ('Farm packs and drops it at ${o.hub ?? 'the hub'}', OrderStatus.findingDriver),
+            ('Hub checks it in and sorts it', OrderStatus.findingDriver),
+            ('Local driver assigned', OrderStatus.assigned),
+            ('Picked up at the hub', OrderStatus.pickedUp),
+            ('Delivered', OrderStatus.delivered),
+          ]
+        : [
+            ('Order placed', OrderStatus.findingDriver),
+            ('Driver assigned', OrderStatus.assigned),
+            ('Picked up at the farm', OrderStatus.pickedUp),
+            ('Delivered', OrderStatus.delivered),
+          ];
+    final idx = hubOrder
+        ? switch (o.status) {
+            OrderStatus.newOrder => 0,
+            OrderStatus.findingDriver => o.hubStage == 'toHub' ? 1 : o.hubStage == 'droppedOff' ? 2 : o.hubStage == 'received' ? 2 : 3,
+            OrderStatus.assigned => 3,
+            OrderStatus.pickedUp => 4,
+            OrderStatus.delivered => 5,
+          }
+        : OrderStatus.values.indexOf(o.status).clamp(1, 4) - 1;
     final ebucks = (o.subtotal * 0.05).round();
 
     return Scaffold(
@@ -659,7 +683,7 @@ class TrackingScreen extends ConsumerWidget {
                         for (var i = 0; i < steps.length; i++)
                           _Step(
                               text: steps[i].$1,
-                              done: i <= idx && o.status != OrderStatus.findingDriver || (i == 0),
+                              done: hubOrder ? (i < idx || o.status == OrderStatus.delivered) : (i <= idx && o.status != OrderStatus.findingDriver || (i == 0)),
                               active: i == idx,
                               last: i == steps.length - 1),
                       ]),

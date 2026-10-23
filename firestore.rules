@@ -117,7 +117,8 @@ service cloud.firestore {
     // unassigned) to any signed-in driver looking for work.
     match /marketOrders/{orderId} {
       function isOpenJob(o) {
-        return o.status == 'findingDriver' && o.driverId == null;
+        return o.status == 'findingDriver' && o.driverId == null
+          && o.get('hubStage', 'released') == 'released';
       }
       function money(o) {
         return [o.lines, o.deliveryFee, o.serviceFee, o.customerId, o.farmerId, o.pinHash, o.method, o.id];
@@ -131,7 +132,8 @@ service cloud.firestore {
       allow read: if signedIn()
         && (resource == null
           || request.auth.uid in resource.data.participants
-          || isOpenJob(resource.data));
+          || isOpenJob(resource.data)
+          || (isHubStaff() && resource.data.get('route', '') == 'hub'));
 
       // A buyer creates their own order, unpaid out, undisputed, unassigned.
       allow create: if signedIn()
@@ -156,6 +158,20 @@ service cloud.firestore {
           && request.resource.data.status == 'findingDriver'
           && request.resource.data.commission == commissionFor(request.auth.uid)
           && onlyChanges(['status', 'commission', 'rev']))
+
+        // The farm says a hub order has been dropped at the hub.
+        || (resource.data.farmerId == request.auth.uid
+          && resource.data.get('hubStage', '') == 'toHub'
+          && resource.data.status == 'findingDriver'
+          && request.resource.data.hubStage == 'droppedOff'
+          && onlyChanges(['hubStage', 'rev']))
+
+        // Hub staff check an order in, then release it to last-mile drivers.
+        || (isHubStaff()
+          && resource.data.status == 'findingDriver'
+          && ((resource.data.get('hubStage', '') == 'droppedOff' && request.resource.data.hubStage == 'received')
+            || (resource.data.get('hubStage', '') == 'received' && request.resource.data.hubStage == 'released'))
+          && onlyChanges(['hubStage', 'rev']))
 
         // A driver claims an open job for themselves.
         || (isOpenJob(resource.data)
@@ -357,6 +373,11 @@ service cloud.firestore {
     // Not enforceable in rules, and so left to a trusted backend in the next
     // phase: that a voter really lives in the zone, and that a reading matches
     // the reservoir.
+
+    // Hub staff carry the `hub` permission, set by an admin from a trusted machine.
+    function isHubStaff() {
+      return signedIn() && request.auth.token.get('hub', false) == true;
+    }
 
     function isUtility() {
       return signedIn() && request.auth.token.get('utility', false) == true;

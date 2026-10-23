@@ -79,8 +79,8 @@ class DeliveryPlan {
   String driverPickup(String farm) => hub?.name ?? farm;
 }
 
-/// A direct trip charges a base fee plus a rate per kilometre past the first 3.
-double directFeeFor(double km) => r2((15 + 2.5 * (km - 3).clamp(0, double.infinity)).clamp(15, 400));
+/// A direct trip charges R15 for the first 5 km, then R2 for every km after.
+double directFeeFor(double km) => r2((15 + 2 * (km - 5).clamp(0.0, double.infinity)).clamp(15.0, 400.0));
 
 Hub nearestHub(double lat, double lng) {
   Hub best = hubs.first;

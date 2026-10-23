@@ -114,7 +114,7 @@ void main() {
       p.store.startNewBasket('p-eggs');
       expect(p.s.deliveryFee, 0); // Khumalo delivers free
       p.store.startNewBasket('p-tomato');
-      expect(p.s.deliveryFee, 25); // Nolifa Delivery
+      expect(p.s.deliveryFee, 35); // Nolifa Delivery, through a hub because Sithole is far from Umlazi
       expect(p.s.cartSelfDelivery, isFalse);
       p.dispose();
     });

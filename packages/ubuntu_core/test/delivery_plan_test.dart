@@ -19,7 +19,7 @@ class Phone {
 }
 
 const umlazi = (-29.9697, 30.8860);
-const durbanFarm = (-29.8300, 30.8700); // Dlamini Mill
+const durbanFarm = (-29.8700, 30.9000); // a farm about 14 km from Umlazi
 const pmbFarm = (-29.6200, 30.4000); // Mkhize Family Farm
 
 void main() {
@@ -27,7 +27,7 @@ void main() {
     test('a farm close to the buyer delivers locally, same day', () {
       final p = planDelivery(farm: durbanFarm, buyer: umlazi);
       expect(p.route, DeliveryRoute.local);
-      expect(p.farmKm, inInclusiveRange(15, 25));
+      expect(p.farmKm, inInclusiveRange(8, 25));
       expect(p.eta, 'Today');
       expect(p.hub, isNull);
       expect(p.driverPickup('Dlamini Mill'), 'Dlamini Mill');
@@ -43,8 +43,8 @@ void main() {
       expect(p.eta, '1 to 2 days');
       expect(p.lastMileKm, lessThan(25));
       expect(p.fee, 35);
-      expect(p.directFee, greaterThan(190));
-      expect(p.saving, greaterThan(150));
+      expect(p.directFee, greaterThan(150));
+      expect(p.saving, greaterThan(110));
     });
 
     test('a buyer near Pietermaritzburg is served from the Pietermaritzburg hub, even for a coastal farm', () {
@@ -84,8 +84,8 @@ void main() {
 
     test('direct delivery price grows with distance but starts at R15', () {
       expect(directFeeFor(1), 15);
-      expect(directFeeFor(3), 15);
-      expect(directFeeFor(13), 40);
+      expect(directFeeFor(5), 15);
+      expect(directFeeFor(13), 31);
       expect(directFeeFor(1000), 400);
     });
   });
