@@ -21,13 +21,31 @@ const _demoLots = <(String, double, StorageZone, int)>[
 ];
 
 final warehouseRepositoryProvider = Provider<WarehouseRepository>((ref) => LocalWarehouseRepository());
+/// True when the signed-in person is a certifier (added by an admin). Apps
+/// override this; the default is false.
+final certifierProvider = Provider<bool>((ref) => false);
+
 final warehouseClockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
 
 class WarehouseState {
   final List<StockLot> lots;
   final List<TempReading> readings; // newest first
+  final List<WarehouseCert> certs;
   final bool shared;
-  const WarehouseState({this.lots = const [], this.readings = const [], this.shared = false});
+  const WarehouseState({this.lots = const [], this.readings = const [], this.certs = const [], this.shared = false});
+
+  /// The rooms of [hub] that a certificate covers on [now].
+  Set<StorageZone> certifiedRooms(String hub, DateTime now) =>
+      {for (final c in certs) if (c.hub == hub && c.validOn(now)) ...c.rooms};
+
+  /// The certificate that covers [zone] longest, or null when none is valid.
+  WarehouseCert? certFor(String hub, StorageZone zone, DateTime now) {
+    WarehouseCert? best;
+    for (final c in certs) {
+      if (c.hub == hub && c.validOn(now) && c.rooms.contains(zone) && (best == null || c.expiresAt.isAfter(best.expiresAt))) best = c;
+    }
+    return best;
+  }
 
   /// Lots a farm can see: its own. Staff see all.
   List<StockLot> forFarmer(String uid) => [for (final l in lots) if (l.farmerId == uid) l];
@@ -60,6 +78,7 @@ bool _same(String a, String b) => a.trim().toLowerCase() == b.trim().toLowerCase
 class WarehouseStore extends Notifier<WarehouseState> {
   StreamSubscription<List<StockLot>>? _a;
   StreamSubscription<List<TempReading>>? _b;
+  StreamSubscription<List<WarehouseCert>>? _c;
   int _seq = 0;
 
   WarehouseRepository get _repo => ref.read(warehouseRepositoryProvider);
@@ -69,12 +88,14 @@ class WarehouseStore extends Notifier<WarehouseState> {
   @override
   WarehouseState build() {
     final repo = ref.watch(warehouseRepositoryProvider);
-    _a = repo.watchLots().listen((l) => state = WarehouseState(lots: l, readings: state.readings, shared: repo.shared));
-    _b = repo.watchReadings().listen((r) => state =
-        WarehouseState(lots: state.lots, readings: [...r]..sort((x, y) => y.at.compareTo(x.at)), shared: repo.shared));
+    _a = repo.watchLots().listen((l) => state = WarehouseState(lots: l, readings: state.readings, certs: state.certs, shared: repo.shared));
+    _b = repo.watchReadings().listen((r) => state = WarehouseState(
+        lots: state.lots, readings: [...r]..sort((x, y) => y.at.compareTo(x.at)), certs: state.certs, shared: repo.shared));
+    _c = repo.watchCerts().listen((c) => state = WarehouseState(lots: state.lots, readings: state.readings, certs: c, shared: repo.shared));
     ref.onDispose(() {
       _a?.cancel();
       _b?.cancel();
+      _c?.cancel();
     });
     return WarehouseState(shared: repo.shared);
   }
@@ -124,6 +145,11 @@ class WarehouseStore extends Notifier<WarehouseState> {
     if (lot == null || lot.status != LotStatus.expected) return 'This deposit is not waiting to be checked in.';
     if (qty <= 0) return 'Enter the quantity that arrived.';
     final now = _now;
+    // A room may only hold goods while a certifier's certificate covers it.
+    // The demo warehouse is exempt so it can be shown.
+    if (!ref.read(marketProvider).demoMode && state.certFor(lot.hub, lot.zone, now) == null) {
+      return 'No valid certificate covers the ${lot.zone.label.toLowerCase()}. A certifier must inspect it first.';
+    }
     if (!lot.zone.ok(tempC)) {
       final why = 'Arrived at ${tempC.toStringAsFixed(1)} C. ${lot.zone.label} goods must be ${lot.zone.band}.';
       await _repo.putLot(lot.copyWith(
@@ -201,6 +227,44 @@ class WarehouseStore extends Notifier<WarehouseState> {
     return r?.c ?? (l.zone.minC + l.zone.maxC) / 2;
   }
 
+  /// Staff move a lot to another bay. Logged on the lot.
+  Future<bool> moveLot(String lotId, String bay) async {
+    if (!_staff) return false;
+    final lot = _find(lotId);
+    if (lot == null || !lot.inStock || bay.trim().isEmpty) return false;
+    await _repo.putLot(lot.copyWith(bay: bay.trim(), events: [...lot.events, LotEvent(_now, 'Moved from bay ${lot.bay} to ${bay.trim()}')]));
+    return true;
+  }
+
+  /// Staff remove some of a lot that is damaged, spoiled or lost, with a reason.
+  Future<bool> writeOffQty(String lotId, double qty, String reason) async {
+    if (!_staff || qty <= 0 || reason.trim().isEmpty) return false;
+    final lot = _find(lotId);
+    if (lot == null || !lot.inStock || qty > lot.remaining) return false;
+    final left = lot.remaining - qty;
+    await _repo.putLot(lot.copyWith(
+      remaining: left,
+      status: left <= 0 ? LotStatus.emptied : LotStatus.stored,
+      events: [...lot.events, LotEvent(_now, 'Removed ${_fmt(qty)} ${lot.unit}: ${reason.trim()}')],
+    ));
+    return true;
+  }
+
+  StockLot? lotByCode(String code) {
+    final c = code.trim().toLowerCase();
+    if (c.isEmpty) return null;
+    for (final l in state.lots) {
+      if (l.id.toLowerCase() == c || (l.tag ?? '').toLowerCase() == c) return l;
+    }
+    return null;
+  }
+
+  /// Lots a product can be cut from, oldest use-by first.
+  List<StockLot> lotsFor(String farmName, String productName) => state.stored
+      .where((l) => _same(l.farmName, farmName) && _same(l.productName, productName))
+      .toList()
+    ..sort((a, b) => a.useBy.compareTo(b.useBy));
+
   /// Writes off lots that passed their use-by date. Returns how many.
   Future<int> writeOffExpired() async {
     final now = _now;
@@ -211,6 +275,39 @@ class WarehouseStore extends Notifier<WarehouseState> {
           status: LotStatus.expired, events: [...l.events, LotEvent(now, 'Past use-by. Written off, ${_fmt(l.remaining)} ${l.unit} removed')]));
     }
     return n;
+  }
+
+  /// A certifier records an inspection. Needs the certifier permission.
+  Future<WarehouseCert?> certify({
+    required String hub,
+    required String certifierName,
+    required String organisation,
+    required String certNumber,
+    required List<StorageZone> rooms,
+    required List<String> checksPassed,
+    int validDays = 365,
+    String notes = '',
+  }) async {
+    if (!ref.read(certifierProvider)) return null;
+    if (rooms.isEmpty || certNumber.trim().isEmpty || certifierName.trim().isEmpty) return null;
+    // Every check must pass before a room can be certified.
+    if (certChecks.any((c) => !checksPassed.contains(c))) return null;
+    final now = _now;
+    final cert = WarehouseCert(
+      id: 'cert-${now.microsecondsSinceEpoch}-${_seq++}',
+      hub: hub,
+      certifierId: _uid,
+      certifierName: certifierName.trim(),
+      organisation: organisation.trim(),
+      certNumber: certNumber.trim(),
+      rooms: rooms,
+      issuedAt: now,
+      expiresAt: now.add(Duration(days: validDays)),
+      checksPassed: checksPassed,
+      notes: notes.trim(),
+    );
+    await _repo.putCert(cert);
+    return cert;
   }
 
   Future<void> logTemp(String hub, StorageZone zone, double c, {bool manual = true}) =>

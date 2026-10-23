@@ -118,7 +118,7 @@ service cloud.firestore {
     match /marketOrders/{orderId} {
       function isOpenJob(o) {
         return o.status == 'findingDriver' && o.driverId == null
-          && o.get('hubStage', 'released') == 'released';
+          && (o.get('hubStage', null) == null || o.get('hubStage', null) == 'released');
       }
       function money(o) {
         return [o.lines, o.deliveryFee, o.serviceFee, o.customerId, o.farmerId, o.pinHash, o.method, o.id];
@@ -148,6 +148,7 @@ service cloud.firestore {
         && request.resource.data.deliveryFee is number
         && request.resource.data.serviceFee is number
         && request.resource.data.pinHash is string
+        && request.resource.data.get('hubStage', null) in [null, 'toHub', 'received']
         && request.auth.uid in request.resource.data.participants;
 
       allow update: if signedIn() && money(request.resource.data) == money(resource.data) && (
@@ -290,6 +291,30 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // People an admin added by hand in the console. Clients can read their own
+    // entry (so the app knows its role) and can never write.
+    match /staff/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+    match /certifiers/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // A certifier's record that a warehouse and its rooms are fit to store food.
+    // Written once and never edited, so the history of inspections stays honest.
+    // Staff and certifiers can read it.
+    match /warehouseCerts/{certId} {
+      allow read: if isHubStaff() || isCertifier();
+      allow create: if isCertifier()
+        && request.resource.data.certifierId == request.auth.uid
+        && request.resource.data.rooms is list && request.resource.data.rooms.size() > 0
+        && request.resource.data.expiresAt is number && request.resource.data.issuedAt is number
+        && request.resource.data.expiresAt > request.resource.data.issuedAt;
+      allow update, delete: if false;
+    }
+
     // ─────────────────────────── Nolifa warehouse ───────────────────────────
     //
     // A farm announces a deposit (status `expected`, nothing in storage yet).
@@ -313,6 +338,12 @@ service cloud.firestore {
         && request.resource.data.zone == resource.data.zone
         && request.resource.data.useBy == resource.data.useBy;
 
+      allow delete: if false;
+    }
+
+    // What staff cut for each order, kept so no line is cut twice.
+    match /warehousePicks/{orderId} {
+      allow read, create, update: if isHubStaff();
       allow delete: if false;
     }
 
@@ -407,8 +438,19 @@ service cloud.firestore {
     // the reservoir.
 
     // Hub staff carry the `hub` permission, set by an admin from a trusted machine.
+    // Staff are people an admin added to the `staff` collection in the console
+    // (or who carry the `hub` claim). Nobody can add themselves: clients cannot
+    // write to `staff`.
     function isHubStaff() {
-      return signedIn() && request.auth.token.get('hub', false) == true;
+      return signedIn() && (request.auth.token.get('hub', false) == true
+        || exists(/databases/$(database)/documents/staff/$(request.auth.uid)));
+    }
+
+    // Certifiers are inspectors an admin added to `certifiers`. They visit a
+    // warehouse and record that its rooms are fit to store goods.
+    function isCertifier() {
+      return signedIn() && (request.auth.token.get('certifier', false) == true
+        || exists(/databases/$(database)/documents/certifiers/$(request.auth.uid)));
     }
 
     function isUtility() {

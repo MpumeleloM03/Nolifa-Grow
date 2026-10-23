@@ -71,7 +71,7 @@ class WeatherCard extends ConsumerWidget {
           const SizedBox(width: AppTheme.s3),
           Text('Getting the forecast', style: AppTheme.callout),
         ]),
-        error: (_, __) => Text('Forecast not available right now.', style: AppTheme.callout),
+        error: (_, __) => Text('No forecast yet. It needs a signal once, then it is saved for when you are offline.', style: AppTheme.callout),
         data: (f) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
             const Text('🌤️', style: TextStyle(fontSize: 22)),

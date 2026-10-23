@@ -384,6 +384,7 @@ class MarketState {
     Plan? plan,
     List<LedgerEntry>? ledger,
     List<ReportCase>? cases,
+    List<MarketAlert>? alerts,
     Set<String>? driverKyc,
     Set<String>? farmKyc,
     bool? creditConsent,
@@ -399,7 +400,7 @@ class MarketState {
   }) =>
       MarketState(
         products: products ?? this.products,
-        alerts: alerts,
+        alerts: alerts ?? this.alerts,
         cart: cart ?? this.cart,
         orders: orders ?? this.orders,
         driverOnline: driverOnline ?? this.driverOnline,
@@ -601,6 +602,9 @@ class MarketState {
 
 /// Who the signed-in user is. Each app overrides these three providers with its
 /// own sign-in and storage; the defaults keep the module usable on its own.
+/// The shipped apps set this to true so demo content is never shown.
+final marketStartsLiveProvider = Provider<bool>((ref) => false);
+
 final marketUidProvider = Provider<String>((ref) => 'guest');
 
 final marketNameProvider = Provider<String>((ref) => 'Neighbour');
@@ -664,9 +668,35 @@ class MarketStore extends Notifier<MarketState> {
     listenSelf((_, next) {
       if (_ready && !_disposed) _guard(_repo.savePrivate(_uid, _privateOf(next)));
     });
+    _startsLive = ref.read(marketStartsLiveProvider);
     Future.microtask(_attach);
-    return _demoState();
+    return _startsLive ? _stripDemo(_demoState()) : _demoState();
   }
+
+  /// True in the shipped apps: they never show demo content and the demo switch
+  /// is hidden.
+  bool _startsLive = false;
+
+  /// The same state with every piece of demo content taken out: only real
+  /// people, real listings and real time are left.
+  MarketState _stripDemo(MarketState s) => s.copyWith(
+        demoMode: false,
+        products: s.products.where((p) => p.ownerId != null).toList(),
+        orders: s.orders.where((o) => !o.seed).toList(),
+        cases: s.cases.where((c) => !_seedCaseIds.contains(c.id)).toList(),
+        alerts: const [],
+        cart: const {},
+        ledger: const [],
+        farmEarned: 0,
+        driverEarned: 0,
+        saved: 0,
+        joined: const {},
+        driverKyc: const {},
+        farmKyc: const {},
+        driverOnline: false,
+        rerouted: const {},
+        quotes: const {},
+      );
 
   // ------------------------------------------------------ state setup
 
@@ -797,7 +827,7 @@ class MarketStore extends Notifier<MarketState> {
 
   void _applyPrivate(PrivateState p) {
     state = state.copyWith(
-      demoMode: p.demoMode,
+      demoMode: _startsLive ? false : p.demoMode,
       plan: p.plan,
       bizPlan: p.bizPlan,
       creditConsent: p.creditConsent,
@@ -818,8 +848,8 @@ class MarketStore extends Notifier<MarketState> {
       cart: p.cart,
       ledger: p.ledger,
       // Demo content only exists in demo mode.
-      products: p.demoMode ? state.products : state.products.where((x) => x.ownerId != null).toList(),
-      orders: !p.demoMode
+      products: p.demoMode && !_startsLive ? state.products : state.products.where((x) => x.ownerId != null).toList(),
+      orders: !p.demoMode || _startsLive
           ? state.orders.where((o) => !o.seed).toList()
           : p.demoOrders.isEmpty
               ? state.orders
@@ -930,7 +960,7 @@ class MarketStore extends Notifier<MarketState> {
   /// timers so a judge can watch the whole loop. Live mode removes all of it:
   /// only real people, real listings and real time.
   void setDemoMode(bool on) {
-    if (state.demoMode == on) return;
+    if (state.demoMode == on || (on && _startsLive)) return;
     if (on) {
       final d = _demoState();
       final real = state.orders.where((o) => !o.seed);
@@ -940,23 +970,7 @@ class MarketStore extends Notifier<MarketState> {
         cases: [...state.cases.where((c) => !_seedCaseIds.contains(c.id)), ..._cases],
       );
     } else {
-      state = state.copyWith(
-        demoMode: false,
-        products: state.products.where((p) => p.ownerId != null).toList(),
-        orders: state.orders.where((o) => !o.seed).toList(),
-        cases: state.cases.where((c) => !_seedCaseIds.contains(c.id)).toList(),
-        cart: const {},
-        ledger: const [],
-        farmEarned: 0,
-        driverEarned: 0,
-        saved: 0,
-        joined: const {},
-        driverKyc: const {},
-        farmKyc: const {},
-        driverOnline: false,
-        rerouted: const {},
-        quotes: const {},
-      );
+      state = _stripDemo(state);
     }
   }
 

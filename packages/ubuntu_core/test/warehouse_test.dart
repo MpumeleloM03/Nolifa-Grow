@@ -6,7 +6,7 @@ import 'open_store.dart';
 
 final _t0 = DateTime(2026, 10, 25, 9);
 
-ProviderContainer _box({String uid = 'farmer', bool staff = true, DateTime Function()? clock}) {
+ProviderContainer _box({String uid = 'farmer', bool staff = true, bool certifier = false, DateTime Function()? clock}) {
   final c = ProviderContainer(overrides: [
     marketUidProvider.overrideWithValue(uid),
     marketNameProvider.overrideWithValue('Islilo'),
@@ -15,6 +15,7 @@ ProviderContainer _box({String uid = 'farmer', bool staff = true, DateTime Funct
     warehouseRepositoryProvider.overrideWithValue(LocalWarehouseRepository.memory()),
     warehouseClockProvider.overrideWithValue(clock ?? () => _t0),
     hubStaffProvider.overrideWithValue(staff),
+    certifierProvider.overrideWithValue(certifier),
   ]);
   addTearDown(c.dispose);
   c.listen(warehouseProvider, (_, __) {});
@@ -280,6 +281,111 @@ void main() {
       expect(p.every((x) => x.category == Category.meat), isTrue);
       expect(p.firstWhere((x) => x.name == 'Beef fillet').price, 300);
       expect(p.firstWhere((x) => x.name == 'Chicken breast').price, 65);
+    });
+  });
+
+  group('staff tools', () {
+    test('staff can find a lot by its tag, move it and write some off with a reason', () async {
+      final c = _box();
+      final w = c.read(warehouseProvider.notifier);
+      final lot = await _announce(c, qty: 20);
+      await w.receive(lot.id, qty: 20, tempC: 2);
+      await _settle();
+      expect(w.lotByCode('nlf-dbn-0001')!.id, lot.id);
+      expect(w.lotByCode(lot.id)!.tag, 'NLF-DBN-0001');
+      expect(w.lotByCode('nope'), isNull);
+      expect(await w.moveLot(lot.id, 'C2-07'), isTrue);
+      await _settle();
+      expect(c.read(warehouseProvider).lots.single.bay, 'C2-07');
+      expect(await w.writeOffQty(lot.id, 3.5, ''), isFalse, reason: 'a reason is required');
+      expect(await w.writeOffQty(lot.id, 99, 'Dropped'), isFalse);
+      expect(await w.writeOffQty(lot.id, 3.5, 'Packaging split'), isTrue);
+      await _settle();
+      final l = c.read(warehouseProvider).lots.single;
+      expect(l.remaining, 16.5);
+      expect(l.events.last.text, contains('Packaging split'));
+    });
+
+    test('lots for a product come oldest first', () async {
+      final c = _box();
+      final w = c.read(warehouseProvider.notifier);
+      for (final d in [9, 3, 6]) {
+        final l = await _announce(c, qty: 5, days: d);
+        await w.receive(l.id, qty: 5, tempC: 2);
+        await _settle();
+      }
+      final order = w.lotsFor('Islilo', 'Beef mince').map((l) => l.daysLeft(_t0)).toList();
+      expect(order, [3, 6, 9]);
+    });
+  });
+
+  group('certification', () {
+    ProviderContainer live({bool certifier = true, DateTime Function()? clock}) {
+      final c = _box(certifier: certifier, clock: clock);
+      c.read(marketProvider.notifier).setDemoMode(false);
+      return c;
+    }
+
+    Future<WarehouseCert?> certify(ProviderContainer c, {List<StorageZone>? rooms, List<String>? checks, int days = 365}) =>
+        c.read(warehouseProvider.notifier).certify(
+              hub: 'Durban hub',
+              certifierName: 'T. Naidoo',
+              organisation: 'KZN Food Safety Inspectors',
+              certNumber: 'FS-2026-0042',
+              rooms: rooms ?? [StorageZone.chilled, StorageZone.frozen],
+              checksPassed: checks ?? certChecks,
+              validDays: days,
+            );
+
+    test('an uncertified room cannot take goods in a live warehouse', () async {
+      final c = live();
+      final lot = await _announce(c);
+      final r = await c.read(warehouseProvider.notifier).receive(lot.id, qty: 10, tempC: 2);
+      expect(r, contains('No valid certificate'));
+      expect(c.read(warehouseProvider).lots.single.status, LotStatus.expected);
+    });
+
+    test('a certifier certifies the rooms and then goods can be checked in', () async {
+      final c = live();
+      final cert = await certify(c);
+      await _settle();
+      expect(cert, isNotNull);
+      expect(c.read(warehouseProvider).certifiedRooms('Durban hub', _t0), {StorageZone.chilled, StorageZone.frozen});
+      final lot = await _announce(c);
+      expect(await c.read(warehouseProvider.notifier).receive(lot.id, qty: 10, tempC: 2), isNull);
+    });
+
+    test('only the rooms named on the certificate may be used', () async {
+      final c = live();
+      await certify(c, rooms: [StorageZone.chilled]);
+      await _settle();
+      final lot = await _announce(c, name: 'Brisket', zone: StorageZone.frozen);
+      expect(await c.read(warehouseProvider.notifier).receive(lot.id, qty: 10, tempC: -19), contains('frozen room'));
+    });
+
+    test('everyone but a certifier is refused, and every check must pass', () async {
+      expect(await certify(live(certifier: false)), isNull);
+      final c = live();
+      expect(await certify(c, checks: certChecks.take(3).toList()), isNull);
+      expect(await certify(c, rooms: const []), isNull);
+      expect(c.read(warehouseProvider).certs, isEmpty);
+    });
+
+    test('a certificate runs out', () async {
+      var now = _t0;
+      final c = live(clock: () => now);
+      await certify(c, days: 30);
+      await _settle();
+      final lot = await _announce(c);
+      now = _t0.add(const Duration(days: 31));
+      expect(c.read(warehouseProvider).certifiedRooms('Durban hub', now), isEmpty);
+      expect(await c.read(warehouseProvider.notifier).receive(lot.id, qty: 5, tempC: 2), contains('No valid certificate'));
+    });
+
+    test('the demo warehouse needs no certificate so it can be shown', () async {
+      final c = _box();
+      final lot = await _announce(c);
+      expect(await c.read(warehouseProvider.notifier).receive(lot.id, qty: 5, tempC: 2), isNull);
     });
   });
 

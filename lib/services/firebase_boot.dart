@@ -9,10 +9,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// The app ships before the Firebase console project exists, and a failed
 /// init must not blank the screen — every cloud-backed feature checks this
 /// and shows a setup notice instead of throwing.
-/// Firebase is switched off by default: both apps run entirely on the phone.
-/// The team member connecting the shared backend turns it on with
-/// `--dart-define=USE_FIREBASE=true` (see docs/FIREBASE_HANDOFF.md).
-const bool _useFirebase = bool.fromEnvironment('USE_FIREBASE');
+/// Firebase is on by default so accounts, orders, warehouse records and road
+/// warnings are shared between phones. Build with `--dart-define=USE_FIREBASE=false`
+/// to run on the phone alone (see docs/FIREBASE_HANDOFF.md).
+const bool _useFirebase = bool.fromEnvironment('USE_FIREBASE', defaultValue: true);
 
 class FirebaseBoot {
   static bool ready = false;

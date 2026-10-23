@@ -20,7 +20,7 @@ class CommunityAlertsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final region = ref.watch(currentUserProvider)?.region ?? '';
     final live = ref.watch(outbreaksProvider).valueOrNull ?? const <OutbreakReport>[];
-    final all = buildAreaOutbreaks(live);
+    final all = buildAreaOutbreaks(live, demo: ref.watch(marketProvider.select((s) => s.demoMode)));
     final mine = all.where((o) => o.region == region).toList();
     final elsewhere = all.where((o) => o.region != region).take(6).toList();
     final cases = ref.watch(marketProvider.select((s) => s.cases));

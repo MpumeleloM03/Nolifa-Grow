@@ -13,6 +13,7 @@ import '../map/hex_grid.dart';
 import '../utils/translations.dart';
 import '../utils/language_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ubuntu_core/ubuntu_core.dart' show marketProvider;
 
 class DiseasePoint {
   final String region;
@@ -117,7 +118,8 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     final t = AppTranslations.get;
     final now = DateTime.now();
     final live = ref.watch(outbreaksProvider).valueOrNull ?? const <OutbreakReport>[];
-    final all = [...demoSightings(now), ...liveSightings(live)];
+    final demo = ref.watch(marketProvider.select((s) => s.demoMode));
+    final all = [if (demo) ...demoSightings(now), ...liveSightings(live)];
     final cells = buildCells(_grid, all, now, only: _only);
     final maxHeat = cells.values.fold<double>(1.5, (a, c) => c.heat > a ? c.heat : a);
 

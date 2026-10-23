@@ -1,5 +1,7 @@
 # Firebase handoff
 
+**Update:** Firebase is now ON by default in all three apps (`--dart-define=USE_FIREBASE=false` turns it off). The Nolifa Delivery app and a web app for the back office are registered in project `nolifa-grow-f3df9`, the security rules are deployed, and the back office is hosted at https://nolifa-backoffice.web.app. Staff and certifiers are people added by hand to the `staff` and `certifiers` collections (see `REAL_VS_SIMULATED.md`). The text below is the older handoff and still describes the pieces.
+
 All three apps now run **entirely on the phone**. Firebase is switched off by default so nothing depends on a backend. Everything below is already built and tested, waiting for whoever connects the shared backend.
 
 ## What the apps do without Firebase

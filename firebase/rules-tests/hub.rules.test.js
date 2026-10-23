@@ -106,3 +106,14 @@ describe('drivers', () => {
     await assertSucceeds(updateDoc(ref(as('driver')), { status: 'assigned', driver: 'D', driverId: 'driver', participants: ['buyer', 'farmer', 'driver'], rev: 1 }));
   });
 });
+
+describe('placing an order', () => {
+  test('a buyer cannot create an order that is already released to drivers or dropped off', async () => {
+    const db = as('buyer');
+    const base = order({ participants: ['buyer', 'farmer'], status: 'findingDriver', customerId: 'buyer' });
+    await assertFails(setDoc(doc(db, 'marketOrders', 'x1'), { ...base, hubStage: 'released' }));
+    await assertFails(setDoc(doc(db, 'marketOrders', 'x2'), { ...base, hubStage: 'droppedOff' }));
+    await assertSucceeds(setDoc(doc(db, 'marketOrders', 'x3'), { ...base, hubStage: 'toHub' }));
+    await assertSucceeds(setDoc(doc(db, 'marketOrders', 'x4'), { ...base, hubStage: null }));
+  });
+});

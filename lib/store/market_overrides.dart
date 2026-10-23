@@ -3,6 +3,7 @@ import 'package:ubuntu_core/ubuntu_core.dart'
     show
         FirestoreMarketRepository,
         FirestoreWaterRepository,
+        liveOverrides,
         LocalMarketRepository,
         LocalWaterRepository,
         marketNameProvider,
@@ -20,6 +21,7 @@ import '../water/supplier_store.dart';
 /// Firebase is checked when each provider is first read, not here, because
 /// this list is built before the app knows whether Firebase came up.
 List<Override> marketOverrides() => [
+      ...liveOverrides(() => FirebaseBoot.ready),
       marketUidProvider.overrideWith(
           (ref) => ref.watch(currentUserProvider)?.uid ?? 'guest'),
       marketNameProvider.overrideWith((ref) {

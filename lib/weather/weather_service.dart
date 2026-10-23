@@ -7,6 +7,7 @@ import '../crops/crop_store.dart';
 import '../impact/impact_store.dart';
 import '../services/auth_service.dart';
 import '../services/region_service.dart';
+import 'package:ubuntu_core/ubuntu_core.dart' show userLocationProvider, userPlaceProvider;
 import 'weather_models.dart';
 import 'weather_threats.dart';
 
@@ -14,18 +15,27 @@ import 'weather_threats.dart';
 /// no key. With no signal the last saved forecast is used, and with none at all
 /// a clearly marked demo forecast, so the feature can always be shown.
 class WeatherService {
+  /// The forecast for a registered region, when the phone's position is not
+  /// known.
   Future<Forecast> forecastFor(String region) async {
     final centre = (RegionService.findByName(region) ?? RegionService.regions.first).center;
+    return forecastAt(region, centre.latitude, centre.longitude);
+  }
+
+  /// The forecast at an exact place. With no signal the last saved real
+  /// forecast is used. With neither, this throws: the app shows that the
+  /// weather is unavailable and never makes one up.
+  Future<Forecast> forecastAt(String label, double lat, double lon) async {
     try {
-      final f = await fetch(region, centre.latitude, centre.longitude);
+      final f = await fetch(label, lat, lon);
       await _save(f);
       return f;
     } catch (e) {
-      debugPrint('weather: using saved or demo forecast: $e');
+      debugPrint('weather: using the saved forecast: $e');
     }
-    final saved = await _load(region);
+    final saved = await _load(label);
     if (saved != null) return saved.copyWith(saved: true);
-    return demoForecast(region, DateTime.now());
+    throw StateError('No forecast available and none saved');
   }
 
   @visibleForTesting
@@ -90,10 +100,25 @@ Forecast parseOpenMeteo(String region, String body, {int pastDays = 0}) {
 final weatherServiceProvider = Provider<WeatherService>((ref) => WeatherService());
 
 /// The forecast for the signed-in farmer's region.
-final forecastProvider = FutureProvider<Forecast>((ref) {
+final forecastProvider = FutureProvider<Forecast>((ref) async {
+  final loc = await ref.watch(userLocationProvider.future);
+  if (loc != null) {
+    final place = await ref.watch(userPlaceProvider.future) ?? 'Near you';
+    return _forecastAtPlace(ref, place, loc.$1, loc.$2);
+  }
   final region = ref.watch(currentUserProvider.select((u) => u?.region)) ?? '';
   return _forecastAndLog(ref, region.isEmpty ? 'Greater Durban' : region);
 });
+
+Future<Forecast> _forecastAtPlace(Ref ref, String place, double lat, double lon) async {
+  final f = await ref.watch(weatherServiceProvider).forecastAt(place, lat, lon);
+  if (!f.saved) {
+    final impact = ref.read(impactStoreProvider.notifier);
+    impact.recordForecast(f, DateTime.now());
+    impact.settleForecasts(place, DateTime.now());
+  }
+  return f;
+}
 
 /// Gets the forecast and lets the impact ledger keep a copy to judge later.
 Future<Forecast> _forecastAndLog(Ref ref, String region) async {

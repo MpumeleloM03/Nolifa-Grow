@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart' show RenderAbstractViewport;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../live/location.dart';
 import '../market/market_store.dart';
 import '../market/account_screens.dart' show PhoneVerifyScreen;
 import '../market/market_widgets.dart';
@@ -82,7 +83,7 @@ class _WaterViewState extends ConsumerState<_WaterView> {
       ('prepare', _PrepareSection(forecast: forecast, ticked: _ticked, onTick: _tick)),
       for (var i = 0; i < widget.extraSections.length; i++)
         ('extra-$i', Padding(padding: const EdgeInsets.only(top: AppTheme.s6), child: widget.extraSections[i])),
-      if (s.demo) ('real', const _RealLevels()),
+      ('real', const RealDamLevels()),
       if (ref.read(waterProvider.notifier).isProvider) ('provider', const _ProviderEntry()),
       if (s.demo) ('demo', _DemoControls(state: s)),
     ];
@@ -995,14 +996,17 @@ final _realLevelsProvider = FutureProvider<List<FeedZone>>((ref) async {
   return feed.load();
 });
 
-/// Real reservoir levels from the Department of Water and Sanitation, shown in
-/// demo mode too so the real data can be seen next to the simulated story.
-class _RealLevels extends ConsumerWidget {
-  const _RealLevels();
+/// Real reservoir levels from the Department of Water and Sanitation. The
+/// supply system nearest where the phone really is comes first and is marked.
+class RealDamLevels extends ConsumerWidget {
+  const RealDamLevels({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(_realLevelsProvider);
+    final loc = ref.watch(userLocationProvider).valueOrNull;
+    final mine = loc == null ? null : nearestSystem(loc.$1, loc.$2);
+    final outside = loc != null && mine == null;
     return Padding(
       padding: const EdgeInsets.only(top: AppTheme.s6),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -1015,10 +1019,23 @@ class _RealLevels extends ConsumerWidget {
               Text('Fetching the latest report', style: AppTheme.callout),
             ]),
             error: (_, __) => Text('Could not reach the Department of Water and Sanitation.', style: AppTheme.callout),
-            data: (zones) => zones.isEmpty
+            data: (all) {
+              final zones = [...all]..sort((a, b) => (b.zone.id == mine?.id ? 1 : 0).compareTo(a.zone.id == mine?.id ? 1 : 0));
+              return zones.isEmpty
                 ? Text('No real readings available right now.', style: AppTheme.callout)
                 : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(zones.first.zone.source ?? '', style: AppTheme.caption),
+                    if (outside)
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppTheme.s2),
+                        child: Text('You are outside KwaZulu-Natal. Real dam data for your province is not in the app yet, so these are the KwaZulu-Natal dams.',
+                            style: AppTheme.footnote.copyWith(color: AppTheme.warn)),
+                      ),
+                    if (loc == null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: AppTheme.s2),
+                        child: Text('Turn on location to see the dams that supply where you are.', style: AppTheme.footnote),
+                      ),
                     const SizedBox(height: AppTheme.s2),
                     for (final f in zones)
                       Padding(
@@ -1026,7 +1043,10 @@ class _RealLevels extends ConsumerWidget {
                         child: Row(children: [
                           Expanded(
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Text(f.zone.name, style: AppTheme.subhead.copyWith(color: AppTheme.textPrimary, fontWeight: FontWeight.w700)),
+                              Row(children: [
+                                Flexible(child: Text(f.zone.name, style: AppTheme.subhead.copyWith(color: AppTheme.textPrimary, fontWeight: FontWeight.w700))),
+                                if (f.zone.id == mine?.id) ...[const SizedBox(width: 6), Pill('Near you', color: AppTheme.sprout)],
+                              ]),
                               Text(f.forecast.changePerDay.abs() < 0.05 ? 'Steady this week' : '${f.forecast.changePerDay < 0 ? 'Falling' : 'Rising'} ${f.forecast.changePerDay.abs().toStringAsFixed(2)} points a day',
                                   style: AppTheme.caption),
                             ]),
@@ -1038,7 +1058,8 @@ class _RealLevels extends ConsumerWidget {
                     Text(
                         'These are bulk supply dams, updated weekly. A healthy dam does not mean every tap is running: local outages come from pipes and pumps, which is what community reports and votes are for.',
                         style: AppTheme.caption),
-                  ]),
+                  ]);
+            },
           ),
         ),
       ]),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../roads/road_models.dart' show metresBetween;
 import 'water_models.dart';
 
 /// One dam from the Department of Water and Sanitation's weekly report.
@@ -78,6 +79,30 @@ const supplySystems = <String, SupplySystem>{
   'Northern KZN': SupplySystem('dws-northern', 'Northern KZN', 'Newcastle and Uthukela, supplied by the Ngagane and Tugela systems',
       ['Ntshingwayo Dam', 'Zaaihoek Dam', 'Spioenkop Dam', 'Wagendrift Dam', 'Woodstock Dam']),
 };
+
+/// The middle of the area each supply system serves.
+const systemCentres = <String, (double, double)>{
+  'Greater Durban': (-29.86, 30.98),
+  'KZN Midlands': (-29.55, 30.25),
+  'North Coast': (-29.40, 31.15),
+  'Zululand': (-28.75, 31.90),
+  'Northern KZN': (-27.80, 30.00),
+};
+
+/// The supply system whose area a position is in, or null when it is further
+/// than 120 km from every one (the real dam data only covers KwaZulu-Natal).
+SupplySystem? nearestSystem(double lat, double lng) {
+  String? best;
+  var bd = double.infinity;
+  for (final e in systemCentres.entries) {
+    final d = metresBetween(lat, lng, e.value.$1, e.value.$2);
+    if (d < bd) {
+      bd = d;
+      best = e.key;
+    }
+  }
+  return best == null || bd > 120000 ? null : supplySystems[best];
+}
 
 /// Capacity-weighted level of a system's dams: the share of its total storage
 /// that is full.
@@ -211,13 +236,7 @@ class DwsWaterFeed implements WaterFeed {
     }
   }
 
-  static const _centres = <String, (double, double)>{
-    'Greater Durban': (-29.86, 30.98),
-    'KZN Midlands': (-29.55, 30.25),
-    'North Coast': (-29.40, 31.15),
-    'Zululand': (-28.75, 31.90),
-    'Northern KZN': (-27.80, 30.00),
-  };
+  static const _centres = systemCentres;
 
   Future<RainOutlook?> _rain(String region) async {
     final c = _centres[region];

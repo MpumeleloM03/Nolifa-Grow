@@ -225,3 +225,74 @@ class Pick {
   final double qty;
   const Pick(this.lotId, this.tag, this.qty);
 }
+
+/// What a certifier checks in each room before it may hold food.
+const certChecks = <String>[
+  'Room holds its temperature band for 24 hours',
+  'Temperature probes are calibrated and logged',
+  'Surfaces are clean and food-safe',
+  'Pest control is in place',
+  'Backup power or an alarm if the power fails',
+  'Goods are kept off the floor and away from walls',
+];
+
+/// A certifier's record that a warehouse's rooms are fit to store goods. It is
+/// written once and never edited. A room may only be used while a certificate
+/// that names it has not run out.
+class WarehouseCert {
+  final String id;
+  final String hub;
+  final String certifierId;
+  final String certifierName;
+  final String organisation;
+  final String certNumber;
+  final List<StorageZone> rooms;
+  final DateTime issuedAt;
+  final DateTime expiresAt;
+  final List<String> checksPassed;
+  final String notes;
+
+  const WarehouseCert({
+    required this.id,
+    required this.hub,
+    required this.certifierId,
+    required this.certifierName,
+    required this.organisation,
+    required this.certNumber,
+    required this.rooms,
+    required this.issuedAt,
+    required this.expiresAt,
+    this.checksPassed = const [],
+    this.notes = '',
+  });
+
+  bool validOn(DateTime now) => !now.isBefore(issuedAt) && now.isBefore(expiresAt);
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'hub': hub,
+        'certifierId': certifierId,
+        'certifierName': certifierName,
+        'organisation': organisation,
+        'certNumber': certNumber,
+        'rooms': [for (final r in rooms) r.name],
+        'issuedAt': issuedAt.millisecondsSinceEpoch,
+        'expiresAt': expiresAt.millisecondsSinceEpoch,
+        'checksPassed': checksPassed,
+        'notes': notes,
+      };
+
+  factory WarehouseCert.fromJson(Map<String, dynamic> m) => WarehouseCert(
+        id: m['id'] as String,
+        hub: m['hub'] as String? ?? 'Durban hub',
+        certifierId: m['certifierId'] as String? ?? '',
+        certifierName: m['certifierName'] as String? ?? '',
+        organisation: m['organisation'] as String? ?? '',
+        certNumber: m['certNumber'] as String? ?? '',
+        rooms: [for (final r in (m['rooms'] as List? ?? const [])) StorageZone.parse(r as String?)],
+        issuedAt: DateTime.fromMillisecondsSinceEpoch((m['issuedAt'] as num).toInt()),
+        expiresAt: DateTime.fromMillisecondsSinceEpoch((m['expiresAt'] as num).toInt()),
+        checksPassed: [for (final c in (m['checksPassed'] as List? ?? const [])) c as String],
+        notes: m['notes'] as String? ?? '',
+      );
+}

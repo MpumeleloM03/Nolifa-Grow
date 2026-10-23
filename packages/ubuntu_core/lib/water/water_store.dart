@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../market/market_models.dart' show MarketAlert, AlertKind;
 import '../market/market_store.dart';
+import '../live/live_alerts.dart';
+import '../live/location.dart';
 import 'dws_feed.dart';
 import 'water_forecast.dart';
 import 'water_models.dart';
@@ -32,6 +34,11 @@ class WaterState {
   final bool dryRunning;
   final bool autopilot; // demo only: a pretend provider answers by itself
 
+  /// The supply system nearest the user's real position, and whether they are
+  /// outside the area the real dam data covers (KwaZulu-Natal for now).
+  final String? locationZoneId;
+  final bool outsideCoverage;
+
   const WaterState({
     this.zones = const [],
     this.incidents = const [],
@@ -41,6 +48,8 @@ class WaterState {
     this.demo = true,
     this.dryRunning = false,
     this.autopilot = true,
+    this.locationZoneId,
+    this.outsideCoverage = false,
   });
 
   WaterState copyWith({
@@ -52,6 +61,8 @@ class WaterState {
     bool? demo,
     bool? dryRunning,
     bool? autopilot,
+    String? locationZoneId,
+    bool? outsideCoverage,
   }) =>
       WaterState(
         zones: zones ?? this.zones,
@@ -62,6 +73,8 @@ class WaterState {
         demo: demo ?? this.demo,
         dryRunning: dryRunning ?? this.dryRunning,
         autopilot: autopilot ?? this.autopilot,
+        locationZoneId: locationZoneId ?? this.locationZoneId,
+        outsideCoverage: outsideCoverage ?? this.outsideCoverage,
       );
 
   /// The community this person belongs to: their choice, else the first one.
@@ -70,6 +83,10 @@ class WaterState {
     final id = prefs.zoneId;
     for (final z in zones) {
       if (z.id == id) return z;
+    }
+    // Then the supply system nearest where they really are.
+    for (final z in zones) {
+      if (!demo && z.id == locationZoneId) return z;
     }
     // Until they choose: the demo's home community, else the one in most need.
     for (final z in zones) {
@@ -164,8 +181,16 @@ class WaterStore extends Notifier<WaterState> {
       }
       _subs.clear();
     });
+    ref.listen(userLocationProvider, (_, next) => _placeUser(next.valueOrNull), fireImmediately: true);
     Future.microtask(_attach);
     return WaterState(demo: _demo);
+  }
+
+  /// Picks the supply system nearest the phone's real position.
+  void _placeUser((double, double)? loc) {
+    if (loc == null) return;
+    final sys = nearestSystem(loc.$1, loc.$2);
+    state = state.copyWith(locationZoneId: sys?.id, outsideCoverage: sys == null);
   }
 
   /// Can this person act for the water provider?
@@ -434,7 +459,16 @@ final waterAlertsProvider = Provider<List<MarketAlert>>((ref) {
 });
 
 /// Every alert for this person: their water situation first, then the rest.
-final allAlertsProvider = Provider<List<MarketAlert>>((ref) => [
-      ...ref.watch(waterAlertsProvider),
-      ...ref.watch(marketProvider.select((s) => s.alerts)),
-    ]);
+final allAlertsProvider = Provider<List<MarketAlert>>((ref) {
+  final demo = ref.watch(marketProvider.select((s) => s.demoMode));
+  final water = ref.watch(waterAlertsProvider);
+  if (demo) return [...water, ...ref.watch(marketProvider.select((s) => s.alerts))];
+  // Live: only what real sources say about where this person is.
+  final all = [
+    ...water,
+    ...(ref.watch(weatherAlertsProvider).valueOrNull ?? const <MarketAlert>[]),
+    ...ref.watch(roadAlertsProvider),
+    ...ref.watch(caseAlertsProvider),
+  ];
+  return all..sort((a, b) => b.severity.compareTo(a.severity));
+});

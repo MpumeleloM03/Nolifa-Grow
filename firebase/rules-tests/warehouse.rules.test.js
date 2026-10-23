@@ -89,3 +89,79 @@ describe('who can read', () => {
     await assertFails(getDoc(doc(as('farmer'), 'warehouseReadings', 'r1')));
   });
 });
+
+// --------------------------------------------------- staff and certifiers
+
+const addStaff = (uid) =>
+  env.withSecurityRulesDisabled(async (ctx) => setDoc(doc(ctx.firestore(), 'staff', uid), { role: 'hub' }));
+const addCertifier = (uid) =>
+  env.withSecurityRulesDisabled(async (ctx) => setDoc(doc(ctx.firestore(), 'certifiers', uid), { org: 'KZN Food Safety' }));
+
+describe('who counts as staff', () => {
+  test('a person an admin listed in staff can check goods in, with no custom claim', async () => {
+    await seed();
+    await addStaff('hubby2');
+    await assertSucceeds(updateDoc(ref(as('hubby2')), { status: 'stored', remaining: 40, tag: 'NLF-DBN-0002', bay: 'C1-02' }));
+  });
+  test('nobody can add themselves to staff or certifiers', async () => {
+    await assertFails(setDoc(doc(as('sneaky'), 'staff', 'sneaky'), { role: 'hub' }));
+    await assertFails(setDoc(doc(as('sneaky'), 'certifiers', 'sneaky'), { org: 'x' }));
+  });
+  test('a person can read only their own staff entry', async () => {
+    await addStaff('hubby2');
+    await assertSucceeds(getDoc(doc(as('hubby2'), 'staff', 'hubby2')));
+    await assertFails(getDoc(doc(as('other'), 'staff', 'hubby2')));
+  });
+});
+
+const cert = (over = {}) => ({
+  id: 'c1',
+  hub: 'Durban hub',
+  certifierId: 'inspector',
+  certifierName: 'T. Naidoo',
+  organisation: 'KZN Food Safety Inspectors',
+  certNumber: 'FS-2026-0042',
+  rooms: ['chilled', 'frozen'],
+  issuedAt: 1000,
+  expiresAt: 9000,
+  checksPassed: ['a'],
+  notes: '',
+  ...over,
+});
+
+describe('warehouse certificates', () => {
+  test('a listed certifier records a certificate as themselves', async () => {
+    await addCertifier('inspector');
+    await assertSucceeds(setDoc(doc(as('inspector'), 'warehouseCerts', 'c1'), cert()));
+  });
+  test('nobody else can, and not in someone else\'s name', async () => {
+    await addCertifier('inspector');
+    await assertFails(setDoc(doc(as('farmer'), 'warehouseCerts', 'c1'), cert({ certifierId: 'farmer' })));
+    await assertFails(setDoc(doc(as('inspector'), 'warehouseCerts', 'c2'), cert({ certifierId: 'someone-else' })));
+    await addStaff('hubby2');
+    await assertFails(setDoc(doc(as('hubby2'), 'warehouseCerts', 'c3'), cert({ certifierId: 'hubby2' })));
+  });
+  test('a certificate must name a room and run forward in time', async () => {
+    await addCertifier('inspector');
+    await assertFails(setDoc(doc(as('inspector'), 'warehouseCerts', 'c4'), cert({ rooms: [] })));
+    await assertFails(setDoc(doc(as('inspector'), 'warehouseCerts', 'c5'), cert({ expiresAt: 500 })));
+  });
+  test('certificates cannot be edited or deleted, and farms cannot read them', async () => {
+    await addCertifier('inspector');
+    await setDoc(doc(as('inspector'), 'warehouseCerts', 'c1'), cert());
+    await assertFails(updateDoc(doc(as('inspector'), 'warehouseCerts', 'c1'), { expiresAt: 99999 }));
+    await assertFails(deleteDoc(doc(as('inspector'), 'warehouseCerts', 'c1')));
+    await assertFails(getDoc(doc(as('farmer'), 'warehouseCerts', 'c1')));
+    await assertSucceeds(getDoc(doc(as('inspector'), 'warehouseCerts', 'c1')));
+  });
+});
+
+describe('cut records', () => {
+  test('staff write and read them, nobody else', async () => {
+    await assertSucceeds(setDoc(doc(staff(), 'warehousePicks', 'UD-1'), { orderId: 'UD-1', lines: { 0: { kg: 2 } } }));
+    await assertSucceeds(getDoc(doc(staff(), 'warehousePicks', 'UD-1')));
+    await assertFails(setDoc(doc(as('farmer'), 'warehousePicks', 'UD-2'), { orderId: 'UD-2' }));
+    await assertFails(getDoc(doc(as('farmer'), 'warehousePicks', 'UD-1')));
+    await assertFails(deleteDoc(doc(staff(), 'warehousePicks', 'UD-1')));
+  });
+});

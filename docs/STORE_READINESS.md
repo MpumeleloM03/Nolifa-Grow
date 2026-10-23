@@ -18,7 +18,10 @@ A warehouse owned by Nolifa where farms deposit supply, and where far-away order
 - **Rooms.** Each room shows its temperature against its band. A reading out of range raises an alarm and holds that room's goods back from orders. In the demo the sensors are simulated and a "Door left open" button shows the alarm.
 - **Orders.** If the whole basket is already in the warehouse, a hub order skips the farm drop-off. Staff pick from the oldest lots and release it to a last-mile driver, and the lot history shows the order.
 - **The farm sees it.** Its own lots, tags, remaining quantity, temperature at check-in and history.
-- **Not built:** real temperature probes (readings are simulated or typed in), printed tags and barcode scanning, bay maps, stock counts and shrinkage reports, a back-office website. The same data sits in `warehouseLots` and `warehouseReadings`, so a web back office can be built on it. Meat also needs real regulatory paperwork (abattoir and health certificates, cold-chain records) before a real launch.
+- **Back office website (built):** https://nolifa-backoffice.web.app. Warehouse staff sign in and get: an overview with warnings, receiving (check in, then print the tag), scan (a barcode scanner types the tag; shows the lot and its history), stock (every lot, print, move, remove with a reason), pick and cut (each paid order: cut each line from the oldest stock, weigh it, print the dispatch label, release to a driver), rooms (temperatures) and certificates.
+- **Tags:** 100 x 60 mm labels with a Code 128 barcode of the tag, product, farm, room, bay, quantity, check-in date and temperature, and use-by date. They print from the browser to any label printer.
+- **Certification (built):** a certifier (added by an admin) records an inspection of the rooms. Each room needs six checks passed, and a certificate lasts 12 months. A room cannot take goods without a valid certificate. No abattoir paperwork is asked for, because farms set their own prices and the certifier covers the warehouse.
+- **Not built:** real temperature probes (readings are typed in), camera scanning in the browser (use a barcode scanner), bay maps, stock-take reports, and a farmer view in the browser.
 
 ## Islilo Farming and Fatboy Butcheries
 - The catalogue now has Fatboy Butcheries (uMhlanga), owned by Islilo Farming, with ten products taken from its own online shop at their shop prices (mince, fillet, stew, T-bone, brisket, sausage and chicken cuts). In the demo it has stock in the warehouse, so an order shows the tagged-stock flow.
@@ -28,7 +31,7 @@ A warehouse owned by Nolifa where farms deposit supply, and where far-away order
 ## What blocks a real store launch
 | Item | Status | What is needed |
 |---|---|---|
-| Shared backend (accounts, orders, water, road alerts) | Written, switched off | Teammate connects Firebase. Run the rules tests (needs Java) |
+| Shared backend (accounts, orders, water, road alerts, warehouse) | On: the apps use the Nolifa Firebase project and the rules are deployed. 172 rules tests pass in the emulator | Check on real phones (the iOS 27 simulator cannot reach Firestore, see FIREBASE_HANDOFF) |
 | Real payments and escrow | Simulated | Licensed provider (FNB). Server decides release |
 | Identity checks (farm, driver) | Simulated | KYC provider |
 | Hubs and line-haul | Not built | Partner or own site, staff app |

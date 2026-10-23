@@ -147,11 +147,10 @@ void main() {
   });
 
   group('service', () {
-    test('no signal and nothing saved gives the demo forecast; a saved one is used when there is no signal', () async {
+    test('no signal and nothing saved gives no forecast at all; a saved one is used when there is no signal', () async {
       SharedPreferences.setMockInitialValues({});
       final off = _Offline();
-      final first = await off.forecastFor('Zululand');
-      expect(first.demo, isTrue);
+      await expectLater(off.forecastFor('Zululand'), throwsA(isA<StateError>()));
 
       final live = _Live();
       final real = await live.forecastFor('Zululand');
@@ -166,6 +165,23 @@ void main() {
   });
 
   group('on screen', () {
+    testWidgets('with no signal and nothing saved the card says so and invents nothing', (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final c = ProviderContainer(overrides: [
+        currentUserProvider.overrideWithValue(const AppUser(uid: 'f1', name: 'S', email: '', region: 'Zululand', farmType: 'both')),
+        weatherServiceProvider.overrideWithValue(_Offline()),
+      ]);
+      addTearDown(c.dispose);
+      await tester.pumpWidget(UncontrolledProviderScope(
+        container: c,
+        child: MaterialApp(theme: AppTheme.build(), home: const Scaffold(body: WeatherCard())),
+      ));
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.textContaining('No forecast yet'), findsOneWidget);
+      expect(c.read(weatherThreatsProvider), isEmpty);
+      await tester.pumpWidget(const SizedBox());
+    });
+
     const farmer = AppUser(uid: 'f1', name: 'Sipho', email: '', region: 'KZN Midlands', farmType: 'both');
 
     testWidgets('the weather card shows the week, the top threat and that it is demo', (tester) async {
@@ -175,7 +191,7 @@ void main() {
       addTearDown(tester.view.reset);
       final c = ProviderContainer(overrides: [
         currentUserProvider.overrideWithValue(farmer),
-        weatherServiceProvider.overrideWithValue(_Offline()),
+        weatherServiceProvider.overrideWithValue(_Fixture()),
       ]);
       addTearDown(c.dispose);
       await tester.pumpWidget(UncontrolledProviderScope(
@@ -195,6 +211,12 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     });
   });
+}
+
+/// A week of test weather with a frost in it.
+class _Fixture extends WeatherService {
+  @override
+  Future<Forecast> forecastFor(String region) async => demoForecast(region, DateTime.now());
 }
 
 class _Offline extends WeatherService {

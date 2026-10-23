@@ -57,7 +57,7 @@ String _tidy(String disease) => disease.replaceAll('_', ' ').trim();
 /// Merges the demonstration sightings with live reports and groups them by
 /// disease and region. Healthy scans are not outbreaks, so they are dropped.
 /// Most urgent first, then most reported.
-List<AreaOutbreak> buildAreaOutbreaks(List<OutbreakReport> live) {
+List<AreaOutbreak> buildAreaOutbreaks(List<OutbreakReport> live, {bool demo = true}) {
   final groups = <String, List<({String sev, OutbreakKind kind, DateTime? at, String region, String name})>>{};
   void add(String disease, String sev, OutbreakKind kind, DateTime? at, String region) {
     if (sev == 'green' || disease.toLowerCase().contains('healthy')) return;
@@ -67,11 +67,13 @@ List<AreaOutbreak> buildAreaOutbreaks(List<OutbreakReport> live) {
         .add((sev: sev, kind: kind, at: at, region: region, name: name));
   }
 
-  for (final p in kDemoDiseasePoints) {
-    add(p.disease, p.severity, OutbreakKind.plant, _demoDate(p.date), p.region);
-  }
-  for (final p in kDemoLivestockPoints) {
-    add(p.disease, p.severity, OutbreakKind.livestock, _demoDate(p.date), p.region);
+  if (demo) {
+    for (final p in kDemoDiseasePoints) {
+      add(p.disease, p.severity, OutbreakKind.plant, _demoDate(p.date), p.region);
+    }
+    for (final p in kDemoLivestockPoints) {
+      add(p.disease, p.severity, OutbreakKind.livestock, _demoDate(p.date), p.region);
+    }
   }
   for (final r in live) {
     add(r.disease, r.severity, r.kind, r.reportedAt, r.region);
@@ -105,7 +107,7 @@ class AlertsTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final region = ref.watch(currentUserProvider)?.region ?? '';
     final live = ref.watch(outbreaksProvider).valueOrNull ?? const <OutbreakReport>[];
-    final all = buildAreaOutbreaks(live);
+    final all = buildAreaOutbreaks(live, demo: ref.watch(marketProvider.select((s) => s.demoMode)));
     final communityCount = all.length + ref.watch(marketProvider.select((s) => s.cases.length));
     final w = ref.watch(waterProvider);
     final zone = w.myZone;

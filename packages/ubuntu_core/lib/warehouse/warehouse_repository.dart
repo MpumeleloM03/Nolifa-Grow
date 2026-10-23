@@ -12,6 +12,8 @@ abstract class WarehouseRepository {
   Stream<List<TempReading>> watchReadings();
   Future<void> putLot(StockLot lot);
   Future<void> putReading(TempReading r);
+  Stream<List<WarehouseCert>> watchCerts();
+  Future<void> putCert(WarehouseCert c);
 }
 
 class LocalWarehouseRepository implements WarehouseRepository {
@@ -20,9 +22,12 @@ class LocalWarehouseRepository implements WarehouseRepository {
 
   static const _lotsKey = 'warehouse_lots_v1';
   static const _tempKey = 'warehouse_temps_v1';
+  static const _certKey = 'warehouse_certs_v1';
   final KeyValue _kv;
   final _lots = StreamController<List<StockLot>>.broadcast();
   final _temps = StreamController<List<TempReading>>.broadcast();
+  final _certs = StreamController<List<WarehouseCert>>.broadcast();
+  List<WarehouseCert>? _c;
   List<StockLot>? _l;
   List<TempReading>? _t;
   Future<void>? _loading;
@@ -35,11 +40,14 @@ class LocalWarehouseRepository implements WarehouseRepository {
   Future<void> _load() async {
     _l = [];
     _t = [];
+    _c = [];
     try {
       final a = await _kv.read(_lotsKey);
       if (a != null) _l = [for (final m in jsonDecode(a) as List) StockLot.fromJson(Map<String, dynamic>.from(m as Map))];
       final b = await _kv.read(_tempKey);
       if (b != null) _t = [for (final m in jsonDecode(b) as List) TempReading.fromJson(Map<String, dynamic>.from(m as Map))];
+      final c = await _kv.read(_certKey);
+      if (c != null) _c = [for (final m in jsonDecode(c) as List) WarehouseCert.fromJson(Map<String, dynamic>.from(m as Map))];
     } catch (_) {
       // Unreadable records start again rather than crash.
     }
@@ -64,6 +72,17 @@ class LocalWarehouseRepository implements WarehouseRepository {
 
   @override
   Stream<List<TempReading>> watchReadings() => _watch(_temps, () => _t!);
+
+  @override
+  Stream<List<WarehouseCert>> watchCerts() => _watch(_certs, () => _c!);
+
+  @override
+  Future<void> putCert(WarehouseCert c) async {
+    await _ensure();
+    _c = [c, for (final x in _c!) if (x.id != c.id) x];
+    _certs.add(List.of(_c!));
+    await _kv.write(_certKey, jsonEncode([for (final x in _c!) x.toJson()]));
+  }
 
   @override
   Future<void> putLot(StockLot lot) async {
@@ -103,6 +122,15 @@ class FirestoreWarehouseRepository implements WarehouseRepository {
       .limit(200)
       .snapshots()
       .map((q) => [for (final d in q.docs) TempReading.fromJson(d.data())]);
+
+  @override
+  Stream<List<WarehouseCert>> watchCerts() => _db
+      .collection('warehouseCerts')
+      .snapshots()
+      .map((q) => [for (final d in q.docs) WarehouseCert.fromJson({...d.data(), 'id': d.id})]);
+
+  @override
+  Future<void> putCert(WarehouseCert c) => _db.collection('warehouseCerts').doc(c.id).set(c.toJson());
 
   @override
   Future<void> putLot(StockLot lot) => _db.collection('warehouseLots').doc(lot.id).set(lot.toJson());

@@ -47,7 +47,7 @@ final alarmProvider = Provider<AlarmItems>((ref) {
   final region = ref.watch(currentUserProvider)?.region ?? '';
   final live = ref.watch(outbreaksProvider).valueOrNull ?? const <OutbreakReport>[];
   final urgent = [
-    for (final o in buildAreaOutbreaks(live))
+    for (final o in buildAreaOutbreaks(live, demo: ref.watch(marketProvider.select((s) => s.demoMode))))
       if (o.severity == 'red' && o.region == region) o
   ];
   final toSend = ref.watch(marketProvider.select((s) => s.farmOrders.where((o) => o.status == OrderStatus.newOrder).length));

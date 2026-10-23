@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ubuntu_core/ubuntu_core.dart' show Reveal, WaterScreen;
+import 'package:ubuntu_core/ubuntu_core.dart' show RealDamLevels, Reveal, WaterScreen;
 import '../models/cattle.dart';
 import '../models/diagnosis_record.dart';
 import '../models/disease_info.dart';
@@ -184,6 +184,7 @@ class _HomeTabState extends ConsumerState<HomeTab> {
             ),
             const SizedBox(height: AppTheme.s3),
             const Reveal(index: 3, child: WeatherCard()),
+            const Reveal(index: 3, child: RealDamLevels()),
             const SizedBox(height: AppTheme.s3),
             Reveal(
               index: 4,

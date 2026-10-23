@@ -368,6 +368,30 @@ class _WarehouseDeskState extends ConsumerState<WarehouseDeskScreen> {
   }
 }
 
+/// The panels of the warehouse desk, so the back office website can lay them
+/// out its own way.
+class ReceivingPanel extends ConsumerWidget {
+  const ReceivingPanel({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => _Receiving(
+      ref.watch(warehouseProvider), ref.watch(warehouseClockProvider)(), ref.watch(marketProvider.select((s) => s.demoMode)));
+}
+
+class StockPanel extends ConsumerWidget {
+  const StockPanel({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) =>
+      _Stock(ref.watch(warehouseProvider), ref.watch(warehouseClockProvider)());
+}
+
+class RoomsPanel extends ConsumerWidget {
+  final String hub;
+  const RoomsPanel({super.key, this.hub = 'Durban hub'});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) =>
+      _Rooms(ref.watch(warehouseProvider), hub, ref.watch(marketProvider.select((s) => s.demoMode)));
+}
+
 class _Receiving extends ConsumerWidget {
   final WarehouseState wh;
   final DateTime now;

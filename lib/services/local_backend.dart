@@ -38,10 +38,13 @@ class LocalBackend {
   Future<SharedPreferences> get _p async =>
       _prefs ??= await SharedPreferences.getInstance();
 
+  /// Off in the shipped app: no made-up chat or sightings. Tests turn it on.
+  static bool seedSampleData = false;
+
   Future<void> init() async {
     final p = await _p;
     if (!(p.getBool(_kSeeded) ?? false)) {
-      await _seed(p);
+      if (seedSampleData) await _seed(p);
       await p.setBool(_kSeeded, true);
     }
     _session.add(await currentUser());

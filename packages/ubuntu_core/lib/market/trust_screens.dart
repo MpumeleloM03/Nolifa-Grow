@@ -288,6 +288,9 @@ class TrustCenterScreen extends ConsumerWidget {
         title: 'App mode',
         tint: (s.demoMode ? AppTheme.warn : AppTheme.sprout).withValues(alpha: 0.10),
         children: [
+          if (ref.watch(marketStartsLiveProvider))
+            Text('Live. Only real people, real listings and the real 2-hour protection window.', style: AppTheme.callout)
+          else
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             activeThumbColor: AppTheme.warn,
