@@ -1268,7 +1268,7 @@ class MarketStore extends Notifier<MarketState> {
     state = state.copyWith(plan: p, business: state.business.copyWith(planPaid: true));
     _ledger(LedgerEntry(
         '${p.label} plan',
-        'Platform fee and support, billed monthly by FNB debit order',
+        'Monthly platform fee and support. The app does not collect it yet: Nolifa confirms payment and switches the plan on.',
         -p.price.toDouble(),
         LedgerKind.fee));
   }

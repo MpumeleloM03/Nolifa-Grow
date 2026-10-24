@@ -1201,6 +1201,7 @@ const Map<String, String> zuExact = {
   'Monitor — treat before it spreads': 'Qapha - elapha ngaphambi kokuthi kusabalale',
   'Monthly farm plan (to sell)': 'Uhlelo lwepulazi lwenyanga (ukuthengisa)',
   'Monthly platform fee': 'Imali yenkundla yenyanga',
+  'Monthly platform fee and support. The app does not collect it yet: Nolifa confirms payment and switches the plan on.': 'Imali yenkundla yenyanga nokusekelwa. Uhlelo aluyiqoqi okwamanje: i-Nolifa iqinisekisa inkokhelo bese ivula uhlelo.',
   'More': 'Okuningi',
   'More than it needs. Risk of root rot.': 'Kwedlula okudingayo. Kunengozi yokubola kwezimpande.',
   'Morning everyone. Anyone else seeing yellow spots on their tomato leaves this week?': 'Sawubona wonke umuntu. Ingabe omunye ubona amabala aphuzi emaqabungeni etamatisi kuleli sonto?',
