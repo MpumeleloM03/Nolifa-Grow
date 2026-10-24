@@ -16,6 +16,21 @@ FNB App of the Year, theme: **climate resilience and essential services.** Our o
 | It works when things go wrong | | **Weakest point.** In a flood, outage or load-shedding the apps need internet for orders, sign-in and maps. There is no offline order path, no SMS or USSD, no feature-phone path. A resilience app that fails when the network fails is the first thing a judge will say. |
 | Measured impact | Impact screen (forecast checks, water saved) | Self-measured, no farmer pilot, no loss figures. |
 
+## Status of the critical fixes (24 Oct 2026, later the same day)
+
+| # | Finding | Status |
+|---|---|---|
+| 1 | PIN crackable by the driver | **Fixed.** The PIN is kept hashed with a server secret in a table nobody can read. Delivery goes through `deliver_with_pin`, which counts the tries and locks the order on the third wrong one. A driver can no longer mark an order delivered by hand. Tested in the database and live. |
+| 2 | Server trusts the phone for money | **Mostly fixed.** Orders are only created by `place_order`. The server checks every price against the real product, the stock, the service fee and that the delivery fee is inside the range the rules allow. It cannot yet recompute the delivery distance, so a fee anywhere inside the range is accepted. |
+| 3 | Farmer lowers own commission | **Fixed.** The plan lives in a staff-only table (`seller_plans`). Staff set it in the back office (Plans page). |
+| 4 | Any account can be a driver / open jobs leak addresses | **Fixed.** Drivers apply (ID, selfie, licence, vehicle) and staff approve. Only approved drivers can see or take jobs. |
+| 5 | Everyone can read everyone's email | **Fixed.** The `users` table is private to its owner. |
+| 6 | No account deletion | **Fixed** in all three apps. Removes records, photos, ID documents and the sign-in. Finished orders stay for the other side's accounts with the name and address removed. Blocked while an order or dispute is open. |
+| extra | Firebase libraries still shipped inside every app | **Fixed.** Four pubspecs still listed firebase_core, firebase_auth and cloud_firestore after the move. Removed. |
+| extra | Outbreak reports open to any bot | **Fixed.** Needs a verified account. |
+
+Still open from this list: see findings 7 to 21 below.
+
 ## Critical (could lose money, trust, or the store listing)
 
 1. **The delivery PIN can be cracked by the driver.** The PIN is `sha256(orderId:pin)`. The order id is in the same row the driver reads, and there are only 10 000 PINs. A driver can find the PIN offline in milliseconds, so the "3 tries then lock" rule means nothing and money can be released without the customer. *Fix:* keep the hash in a table drivers cannot read, check the PIN in a database function that counts tries, use a server secret.

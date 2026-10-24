@@ -143,6 +143,18 @@ class LocalBackend {
     _session.add(null);
   }
 
+  /// Removes the signed-in account and its herd from this phone for good.
+  Future<void> deleteCurrentUser() async {
+    final uid = await SecurePrefs.getString(_kSession);
+    if (uid != null) {
+      final acc = await _accounts();
+      acc.remove(uid);
+      await SecurePrefs.setString(_kAccounts, jsonEncode(acc));
+    }
+    await (await _p).remove(_kSession);
+    _session.add(null);
+  }
+
   // ── Chat ──────────────────────────────────────────────────────────────────
 
   Future<List<Map<String, dynamic>>> _rawChat() async {

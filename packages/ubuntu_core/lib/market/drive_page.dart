@@ -5,6 +5,7 @@ import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import '../delivery/hub_desk.dart';
 import '../roads/road_screens.dart';
+import 'account_screens.dart' show driverApplicationScreenProvider;
 import 'market_models.dart';
 import 'market_store.dart';
 import 'market_widgets.dart';
@@ -101,10 +102,11 @@ class DrivePage extends ConsumerWidget {
                       onChanged: (_) {
                         HapticFeedback.mediumImpact();
                         if (!s.driverVerified && !s.driverOnline) {
+                          final apply = ref.read(driverApplicationScreenProvider);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => const VerifyScreen(role: KycRole.driver)));
+                                  builder: (_) => apply != null ? apply() : const VerifyScreen(role: KycRole.driver)));
                           return;
                         }
                         store.toggleOnline();
@@ -131,10 +133,10 @@ class DrivePage extends ConsumerWidget {
                 index: 1,
                 child: GlassCard(
                   tint: AppTheme.warn.withValues(alpha: 0.12),
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const VerifyScreen(role: KycRole.driver))),
+                  onTap: () {
+                    final apply = ref.read(driverApplicationScreenProvider);
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => apply != null ? apply() : const VerifyScreen(role: KycRole.driver)));
+                  },
                   child: Row(children: [
                     const Text('🪪', style: TextStyle(fontSize: 28)),
                     const SizedBox(width: AppTheme.s3),
@@ -283,9 +285,12 @@ Future<void> askCustomerPin(BuildContext context, MarketStore store, Order order
               onPressed: () => Navigator.pop(ctx),
               child: Text('Cancel', style: TextStyle(color: AppTheme.textSecondary))),
           TextButton(
-            onPressed: () {
-              final r = store.tryPin(order.id, c.text);
-              if (r.delivered) {
+            onPressed: () async {
+              final r = await store.checkPin(order.id, c.text);
+              if (!ctx.mounted) return;
+              if (r.outcome == PinOutcome.error) {
+                setS(() => err = 'We could not check the PIN. Check your signal and try again.');
+              } else if (r.delivered) {
                 Navigator.pop(ctx);
               } else if (r.locked) {
                 Navigator.pop(ctx);

@@ -29,6 +29,9 @@ Stream<List<Map<String, dynamic>>> _live(String table, String key) => resilientR
     );
 
 final _applications = StreamProvider((ref) => _live('farm_applications', 'uid'));
+final _driverApps = StreamProvider((ref) => _live('driver_applications', 'uid'));
+final _farmProfiles = StreamProvider((ref) => _live('farm_profiles', 'uid'));
+final _plans = StreamProvider((ref) => _live('seller_plans', 'uid'));
 final _memberships = StreamProvider((ref) => _live('memberships', 'uid'));
 final _boreholes = StreamProvider((ref) => _live('borehole_requests', 'id'));
 final _reserves = StreamProvider((ref) => _live('water_reserves', 'id'));
@@ -294,3 +297,108 @@ class BoreholesPage extends ConsumerWidget {
 }
 
 String prettyJson(Object o) => const JsonEncoder.withIndent('  ').convert(o);
+
+
+/// Drivers waiting for approval. Nobody can take a job until one of these is approved.
+class DriverApplicationsPage extends ConsumerWidget {
+  const DriverApplicationsPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final rows = ref.watch(_driverApps).valueOrNull ?? const [];
+    final list = [for (final r in rows) if (r['status'] != 'draft') r]
+      ..sort((a, b) => ((a['status'] == 'submitted') ? 0 : 1).compareTo((b['status'] == 'submitted') ? 0 : 1));
+    return _pad([
+      Text('Driver applications', style: Theme.of(context).textTheme.headlineSmall),
+      const Text('Open the ID photo and the selfie, then the licence and the vehicle. Approve only if the faces match and the licence is valid for that vehicle.'),
+      const SizedBox(height: 12),
+      if (list.isEmpty) const Text('No driver applications yet.'),
+      for (final r in list)
+        Card(
+          margin: const EdgeInsets.only(bottom: 12),
+          child: ExpansionTile(
+            title: Text('${(r['data'] as Map)['fullName'] ?? 'No name'}  ·  ${(r['data'] as Map)['vehicle'] ?? ''} ${(r['data'] as Map)['plate'] ?? ''}'),
+            subtitle: Text('${r['status']}  ·  licence ${(r['data'] as Map)['licenceCode'] ?? ''}'),
+            childrenPadding: const EdgeInsets.all(16),
+            expandedCrossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('ID number ${(r['data'] as Map)['idNumber']}  ·  phone ${(r['data'] as Map)['phone']}'),
+              const SizedBox(height: 8),
+              _Files(r['uid'] as String),
+              if (r['status'] == 'submitted') ...[const SizedBox(height: 12), _DecideDriver(r['uid'] as String)]
+              else if ((r['review_note'] ?? '').toString().isNotEmpty) Text('Note: ${r['review_note']}'),
+            ],
+          ),
+        ),
+    ]);
+  }
+}
+
+class _DecideDriver extends StatefulWidget {
+  final String uid;
+  const _DecideDriver(this.uid);
+
+  @override
+  State<_DecideDriver> createState() => _DecideDriverState();
+}
+
+class _DecideDriverState extends State<_DecideDriver> {
+  final _note = TextEditingController();
+
+  @override
+  void dispose() {
+    _note.dispose();
+    super.dispose();
+  }
+
+  Future<void> _go(String d) => _run(
+        context,
+        () => _db.rpc('review_driver_application', params: {'p_uid': widget.uid, 'p_decision': d, 'p_note': _note.text.trim()}),
+        'Saved: $d.',
+        'save that decision',
+      );
+
+  @override
+  Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        TextField(controller: _note, decoration: const InputDecoration(labelText: 'Note to the driver (needed unless approving)')),
+        const SizedBox(height: 8),
+        Wrap(spacing: 8, children: [
+          FilledButton(onPressed: () => _go('approved'), child: const Text('Approve')),
+          OutlinedButton(onPressed: () => _go('needs_info'), child: const Text('Ask for more')),
+          OutlinedButton(onPressed: () => _go('rejected'), child: const Text('Reject')),
+        ]),
+      ]);
+}
+
+/// The plan each farm pays for. The commission on its sales comes from here,
+/// so change it only once the payment has cleared.
+class PlansPage extends ConsumerWidget {
+  const PlansPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final farms = ref.watch(_farmProfiles).valueOrNull ?? const [];
+    final plans = {for (final p in (ref.watch(_plans).valueOrNull ?? const [])) p['uid'] as String: p['plan'] as String};
+    return _pad([
+      Text('Farm plans', style: Theme.of(context).textTheme.headlineSmall),
+      const Text('Starter 8 percent commission, Grow 5 percent, Co-op 3 percent. A farm is on Starter until you change it here.'),
+      const SizedBox(height: 12),
+      if (farms.isEmpty) const Text('No approved farms yet.'),
+      for (final f in farms)
+        Card(
+          child: ListTile(
+            title: Text('${(f['data'] as Map)['farmName']}'),
+            subtitle: Text('${f['uid']}'),
+            trailing: DropdownButton<String>(
+              value: plans[f['uid']] ?? 'starter',
+              items: [for (final p in const ['starter', 'grow', 'coop']) DropdownMenuItem(value: p, child: Text(p))],
+              onChanged: (v) {
+                if (v == null) return;
+                _run(context, () => _db.rpc('set_seller_plan', params: {'p_uid': f['uid'], 'p_plan': v}), 'Plan set to $v.', 'change the plan');
+              },
+            ),
+          ),
+        ),
+    ]);
+  }
+}

@@ -19,6 +19,7 @@ $$;
 \set d1 '''d2000000-0000-0000-0000-000000000001'''
 \set d2 '''d2000000-0000-0000-0000-000000000002'''
 
+insert into public.approved_drivers (uid) values (:d1), (:d2);
 insert into public.market_orders (id, data) values
   ('B1', pg_temp.open_order('B1')), ('B2', pg_temp.open_order('B2')), ('B3', pg_temp.open_order('B3')),
   ('B4', pg_temp.open_order('B4', '{"hubStage":"received"}'));

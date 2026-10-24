@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
+import '../supabase/resilient.dart' show friendlyError;
 import '../delivery/delivery_plan.dart';
 import 'fatboy_range.dart';
 import 'market_codec.dart';
@@ -309,7 +311,7 @@ const _cases = <ReportCase>[
       aiConfidence: 72),
 ];
 
-enum PinOutcome { delivered, wrong, locked }
+enum PinOutcome { delivered, wrong, locked, error }
 
 class PinResult {
   final PinOutcome outcome;
@@ -352,6 +354,10 @@ class MarketState {
   /// (the phone-only mode and the tests). Never saved: it comes from the server.
   final bool? serverApproved;
 
+  /// Same for the driver application: true approved, false not yet, null when
+  /// the app does not use driver applications.
+  final bool? serverDriverApproved;
+
   const MarketState({
     required this.products,
     required this.alerts,
@@ -378,6 +384,7 @@ class MarketState {
     this.profile = const ProfileSettings(),
     this.business = const BusinessProfile(),
     this.serverApproved,
+    this.serverDriverApproved,
   });
 
   MarketState copyWith({
@@ -406,6 +413,7 @@ class MarketState {
     ProfileSettings? profile,
     BusinessProfile? business,
     Object? serverApproved = _keep,
+    Object? serverDriverApproved = _keep,
   }) =>
       MarketState(
         products: products ?? this.products,
@@ -433,6 +441,7 @@ class MarketState {
         profile: profile ?? this.profile,
         business: business ?? this.business,
         serverApproved: identical(serverApproved, _keep) ? this.serverApproved : serverApproved as bool?,
+        serverDriverApproved: identical(serverDriverApproved, _keep) ? this.serverDriverApproved : serverDriverApproved as bool?,
       );
 
   /// Risk for one supplier: the worst of the near-term forecast and any
@@ -588,7 +597,7 @@ class MarketState {
           o.method != PayMethod.cash)
       .fold(0.0, (s, o) => s + o.total);
 
-  bool get driverVerified => driverKyc.length == driverSteps.length;
+  bool get driverVerified => serverDriverApproved ?? (driverKyc.length == driverSteps.length);
   bool get farmVerified => serverApproved ?? (farmKyc.length == farmerSteps.length);
 
   /// How ready this household is for a disruption, 0 to 100.
@@ -621,6 +630,17 @@ final marketUidProvider = Provider<String>((ref) => 'guest');
 /// The decision on this farm's application, from the database. Null in apps and
 /// tests that do not use applications. Nolifa Grow supplies the real one.
 final sellerApprovalProvider = Provider<bool?>((ref) => null);
+
+/// Whether Nolifa has approved this person as a driver. Null where driver
+/// applications are not used.
+final driverApprovalProvider = Provider<bool?>((ref) => null);
+
+/// The plan staff have set for this farm. Null where plans are not server managed.
+/// The commission the server charges comes from this, never from the phone.
+final sellerPlanProvider = Provider<Plan?>((ref) => null);
+
+/// Why the last order could not be placed, shown once by the checkout screen.
+final placeErrorProvider = StateProvider<String?>((ref) => null);
 
 
 final marketNameProvider = Provider<String>((ref) => 'Neighbour');
@@ -686,8 +706,19 @@ class MarketStore extends Notifier<MarketState> {
     });
     _startsLive = ref.read(marketStartsLiveProvider);
     ref.listen<bool?>(sellerApprovalProvider, (_, a) => _applyApproval(a));
+    ref.listen<bool?>(driverApprovalProvider, (_, a) {
+      if (!_disposed) state = state.copyWith(serverDriverApproved: a);
+    });
+    ref.listen<Plan?>(sellerPlanProvider, (_, p) {
+      if (!_disposed && p != null) state = state.copyWith(plan: p, business: state.business.copyWith(planPaid: true));
+    });
     Future.microtask(() {
-      if (!_disposed) _applyApproval(ref.read(sellerApprovalProvider));
+      if (_disposed) return;
+      _applyApproval(ref.read(sellerApprovalProvider));
+      final d = ref.read(driverApprovalProvider);
+      if (d != null) state = state.copyWith(serverDriverApproved: d);
+      final p = ref.read(sellerPlanProvider);
+      if (p != null) state = state.copyWith(plan: p, business: state.business.copyWith(planPaid: true));
     });
     Future.microtask(_attach);
     return _startsLive ? _stripDemo(_demoState()) : _demoState();
@@ -1427,7 +1458,7 @@ class MarketStore extends Notifier<MarketState> {
       pins: {...state.pins, id: pin},
       saved: state.saved + saved,
     );
-    _put(order);
+    _putNew(order, pin);
     _ledger(LedgerEntry(
         method == PayMethod.cash ? 'Cash on delivery' : 'Held in escrow',
         '$id · ${method.label}',
@@ -1507,6 +1538,26 @@ class MarketStore extends Notifier<MarketState> {
   /// Checks a PIN and counts wrong tries. After [maxPinAttempts] wrong tries
   /// the order locks, a dispute opens and the money stays frozen until a
   /// mediator rules, so the PIN cannot be guessed.
+  /// Checks the PIN. On a shared backend the server does it and counts the
+  /// tries, so a driver cannot work the PIN out from what their phone holds.
+  Future<PinResult> checkPin(String id, String pin) async {
+    final o = state.orderById(id);
+    if (o == null) return const PinResult(PinOutcome.locked, 0);
+    if (!_repo.shared || o.seed) return tryPin(id, pin);
+    try {
+      final r = await _repo.deliverWithPin(id, pin);
+      final left = (r['attemptsLeft'] as num?)?.toInt() ?? 0;
+      return switch (r['outcome']) {
+        'delivered' => PinResult(PinOutcome.delivered, left),
+        'wrong' => PinResult(PinOutcome.wrong, left),
+        _ => const PinResult(PinOutcome.locked, 0),
+      };
+    } catch (e) {
+      _logErr(e);
+      return const PinResult(PinOutcome.error, 0);
+    }
+  }
+
   PinResult tryPin(String id, String pin) {
     final o = state.orderById(id);
     if (o == null) return const PinResult(PinOutcome.locked, 0);
@@ -1594,6 +1645,31 @@ class MarketStore extends Notifier<MarketState> {
         if (o.id == id) (next = f(o).copyWith(rev: o.rev + 1)) else o
     ]);
     if (next != null && persist) _put(next);
+  }
+
+  /// A new order goes to the server to be checked. If the server refuses it
+  /// (a price changed, a product ran out), the order is taken back off the phone
+  /// and the buyer is told why.
+  void _putNew(Order o, String pin) {
+    if (o.seed) return;
+    () async {
+      try {
+        await _repo.placeOrder(o, _uid, pin);
+      } catch (e) {
+        if (_disposed) return;
+        _logErr(e);
+        state = state.copyWith(
+          orders: [for (final x in state.orders) if (x.id != o.id) x],
+          pins: {for (final p in state.pins.entries) if (p.key != o.id) p.key: p.value},
+        );
+        ref.read(placeErrorProvider.notifier).state = _placeMessage(e);
+      }
+    }();
+  }
+
+  String _placeMessage(Object e) {
+    if (e is PostgrestException && (e.code == 'P0005' || e.code == 'P0001' || e.code == '42501')) return e.message;
+    return friendlyError(e, doing: 'place that order');
   }
 
   void _put(Order o) {

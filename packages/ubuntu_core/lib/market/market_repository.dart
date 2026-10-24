@@ -24,6 +24,14 @@ abstract class MarketRepository {
   Stream<List<Order>> watchOrders(String uid);
   Future<void> putOrder(Order o, String uid);
 
+  /// Creates a new order. On a shared backend the server checks every price and
+  /// keeps the delivery PIN, so neither can be faked from a phone.
+  Future<void> placeOrder(Order o, String uid, String pin);
+
+  /// Asks the server to check the PIN a customer gave the driver. Returns
+  /// `outcome` (delivered, wrong or locked) and `attemptsLeft`.
+  Future<Map<String, dynamic>> deliverWithPin(String orderId, String pin);
+
   /// Atomically assigns a driver to an open job. False if someone else got it.
   Future<bool> claimJob(String orderId, String uid, String name);
 
@@ -137,6 +145,13 @@ class LocalMarketRepository implements MarketRepository {
               (m['status'] == 'findingDriver' && m['driverId'] == null))
             orderFromJson(m, uid)
       ]);
+
+  @override
+  Future<void> placeOrder(Order o, String uid, String pin) => putOrder(o, uid);
+
+  @override
+  Future<Map<String, dynamic>> deliverWithPin(String orderId, String pin) =>
+      throw UnsupportedError('PINs are checked on the phone in local mode');
 
   @override
   Future<void> putOrder(Order o, String uid) async {

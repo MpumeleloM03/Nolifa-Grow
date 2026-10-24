@@ -62,6 +62,17 @@ final videosLeftProvider = FutureProvider<int>((ref) async {
   return (v as num?)?.toInt() ?? 0;
 });
 
+/// The plan staff have set for this farm. Starter until Nolifa changes it.
+final serverPlanProvider = StreamProvider<String>((ref) {
+  final uid = ref.watch(currentUserProvider.select((u) => u?.uid));
+  if (uid == null || !SupabaseBoot.ready) return Stream.value('starter');
+  final db = SupabaseBoot.client;
+  return resilientRows(
+    open: () => db.from('seller_plans').stream(primaryKey: ['uid']).eq('uid', uid),
+    fetch: () async => [for (final r in await db.from('seller_plans').select().eq('uid', uid)) Map<String, dynamic>.from(r)],
+  ).map((rows) => rows.isEmpty ? 'starter' : rows.first['plan'] as String);
+});
+
 class Consult {
   final String id;
   final String title, description, animalLabel, species, status, kind, province;

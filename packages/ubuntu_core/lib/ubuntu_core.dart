@@ -58,3 +58,6 @@ export 'water/water_store.dart';
 export 'supabase/supabase_boot.dart';
 export 'supabase/resilient.dart';
 export 'delivery/batching.dart';
+export 'supabase/id_check.dart';
+export 'supabase/account_deletion.dart';
+export 'supabase/account_deletion_ui.dart';

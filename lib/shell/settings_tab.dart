@@ -1,3 +1,4 @@
+import 'package:ubuntu_core/ubuntu_core.dart' show confirmDeleteAccount;
 import '../care/care_screen.dart';
 import '../members/application_screen.dart';
 import '../members/borehole_screen.dart';
@@ -147,6 +148,9 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
               HapticFeedback.mediumImpact();
               ref.read(authServiceProvider).signOut();
             }, color: AppTheme.danger),
+            _Row(Icons.delete_forever_rounded, 'Delete my account', 'Removes your account, herd, photos and documents',
+                () => confirmDeleteAccount(context, () => ref.read(authServiceProvider).deleteAccount()),
+                color: AppTheme.danger),
           ]),
         ),
       ],

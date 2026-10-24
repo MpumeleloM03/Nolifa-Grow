@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthException;
 import 'package:supabase_flutter/supabase_flutter.dart' as sb show AuthException;
-import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot;
+import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot, deleteMyAccount;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/app_user.dart';
 import 'local_backend.dart';
@@ -155,6 +155,13 @@ class AuthService {
   }
 
   Future<void> signOut() => isLocal ? _local.signOut() : _auth.signOut();
+
+  /// Deletes the account and everything stored for it. Throws a [StateError]
+  /// with a plain reason if it cannot be done yet.
+  Future<void> deleteAccount() async {
+    if (isLocal) return _local.deleteCurrentUser();
+    await deleteMyAccount();
+  }
 
   Future<void> sendReset(String email) async {
     if (isLocal) {

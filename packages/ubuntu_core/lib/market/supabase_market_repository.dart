@@ -49,9 +49,20 @@ class SupabaseMarketRepository implements MarketRepository {
         for (final r in rows) orderFromJson(Map<String, dynamic>.from(r['data'] as Map), uid),
       ]);
 
+  // The PIN hash never leaves the server, so a phone always writes the same marker.
   @override
   Future<void> putOrder(Order o, String uid) =>
-      _db.rpc('put_order', params: {'p_data': {...orderToJson(o, uid), 'id': o.id}});
+      _db.rpc('put_order', params: {'p_data': {...orderToJson(o, uid), 'id': o.id, 'pinHash': 'server'}});
+
+  @override
+  Future<void> placeOrder(Order o, String uid, String pin) => _db.rpc('place_order', params: {
+        'p_data': {...orderToJson(o, uid), 'id': o.id, 'pinHash': 'server'},
+        'p_pin': pin,
+      });
+
+  @override
+  Future<Map<String, dynamic>> deliverWithPin(String orderId, String pin) async =>
+      Map<String, dynamic>.from(await _db.rpc('deliver_with_pin', params: {'p_id': orderId, 'p_pin': pin}) as Map);
 
   @override
   Future<bool> claimJob(String orderId, String uid, String name) async =>

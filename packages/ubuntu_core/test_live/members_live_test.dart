@@ -18,6 +18,8 @@ Future<(SupabaseClient, String)> _user(String name, {Map<String, dynamic>? meta}
   return (c, r.user!.id);
 }
 
+Future<String?> accountDeletionBlocker2(SupabaseClient c) async => (await c.rpc('delete_blocker')) as String?;
+
 void main() {
   final skip = (_url.isEmpty || _anon.isEmpty || _service.isEmpty) ? 'needs a local Supabase' : null;
 
@@ -89,6 +91,40 @@ void main() {
     await boss.rpc('review_application', params: {'p_uid': fid, 'p_decision': 'approved', 'p_note': ''});
     expect((await farmer.from('farm_applications').select().eq('uid', fid).single())['status'], 'approved');
     expect((await other.from('farm_profiles').select().eq('uid', fid).single())['data']['farmName'], 'Hills');
+  });
+
+  test('driver application is checked by staff, and approval opens jobs', () async {
+    final admin = SupabaseClient(_url, _service);
+    final (driver, did) = await _user('ddriver');
+    final (boss, bid) = await _user('dboss');
+    await admin.from('admins').insert({'uid': bid});
+    await driver.rpc('save_driver_application', params: {
+      'p_data': {'fullName': 'D River', 'idNumber': '8001015009087', 'phone': '0821234567', 'vehicle': 'bakkie', 'plate': 'ND 1', 'licenceCode': 'B', 'consent': true},
+    });
+    await expectLater(driver.rpc('submit_driver_application'), throwsA(isA<PostgrestException>()));
+    for (final k in ['driver_id_front', 'driver_selfie_with_id', 'driver_licence', 'driver_vehicle']) {
+      final p = '$did/$k.jpg';
+      await driver.storage.from('verification').uploadBinary(p, Uint8List.fromList(List.filled(256, 2)), fileOptions: const FileOptions(contentType: 'image/jpeg'));
+      await driver.rpc('add_application_file', params: {'p_kind': k, 'p_path': p});
+    }
+    await driver.rpc('submit_driver_application');
+    expect(await driver.from('approved_drivers').select(), isEmpty);
+    await boss.rpc('review_driver_application', params: {'p_uid': did, 'p_decision': 'approved', 'p_note': ''});
+    expect((await driver.from('approved_drivers').select()).length, 1);
+  });
+
+  test('a person can delete their account, files and all', () async {
+    final admin = SupabaseClient(_url, _service);
+    final (farmer, fid) = await _user('xfarmer');
+    await farmer.from('users').upsert({'uid': fid, 'data': {'email': 'x@example.com', 'name': 'X'}});
+    final path = '$fid/id_front-1.jpg';
+    await farmer.storage.from('verification').uploadBinary(path, Uint8List.fromList(List.filled(64, 3)), fileOptions: const FileOptions(contentType: 'image/jpeg'));
+    expect(await accountDeletionBlocker2(farmer), isNull);
+    await farmer.storage.from('verification').remove([path]);
+    await farmer.rpc('delete_my_account');
+    expect(await admin.from('users').select().eq('uid', fid), isEmpty);
+    final users = await admin.auth.admin.listUsers();
+    expect(users.where((u) => u.id == fid), isEmpty);
   });
 
   test('borehole quote with member discount, drilled, reserve collected', () async {

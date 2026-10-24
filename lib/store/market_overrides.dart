@@ -7,11 +7,14 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         farmApplicationScreenProvider,
         liveOverrides,
         sellerApprovalProvider,
+        sellerPlanProvider,
+
         LocalMarketRepository,
         LocalWaterRepository,
         marketNameProvider,
         marketRepositoryProvider,
         marketUidProvider,
+        Plan,
         waterRepositoryProvider,
         waterUtilityProvider;
 import '../members/application_screen.dart';
@@ -45,6 +48,11 @@ List<Override> marketOverrides() => [
           return st == 'approved';
         }),
         farmApplicationScreenProvider.overrideWithValue(() => const FarmApplicationScreen()),
+        // The plan, and so the commission, is set by Nolifa after payment.
+        sellerPlanProvider.overrideWith((ref) {
+          final p = ref.watch(serverPlanProvider).valueOrNull ?? 'starter';
+          return Plan.values.firstWhere((x) => x.name == p, orElse: () => Plan.starter);
+        }),
       ],
       // A farm that registers as a water supplier can answer community requests.
       waterUtilityProvider.overrideWith((ref) => ref.watch(supplierProvider).supplier.enabled),

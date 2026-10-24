@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'alert_actions.dart';
+import 'market_store.dart' show placeErrorProvider;
 import 'glass_tab_bar.dart';
 import '../water/water_store.dart';
 import 'account_screens.dart';
@@ -47,6 +48,12 @@ class _MarketHubState extends ConsumerState<MarketHub> {
 
   @override
   Widget build(BuildContext context) {
+    // The server can refuse an order after the buyer has paid on screen. Say so.
+    ref.listen<String?>(placeErrorProvider, (_, e) {
+      if (e == null) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e), duration: const Duration(seconds: 6), behavior: SnackBarBehavior.floating));
+      ref.read(placeErrorProvider.notifier).state = null;
+    });
     final tabs = widget.tabs ?? defaultDropTabs(onMenu: () => openDropMenu(context));
     final i = _i.clamp(0, tabs.length - 1);
     final VoidCallback? close = widget.showClose ? () => Navigator.pop(context) : null;

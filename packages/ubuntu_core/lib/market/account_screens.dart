@@ -310,6 +310,9 @@ class _ProfileFormState extends ConsumerState<ProfileForm> {
 
 /// How a farmer starts selling on Nolifa Drop: register, get verified, choose
 /// a plan, and say how orders reach the customer.
+/// Opens the driver application form. Nolifa Delivery supplies it.
+final driverApplicationScreenProvider = Provider<Widget Function()?>((ref) => null);
+
 /// Opens the farm application form. Nolifa Grow supplies it.
 final farmApplicationScreenProvider = Provider<Widget Function()?>((ref) => null);
 

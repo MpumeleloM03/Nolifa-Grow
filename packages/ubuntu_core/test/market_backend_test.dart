@@ -240,8 +240,8 @@ void main() {
       expect(buyer.s.orderById(id)!.pickupProof, isTrue);
 
       // Wrong PIN fails; the buyer's PIN works.
-      expect(winner.store.deliverWithPin(id, '0000'), isFalse);
-      expect(winner.store.deliverWithPin(id, pin), isTrue);
+      expect((await winner.store.checkPin(id, '0000')).delivered, isFalse);
+      expect((await winner.store.checkPin(id, pin)).delivered, isTrue);
       await settle();
       expect(buyer.s.orderById(id)!.status, OrderStatus.delivered);
       expect(buyer.s.orderById(id)!.released, isFalse);

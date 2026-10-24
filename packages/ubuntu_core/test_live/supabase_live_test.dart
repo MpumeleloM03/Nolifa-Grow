@@ -15,6 +15,7 @@ final _url = Platform.environment['SUPABASE_URL'] ?? '';
 final _anon = Platform.environment['SUPABASE_ANON_KEY'] ?? '';
 final _service = Platform.environment['SUPABASE_SERVICE_KEY'] ?? '';
 final _run = DateTime.now().millisecondsSinceEpoch;
+final _productId = 'live-p-$_run';
 
 class Person {
   Person(this.name, this.client, this.id);
@@ -39,11 +40,11 @@ Future<Person> signIn(Person p) async {
   return Person(p.name, c, p.id);
 }
 
-Order newOrder(String id, String buyer, String farmer, {String route = 'local', String? hubStage}) => Order(
+Order newOrder(String id, String buyer, String farmer, {String route = 'local', String? hubStage, double fee = 25}) => Order(
       id: id,
-      lines: const [OrderLine('Carrots', '🥕', 2, 60)],
-      deliveryFee: 25,
-      serviceFee: 5,
+      lines: [OrderLine('Carrots', '🥕', 2, 60, ownerId: farmer, productId: _productId)],
+      deliveryFee: fee,
+      serviceFee: 3.6,
       method: PayMethod.fnbPay,
       status: OrderStatus.newOrder,
       customer: 'Buyer',
@@ -79,6 +80,12 @@ void main() {
         for (final p in [farmer, buyer, d1, d2, resident]) {'uid': p.id}
       ]);
       await admin.from('staff').insert({'uid': hub.id, 'name': 'Hub desk'});
+      await admin.from('approved_drivers').insert([{'uid': d1.id}, {'uid': d2.id}]);
+      await admin.from('market_products').insert({
+        'id': _productId,
+        'owner_id': farmer.id,
+        'data': {'id': _productId, 'ownerId': farmer.id, 'name': 'Carrots', 'price': 60, 'stock': 1000, 'emoji': '🥕', 'category': 'veg', 'farm': 'Live Farm', 'km': 1, 'unit': 'bag'},
+      });
       await admin.auth.admin.updateUserById(utility.id, attributes: AdminUserAttributes(appMetadata: {'utility': true}));
       utility = await signIn(utility); // the new claim arrives with a fresh token
     });
@@ -92,7 +99,7 @@ void main() {
       expect(seen.map((p) => p.id), contains('live-carrots-$_run'));
 
       final o = newOrder('UD-LIVE-$_run', buyer.id, farmer.id);
-      await buyer.market.putOrder(o, buyer.id);
+      await buyer.market.placeOrder(o, buyer.id, '4321');
       final farmerView = await farmer.market.watchOrders(farmer.id).first;
       expect(farmerView.map((x) => x.id), contains(o.id));
       expect((await d1.market.watchOrders(d1.id).first).where((x) => x.id == o.id), isEmpty, reason: 'not packed yet');
@@ -107,7 +114,10 @@ void main() {
 
       await d1.market.putOrder(mine.copyWith(status: OrderStatus.pickedUp, pickupProof: true, rev: mine.rev + 1), d1.id);
       final picked = (await d1.market.watchOrders(d1.id).first).firstWhere((x) => x.id == o.id);
-      await d1.market.putOrder(picked.copyWith(status: OrderStatus.delivered, deliveredAt: DateTime.now(), rev: picked.rev + 1), d1.id);
+      // Delivery only happens through the server's PIN check, never by hand.
+      await expectLater(d1.market.putOrder(picked.copyWith(status: OrderStatus.delivered, deliveredAt: DateTime.now(), rev: picked.rev + 1), d1.id), throwsA(isA<PostgrestException>()));
+      expect((await d1.market.deliverWithPin(o.id, '0000'))['outcome'], 'wrong');
+      expect((await d1.market.deliverWithPin(o.id, '4321'))['outcome'], 'delivered');
       final delivered = (await buyer.market.watchOrders(buyer.id).first).firstWhere((x) => x.id == o.id);
       expect(delivered.status, OrderStatus.delivered);
 
@@ -119,21 +129,29 @@ void main() {
 
     test('market: money and states are protected', () async {
       final o = newOrder('UD-LIVE-M-$_run', buyer.id, farmer.id);
-      await buyer.market.putOrder(o, buyer.id);
+      await buyer.market.placeOrder(o, buyer.id, '4321');
       // The buyer tries to make it cheaper after the fact.
       await expectLater(
-          buyer.client.rpc('put_order', params: {'p_data': {...orderToJson(o.copyWith(rev: 1), buyer.id), 'deliveryFee': 1}}),
+          buyer.client.rpc('put_order', params: {'p_data': {...orderToJson(o.copyWith(rev: 1), buyer.id), 'deliveryFee': 1, 'pinHash': 'server'}}),
           throwsA(isA<PostgrestException>()));
+      // Or cheaper from the start: a price below the product's, a free delivery.
+      await expectLater(
+          buyer.market.placeOrder(newOrder('UD-LIVE-C-$_run', buyer.id, farmer.id, fee: 0), buyer.id, '4321'), throwsA(isA<PostgrestException>()));
+      // Nobody can read the PIN table, and the order carries no PIN hash.
+      expect(await buyer.client.from('order_pins').select(), isEmpty);
+      expect((await buyer.client.from('market_orders').select('data').eq('id', o.id).single())['data']['pinHash'], 'server');
       // A buyer cannot mark their own order delivered.
       await expectLater(buyer.market.putOrder(o.copyWith(status: OrderStatus.delivered, rev: 2), buyer.id), throwsA(isA<PostgrestException>()));
+      // An unapproved person cannot take a job.
+      await expectLater(resident.market.claimJob(o.id, resident.id, 'Nobody'), throwsA(isA<PostgrestException>()));
       // The wrong person cannot order as someone else.
       await expectLater(resident.market.putOrder(newOrder('UD-LIVE-X-$_run', buyer.id, farmer.id), buyer.id),
           throwsA(isA<PostgrestException>()));
     });
 
     test('hub: farm drops off, staff check in and release, then a driver can take it', () async {
-      final o = newOrder('UD-LIVE-H-$_run', buyer.id, farmer.id, route: 'hub', hubStage: 'toHub');
-      await buyer.market.putOrder(o, buyer.id);
+      final o = newOrder('UD-LIVE-H-$_run', buyer.id, farmer.id, route: 'hub', hubStage: 'toHub', fee: 35);
+      await buyer.market.placeOrder(o, buyer.id, '4321');
       await farmer.market.putOrder(o.copyWith(status: OrderStatus.findingDriver, rev: 1), farmer.id);
       expect(await d1.market.claimJob(o.id, d1.id, 'One'), isFalse, reason: 'still at the hub');
       await farmer.client.rpc('set_hub_stage', params: {'p_id': o.id, 'p_stage': 'droppedOff'});
@@ -234,7 +252,7 @@ void main() {
       final stream = farmer.market.watchOrders(farmer.id);
       final seen = expectLater(stream, emitsThrough(predicate<List<Order>>((l) => l.any((x) => x.id == o.id))));
       await Future<void>.delayed(const Duration(seconds: 1));
-      await buyer.market.putOrder(o, buyer.id);
+      await buyer.market.placeOrder(o, buyer.id, '4321');
       await seen.timeout(const Duration(seconds: 15));
     });
   }, skip: skip);

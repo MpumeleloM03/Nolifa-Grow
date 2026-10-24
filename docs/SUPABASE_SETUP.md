@@ -77,6 +77,10 @@ insert into public.admins (uid) values ('<user id>');   -- applications, members
 insert into public.vets (uid, name, practice) values ('<user id>', 'Dr Naidoo', 'Howick Vet');  -- vet cases
 ```
 
+Drivers: a driver applies in Nolifa Delivery (ID, selfie, licence, vehicle). An admin opens Back office, Drivers, checks the photos and approves. Until then the driver cannot go online or see any job.
+
+Plans: every farm is on Starter (8 percent commission) until an admin changes it in Back office, Plans, after the payment has cleared.
+
 Turning a membership on: the farmer signs up in the app (status "awaiting payment"). When the first payment clears in the bank, an admin opens Back office, Memberships, and taps "Payment received". That starts the 24 month term.
 
 Borehole discount and the 50 000 litre reserve are set in `public.borehole_config` (member 10 percent and Max 15 percent are placeholders: set your real numbers).

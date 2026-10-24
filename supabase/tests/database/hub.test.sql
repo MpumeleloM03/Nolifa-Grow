@@ -13,8 +13,9 @@ create function pg_temp.hub_order(p_id text, p_stage text, p_cust text, p_farm t
 language sql as $$
   select jsonb_build_object('id', p_id, 'customerId', p_cust, 'farmerId', p_farm, 'status', 'findingDriver',
     'released', false, 'dispute', null, 'driverId', null, 'hubStage', p_stage, 'route', 'hub',
-    'lines', '[{"name":"Spinach","qty":1,"price":20}]'::jsonb, 'deliveryFee', 35, 'serviceFee', 5,
-    'pinHash', 'abc', 'method', 'fnbPay', 'participants', jsonb_build_array(p_cust, p_farm), 'rev', 0)
+    'lines', jsonb_build_array(jsonb_build_object('productId', 'P1', 'name', 'Spinach', 'qty', 1, 'price', 20, 'ownerId', p_farm)),
+    'deliveryFee', 35, 'serviceFee', 2, 'pinHash', 'abc', 'method', 'fnbPay',
+    'participants', jsonb_build_array(p_cust, p_farm), 'rev', 0)
 $$;
 
 \set buyer '''b0000000-0000-0000-0000-000000000001'''
@@ -24,10 +25,15 @@ $$;
 \set hub '''a0000000-0000-0000-0000-000000000006'''
 
 insert into public.staff (uid) values (:hub);
+insert into public.approved_drivers (uid) values (:d1);
+insert into public.market_products (id, owner_id, data) values ('P1', :farmer, jsonb_build_object('ownerId', :farmer, 'name', 'Spinach', 'price', 20, 'stock', 50));
 
 select pg_temp.as_user(:buyer);
-select lives_ok(format($f$insert into public.market_orders (id, data) values ('H1', %L)$f$, pg_temp.hub_order('H1', 'toHub', :buyer, :farmer)),
+select lives_ok(format($f$select public.place_order(%L || '{"status":"newOrder"}'::jsonb, '1234')$f$, pg_temp.hub_order('H1', 'toHub', :buyer, :farmer)),
   'a hub order starts on the way to the hub');
+select pg_temp.as_user(:farmer);
+select lives_ok($f$update public.market_orders set data = data || '{"status":"findingDriver","commission":0.08,"rev":1}' where id = 'H1'$f$, 'the farm packs it');
+select pg_temp.as_user(:buyer);
 
 -- nobody can take it while it is at the hub
 select pg_temp.as_user(:d1);

@@ -30,6 +30,9 @@ class SharedMarketDb {
   final products = <String, Map<String, dynamic>>{};
   final orders = <String, Map<String, dynamic>>{};
   final cases = <String, Map<String, dynamic>>{};
+  /// The server's own record of each order's PIN and wrong tries.
+  final pins = <String, String>{};
+  final tries = <String, int>{};
   /// People an admin added as warehouse staff. They also see hub orders.
   final staff = <String>{'hub'};
   final changes = StreamController<void>.broadcast();
@@ -74,6 +77,40 @@ class FakeSharedMarketRepository implements MarketRepository {
         }
         return out;
       });
+
+  Map<String, String> get pins => db.pins;
+  Map<String, int> get tries => db.tries;
+
+  @override
+  Future<void> placeOrder(Order o, String uid, String pin) async {
+    pins[o.id] = pin;
+    final json = orderToJson(o, uid)..['pinHash'] = 'server';
+    db.orders[o.id] = json;
+    db.touch();
+  }
+
+  @override
+  Future<Map<String, dynamic>> deliverWithPin(String orderId, String pin) async {
+    final d = db.orders[orderId];
+    if (d == null) throw StateError('no such order');
+    final used = tries[orderId] ?? 0;
+    if (used >= 3 || d['dispute'] != null) return {'outcome': 'locked', 'attemptsLeft': 0};
+    if (pins[orderId] == pin) {
+      d['status'] = 'delivered';
+      d['deliveredAt'] = DateTime.now().millisecondsSinceEpoch;
+      d['rev'] = ((d['rev'] as num?) ?? 0).toInt() + 1;
+      db.touch();
+      return {'outcome': 'delivered', 'attemptsLeft': 3};
+    }
+    tries[orderId] = used + 1;
+    if (used + 1 >= 3) {
+      d['dispute'] = {'reason': 'pinLocked', 'note': '', 'stage': 'open', 'outcome': null, 'timeline': []};
+      d['rev'] = ((d['rev'] as num?) ?? 0).toInt() + 1;
+      db.touch();
+      return {'outcome': 'locked', 'attemptsLeft': 0};
+    }
+    return {'outcome': 'wrong', 'attemptsLeft': 3 - used - 1};
+  }
 
   @override
   Future<void> putOrder(Order o, String uid) async {

@@ -470,11 +470,18 @@ class PlansScreen extends ConsumerWidget {
                 style: AppTheme.footnote),
             const SizedBox(height: AppTheme.s3),
             GlassButton(
-              label: s.plan == p ? 'Your plan' : 'Choose ${p.label}',
+              label: s.plan == p ? 'Your plan' : (ref.watch(sellerPlanProvider) != null ? 'Ask Nolifa for ${p.label}' : 'Choose ${p.label}'),
               onPressed: s.plan == p
                   ? null
                   : () {
                       HapticFeedback.mediumImpact();
+                      if (ref.read(sellerPlanProvider) != null) {
+                        // Plans cost money, so Nolifa switches them on once payment is confirmed.
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text('Nolifa switches your plan on when your payment is confirmed. Contact us to change it.'),
+                            behavior: SnackBarBehavior.floating));
+                        return;
+                      }
                       store.setPlan(p);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text('You are on ${p.label} ✅'),

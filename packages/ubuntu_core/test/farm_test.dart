@@ -362,8 +362,8 @@ void main() {
 
       farmer.store.pickedUp(id);
       await settle();
-      expect(farmer.store.deliverWithPin(id, '0000'), isFalse);
-      expect(farmer.store.deliverWithPin(id, pin), isTrue);
+      expect((await farmer.store.checkPin(id, '0000')).delivered, isFalse);
+      expect((await farmer.store.checkPin(id, pin)).delivered, isTrue);
       await settle();
       buyer.store.confirmReceived(id, 5);
       await settle();
