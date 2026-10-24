@@ -49,7 +49,7 @@ class _Gate extends ConsumerWidget {
     final user = ref.watch(authUserProvider);
     return user.when(
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (e, _) => Scaffold(body: Center(child: Text('Could not start: $e'))),
+      error: (e, _) => Scaffold(body: Center(child: Text(friendlyError(e, doing: 'start')))),
       data: (u) => u == null ? const LoginPage() : const _Access(),
     );
   }
@@ -64,7 +64,7 @@ class _Access extends ConsumerWidget {
     final roles = ref.watch(staffRolesProvider);
     return roles.when(
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (e, _) => Scaffold(body: Center(child: Text('Could not check access: $e'))),
+      error: (e, _) => Scaffold(body: Center(child: Text(friendlyError(e, doing: 'check your access')))),
       data: (r) => (r.hub || r.certifier)
           ? Shell(roles: r)
           : Scaffold(
@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
     } on sb.AuthException catch (e) {
       setState(() => _error = e.message.toLowerCase().contains('invalid')
           ? 'Check your email and password.'
-          : 'Could not sign in (${e.message}).');
+          : 'We could not sign you in. Try again.');
     } catch (_) {
       setState(() => _error = 'We could not reach the server. Check your connection, then try again.');
     } finally {

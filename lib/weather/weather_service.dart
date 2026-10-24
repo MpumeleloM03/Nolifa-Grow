@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../crops/crop_store.dart';
 import '../impact/impact_store.dart';
+import '../models/cattle.dart';
 import '../services/auth_service.dart';
+import '../services/cattle_service.dart';
 import '../services/region_service.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show userLocationProvider, userPlaceProvider;
 import 'weather_models.dart';
@@ -135,5 +137,9 @@ Future<Forecast> _forecastAndLog(Ref ref, String region) async {
 final weatherThreatsProvider = Provider<List<WeatherThreat>>((ref) {
   final f = ref.watch(forecastProvider).valueOrNull;
   if (f == null) return const [];
-  return assessWeather(f, ref.watch(cropStoreProvider), DateTime.now());
+  final region = (ref.watch(currentUserProvider.select((u) => u?.region)) ?? '').toLowerCase();
+  final animals = ref.watch(herdProvider).valueOrNull?.where((c) => c.status == CattleStatus.active).length ?? 0;
+  const coast = ['durban', 'coast', 'umhlanga', 'ballito', 'richards bay'];
+  final humid = region.isEmpty || coast.any(region.contains);
+  return assessWeather(f, ref.watch(cropStoreProvider), DateTime.now(), animals: animals, humidCoast: humid);
 });

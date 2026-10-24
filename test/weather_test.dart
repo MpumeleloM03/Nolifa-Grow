@@ -89,6 +89,28 @@ void main() {
     });
   });
 
+  group('livestock threats', () {
+    test('no animals, no herd alert', () {
+      expect(assessWeather(_week(_calm()..[2] = _d(2, max: 33)), [], _now), isEmpty);
+    });
+
+    test('coastal humidity lowers the heat stress bar to 29 C', () {
+      final days = _calm()..[2] = _d(2, max: 30);
+      expect(assessWeather(_week(days), [], _now, animals: 5, humidCoast: true).single.title, contains('Heat stress'));
+      expect(assessWeather(_week(days), [], _now, animals: 5), isEmpty);
+    });
+
+    test('inland the bar is 32 C and 36 C is urgent', () {
+      final t = assessWeather(_week(_calm()..[3] = _d(3, max: 36)), [], _now, animals: 5);
+      expect(t.where((x) => x.title.contains('herd')).single.urgent, isTrue);
+    });
+
+    test('cold rain warns about young animals', () {
+      final t = assessWeather(_week(_calm()..[1] = _d(1, min: 4, rain: 12)), [], _now, animals: 3);
+      expect(t.single.kind, 'cold');
+    });
+  });
+
   group('sprinkler', () {
     const on = SprinklerPlan(enabled: true, litresPerMinute: 10, minutesPerRun: 30, startHours: [6]);
 

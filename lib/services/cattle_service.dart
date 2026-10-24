@@ -1,6 +1,6 @@
 import 'dart:math' show Random;
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot;
+import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot, resilientRows;
 import 'package:csv/csv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/cattle.dart';
@@ -37,7 +37,10 @@ class CattleService {
   Stream<List<Cattle>> watch(String uid) => _live ? _herdStream(uid) : LocalBackend.instance.watchHerd();
 
   Stream<List<Cattle>> _herdStream(String uid) =>
-      _db.from('cattle').stream(primaryKey: ['uid', 'id']).eq('uid', uid).map((rows) => [
+      resilientRows(
+        open: () => _db.from('cattle').stream(primaryKey: ['uid', 'id']).eq('uid', uid),
+        fetch: () async => [for (final r in await _db.from('cattle').select().eq('uid', uid)) Map<String, dynamic>.from(r)],
+      ).map((rows) => [
             for (final r in rows) Cattle.fromMap(r['id'] as String, Map<String, dynamic>.from(r['data'] as Map)),
           ]..sort((a, b) => a.tagNumber.compareTo(b.tagNumber)));
 

@@ -1,3 +1,4 @@
+import 'package:ubuntu_core/ubuntu_core.dart' show friendlyError;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -183,8 +184,8 @@ class _HerdScreenState extends ConsumerState<HerdScreen> {
                           color: AppTheme.livestockAccent)),
                   error: (e, _) => _Message(
                       icon: Icons.cloud_off_rounded,
-                      title: 'Cannot load your herd',
-                      body: '$e'),
+                      title: 'Your herd will not load',
+                      body: '${friendlyError(e, doing: 'load your herd')} Pull down to try again.'),
                   data: (list) {
                     final shown = list.where((c) {
                       if (_species != null && c.species != _species) return false;

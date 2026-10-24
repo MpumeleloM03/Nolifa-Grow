@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'resilient.dart';
 
 /// Where the shared Nolifa database lives. Pass these when building:
 /// `--dart-define=SUPABASE_URL=https://xyz.supabase.co --dart-define=SUPABASE_ANON_KEY=...`
@@ -39,7 +40,10 @@ final supabaseReadyProvider = Provider<bool>((ref) => SupabaseBoot.ready);
 /// Rows of a table as a live list. Row level security decides what is visible.
 Stream<List<Map<String, dynamic>>> liveTable(SupabaseClient db, String table,
         {String key = 'id'}) =>
-    db.from(table).stream(primaryKey: [key]);
+    resilientRows(
+      open: () => db.from(table).stream(primaryKey: [key]),
+      fetch: () async => [for (final r in await db.from(table).select()) Map<String, dynamic>.from(r)],
+    );
 
 /// The stored document of a row, with its id added.
 Map<String, dynamic> docOf(Map<String, dynamic> row, {String column = 'data', String idKey = 'id'}) =>

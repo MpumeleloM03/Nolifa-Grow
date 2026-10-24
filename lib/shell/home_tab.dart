@@ -1,3 +1,5 @@
+import '../care/care_screen.dart';
+import '../care/care_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +11,6 @@ import '../crops/my_crops_screen.dart';
 import '../water/supplier_screen.dart';
 import '../weather/weather_card.dart';
 import '../screens/history_screen.dart';
-import '../farm/water_ai_screen.dart';
 import '../screens/livestock/herd_screen.dart';
 import '../screens/livestock/symptom_checker_screen.dart';
 import '../services/auth_service.dart';
@@ -139,6 +140,8 @@ class _HomeTabState extends ConsumerState<HomeTab> {
               ),
             ),
             const SizedBox(height: AppTheme.s4),
+            Reveal(index: 2, child: _CareCard(onOpen: () => _push(const CareScreen()))),
+            const SizedBox(height: AppTheme.s4),
             Reveal(
               index: 2,
               child: GlassCard(
@@ -153,28 +156,6 @@ class _HomeTabState extends ConsumerState<HomeTab> {
                       Text('Water radar', style: AppTheme.title2),
                       const SizedBox(height: AppTheme.s1),
                       Text('Supply forecast, tank days for your herd, and help for your area.',
-                          style: AppTheme.callout),
-                    ]),
-                  ),
-                  Icon(Icons.chevron_right_rounded, color: AppTheme.textTertiary),
-                ]),
-              ),
-            ),
-            const SizedBox(height: AppTheme.s3),
-            Reveal(
-              index: 3,
-              child: GlassCard(
-                tint: waterBlue.withValues(alpha: 0.10),
-                padding: const EdgeInsets.all(AppTheme.s5),
-                onTap: () => _push(const WaterAiScreen()),
-                child: Row(children: [
-                  const Text('🤖', style: TextStyle(fontSize: 38)),
-                  const SizedBox(width: AppTheme.s4),
-                  Expanded(
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text('Irrigation AI', style: AppTheme.title3),
-                      const SizedBox(height: AppTheme.s1),
-                      Text('Tells you when to water each crop, how much, and holds back when rain is coming.',
                           style: AppTheme.callout),
                     ]),
                   ),
@@ -279,6 +260,66 @@ class _ScanRow extends StatelessWidget {
           Text('${r.confidence}%', style: AppTheme.caption),
         ]),
       ),
+    );
+  }
+}
+
+
+/// Today's herd care at a glance: the next water and feed, and vaccines to
+/// answer. Only shows once the farm has animals on the register.
+class _CareCard extends ConsumerWidget {
+  final VoidCallback onOpen;
+  const _CareCard({required this.onOpen});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sum = ref.watch(vaccineSummaryProvider);
+    if (sum == null || sum.total == 0) return const SizedBox.shrink();
+    final care = ref.watch(careProvider);
+    final store = ref.read(careProvider.notifier);
+    final now = TimeOfDay.now();
+    int mins(String t) {
+      final p = t.split(':');
+      return int.parse(p[0]) * 60 + int.parse(p[1]);
+    }
+
+    final open = <(String, String)>[
+      for (final t in care.settings.waterTimes) if (!store.done('water', t)) ('water', t),
+      for (final t in care.settings.feedTimes) if (!store.done('feed', t)) ('feed', t),
+    ]..sort((a, b) => mins(a.$2).compareTo(mins(b.$2)));
+    final nowM = now.hour * 60 + now.minute;
+    final overdue = [for (final o in open) if (mins(o.$2) <= nowM) o];
+    final next = open.where((o) => mins(o.$2) > nowM).firstOrNull;
+
+    String line;
+    if (overdue.isNotEmpty) {
+      final o = overdue.first;
+      line = '${o.$1 == 'water' ? 'Water' : 'Feed'} at ${o.$2} is not ticked off yet.';
+    } else if (next != null) {
+      line = 'Next: ${next.$1 == 'water' ? 'water' : 'feed'} at ${next.$2}.';
+    } else {
+      line = 'Everything for today is done.';
+    }
+    final vax = sum.needAttention == 0
+        ? 'All ${sum.total} animals have a vaccine record.'
+        : '${sum.needAttention} of ${sum.total} animals need a vaccine answer or booster.';
+    return GlassCard(
+      tint: (overdue.isNotEmpty || sum.needAttention > 0 ? AppTheme.warn : AppTheme.ok).withValues(alpha: 0.10),
+      padding: const EdgeInsets.all(AppTheme.s5),
+      onTap: onOpen,
+      child: Row(children: [
+        const Text('🗓️', style: TextStyle(fontSize: 38)),
+        const SizedBox(width: AppTheme.s4),
+        Expanded(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('Herd care today', style: AppTheme.title3),
+            const SizedBox(height: AppTheme.s1),
+            Text(line, style: AppTheme.callout),
+            Text(vax, style: AppTheme.footnote),
+          ]),
+        ),
+        Icon(Icons.chevron_right_rounded, color: AppTheme.textTertiary),
+      ]),
     );
   }
 }

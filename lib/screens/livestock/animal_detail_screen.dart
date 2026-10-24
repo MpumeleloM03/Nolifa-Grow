@@ -307,6 +307,7 @@ class _EventTile extends StatelessWidget {
       HealthKind.check => Icons.medical_services_outlined,
       HealthKind.treatment => Icons.healing_rounded,
       HealthKind.vaccination => Icons.vaccines_rounded,
+      HealthKind.notVaccinated => Icons.do_not_disturb_on_outlined,
       HealthKind.recovered => Icons.favorite_rounded,
       HealthKind.note => Icons.notes_rounded,
     };

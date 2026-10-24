@@ -38,7 +38,7 @@ class OrdersPage extends ConsumerWidget {
     final orders = ref.watch(hubOrdersProvider);
     return orders.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('Could not load orders: $e')),
+      error: (e, _) => Center(child: Text(friendlyError(e, doing: 'load orders'))),
       data: (all) {
         final toPick = all.where((o) => o.hubStage == 'received' && o.status == OrderStatus.findingDriver).toList();
         final done = all.where((o) => o.hubStage == 'released' || o.status != OrderStatus.findingDriver).take(8).toList();

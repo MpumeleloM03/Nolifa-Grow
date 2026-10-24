@@ -5,6 +5,7 @@ enum HealthKind {
   check('Symptom check'),
   treatment('Treatment'),
   vaccination('Vaccination'),
+  notVaccinated('Not vaccinated'),
   note('Note'),
   recovered('Recovered');
 

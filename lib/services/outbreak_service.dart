@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot;
+import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot, resilientRows;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/outbreak_report.dart';
@@ -15,7 +15,10 @@ class OutbreakService {
   Stream<List<OutbreakReport>> watchRecent({int days = 60}) {
     if (!SupabaseBoot.ready) return LocalBackend.instance.watchOutbreaks();
     final cutoff = DateTime.now().subtract(Duration(days: days));
-    return _db.from('outbreaks').stream(primaryKey: ['id']).map((rows) => [
+    return resilientRows(
+      open: () => _db.from('outbreaks').stream(primaryKey: ['id']),
+      fetch: () async => [for (final r in await _db.from('outbreaks').select()) Map<String, dynamic>.from(r)],
+    ).map((rows) => [
           for (final r in rows)
             OutbreakReport.fromMap(r['id'] as String, Map<String, dynamic>.from(r['data'] as Map)),
         ].where((o) => o.reportedAt.isAfter(cutoff)).toList());

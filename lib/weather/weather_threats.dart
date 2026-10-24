@@ -18,6 +18,7 @@ class WeatherThreat {
         'heat' => '🔥',
         'heavyRain' => '🌧️',
         'drySpell' => '🏜️',
+        'cold' => '🥶',
         _ => '💨',
       };
 }
@@ -46,7 +47,8 @@ const wetSensitive = {'Tomato', 'Potato', 'Carrot', 'Onion', 'Cabbage'};
 /// soonest first. Thresholds: frost at 2 C or less (0 C is a hard frost), heat
 /// at 35 C, heavy rain at 30 mm in a day or 60 mm over three, a dry spell is
 /// under 3 mm in a week with hot days, wind at 50 km/h.
-List<WeatherThreat> assessWeather(Forecast f, List<CropPlot> plots, DateTime now) {
+List<WeatherThreat> assessWeather(Forecast f, List<CropPlot> plots, DateTime now,
+    {int animals = 0, bool humidCoast = false}) {
   final out = <WeatherThreat>[];
   List<String> affected(Set<String> sensitive) =>
       [for (final p in plots) if (sensitive.contains(p.crop)) p.name];
@@ -112,6 +114,45 @@ List<WeatherThreat> assessWeather(Forecast f, List<CropPlot> plots, DateTime now
         affected(wetSensitive),
       ));
       break;
+    }
+  }
+
+  // Livestock. Humid coastal air (Greater Durban, the North and South Coast)
+  // makes cattle suffer from about 29 C, so the bar is lower there.
+  if (animals > 0) {
+    final heatAt = humidCoast ? 29.0 : 32.0;
+    for (final d in f.days) {
+      if (d.maxC >= heatAt) {
+        out.add(WeatherThreat(
+          'heat',
+          d.maxC >= heatAt + 4 ? 'red' : 'orange',
+          d.date,
+          'Heat stress for your herd ${dayName(d.date, now)}',
+          'Up to ${d.maxC.toStringAsFixed(0)} C${humidCoast ? ' with coastal humidity' : ''}. Animals eat less, drink far more and can collapse.',
+          [
+            'Fill every trough and check the water twice, not once',
+            'Give shade, and move animals off open ground from 11:00 to 16:00',
+            'Feed in the cool of early morning and evening',
+            'Watch for panting, drooling or animals standing apart, and call a vet early',
+          ],
+          const [],
+        ));
+        break;
+      }
+    }
+    for (final d in f.days) {
+      if (d.minC <= 7 && d.rainMm >= 8) {
+        out.add(WeatherThreat(
+          'cold',
+          d.minC <= 3 ? 'red' : 'orange',
+          d.date,
+          'Cold and wet for young animals ${dayName(d.date, now)}',
+          'Low of ${d.minC.toStringAsFixed(0)} C with ${d.rainMm.toStringAsFixed(0)} mm of rain. Calves, lambs and kids chill fast.',
+          ['Shelter young and weak animals out of the wind and wet', 'Give extra feed, they burn more energy to stay warm', 'Dry bedding, and check newborns at night'],
+          const [],
+        ));
+        break;
+      }
     }
   }
 

@@ -119,7 +119,7 @@ class InferenceService {
       };
     } catch (e) {
       return {
-        'label': 'Error: ${e.toString()}',
+        'label': 'Could not read this photo. Try again in better light.',
         'confidence': '0',
         'index': 0,
       };

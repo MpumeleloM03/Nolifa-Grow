@@ -1,3 +1,4 @@
+import 'package:ubuntu_core/ubuntu_core.dart' show friendlyError;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -113,7 +114,7 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
         SnackBar(
           behavior: SnackBarBehavior.floating,
           backgroundColor: AppTheme.danger,
-          content: Text('Could not save: $e'),
+          content: Text(friendlyError(e, doing: 'save this animal')),
         ),
       );
     }

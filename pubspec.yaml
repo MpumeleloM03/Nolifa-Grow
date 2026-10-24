@@ -15,6 +15,7 @@ dependencies:
 
   # Shared with the Ubuntu Drop app
   supabase_flutter: ^2.8.0
+  timezone: ^0.11.0
   ubuntu_core:
     path: packages/ubuntu_core
 

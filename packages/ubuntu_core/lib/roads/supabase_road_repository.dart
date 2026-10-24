@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../supabase/resilient.dart';
 import '../supabase/supabase_boot.dart';
 import 'road_models.dart';
 import 'road_repository.dart';
@@ -20,7 +21,10 @@ class SupabaseRoadRepository implements RoadRepository {
   Stream<List<RoadHazard>> watch() {
     // The longest-lived kind is 72 hours, so nothing older can be valid.
     final since = _clock().subtract(const Duration(hours: 72)).millisecondsSinceEpoch;
-    return _db.from('road_hazards').stream(primaryKey: ['id']).gt('last_seen', since).map((rows) => [
+    return resilientRows(
+      open: () => _db.from('road_hazards').stream(primaryKey: ['id']).gt('last_seen', since),
+      fetch: () async => [for (final r in await _db.from('road_hazards').select().gt('last_seen', since)) Map<String, dynamic>.from(r)],
+    ).map((rows) => [
           for (final r in rows) RoadHazard.fromJson({...Map<String, dynamic>.from(r['data'] as Map), 'id': r['id']}),
         ]);
   }
