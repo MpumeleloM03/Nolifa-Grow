@@ -200,7 +200,7 @@ class _RoadAlertsScreenState extends ConsumerState<RoadAlertsScreen> {
                         ),
                       const SizedBox(height: AppTheme.s4),
                       if (list.isEmpty)
-                        GlassCard(child: Text('No live warnings right now. Roads look clear.', style: AppTheme.callout))
+                        GlassCard(child: Text('No Nolifa driver has reported a hazard recently. That does not mean the roads are clear: this is not a traffic report.', style: AppTheme.callout))
                       else
                         for (final h in list)
                           Padding(
@@ -238,7 +238,7 @@ class RoadAlertsCard extends ConsumerWidget {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('Road alerts', style: AppTheme.headline),
-              Text(live.isEmpty ? 'No live warnings' : '${live.length} live ${live.length == 1 ? 'warning' : 'warnings'} from drivers', style: AppTheme.footnote),
+              Text(live.isEmpty ? 'None reported by drivers' : '${live.length} live ${live.length == 1 ? 'warning' : 'warnings'} from drivers', style: AppTheme.footnote),
             ]),
           ),
           Icon(Icons.chevron_right_rounded, color: AppTheme.textTertiary),
