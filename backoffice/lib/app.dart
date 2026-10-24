@@ -178,6 +178,7 @@ class _ShellState extends ConsumerState<Shell> {
       if (r.admin) ('Applications', Icons.assignment_ind_rounded, const ApplicationsPage()),
       if (r.admin) ('Drivers', Icons.two_wheeler_rounded, const DriverApplicationsPage()),
       if (r.admin) ('Plans', Icons.workspace_premium_rounded, const PlansPage()),
+      if (r.admin) ('Alerts', Icons.mark_email_unread_rounded, const OutboxPage()),
       if (r.admin) ('Memberships', Icons.card_membership_rounded, const MembershipsPage()),
       if (r.admin) ('Boreholes', Icons.water_rounded, const BoreholesPage()),
       if (r.vet) ('Vet cases', Icons.medical_services_rounded, const VetPage()),

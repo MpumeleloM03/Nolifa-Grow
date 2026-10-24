@@ -318,7 +318,7 @@ class _BackupSheet extends ConsumerWidget {
       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text('🔁 Backup suppliers for ${supplier.product}', style: AppTheme.title2),
         const SizedBox(height: 4),
-        Text('FNB-verified farms outside ${supplier.district} that can absorb volume while ${supplier.name} is cleared.',
+        Text('Nolifa-verified farms outside ${supplier.district} that can absorb volume while ${supplier.name} is cleared.',
             style: AppTheme.footnote),
         const SizedBox(height: AppTheme.s4),
         if (alts.isEmpty) Text('No verified backups for this product yet.', style: AppTheme.callout),

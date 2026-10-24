@@ -92,7 +92,7 @@ class DrivePage extends ConsumerWidget {
                               Icon(Icons.verified_rounded,
                                   size: 14, color: AppTheme.sprout),
                               const SizedBox(width: 4),
-                              Text('FNB-verified driver', style: AppTheme.caption),
+                              Text('Nolifa-verified driver', style: AppTheme.caption),
                             ]),
                           ]),
                     ),

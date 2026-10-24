@@ -691,8 +691,8 @@ class TrackingScreen extends ConsumerWidget {
                                   const SizedBox(width: 4),
                                   Text(
                                       o.driver == null
-                                          ? 'Nearest FNB-verified drivers notified'
-                                          : 'FNB-verified  •  4.9 ★',
+                                          ? 'Nearest Nolifa-verified drivers notified'
+                                          : 'Nolifa-verified  •  4.9 ★',
                                       style: AppTheme.caption),
                                 ]),
                               ]),

@@ -619,16 +619,16 @@ class KycStep {
 }
 
 const driverSteps = <KycStep>[
-  KycStep('id', 'Verify your ID with FNB', 'South African ID checked against Home Affairs', Icons.badge_rounded),
-  KycStep('selfie', 'Selfie match', 'Live selfie matched to your ID photo', Icons.face_retouching_natural_rounded),
-  KycStep('payout', 'Payout account', 'FNB account or Instant Money number', Icons.account_balance_wallet_rounded),
+  KycStep('id', 'Check your ID', 'Your South African ID number', Icons.badge_rounded),
+  KycStep('selfie', 'Selfie with your ID', 'A photo of you holding your ID', Icons.face_retouching_natural_rounded),
+  KycStep('payout', 'Payout account', 'Bank account or mobile money number', Icons.account_balance_wallet_rounded),
   KycStep('vehicle', 'Vehicle and safety', 'Bike, car or bakkie plus safety briefing', Icons.two_wheeler_rounded),
 ];
 
 const farmerSteps = <KycStep>[
-  KycStep('id', 'Verify your ID with FNB', 'South African ID checked against Home Affairs', Icons.badge_rounded),
+  KycStep('id', 'Check your ID', 'Your South African ID number', Icons.badge_rounded),
   KycStep('location', 'Pin your farm', 'GPS location confirmed on site', Icons.pin_drop_rounded),
-  KycStep('payout', 'Payout account', 'FNB account or Instant Money number', Icons.account_balance_wallet_rounded),
+  KycStep('payout', 'Payout account', 'Bank account or mobile money number', Icons.account_balance_wallet_rounded),
 ];
 
 

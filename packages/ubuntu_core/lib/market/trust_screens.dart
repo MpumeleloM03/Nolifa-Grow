@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
+import 'account_screens.dart' show driverApplicationScreenProvider, farmApplicationScreenProvider;
 import 'market_models.dart';
 import 'market_store.dart';
 import 'honesty.dart';
@@ -521,6 +522,11 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Where Nolifa runs on the shared database, verification is the real
+    // application that staff review. The tap-through steps below are only for
+    // phone-only mode and tests.
+    final real = ref.watch(widget.role == KycRole.driver ? driverApplicationScreenProvider : farmApplicationScreenProvider);
+    if (real != null) return real();
     final s = ref.watch(marketProvider);
     final steps = widget.role == KycRole.driver ? driverSteps : farmerSteps;
     final done = widget.role == KycRole.driver ? s.driverKyc : s.farmKyc;
@@ -544,7 +550,7 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
             Expanded(
               child: Text(
                   all
-                      ? 'You are FNB-verified. Buyers see your badge.'
+                      ? 'You are verified. Buyers see your badge.'
                       : widget.role == KycRole.driver
                           ? 'Finish all steps to go online and accept jobs.'
                           : 'Finish all steps to list produce. Buyers trust verified farms.',
@@ -595,7 +601,7 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
             ]),
           ),
         Text(
-            'Demo: each check is simulated. In production these call FNB identity services and Home Affairs.',
+            'Demo: each check is simulated and nothing is checked in phone-only mode. With the shared database on, people apply and Nolifa staff review their documents.',
             style: AppTheme.caption),
       ],
     );

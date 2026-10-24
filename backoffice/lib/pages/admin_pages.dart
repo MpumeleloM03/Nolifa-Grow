@@ -32,6 +32,7 @@ final _applications = StreamProvider((ref) => _live('farm_applications', 'uid'))
 final _driverApps = StreamProvider((ref) => _live('driver_applications', 'uid'));
 final _farmProfiles = StreamProvider((ref) => _live('farm_profiles', 'uid'));
 final _plans = StreamProvider((ref) => _live('seller_plans', 'uid'));
+final _outbox = StreamProvider((ref) => _live('outbox', 'id'));
 final _memberships = StreamProvider((ref) => _live('memberships', 'uid'));
 final _boreholes = StreamProvider((ref) => _live('borehole_requests', 'id'));
 final _reserves = StreamProvider((ref) => _live('water_reserves', 'id'));
@@ -397,6 +398,88 @@ class PlansPage extends ConsumerWidget {
                 _run(context, () => _db.rpc('set_seller_plan', params: {'p_uid': f['uid'], 'p_plan': v}), 'Plan set to $v.', 'change the plan');
               },
             ),
+          ),
+        ),
+    ]);
+  }
+}
+
+
+/// Every alert the system has queued for staff and vets, and whether the email
+/// went. This is where a judge can watch a request arrive.
+class OutboxPage extends ConsumerStatefulWidget {
+  const OutboxPage({super.key});
+
+  @override
+  ConsumerState<OutboxPage> createState() => _OutboxState();
+}
+
+class _OutboxState extends ConsumerState<OutboxPage> {
+  final _staff = TextEditingController();
+  final _vet = TextEditingController();
+  bool _sending = false;
+  bool _loaded = false;
+
+  @override
+  void dispose() {
+    _staff.dispose();
+    _vet.dispose();
+    super.dispose();
+  }
+
+  Future<void> _load() async {
+    try {
+      final c = await _db.rpc('get_notify_config') as Map?;
+      if (c != null && mounted) {
+        setState(() {
+          _staff.text = '${c['staff_email'] ?? ''}';
+          _vet.text = '${c['vet_email'] ?? ''}';
+          _sending = c['sending'] == true;
+        });
+      }
+    } catch (_) {}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_loaded) {
+      _loaded = true;
+      _load();
+    }
+    final rows = [...(ref.watch(_outbox).valueOrNull ?? const [])]..sort((a, b) => (b['id'] as num).compareTo(a['id'] as num));
+    return _pad([
+      Text('Alerts outbox', style: Theme.of(context).textTheme.headlineSmall),
+      const Text('Vet videos, borehole requests, new memberships and applications each queue an alert here. If a mail key is set, an email goes out within seconds. Video links are private and last 7 days.'),
+      const SizedBox(height: 12),
+      Row(children: [
+        Expanded(child: TextField(controller: _staff, decoration: const InputDecoration(labelText: 'Staff alerts go to'))),
+        const SizedBox(width: 12),
+        Expanded(child: TextField(controller: _vet, decoration: const InputDecoration(labelText: 'Vet alerts go to'))),
+        const SizedBox(width: 12),
+        FilledButton(
+          onPressed: () => _run(context, () => _db.rpc('set_notify_config', params: {'p_staff': _staff.text.trim(), 'p_vet': _vet.text.trim()}), 'Saved.', 'save that'),
+          child: const Text('Save'),
+        ),
+      ]),
+      const SizedBox(height: 8),
+      Row(children: [
+        OutlinedButton.icon(
+          onPressed: () => _run(context, () => _db.rpc('kick_outbox_now'), 'Asked the sender to send what is waiting.', 'start the sender'),
+          icon: const Icon(Icons.send_rounded),
+          label: const Text('Send waiting alerts now'),
+        ),
+        const SizedBox(width: 12),
+        Text(_sending ? 'Email sender is connected.' : 'Email sender is not connected yet.'),
+      ]),
+      const SizedBox(height: 12),
+      if (rows.isEmpty) const Text('Nothing queued yet.'),
+      for (final r in rows.take(100))
+        Card(
+          child: ListTile(
+            leading: Icon(r['status'] == 'sent' ? Icons.mark_email_read_rounded : r['status'] == 'failed' ? Icons.error_outline_rounded : Icons.schedule_rounded),
+            title: Text('${r['subject']}'),
+            subtitle: Text('${r['kind']}  ·  to ${r['to_email'] ?? 'nobody set'}  ·  ${r['status']}${r['error'] != null ? '  ·  ${r['error']}' : ''}\n${r['body']}'),
+            isThreeLine: true,
           ),
         ),
     ]);

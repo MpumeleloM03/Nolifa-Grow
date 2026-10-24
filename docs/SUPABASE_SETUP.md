@@ -96,3 +96,17 @@ Borehole discount and the 50 000 litre reserve are set in `public.borehole_confi
 - Migrations are pushed. The 9 live tests passed against it, then the test data was removed.
 - Email confirmation is OFF (`mailer_autoconfirm`) so judges can sign up at once. The built in mail sender allows only a few emails an hour. Before public launch add your own SMTP, then turn confirmation and CAPTCHA on.
 - No staff, certifier or verified rows exist yet. Add yours with the SQL in section 4.
+
+## Alerts to staff and vets
+
+Every vet video, vet visit request, borehole request, new membership and new application writes an alert to `public.outbox`. A server function (`supabase/functions/notify`) turns pending alerts into emails. Video links in the emails are private and expire after 7 days. Videos are never attached.
+
+- Who gets them: Back office, Alerts, "Staff alerts go to" and "Vet alerts go to". Both are `attiiweb15@gmail.com` for now.
+- The email sender needs a mail key. Until one is set, alerts wait in the outbox and show in Back office, Alerts. To set it:
+
+```bash
+supabase secrets set RESEND_API_KEY=re_xxxxx --project-ref ysjitrdzraofzfqhbcfp
+```
+
+Then press "Send waiting alerts now" in Back office, Alerts.
+- Resend's free plan only sends to the address you signed up with until you verify a domain. That is fine while you are the one receiving.
