@@ -70,6 +70,17 @@ update auth.users set raw_app_meta_data = raw_app_meta_data || '{"vet": true}' w
 
 The person signs out and in again to pick up the new token.
 
+Roles that open back office pages (add a row, then they sign in again):
+
+```sql
+insert into public.admins (uid) values ('<user id>');   -- applications, memberships, boreholes
+insert into public.vets (uid, name, practice) values ('<user id>', 'Dr Naidoo', 'Howick Vet');  -- vet cases
+```
+
+Turning a membership on: the farmer signs up in the app (status "awaiting payment"). When the first payment clears in the bank, an admin opens Back office, Memberships, and taps "Payment received". That starts the 24 month term.
+
+Borehole discount and the 50 000 litre reserve are set in `public.borehole_config` (member 10 percent and Max 15 percent are placeholders: set your real numbers).
+
 ## What stays on you
 
 - Verification: today a person is "verified" only when you add them to `verified_users`. Phone code checks (Supabase supports Twilio) or farm verification can fill that table automatically later.
