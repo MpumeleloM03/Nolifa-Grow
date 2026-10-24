@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'alert_actions.dart';
-import 'market_store.dart' show placeErrorProvider;
+import 'market_store.dart' show marketProvider, placeErrorProvider;
+import '../roads/road_screens.dart' show RoadAlertsCard;
+import '../water/water_screens.dart' show RealDamLevels;
 import 'glass_tab_bar.dart';
 import '../water/water_store.dart';
 import 'account_screens.dart';
@@ -89,6 +91,7 @@ class AlertsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final alerts = ref.watch(allAlertsProvider);
+    final cases = ref.watch(marketProvider.select((m) => m.cases));
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
@@ -97,26 +100,69 @@ class AlertsPage extends ConsumerWidget {
           delegate: ParallaxHeader(
             emoji: '🚨',
             title: 'Alerts',
-            subtitle: 'Water, power, roads, outbreaks near you',
+            subtitle: 'Water, roads and outbreaks near you',
             accent: AppTheme.danger,
             trailing: HeaderActions(onClose: onClose),
           ),
         ),
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(AppTheme.s6, 0, AppTheme.s6, 140),
-          sliver: SliverList.builder(
-            itemCount: alerts.length,
-            itemBuilder: (_, i) => Reveal(
-              index: i,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: AppTheme.s3),
-                child: AlertBanner(
-                  alert: alerts[i],
-                  onTap: () => handleAlert(context, ref, alerts[i]),
+          sliver: SliverList.list(children: [
+            // Alerts the app has worked out for this person.
+            for (var i = 0; i < alerts.length; i++)
+              Reveal(
+                index: i,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: AppTheme.s3),
+                  child: AlertBanner(
+                    alert: alerts[i],
+                    onTap: () => handleAlert(context, ref, alerts[i]),
+                  ),
                 ),
               ),
+            if (alerts.isEmpty)
+              Reveal(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: AppTheme.s3),
+                  child: GlassCard(
+                    tint: AppTheme.ok.withValues(alpha: 0.10),
+                    child: Row(children: [
+                      const Text('✅', style: TextStyle(fontSize: 30)),
+                      const SizedBox(width: AppTheme.s3),
+                      Expanded(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text('Nothing needs you right now', style: AppTheme.headline),
+                          Text('We watch dam levels, roads and outbreak reports for your area. A warning shows up here and as a notification the moment one appears.',
+                              style: AppTheme.footnote),
+                        ]),
+                      ),
+                    ]),
+                  ),
+                ),
+              ),
+            // What is being watched, always shown, so the page is never empty.
+            const Padding(padding: EdgeInsets.only(bottom: AppTheme.s3), child: RealDamLevels()),
+            const Padding(padding: EdgeInsets.only(bottom: AppTheme.s3), child: RoadAlertsCard()),
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppTheme.s3),
+              child: GlassCard(
+                child: Row(children: [
+                  const Text('🦠', style: TextStyle(fontSize: 28)),
+                  const SizedBox(width: AppTheme.s3),
+                  Expanded(
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text('Outbreak reports', style: AppTheme.headline),
+                      Text(
+                          cases.isEmpty
+                              ? 'No reports near you. Farmers file them in Nolifa Grow.'
+                              : '${cases.length} ${cases.length == 1 ? 'report' : 'reports'} from farms near you.',
+                          style: AppTheme.footnote),
+                    ]),
+                  ),
+                ]),
+              ),
             ),
-          ),
+          ]),
         ),
       ],
     );
