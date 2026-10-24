@@ -4,7 +4,9 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         SupabaseBoot,
         SupabaseMarketRepository,
         SupabaseWaterRepository,
+        farmApplicationScreenProvider,
         liveOverrides,
+        sellerApprovalProvider,
         LocalMarketRepository,
         LocalWaterRepository,
         marketNameProvider,
@@ -12,6 +14,8 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         marketUidProvider,
         waterRepositoryProvider,
         waterUtilityProvider;
+import '../members/application_screen.dart';
+import '../members/members_service.dart';
 import '../services/auth_service.dart';
 import '../water/supplier_store.dart';
 
@@ -34,6 +38,14 @@ List<Override> marketOverrides() => [
       waterRepositoryProvider.overrideWith((ref) => SupabaseBoot.ready
           ? SupabaseWaterRepository()
           : LocalWaterRepository()),
+      // Selling needs Nolifa staff to approve the farm application.
+      if (SupabaseBoot.ready) ...[
+        sellerApprovalProvider.overrideWith((ref) {
+          final st = ref.watch(applicationProvider.select((a) => a.valueOrNull?['status']));
+          return st == 'approved';
+        }),
+        farmApplicationScreenProvider.overrideWithValue(() => const FarmApplicationScreen()),
+      ],
       // A farm that registers as a water supplier can answer community requests.
       waterUtilityProvider.overrideWith((ref) => ref.watch(supplierProvider).supplier.enabled),
     ];

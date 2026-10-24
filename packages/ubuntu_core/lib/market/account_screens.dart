@@ -310,6 +310,9 @@ class _ProfileFormState extends ConsumerState<ProfileForm> {
 
 /// How a farmer starts selling on Nolifa Drop: register, get verified, choose
 /// a plan, and say how orders reach the customer.
+/// Opens the farm application form. Nolifa Grow supplies it.
+final farmApplicationScreenProvider = Provider<Widget Function()?>((ref) => null);
+
 class BusinessScreen extends ConsumerStatefulWidget {
   const BusinessScreen({super.key});
 
@@ -394,6 +397,22 @@ class _BusinessScreenState extends ConsumerState<BusinessScreen> {
           ),
         ]),
       ),
+      if (ref.watch(sellerApprovalProvider) != null || ref.watch(farmApplicationScreenProvider) != null)
+        _step(
+          1,
+          'Farm application',
+          s.serverApproved == true
+              ? 'Approved by Nolifa. Your identity, business, land and farm details are checked, and buyers see your farm profile.'
+              : 'We check your ID, your business, where the farm is and how big, your certificates, and how you look after your animals and crops. Nolifa staff review it before you sell.',
+          s.serverApproved == true,
+          s.serverApproved == true || ref.watch(farmApplicationScreenProvider) == null
+              ? null
+              : GlassButton(
+                  label: 'Open my application',
+                  icon: Icons.assignment_ind_rounded,
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ref.read(farmApplicationScreenProvider)!()))),
+        )
+      else ...[
       _step(
         1,
         'Register your business',
@@ -439,6 +458,7 @@ class _BusinessScreenState extends ConsumerState<BusinessScreen> {
                 icon: Icons.verified_user_rounded,
                 onPressed: () => go(const VerifyScreen(role: KycRole.farmer))),
       ),
+      ],
       _step(
         3,
         'Choose a plan',

@@ -319,6 +319,8 @@ class PinResult {
   bool get locked => outcome == PinOutcome.locked;
 }
 
+const Object _keep = Object();
+
 class MarketState {
   final List<Product> products;
   final List<MarketAlert> alerts;
@@ -345,6 +347,11 @@ class MarketState {
   final ProfileSettings profile;
   final BusinessProfile business;
 
+  /// What Nolifa's staff decided on this farm's application: true approved,
+  /// false not approved (yet), null when the app is not using applications
+  /// (the phone-only mode and the tests). Never saved: it comes from the server.
+  final bool? serverApproved;
+
   const MarketState({
     required this.products,
     required this.alerts,
@@ -370,6 +377,7 @@ class MarketState {
     this.stockApplied = const {},
     this.profile = const ProfileSettings(),
     this.business = const BusinessProfile(),
+    this.serverApproved,
   });
 
   MarketState copyWith({
@@ -397,6 +405,7 @@ class MarketState {
     Set<String>? stockApplied,
     ProfileSettings? profile,
     BusinessProfile? business,
+    Object? serverApproved = _keep,
   }) =>
       MarketState(
         products: products ?? this.products,
@@ -423,6 +432,7 @@ class MarketState {
         stockApplied: stockApplied ?? this.stockApplied,
         profile: profile ?? this.profile,
         business: business ?? this.business,
+        serverApproved: identical(serverApproved, _keep) ? this.serverApproved : serverApproved as bool?,
       );
 
   /// Risk for one supplier: the worst of the near-term forecast and any
@@ -513,6 +523,7 @@ class MarketState {
   }
 
   bool get canSell =>
+      serverApproved != false &&
       business.registered &&
       farmVerified &&
       business.planPaid &&
@@ -578,7 +589,7 @@ class MarketState {
       .fold(0.0, (s, o) => s + o.total);
 
   bool get driverVerified => driverKyc.length == driverSteps.length;
-  bool get farmVerified => farmKyc.length == farmerSteps.length;
+  bool get farmVerified => serverApproved ?? (farmKyc.length == farmerSteps.length);
 
   /// How ready this household is for a disruption, 0 to 100.
   int get resilience {
@@ -606,6 +617,11 @@ class MarketState {
 final marketStartsLiveProvider = Provider<bool>((ref) => false);
 
 final marketUidProvider = Provider<String>((ref) => 'guest');
+
+/// The decision on this farm's application, from the database. Null in apps and
+/// tests that do not use applications. Nolifa Grow supplies the real one.
+final sellerApprovalProvider = Provider<bool?>((ref) => null);
+
 
 final marketNameProvider = Provider<String>((ref) => 'Neighbour');
 
@@ -669,8 +685,31 @@ class MarketStore extends Notifier<MarketState> {
       if (_ready && !_disposed) _guard(_repo.savePrivate(_uid, _privateOf(next)));
     });
     _startsLive = ref.read(marketStartsLiveProvider);
+    ref.listen<bool?>(sellerApprovalProvider, (_, a) => _applyApproval(a));
+    Future.microtask(() {
+      if (!_disposed) _applyApproval(ref.read(sellerApprovalProvider));
+    });
     Future.microtask(_attach);
     return _startsLive ? _stripDemo(_demoState()) : _demoState();
+  }
+
+  /// Staff approval of the farm application opens the selling steps that the
+  /// application itself covers: business registered, identity checked, land shown.
+  void _applyApproval(bool? approved) {
+    if (_disposed) return;
+    if (approved != true) {
+      state = state.copyWith(serverApproved: approved);
+      return;
+    }
+    final b = state.business;
+    state = state.copyWith(
+      serverApproved: true,
+      business: b.copyWith(
+        registered: true,
+        evidenceDone: true,
+        provisionalSince: b.provisionalSince ?? DateTime.now().millisecondsSinceEpoch,
+      ),
+    );
   }
 
   /// True in the shipped apps: they never show demo content and the demo switch

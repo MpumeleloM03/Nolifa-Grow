@@ -1,3 +1,4 @@
+import '../members/borehole_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,6 +64,22 @@ class WaterSupplierScreen extends ConsumerWidget {
                       'Got a borehole, a dam or a tanker? Tell communities what you can spare. When one asks for help, you can answer.',
                       style: AppTheme.callout),
                   const SizedBox(height: AppTheme.s4),
+                  GlassCard(
+                    tint: _blue.withValues(alpha: 0.14),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BoreholeScreen())),
+                    child: Row(children: [
+                      const Text('⛏️', style: TextStyle(fontSize: 34)),
+                      const SizedBox(width: AppTheme.s3),
+                      Expanded(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text('Need a borehole?', style: AppTheme.headline),
+                          Text('Call Nolifa\'s trusted driller. Members get the drill at a discount.', style: AppTheme.footnote),
+                        ]),
+                      ),
+                      Icon(Icons.chevron_right_rounded, color: AppTheme.textTertiary),
+                    ]),
+                  ),
+                  const SizedBox(height: AppTheme.s3),
                   GlassCard(
                     tint: _blue.withValues(alpha: 0.10),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

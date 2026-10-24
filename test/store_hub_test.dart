@@ -945,7 +945,7 @@ void main() {
       await mount(tester, child: const GrowShell(), user: farmer);
       expect(find.text('Sawubona, Sipho'), findsOneWidget);
       expect(find.text('Scan a crop'), findsOneWidget);
-      expect(find.text('Check a sick animal'), findsOneWidget);
+      expect(find.text('Sick animal? Ask a vet'), findsOneWidget);
       for (final t in ['Home', 'Orders', 'Alerts', 'Settings']) {
         expect(find.text(t), findsWidgets);
       }

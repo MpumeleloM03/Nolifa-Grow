@@ -1,3 +1,4 @@
+import '../members/vet_screens.dart';
 import '../care/care_screen.dart';
 import '../care/care_store.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ import '../water/supplier_screen.dart';
 import '../weather/weather_card.dart';
 import '../screens/history_screen.dart';
 import '../screens/livestock/herd_screen.dart';
-import '../screens/livestock/symptom_checker_screen.dart';
 import '../services/auth_service.dart';
 import '../services/cattle_service.dart';
 import '../services/crop_scan.dart';
@@ -119,14 +119,14 @@ class _HomeTabState extends ConsumerState<HomeTab> {
               index: 1,
               child: _ScanCard(
                 emoji: '🐄',
-                title: 'Check a sick animal',
-                line: 'Tick the symptoms you see. Controlled diseases are flagged first.',
-                action: 'Check symptoms',
-                icon: Icons.medical_services_rounded,
+                title: 'Sick animal? Ask a vet',
+                line: 'Film it, and one of our vets will watch it, say what they think it is and why, and tell you what to do. Words alone cannot tell a vet what is wrong.',
+                action: 'Send a video to a vet',
+                icon: Icons.videocam_rounded,
                 accent: AppTheme.livestockAccent,
                 onTap: () {
                   HapticFeedback.mediumImpact();
-                  _push(const SymptomCheckerScreen());
+                  _push(const VetHomeScreen());
                 },
                 second: GlassButton(
                   label: head == null ? 'Your herd' : 'Your herd ($head head)',

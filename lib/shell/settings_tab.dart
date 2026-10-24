@@ -1,3 +1,8 @@
+import '../care/care_screen.dart';
+import '../members/application_screen.dart';
+import '../members/borehole_screen.dart';
+import '../members/membership_screen.dart';
+import '../members/vet_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -93,6 +98,13 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
                 ref.invalidate(authStateProvider);
               },
             ),
+            const SectionTitle('🩺', 'Membership and vets'),
+            _Row(Icons.verified_rounded, 'Nolifa membership', 'Member R3 000 or Max R7 000 a month, 24 months',
+                () => _push(const MembershipScreen())),
+            _Row(Icons.videocam_rounded, 'Ask a vet', 'Send a video, get a diagnosis, chat with the vet',
+                () => _push(const VetHomeScreen())),
+            _Row(Icons.event_available_rounded, 'Herd care', 'Water, feed and vaccine reminders',
+                () => _push(const CareScreen())),
             const SectionTitle('🚜', 'Farm'),
             _Row(Icons.agriculture_rounded, 'My farm', 'Size, soil, water sources and irrigation systems',
                 () => _push(const FarmSetupScreen())),
@@ -101,8 +113,12 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
             const SectionTitle('🛒', 'Selling'),
             _Row(Icons.storefront_rounded, 'Sell on Nolifa Drop',
                 'Registration, verification, plan and delivery', () => _push(const BusinessScreen())),
+            _Row(Icons.assignment_ind_rounded, 'Farm application', 'ID, land, certificates and how you farm',
+                () => _push(const FarmApplicationScreen())),
             _Row(Icons.water_drop_rounded, 'Water provider', 'Register as a supplier and help communities',
                 () => _push(const WaterSupplierScreen())),
+            _Row(Icons.water_rounded, 'Nolifa borehole', 'Call a trusted driller, member discount',
+                () => _push(const BoreholeScreen())),
             _Row(Icons.account_balance_wallet_rounded, 'Wallet and payouts', null,
                 () => _push(const WalletScreen())),
             const SectionTitle('📈', 'Proof'),
