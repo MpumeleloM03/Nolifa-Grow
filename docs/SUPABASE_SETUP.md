@@ -119,3 +119,12 @@ Then press "Send waiting alerts now" in Back office, Alerts.
 - TomTom's free tier allows 2 500 requests a day. This uses about 1 440 (5 areas, every 5 minutes).
 - In the apps, people see incidents within 25 km of them, each labelled "TomTom" with its age. Serious ones within 15 km also raise a notification while the app is open. Alerts when the app is closed need Apple and Google push, which are not set up yet.
 - Only drivers can report hazards. Customers read, they do not report.
+
+## Card payments (Yoco)
+
+A member taps "Pay by card". The server function `yoco-checkout` works out the price from the plan, creates a Yoco checkout and returns its address. After the card is accepted Yoco sends a signed message to `yoco-webhook`. That function checks the signature, that the message is under 3 minutes old and that the checkout is one we created, and only then switches the membership on. A forged, replayed or tampered message is refused. Tested live: tampered body, wrong secret, old message, no signature and a wrong checkout are all rejected, and one good message activates exactly once.
+
+- Secrets on the server: `YOCO_SECRET_KEY` (now a test key, `sk_test_...`) and `YOCO_WEBHOOK_SECRET` (from registering the webhook).
+- Going live later: change `YOCO_SECRET_KEY` to the live key, register a webhook with it (POST https://payments.yoco.com/api/webhooks, url `https://ysjitrdzraofzfqhbcfp.supabase.co/functions/v1/yoco-webhook`), and set the new `YOCO_WEBHOOK_SECRET`. No app change.
+- Yoco's checkout takes one payment at a time. The first month is charged in the app. Months 2 to 24 need Yoco's recurring product or a debit-order service. That is not built.
+- The return page after paying is `https://nolifa-backoffice.web.app/paid.html`.

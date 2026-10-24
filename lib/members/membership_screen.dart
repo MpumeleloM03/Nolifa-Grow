@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show friendlyError;
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'members_service.dart';
@@ -21,7 +22,24 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
   Tier _pick = Tier.member;
   bool _agree = false;
   bool _busy = false;
+  bool _test = false;
   String? _error;
+
+  Future<void> _pay() async {
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    try {
+      final c = await startCardPayment();
+      _test = c.test;
+      final ok = await launchUrl(Uri.parse(c.url), mode: LaunchMode.externalApplication);
+      if (!ok) _error = 'We could not open the payment page. Try again.';
+    } catch (e) {
+      _error = e is StateError ? e.message : friendlyError(e, doing: 'start the payment');
+    }
+    if (mounted) setState(() => _busy = false);
+  }
 
   Future<void> _join() async {
     setState(() {
@@ -73,11 +91,22 @@ class _MembershipScreenState extends ConsumerState<MembershipScreen> {
       ];
 
   List<Widget> _waiting(Membership m) => [
-        Text('Waiting for your first payment', style: AppTheme.title1),
+        Text('One step left: pay the first month', style: AppTheme.title1),
         const SizedBox(height: AppTheme.s2),
         Text(
-            'You asked to join as a ${m.tier.label} member at ${rand(m.tier.monthly)} a month. Nolifa will contact you with payment details. Your plan switches on when the first payment is confirmed, and the 24 months start that day.',
+            'You asked to join as a ${m.tier.label} member at ${rand(m.tier.monthly)} a month. Pay the first month by card. Your plan switches on the moment the payment is confirmed, and the 24 months start that day.',
             style: AppTheme.callout),
+        const SizedBox(height: AppTheme.s3),
+        if (_test)
+          GlassCard(
+            tint: AppTheme.warn.withValues(alpha: 0.14),
+            child: Text('TEST MODE. No real money is taken. On the payment page use the test card details from the Yoco test card list.', style: AppTheme.footnote.copyWith(color: AppTheme.textPrimary)),
+          ),
+        if (_error != null) Padding(padding: const EdgeInsets.only(top: AppTheme.s2), child: Text(_error!, style: AppTheme.footnote.copyWith(color: AppTheme.danger))),
+        const SizedBox(height: AppTheme.s3),
+        GlassButton(label: _busy ? 'Opening payment' : 'Pay ${rand(m.tier.monthly)} by card', icon: Icons.credit_card_rounded, onPressed: _busy ? null : _pay),
+        const SizedBox(height: AppTheme.s2),
+        Text('After paying, come back to this screen. It updates by itself.', style: AppTheme.caption),
       ];
 
   List<Widget> _offer() => [

@@ -53,6 +53,26 @@ final membershipProvider = StreamProvider<Membership?>((ref) {
 Future<void> joinMembership(Tier t) =>
     SupabaseBoot.client.rpc('join_membership', params: {'p_tier': t.name});
 
+/// What the server gave back for a card payment: where to pay, and whether the
+/// card service is in test mode (no real money).
+class CardCheckout {
+  final String url;
+  final bool test;
+  final int amountCents;
+  const CardCheckout(this.url, this.test, this.amountCents);
+}
+
+/// Asks the server to start a Yoco card payment for the membership waiting for
+/// payment. The price is worked out on the server.
+Future<CardCheckout> startCardPayment() async {
+  final r = await SupabaseBoot.client.functions.invoke('yoco-checkout', body: const {});
+  final d = r.data;
+  if (d is! Map || d['url'] == null) {
+    throw StateError((d is Map ? d['error'] : null)?.toString() ?? 'Payments are not available right now.');
+  }
+  return CardCheckout(d['url'] as String, d['mode'] == 'test', (d['amount'] as num?)?.toInt() ?? 0);
+}
+
 /// Videos this farmer can still send this month.
 final videosLeftProvider = FutureProvider<int>((ref) async {
   ref.watch(membershipProvider);

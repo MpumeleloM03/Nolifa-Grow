@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nolifa payment</title>
+<style>
+  body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f3f7f4;font-family:system-ui,-apple-system,sans-serif;color:#0b1f17}
+  main{max-width:420px;padding:32px;text-align:center}
+  h1{font-size:26px;margin:0 0 10px}
+  p{font-size:16px;line-height:1.5;color:#3d5a4d;margin:0}
+  .dot{width:56px;height:56px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;font-size:28px;color:#fff}
+</style>
+</head>
+<body>
+<main>
+  <div class="dot" id="dot"></div>
+  <h1 id="h"></h1>
+  <p id="p"></p>
+</main>
+<script>
+  var q = new URLSearchParams(location.search);
+  var ok = q.get('ok'), cancelled = q.get('cancelled');
+  document.getElementById('dot').style.background = ok ? '#1e7a5c' : cancelled ? '#8a8f8c' : '#d94141';
+  document.getElementById('dot').textContent = ok ? '✓' : cancelled ? '—' : '!';
+  document.getElementById('h').textContent = ok ? 'Payment received' : cancelled ? 'Payment cancelled' : 'Payment did not go through';
+  document.getElementById('p').textContent = ok
+    ? 'Thank you. Go back to the Nolifa app. Your membership switches on within a few seconds.'
+    : cancelled ? 'No money was taken. Go back to the Nolifa app to try again.'
+    : 'No money was taken. Go back to the Nolifa app and try again, or use another card.';
+</script>
+</body>
+</html>
