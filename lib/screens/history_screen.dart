@@ -1,11 +1,13 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import '../theme/app_theme.dart';
 import '../models/diagnosis_record.dart';
 import '../models/disease_info.dart';
 import '../services/history_service.dart';
 import 'result_screen.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 
@@ -108,7 +110,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             IconButton(
               icon: const Icon(Icons.delete_outline),
               onPressed: _clearHistory,
-              tooltip: 'Clear history',
+              tooltip: tr('Clear history'),
             ),
         ],
       ),

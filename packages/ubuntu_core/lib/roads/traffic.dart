@@ -119,6 +119,7 @@ final trafficIncidentsProvider = StreamProvider<List<TrafficIncident>>((ref) {
   return resilientRows(
     open: () => db.from('traffic_incidents').stream(primaryKey: ['id']),
     fetch: () async => [for (final r in await db.from('traffic_incidents').select()) Map<String, dynamic>.from(r)],
+    cacheKey: '${db.auth.currentUser?.id ?? 'anon'}:traffic_incidents',
   ).map((rows) => [for (final r in rows) TrafficIncident.fromRow(r)]);
 });
 

@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'trust_screens.dart' show ScreenFrame;
 
+import '../tr_text.dart' show Text;
 /// A short, plain note that something here is simulated in the prototype.
 /// Shown where a judge or a farmer might otherwise assume it is real.
 class PrototypeNotice extends StatelessWidget {

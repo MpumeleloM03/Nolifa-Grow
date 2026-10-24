@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
 import 'overview_page.dart';
 import 'stock_page.dart' show d;
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// Which rooms a certifier has passed, until when, and a form for a certifier
 /// to record a new inspection. A room cannot take goods without a valid one.
 class CertsPage extends ConsumerStatefulWidget {

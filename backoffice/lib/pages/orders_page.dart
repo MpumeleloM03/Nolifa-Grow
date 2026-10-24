@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:printing/printing.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
@@ -6,6 +6,7 @@ import '../app.dart';
 import '../labels.dart';
 import 'stock_page.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// What has already been cut for an order, saved so a refresh or a second
 /// person at another screen cannot cut the same line twice.
 class CutLine {

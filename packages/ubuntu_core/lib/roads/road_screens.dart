@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../market/market_store.dart' show marketUidProvider;
@@ -9,6 +9,7 @@ import 'road_models.dart';
 import 'road_store.dart';
 import 'traffic.dart';
 
+import '../tr_text.dart' show Text;
 /// Where the driver is right now as (latitude, longitude), or null when
 /// location is off or refused. The driver app supplies the real GPS reading.
 final reportLocationProvider =

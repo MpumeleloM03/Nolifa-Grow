@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
@@ -8,6 +8,7 @@ import 'market_store.dart';
 import 'market_widgets.dart';
 import 'trust_screens.dart';
 
+import '../tr_text.dart' show Text;
 /// Supply Risk Radar: the business-facing side of Nolifa Drop.
 ///
 /// Retailers, processors and restaurants see verified disease risk around the

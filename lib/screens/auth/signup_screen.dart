@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/auth_service.dart';
@@ -6,6 +6,7 @@ import '../../services/region_service.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/glass.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
@@ -127,9 +128,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                                   label: 'Password',
                                   icon: Icons.lock_outline_rounded,
                                   obscure: _hide,
-                                  validator: (v) => (v == null || v.length < 6)
-                                      ? 'At least 6 characters'
-                                      : null,
+                                  validator: (v) => (v == null || v.length < 8)
+                                      ? 'At least 8 characters'
+                                      : (!RegExp(r'[A-Za-z]').hasMatch(v) || !RegExp(r'\d').hasMatch(v))
+                                          ? 'Use letters and a number'
+                                          : null,
                                   trailing: IconButton(
                                     icon: Icon(
                                       _hide

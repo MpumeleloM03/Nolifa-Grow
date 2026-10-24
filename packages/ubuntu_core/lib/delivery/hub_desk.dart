@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../market/market_models.dart';
@@ -9,6 +9,8 @@ import '../theme/glass.dart';
 import '../warehouse/warehouse_screens.dart';
 import '../warehouse/warehouse_store.dart';
 
+import '../tr_text.dart' show Text;
+import '../tr.dart' show tr, trn;
 /// True when the signed-in person works at a hub (the `hub` permission). Apps
 /// override this from the sign-in token. In demo mode the desk is open to
 /// everyone so it can be shown.
@@ -180,9 +182,9 @@ class _HubOrderState extends ConsumerState<_HubOrder> {
                 style: AppTheme.body,
                 decoration: InputDecoration(
                   counterText: '',
-                  hintText: 'Code from the slip',
+                  hintText: tr('Code from the slip'),
                   hintStyle: AppTheme.subhead,
-                  errorText: _error,
+                  errorText: trn(_error),
                   filled: true,
                   fillColor: AppTheme.glassFill,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppTheme.rChip)),

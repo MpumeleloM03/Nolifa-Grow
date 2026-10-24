@@ -1849,7 +1849,7 @@ class MarketStore extends Notifier<MarketState> {
     if (o.driverIsMe && o.driverPay > 0) {
       driver += o.driverPay;
       entries.add(LedgerEntry('Delivery payout',
-          '${o.id} · ${Fees.driverShare * 100 ~/ 1}% of the delivery fee', o.driverPay,
+          '${o.id} · R12 plus R2.50 a km', o.driverPay,
           LedgerKind.driver, now));
     }
     state = state.copyWith(

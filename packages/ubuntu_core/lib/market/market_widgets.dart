@@ -1,9 +1,10 @@
 import 'dart:math' as math;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'market_models.dart';
 
+import '../tr_text.dart' show Text;
 String rand(num v, {int decimals = 0}) {
   final s = v.toStringAsFixed(decimals);
   final parts = s.split('.');

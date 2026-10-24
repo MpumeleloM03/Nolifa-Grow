@@ -256,8 +256,12 @@ class WaterStore extends Notifier<WaterState> {
     _repoZones = zones;
     final real = [for (final f in _feed) if (!zones.any((z) => z.id == f.zone.id)) f];
     final sorted = [...zones, for (final f in real) f.zone]..sort((a, b) => a.name.compareTo(b.name));
+    // The cloud copy of a dam zone is the shared one (votes and the provider
+    // work on it), but the phone's own rain-adjusted forecast is richer than
+    // two weekly points, so it keeps the feed's forecast for the same id.
+    FeedZone? feedOf(String id) => _feed.where((f) => f.zone.id == id).firstOrNull;
     state = state.copyWith(zones: sorted, forecasts: {
-      for (final z in sorted) z.id: real.where((f) => f.zone.id == z.id).firstOrNull?.forecast ?? forecastWater(z.readings)
+      for (final z in sorted) z.id: feedOf(z.id)?.forecast ?? forecastWater(z.readings)
     });
   }
 
@@ -304,13 +308,13 @@ class WaterStore extends Notifier<WaterState> {
   void _savePrefs() => _guard(_live.savePrefs(_uid, state.prefs));
 
   /// Adds this person's voice to their community's request for water.
-  Future<VoteResult> vote() async {
+  Future<VoteResult> vote({bool dryTaps = false}) async {
     final zone = state.myZone;
     if (zone == null) return VoteResult.notEligible;
     if (ref.read(requireVerifiedVotesProvider) && !ref.read(marketProvider).isVerifiedMember) {
       return VoteResult.notVerified;
     }
-    final result = await _active.vote(zone, _uid);
+    final result = await _active.vote(zone, _uid, dryTaps: dryTaps);
     if (result == VoteResult.counted || result == VoteResult.alreadyVoted) {
       final i = activeIncidentFor(
           await _active.watchIncidents().first, zone.id);

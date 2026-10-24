@@ -1,0 +1,318 @@
+1760	Kuthengiswe ku-auction yaseDundee
+1762	Izibuyekezo ze-Nolifa
+1763	Siyakwamukela futhi okudinga wena
+1764	Izikhumbuzo zokunakekela umhlambi
+1765	Izikhumbuzo zamanzi, ukudla nokugoma
+1766	Izitshalo eziphilile
+1767	Okuxubile
+1768	I-alamu, izinto ezingu-{0} zidinga ukunakwa kwakho
+1769	I-alamu, akukho okudinga wena
+1770	I-alamu
+1771	Akukho okudinga wena okwamanje. Amanzi alungile, awekho amaqubuko ephuthumayo, awekho ama-oda alindile.
+1772	{0} amanzi {1}
+1773	Cishe izinsuku ezingu-{0} kuze kube yingozi
+1774	Vota futhi wengeze ezwini lomphakathi
+1775	Isimo sezulu
+1776	{0} ama-oda alindele ukupakishwa nokuthunyelwa
+1777	Amaqubuko aphuthumayo endaweni yakho
+1778	Imibiko engu-{0} e-{1}
+1779	Epulazini lakho
+1780	Kuphuthuma
+1781	Qapha
+1782	Amaqubuko nezexwayiso
+1783	Amaqubuko eduze kwe-{0}
+1784	Isikrini esigcwele
+1785	Bika iqubuko
+1786	{0} amanzi, izinsuku ezi-7 ezizayo
+1787	Izexwayiso zomphakathi
+1788	Izexwayiso zomphakathi ({0})
+1789	Izexwayiso zomphakathi yilokho omakhelwane abakubikayo futhi baxoxe ngakho. Izexwayiso zepulazi lakho zingaphansi kwe-alamu phezulu kwesokunxele.
+1790	Isifo semfuyo esibikwe abalimi abaseduze.
+1791	Hlukanisa izilwane ezigulayo
+1792	Biza udokotela wakho wezilwane noma udokotela wezilwane kahulumeni
+1793	Inkinga yesitshalo ebikwe abalimi abaseduze.
+1794	Skena iqabunga ukubona ukuthi yini
+1795	Susa izitshalo ezithintekile kakhulu
+1796	{0}  •  imibiko engu-{1}
+1797	Imfuyo
+1798	Isitshalo
+1799	Ukuthi yini
+1800	Okufanele ukwenze
+1801	Imibiko ikhombisa indawo, hhayi ipulazi. Izindawo ziyaqoqwa cishe ku-5 km.
+1802	Iphilile
+1803	Kubikiwe. Sekusemephini manje.
+1804	Kuvela kumephu ngokushesha. Amanye amapulazi athola isexwayiso uma omakhelwane ababili beqinisekisa.
+1805	🌿 Isitshalo
+1806	Ubonani?
+1807	Umbiko wakho ubekwa esifundeni sakho, hhayi epulazini lakho. Khetha Kuphuthuma ngezifo ezilawulwayo noma ukusabalala okusheshayo.
+1808	Thumela umbiko
+1809	Ama-oda
+1810	Izexwayiso
+1811	Sawubona, {0}
+1812	Vikela ipulazi lakho nomphakathi wakho
+1813	Ukuskena kwakamuva
+1814	Bona konke
+1815	Ukuskena kwakho kuzovela lapha.
+1816	Skena isitshalo
+1817	Thatha isithombe seqabunga. Thola isifo nokuthi wenzeni, ngisho ngaphandle kophawu.
+1818	Vula ikhamera
+1819	I-AI yempilo yezitshalo: izitshalo zami
+1820	Isilwane sigulile? Buza udokotela wezilwane
+1821	Rekhoda, futhi omunye wodokotela bethu wezilwane uzobuka, athi uthi yini nokuthi kungani, futhi akutshele ukuthi wenzeni. Amazwi odwa awakwazi ukutshela udokotela wezilwane ukuthi kuphi okungalungile.
+1822	Thumela ividiyo kudokotela wezilwane
+1823	Umhlambi wakho
+1824	Umhlambi wakho (izinhloko ezingu-{0})
+1825	Irada yamanzi
+1826	Isibikezelo sokunikezwa, izinsuku zethange zomhlambi wakho, nosizo endaweni yakho.
+1827	Unebhorehole noma ithanka? Siza umphakathi osedinga.
+1828	{0} ngo-{1} akukamakwa.
+1829	Okulandelayo: {0} ngo-{1}.
+1830	Konke kwanamuhla kwenziwe.
+1831	Zonke izilwane ezingu-{0} zinerekhodi legomo.
+1832	{0} kwezilwane ezingu-{1} zidinga impendulo yegomo noma igomo lokuvuselela.
+1833	Ukunakekela umhlambi namuhla
+1834	Ukuthengisa nge-Nolifa Drop
+1835	Idemo
+1836	Kugciniwe kule foni kuphela. Omakhelwane abakwazi ukubona isitoko sakho okwamanje.
+1837	Izaziso
+1838	Ama-oda atholiwe
+1839	{0} okufanele kuthunyelwe
+1840	Awekho ama-oda okwamanje. Isitoko sakho sibonakala komakhelwane abaseduze.
+1841	Awekho ama-oda okwamanje. Avela lapha uma isitoko sakho sabelwana nomakhelwane.
+1842	Qeda ukumisa isitolo sakho futhi ama-oda azovela lapha.
+1843	Isitoko sami
+1844	Engeza isitoko
+1845	Ukuqala ngokushesha: engeza uhla lwe-Fatboy Butcheries
+1846	Kwengeziwe imikhiqizo engu-{0} esitolo se-Fatboy Butcheries.
+1847	Engeza isitoko sakho sokuqala ngomzuzu. Omakhelwane abaseduze bangasithenga namuhla.
+1848	Ungabhala isitoko uma isitolo sakho sibhalisiwe, siqinisekisiwe futhi sinohlelo.
+1849	Imali
+1850	Isikhwama
+1851	Izinkokhelo nezirisidi
+1852	Izinhlelo
+1853	Nciphisa ikhomishini yakho
+1854	Icala livuliwe ku-{0} kusuka ku-{1}
+1855	{0} ikhokhelwe ku-{1}
+1856	{0} uyalile {1} izinto{2}, {3}. Yipakishe uyithumele.
+1857	{0} kulethwe ku-{1}. Inkokhelo ilandela uma beqinisekisa.
+1858	{0} ye-{1} isendleleni
+1859	Uthole
+1860	kanye nokungaba cishe {0} okusazofika
+1861	okufanele kuthunyelwe
+1862	kusendleleni
+1863	ama-oda onke
+1864	Ukuthengisa ngemikhawulo
+1865	Isitolo sakho sivulekile
+1866	Qeda ukumisa ukuze uqale ukuthengisa
+1867	Imikhiqizo emisha kuphela, kuze kufike ku-{0} ngaphezulu. Bhuka ukuhlolwa kwakho ukuze ususe imikhawulo. Izinsuku ezingu-{1} ezisele.
+1868	Uhlelo lwe-{0}, ikhomishini engu-{1}%, {2}
+1869	Bhalisa, qinisekiswa, khetha uhlelo bese ukhombisa umhlaba wakho
+1870	Vula →
+1871	🌿 Izitshalo
+1872	🐄 Imfuyo
+1873	🌾 Kokubili
+1874	Izilungiselelo
+1875	Isifunda
+1876	Ubulungu nodokotela bezilwane
+1877	Ubulungu be-Nolifa
+1878	Ilungu u-R3 000 noma i-Max u-R7 000 ngenyanga, izinyanga ezingu-24
+1879	Buza udokotela wezilwane
+1880	Thumela ividiyo, uthole ukuxilongwa, uxoxe nodokotela wezilwane
+1881	Izikhumbuzo zamanzi, ukudla negomo
+1882	Ipulazi
+1883	Usayizi, umhlaba, imithombo yamanzi nezinhlelo zokunisela
+1884	Indawo yokugcina impahla ye-Nolifa
+1885	Beka isitoko, usibone sinamatag futhi sigcinwe sibanda
+1886	Ukuthengisa
+1887	Thengisa ku-Nolifa Drop
+1888	Ukubhalisa, ukuqinisekiswa, uhlelo nokulethwa
+1889	Isicelo sepulazi
+1890	I-ID, umhlaba, amasertifikhethi nendlela olima ngayo
+1891	Bhalisa njengomphakeli futhi usize imiphakathi
+1892	Ibhorehole ye-Nolifa
+1893	Biza umgubhi othembekile, isaphulelo samalungu
+1894	Isikhwama nezinkokhelo
+1895	Ubufakazi
+1896	Ubufakazi bomthelela
+1897	Ukunemba, ukuhlolwa kwezibikezelo namanzi alondoloziwe, kukalwe lapha
+1898	Uhlelo
+1899	Ulimi
+1900	Ukwethembeka nokuphepha
+1901	I-escrow, izimpikiswano, imodi yedemo noma ephilayo
+1902	Mayelana ne-Nolifa Grow
+1903	Phuma
+1904	Susa i-akhawunti yami
+1905	Isusa i-akhawunti yakho, umhlambi, izithombe namadokhumenti
+1906	{0} ama-oda okufanele athunyelwe
+1907	{0} amaqubuko aphuthumayo eduze kwakho
+1908	Konke kubukeka kuzolile epulazini.
+1909	{0} amanzi {1} ({2}%)
+1910	Siyakwamukela futhi, {0}
+1911	Yinike igama, njengo-Izaqathi 5kg
+1912	Gcina igama ngaphansi kwezinhlamvu ezingu-{0}
+1913	Faka intengo ngama-Rand
+1914	Faka ukuthi unangaki
+1915	{0} {1} ibhaliwe. {2} esitokweni ngo-{3} ngo{4}
+1916	🌱 Engeza isitoko
+1917	Omakhelwane abaseduze bayabona ngokushesha lapho ugcina.
+1918	Kugciniwe kule foni. Omakhelwane bayabona uma isitolo sakho sabelwana.
+1919	Uthengisani? (isb. Izaqathi 5kg)
+1920	Intengo evamile (R)
+1921	Intengo ngama-Rand
+1922	Kangaki
+1923	Kuthengiswa ngo
+1924	♻️ Thengisa ngokushesha ngesaphulelo
+1925	Omakhelwane bakhokha {0} ({1}% ngaphansi kuka-{2}).
+1926	Isiqandisi noma ukugcwala kuyeza? Thatha u-{0}% ukuze kuthengiswe namuhla.
+1927	Khomba
+1928	L ngosuku
+1929	Awekho amazinga ezilwane abaliwe okwamanje. Setha inani lezinhloko ukuze ubone abakuphuzayo.
+1930	Umhlambi wakho udinga cishe amalitha angu-{0} ngosuku, ku-{1} amalitha ngenhloko.
+1931	Ithange endaweni: {0} L
+1932	Alikho ithange elilondoloziwe okwamanje. Engeza usayizi walo kuhlelo lwakho lwamanzi.
+1933	Izinsuku ezingu-{0} zomhlambi
+1934	Kubalwe kurejista yomhlambi wakho. Izimbuzi nezimvu zibalwa njengengxenye yenkomo, ngoba ziphuza kancane.
+1935	Hhayi kurejista yomhlambi wakho? Setha inani lezinhloko ngesandla.
+1936	Kubuyiselwe imali
+1937	Kukhokhiwe
+1938	Icala livuliwe
+1939	Kulungele ukulethwa
+1940	Kuphumile ukulethwa
+1941	Kusha
+1942	Kulindwe umshayeli
+1943	Umshayeli usendleleni
+1944	Isendleleni
+1945	Kulethiwe
+1946	Isitaladi sakho
+1947	Ukuthengisa
+1948	Uyathola
+1949	Uthola cishe
+1950	Umshayeli: {0}
+1951	Uletha lena wena uqobo
+1952	Kupakishiwe, ngiyaletha
+1953	Kupakishiwe, cela umshayeli
+1954	Thatha lokhu uye ku-{0}
+1955	Ku-hab, kulindelwe ukuhlolwa kokungena
+1956	Kuhlolwe ukungena ku-hab
+1957	Lo mthengi ungamakhilomitha angu-{0} ukude, ngakho umshayeli we-hab uletha ingxenye yokugcina. Bhala le khodi esikhwameni sokupakisha: {1}
+1958	Ikhodi ye-hab {0}. Umshayeli wengxenye yokugcina uyilanda uma i-hab iyikhulula.
+1959	Ngikhiphe ku-hab
+1960	Kulethiwe, faka i-PIN yekhasimende
+1961	Ama-oda amasha
+1962	Ama-oda angaphambilini
+1963	Kuthengisiwe konke
+1964	Kumiswe
+1965	Kusele {0} kuphela
+1966	Kusesitokweni
+1967	Unangaki o-{0}?
+1968	Isetha inani ngenombolo oyibhalayo.
+1969	Amayunithi asesitokweni
+1970	Intengo entsha ye-{0}
+1971	Intengo ephansi ikhombisa endala iwunqunyiwe.
+1972	Intengo ngama-Rand (ngo{0})
+1973	Isitoko asikabalwa
+1974	Setha inani
+1975	Shintsha intengo
+1976	Kumiswe, abathengi abakwazi ukukubona
+1977	Akusekho esitokweni. Gcwalisa ukuze uthengise futhi
+1978	Kuyathengiswa manje
+1979	Umakhelwane
+1980	Khona manje
+1981	Imizuzu engu-{0} edlule
+1982	Amahora angu-{0} edlule
+1983	Izinsuku ezingu-{0} edlule
+1984	Umakhelwane
+1985	Ipulazi lendawo
+1986	Ipulazi luka-{0}
+1987	Faka inombolo
+1988	Kumele kube ngaphezu kwezero
+1989	Gcina ngaphansi kuka-{0}
+1990	Izinombolo ezigcwele kuphela
+1991	Umhlinzeki wamanzi
+1992	Siza umphakathi uthole amanzi
+1993	Unebhorehole, idamu noma ithanka? Tshela imiphakathi ongakusindisa. Uma omunye ecela usizo, ungaphendula.
+1994	Udinga ibhorehole?
+1995	Biza umgubhi othembekile we-Nolifa. Amalungu athola isaphulelo ekugubheni.
+1996	Ngingakwazi ukuhlinzeka ngamanzi
+1997	Imiphakathi engaphakathi kwama-km angu-{0} ingabona umnikelo wakho.
+1998	Vula ukubhalisa ipulazi lakho njengomhlinzeki.
+1999	Umthombo
+2000	Ilori yethanka
+2001	Idamu noma umfula
+2002	Amathange emvula
+2003	Amalitha ongawasindisa ngosuku
+2004	Ibanga ongafinyelela kulo (km)
+2005	Ngingakwazi ukukuletha
+2006	Mahhala emphakathini
+2007	Ngexabiso (uphethiloli nesikhathi)
+2008	Imiphakathi icela amanzi
+2009	Akukho mphakathi ocela okwamanje. Uma omunye ufinyelela inhloso yawo yokuvota ubona lapha.
+2010	Ipulazi lendawo
+2011	Usizo lwakho kuze kube manje
+2012	{0}: {1} L, cishe imizuzu engu-{2}
+2013	Vula ideski lomhlinzeki
+2014	Kumodi yedemo lokhu kusebenza efonini. Ngenethiwekhi yangempela, amapulazi avunywa njengabaphakeli kuqala ukuze kuphendule abasizi bangempela kuphela.
+2015	Umphakathi
+2016	{0}{1} kwamavoti angu-{2}{3}
+2017	{0} amaloli{1}, cishe imizuzu engu-{2}. {3}
+2018	Maka njengokulethiwe
+2019	Nikeza usizo
+2020	umphakathi
+2021	Kusaqoqwa amavoti. Unganikela uma isithunyelwe.
+2022	Usizo seluse endleleni.
+2023	{0} uletha amalitha angu-{1} kusuka ku-{2}, {3}.
+2024	Ayikwazanga ukuthumela umnikelo. Abaphakeli abagunyaziwe kuphela abangaphendula izicelo kunethiwekhi yangempela.
+2025	Siza {0}
+2026	Umphakathi ubona ukuthi ubani oyeza nokuthi nini.
+2027	Amalitha owalethayo
+2028	Imizuzu kuze ufike
+2029	Thumela umnikelo wami
+2030	ngexabiso
+2031	Amathafa akho asengozini: {0}
+2032	Siyathola isibikezelo
+2033	Asikho isibikezelo okwamanje. Sidinga uphawu kanye, bese sigcinwa ukuze usisebenzise ungekho ku-inthanethi.
+2034	Isimo sezulu, {0}
+2035	Isibikezelo sedemo
+2036	Isibikezelo esigciniwe
+2037	Awekho amathrethi esimo sezulu kuleli sonto.
+2038	Eduze nawe
+2039	richards bay
+2040	Isiqandisi esibi {0}
+2041	Ingozi yesiqandisi {0}
+2042	Okuphansi {0} C. Izitshalo ezithambile zingashiswa ubusuku obubodwa.
+2043	Vala izitshalo ezithambile ngendwangu noma ipulasitiki ngaphambi kokushona kwelanga
+2044	Nisela umhlaba ntambama. Umhlaba omanzi ubamba ukushisa ubusuku bonke
+2045	Vuna okucishe kulungele. Kuthengise ngokushesha ku-Nolifa Drop njengesivumelwano sokusindisa
+2046	Ukushisa {0}
+2047	Kufika ku-{0} C. Izitshalo ziyaphuphuma futhi izimbali ziyawa.
+2048	Nisela ekuseni kakhulu nakusihlwa, hhayi emini
+2049	Faka i-mulch emhlabeni futhi uvale izitshalo ezincane ngomthunzi
+2050	Nikeza izinkomo umthunzi namanzi ayengeziwe
+2051	Imvula enkulu {0}
+2052	Kulindeleke u-{0} mm{1}. Kulandela ukugcwala kwamanzi nesikhunta.
+2053	Hlanza imisele namabhulokhi ukuze amanzi aphume insimini
+2054	Yeqa ukusebenza kwesisakazi samanzi kuze kome umhlaba
+2055	Fafaza i-fungicide evikelayo kumatamatisi namazambane ngaphambi kokuba kuqale
+2056	Ukucindezeleka kokushisa komhlambi wakho {0}
+2057	Kufika ku-{0} C{1}. Izilwane zidla kancane, ziphuza kakhulu futhi zingawa.
+2058	Gcwalisa yonke izitsha zamanzi futhi uhlole amanzi kabili, hhayi kanye
+2059	Nikeza umthunzi, futhi uhambise izilwane emhlabeni ovulekile kusukela ku-11:00 kuya ku-16:00
+2060	Phakela ekupholeni kokusa nakusihlwa
+2061	Qaphela ukuphefumula ngokushesha, ukuconsa amathe noma izilwane ezimile zodwa, ubize udokotela wezilwane kusenesikhathi
+2062	Kubanda futhi kumanzi ezilwaneni ezincane {0}
+2063	Okuphansi okungu-{0} C nge-{1} mm yemvula. Izinkonyane, amawundlu nezingane zembuzi ziba mbi ngokushesha.
+2064	Nikeza izilwane ezincane nezibuthakathaka indawo yokukhosela emoyeni nasemswakameni
+2065	Nikeza ukudla okwengeziwe, ziyasebenzisa amandla amaningi ukuze zifudumale
+2066	Umbhede owomile, futhi uhlole izingane ezisanda kuzalwa ebusuku
+2067	Isonto elomile eliza
+2068	Ngaphansi kwe-{0} mm yemvula nezinsuku ezishisayo ezingu-{1}.
+2069	Hlola ithange lakho lamanzi futhi uhlele ukusebenza kwesisakazi samanzi
+2070	Engeza amaminithi ambalwa ekusebenzeni ngakunye kwezitshalo ezinomunyu
+2071	Qapha irada yamanzi yomphakathi wakho
+2072	Umoya onamandla {0}
+2073	Izifudumezo ezifika ku-{0} km/h. Izitshalo ezinde njengommbila zingawa.
+2074	Sekela izitshalo ezinde
+2075	Qinisa inetha nendwangu yomthunzi
+2076	Hambisa izilwane emhlabeni ovulekile
+2077	Imvula iyeza ({0}, cishe {1} mm). Yeqa ukusebenza kwesisakazi samanzi ulondoloze cishe amalitha angu-{2}.
+2078	Kushisa futhi kumile izinsuku ezintathu. Engeza ukusebenza okufushane okwengeziwe kusihlwa.

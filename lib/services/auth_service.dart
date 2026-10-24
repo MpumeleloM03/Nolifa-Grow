@@ -196,7 +196,7 @@ class AuthService {
       return 'An account already exists for that email.';
     }
     if (m.contains('password') && (m.contains('least') || m.contains('weak'))) {
-      return 'Password is too weak. Use at least 6 characters.';
+      return 'Password is too weak. Use at least 8 characters, with letters and a number.';
     }
     if (m.contains('valid email') || m.contains('invalid email')) {
       return 'That email address does not look right.';

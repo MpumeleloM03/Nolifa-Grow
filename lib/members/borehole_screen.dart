@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot, deviceLocation, friendlyError;
@@ -7,6 +7,7 @@ import '../theme/glass.dart';
 import 'members_service.dart';
 import 'membership_screen.dart' show rand;
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// Ask a Nolifa trusted borehole driller to come. The price is the standard
 /// price of the drill. Members get a discount. Every Nolifa borehole keeps
 /// 50 000 litres in reserve for Nolifa to collect for communities in need.

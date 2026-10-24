@@ -1,7 +1,9 @@
 import 'dart:ui';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'app_theme.dart';
 
+import '../tr_text.dart' show Text;
+import '../tr.dart' show tr, trn;
 /// The app-wide backdrop: a deep gradient with two soft colour wells.
 ///
 /// Glass only reads as glass when there is something varied behind it to
@@ -284,12 +286,12 @@ class GlassField extends StatelessWidget {
       style: AppTheme.body,
       cursorColor: AppTheme.sprout,
       decoration: InputDecoration(
-        labelText: label,
+        labelText: trn(label),
         labelStyle: AppTheme.subhead,
         // The @ icon on an email field is a button: it types the @ for you.
         prefixIcon: icon == Icons.alternate_email_rounded
             ? IconButton(
-                tooltip: 'Insert @',
+                tooltip: tr('Insert @'),
                 splashRadius: 18,
                 icon: Icon(icon, size: 20, color: AppTheme.sprout),
                 onPressed: () {

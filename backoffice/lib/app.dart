@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 import 'package:supabase_flutter/supabase_flutter.dart' as sb show User, AuthException;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
 import 'pages/admin_pages.dart';
@@ -13,6 +13,7 @@ import 'pages/rooms_page.dart';
 import 'pages/scan_page.dart';
 import 'pages/stock_page.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 SupabaseClient get _db => SupabaseBoot.client;
 
 final authUserProvider = StreamProvider<sb.User?>((ref) => _db.auth.onAuthStateChange.map((e) => e.session?.user));
@@ -52,7 +53,7 @@ class _Gate extends ConsumerWidget {
     return user.when(
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(body: Center(child: Text(friendlyError(e, doing: 'start')))),
-      data: (u) => u == null ? const LoginPage() : const _Access(),
+      data: (u) => u == null ? const LoginPage() : SecondFactorGuard(key: ValueKey('2fa-${u.id}'), child: const _Access()),
     );
   }
 }
@@ -181,6 +182,7 @@ class _ShellState extends ConsumerState<Shell> {
       if (r.admin) ('Alerts', Icons.mark_email_unread_rounded, const OutboxPage()),
       if (r.admin) ('Memberships', Icons.card_membership_rounded, const MembershipsPage()),
       if (r.admin) ('Boreholes', Icons.water_rounded, const BoreholesPage()),
+      if (r.admin) ('Security', Icons.shield_rounded, const SecurityPage()),
       if (r.vet) ('Vet cases', Icons.medical_services_rounded, const VetPage()),
     ];
     final idx = _i.clamp(0, pages.length - 1);
@@ -196,11 +198,22 @@ class _ShellState extends ConsumerState<Shell> {
       ),
       body: Row(children: [
         if (wide)
-          NavigationRail(
-            selectedIndex: idx,
-            onDestinationSelected: (v) => setState(() => _i = v),
-            labelType: NavigationRailLabelType.all,
-            destinations: [for (final p in pages) NavigationRailDestination(icon: Icon(p.$2), label: Text(p.$1))],
+          // The rail has no scrolling of its own, and there are more pages than a
+          // laptop screen is tall.
+          LayoutBuilder(
+            builder: (context, box) => SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: box.maxHeight),
+                child: IntrinsicHeight(
+                  child: NavigationRail(
+                    selectedIndex: idx,
+                    onDestinationSelected: (v) => setState(() => _i = v),
+                    labelType: NavigationRailLabelType.all,
+                    destinations: [for (final p in pages) NavigationRailDestination(icon: Icon(p.$2), label: Text(p.$1))],
+                  ),
+                ),
+              ),
+            ),
           ),
         Expanded(child: body),
       ]),

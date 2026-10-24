@@ -1,0 +1,269 @@
+[
+[
+"The roots reach {0} cm of {1} soil. ",
+"It holds {0} mm and the crop can use {1} mm before it suffers. ",
+"About {0} mm is used now."
+],
+[
+"How it works: the AI follows the FAO-56 water balance used by agronomists. Each day the crop uses the weather's evaporation times a crop factor, ",
+"rain that reaches the roots refills the soil, and watering is advised only when the crop would run short. It is a rule-based model, not a neural network. ",
+"It cannot see your soil, so a quick feel of the ground makes it far more accurate. It does not turn anything on by itself unless you link a smart valve."
+],
+[
+"This week: {0} litres planned.",
+"{0}"
+],
+[
+"Apply {0} mm: {1} litres",
+"{0}. Best before 08:00."
+],
+[
+"A highly contagious virus that spreads through a herd and to neighbouring farms very fast. ",
+"It is a controlled disease in South Africa and outbreaks trigger movement bans. ",
+"Goats and sheep often show only mild signs but still spread it."
+],
+[
+"A bacterial disease that usually shows as sudden death, often with dark blood from the nose or anus. ",
+"It is dangerous to people and is a controlled disease. Horses can catch it too."
+],
+[
+"A fatal virus carried by dogs, jackals and mongooses and passed on by a bite. Livestock may turn ",
+"aggressive or bellow strangely, drool, or lose the use of their back legs. It kills people too."
+],
+[
+"A bacterial disease causing abortion in the last third of pregnancy. ",
+"It infects people too, and is a controlled disease requiring testing."
+],
+[
+"A mosquito-borne virus that follows heavy rain. It causes abortion storms and the death of newborn ",
+"lambs and kids. People catch it from blood and aborted material, so it is a risk to you too."
+],
+[
+"A slow bacterial disease causing a chronic cough and steady wasting. ",
+"It infects people through raw milk and is a controlled disease."
+],
+[
+"A mite that makes sheep itch, rub and lose wool in patches. It is a controlled disease and an ",
+"infected flock can be put under movement restrictions until it is dipped."
+],
+[
+"A midge-borne virus that is common in warm, wet months. It can cause fever, froth from the nose and ",
+"swelling above the eyes, and often kills. It is a controlled disease and horse movement is restricted ",
+"in affected areas."
+],
+[
+"A viral disease spread by biting flies and mosquitoes, causing firm lumps across the skin. ",
+"It spreads fastest in warm, wet months."
+],
+[
+"A soil bacterium that causes gas-filled swelling in heavy muscle, usually in young, well-fed animals. ",
+"Death often comes within a day."
+],
+[
+"Spread by the bont tick. Causes fever then nervous signs: high-stepping, circling and convulsions. ",
+"Goats and sheep die very quickly."
+],
+[
+"A tick-borne parasite causing severe anaemia and yellow gums. Urine stays normal in colour, ",
+"which is how it is told apart from redwater."
+],
+[
+"Infection of the udder. Milk turns watery, clotted or blood-stained and the quarter is hot and hard. ",
+"Young that suckle from an infected udder go hungry."
+],
+[
+"Heavy worm burdens cause anaemia, bottle jaw and steady weight loss, worst in young stock after rain. ",
+"Worms are now resistant to many dewormers, so guessing wastes money."
+],
+[
+"A gut parasite that hits lambs, kids and calves in crowded, damp pens. Scouring, sometimes with blood, ",
+"and fast weight loss. Young animals dehydrate quickly."
+],
+[
+"Infection of the lungs, often after transport, cold nights or dusty pens. Laboured breathing is a ",
+"sign the animal is in trouble and needs a vet the same day."
+],
+[
+"A bacterium that explodes in the gut when animals move quickly onto lush grass or rich feed. The ",
+"fastest-growing lambs and kids are found dead or convulsing."
+],
+[
+"A blood-sucking stomach worm that thrives in warm, wet weather. Animals go pale and weak with a swollen ",
+"jaw, often without scouring. It can kill a lamb or kid within days."
+],
+[
+"A virus that makes thick scabs on the lips, nose and sometimes udder. Lambs and kids may refuse to suckle. ",
+"It usually clears in 3 to 4 weeks. People can catch it from touching the scabs."
+],
+[
+"A midge-borne virus in warm, wet months. Sheep get fever, a swollen blue-tinged tongue, a swollen face ",
+"and sore feet. Your vet will tell you if it must be reported."
+],
+[
+"Blowflies lay eggs in dirty wool or a wound and the maggots eat into the flesh. A struck sheep can ",
+"die within days."
+],
+[
+"A bacterial infection between the toes that spreads in wet camps. Animals graze on their knees and ",
+"lose condition. One animal can infect the group."
+],
+[
+"Slow abscesses in the lymph glands that burst and spread infection to the camp. Animals look well but ",
+"the lumps keep coming back."
+],
+[
+"A heavily pregnant ewe or doe, usually carrying twins, cannot eat enough and her body breaks down fat. ",
+"She stands apart, trembles and can go blind or die within days."
+],
+[
+"Belly pain from the gut. Some cases pass on their own, but a twisted gut kills. A horse that keeps ",
+"rolling, sweats or has a swollen belly is an emergency."
+],
+[
+"Painful inflammation inside the hooves. It often follows rich spring grass, a feed binge or a heavy fever. ",
+"Without quick treatment the bone in the hoof can rotate."
+],
+[
+"A very contagious bacterial infection that makes the glands under the jaw swell and burst. ",
+"It spreads between horses on hands, buckets and tack."
+],
+[
+"A fast-spreading virus causing a dry cough, fever and runny nose. Horses need rest or they can ",
+"get pneumonia."
+],
+[
+"A tick-borne parasite that destroys red blood cells. The horse is feverish, off its food and shows ",
+"yellow or pale gums and sometimes dark urine."
+],
+[
+"Soil bacteria enter a deep wound or hoof puncture and make the muscles lock. The horse stands stiff like ",
+"a rocking horse with a stiff jaw and the third eyelid across the eye. It is often fatal."
+],
+[
+"Heavy worm burdens cause poor condition, a dull coat, loose droppings and colic. Over-dosing breeds ",
+"resistant worms."
+],
+[
+"{0} L a day against {1} L needed",
+"{0}"
+],
+[
+"Paste the CSV your tag supplier exported. Column names from Allflex, ",
+"Datamars and Shearwell are recognised automatically."
+],
+[
+"This deletes {0} from your herd register. ",
+"It cannot be undone."
+],
+[
+"Every number here is measured on this phone from your own answers and real weather. ",
+"Each one shows how many cases it rests on. Small samples are marked, not hidden."
+],
+[
+"Honest limits: a farmer's verdict is an opinion, not a lab test. Forecast checks use Open-Meteo ",
+"observations for the region, not a weather station on your farm. Litres saved count only rain that did the work of a run ",
+"you confirmed you skipped. Below {0} cases we say \"too few to claim\"."
+],
+[
+"No answers yet. After a scan, tap Yes, No or Not sure under the result. ",
+"That is how the app learns whether it is right in your fields."
+],
+[
+"When the scanner was 80% sure or more: {0} right ({1}). ",
+"Below 80%: {0} right ({1}). ",
+"{0}"
+],
+[
+"Each forecast was made the day before and judged against observed rain and highest temperature. ",
+"Rain counts at 1 mm or more. {0} more days are waiting."
+],
+[
+"No confirmed savings yet. When rain does the work of a watering and you confirm you held off, ",
+"the litres a daily schedule would have pumped are counted here. A delay is not a saving, so it is not counted."
+],
+[
+"Forecast chart. Reservoir at {0} percent now, ",
+"about {0} percent in {1} days."
+],
+[
+"Your water provider has not shared data for this area yet. When they do, ",
+"you will see the supply level, a forecast and a way to ask for help here. ",
+"You can still get ready below."
+],
+[
+"Last request resolved at {0}. ",
+"{0} delivered."
+],
+[
+"{0} x {1} L = {2} L for ",
+"{0}, delivered by a neighbour."
+],
+[
+"{0} L lasts {1} days, ",
+"enough for the {0} days we plan for."
+],
+[
+"Dams were {0}% full last week and {1}% on {2} (DWS), {3}",
+"{0}. Weekly readings only, so treat this as a guide."
+],
+[
+"Falling about {0}% a day over the last ",
+"{0} day{1}",
+"{0}."
+],
+[
+"Your account does not have provider access. To follow your own community's request, ",
+"open the Water page."
+],
+[
+"Now {0}%. A new reading updates the status and the forecast ",
+"for everyone in {0}."
+],
+[
+"A new community starts with one reading and says \"Not enough readings yet\" ",
+"until you publish more."
+],
+[
+"This removes your sign-in, your profile, your herd and health records, your listings, your photos and ID documents, and your vet cases. It cannot be undone.\n\n",
+"Finished orders stay for the other person's accounts, with your name and address taken out. A membership you paid for is not refunded."
+],
+[
+"{0}. {1} km from you, ",
+"seen by {0} {1}."
+],
+[
+"A farm drops its order here and shows the 4-digit code on the packing slip. Type it to check the order in. ",
+"Once it is sorted, release it and the nearest last-mile drivers can take it."
+],
+[
+"The farm is {0} km away, so it goes through the {1} and a local driver brings it the last ",
+"{0} km."
+],
+[
+"A plan from R49 a month covers payments in escrow, delivery matching, disputes and support. ",
+"You also pay a commission only when a sale completes, so a farm that sells nothing owes only the plan. ",
+"Starter pays for itself with a few baskets a month. These prices are a starting point we will test with farmers before launch."
+],
+[
+"{0}  -  {1} {2} saw it",
+"{0}"
+],
+[
+"Bring stock to the Nolifa warehouse and it is checked in, tagged and kept in a cold room at the right temperature. ",
+"Buyers far away are served from here, so you do not drive every order out yourself. Everything is logged and you see it here."
+],
+[
+"You are paid for the work, not for the size of the order: R{0} for each delivery plus R{1} for every road kilometre, and never less than R{2}. ",
+"If the customer's delivery fee does not cover that, Nolifa pays the difference. ",
+"The server records the amount when the customer's PIN is accepted, and it is released when they confirm, or automatically after 2 hours. ",
+"A full refund or a conduct complaint cancels it. Farms that deliver themselves do not use drivers."
+],
+[
+"You are signed in as {0}. A Nolifa admin has to add you as staff, a certifier, a vet or an admin before you can use the back office. ",
+"Send them this ID: {0}"
+],
+[
+"Admins, hub staff, certifiers, vets, mediators and water providers hold powers that can hurt people if a password leaks. ",
+"With this switch on, each of them also enters a 6-digit code emailed to their account, once per sign-in. Farmers, drivers and households are not asked."
+]
+]

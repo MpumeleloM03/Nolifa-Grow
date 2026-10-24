@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show friendlyError;
@@ -7,6 +7,7 @@ import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'members_service.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 String rand(int n) => 'R${n.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ' ')}';
 
 /// The Nolifa membership: Member at R3 000 a month, Max at R7 000. Both run for

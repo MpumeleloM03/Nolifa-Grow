@@ -1,0 +1,300 @@
+1130	Lawula izinambuzane ze-leafhopper nge-insecticide — zisakaza leli gciwane
+1131	Tshala izinhlobo zommbila ezimelana ne-maize streak ngesizini ezayo — cela imbewu ephikisana ne-MSV kumthengisi wakho wezolimo
+1132	Tshala kusenesikhathi sesizini ngaphambi kokuba izinambuzane ze-leafhopper zibe nyamukela
+1133	Gcina ukhula luphansi ezungeze ummbila wakho — ama-leafhopper aqanda ekhula
+1134	Awunayo i-insecticide? Fafaza isisombululo samafutha e-neem ezitshalweni ezisele eziphilile ukuze uxoshe ama-leafhopper — izipuni ezi-2 ngelitha lamanzi njalo ezinsukwini ezi-5.
+1135	isikhunta samaqabunga esisenyakatho
+1136	Isikhunta Samaqabunga Esisenyakatho — Isifo Sesikhunta Sommbila
+1137	Izilonda ezinkulu ezimpunga-luhlaza noma ezinsundu ezimise okwesikhwama sikagwayi zivela emaqabungeni akho ommbila. Lesi sifo sesikhunta sisakazeka ngokushesha esimweni sezulu esipholile esimanzi futhi singabangela ukulahlekelwa okukhulu kwesivuno.
+1138	Yenza maduze — kusakazeka ngokushesha ezimeni ezimanzi
+1139	Susa amaqabunga athelelekile kakhulu
+1140	Thenga i-fungicide equkethe i-mancozeb noma i-azoxystrobin kumthengisi wakho wezolimo
+1141	Fafaza ngempawu yokuqala futhi uphinde njalo ezinsukwini ezi-14 esimweni sezulu esimanzi
+1142	Tshala izinhlobo ezimelana nesifo ngesizini ezayo
+1143	Zungezisa izitshalo minyaka yonke
+1144	Susa insalela yesitshalo ngemva kokuvuna — izinhlamvu zesikhunta ziyasinda empahleni endala yesitshalo
+1145	Awunayo i-fungicide? Susa amaqabunga athelelekile futhi uqinisekise ukuthi kunebanga elihle phakathi kwezitshalo ukuze kungene umoya. I-Mancozeb iyatholakala kakhulu futhi ayibizi kubathengisi bezolimo abaningi.
+1146	i-fusarium wilt
+1147	I-Fusarium Wilt — Isifo Sesikhunta Somhlaba
+1148	Isitshalo sakho siyaphuphuma kusukela phansi ngisho noma umhlaba umanzi. Amaqabunga aphenduka aphuzi bese ensundu eqala ohlangothini olulodwa lwesitshalo. Uma usika isiqu ungabona ukushintsha kombala ofiphele ngaphakathi. Lesi sifo sesikhunta sisemhlabeni asinakho ukwelashwa.
+1149	Susa futhi ubhubhise izitshalo ezithelelekile ngokushesha — ungazenzi umanyolo
+1150	Ungatshali kabusha isitshalo esifanayo kulowo mhlaba okungenani iminyaka emi-3
+1151	Shisa umhlaba ngelanga — wuvale ngepulasitiki elicacile amasonto angu-4 kuya kwangu-6 ehlobo ukubulala isikhunta ngokushisa
+1152	Tshala izinhlobo ezimelana nesifo ngesizini ezayo — buza kumthengisi wakho wezolimo
+1153	Thuthukisa ukuphuma kwamanzi emhlabeni
+1154	Gwema ukulimaza izimpande lapho ugudluza noma ukhula
+1155	Akukho ukulawula ngamakhemikhali okusebenzayo ku-fusarium wilt uma sekuqinile. Ukushisa umhlaba ngelanga usebenzisa ipulasitiki elicacile ehlobo yindlela elula yokwelapha ngaphandle kwamakhemikhali.
+1156	ukubola okumnyama
+1157	Ukubola Okumnyama — Isifo Se-bacteria Samakhabishi
+1158	Izilonda eziphuzi ezimise okwe-V zivela emaphethelweni amaqabunga akho amakhabishi noma e-brassica ziqonde maphakathi. Imithambo ngaphakathi kwelaqabunga iba mnyama. Lesi sifo se-bacteria sisakazeka ngokuphalaza kwamanzi namathuluzi angcolisiwe.
+1159	Yenza maduze — kusakazeka kuso sonke isitshalo
+1160	Bulala igciwane amathuluzi nge-bleach encibilikisiwe phakathi kwezitshalo
+1161	Thenga i-bactericide esekelwe ethusini bese ufafaza njalo ezinsukwini ezi-7
+1162	Ungatshali kabusha ama-brassica endaweni efanayo iminyaka emi-2
+1163	Thenga imbewu eqinisekisiwe engenasifo ngesizini ezayo
+1164	Fafaza ngesisombululo se-copper sulphate — isipuni esisodwa emalitheni angu-10 amanzi njalo ezinsukwini ezi-5. Susa amaqabunga athelelekile ngokushesha futhi ugweme ukusebenza nezitshalo ezimanzi.
+1165	i-bean rust
+1166	I-Bean Rust — Isifo Sesikhunta
+1167	Amabhamuza ayizimpuphu ansundu abomvu avela ngaphansi kwamaqabunga akho kabhontshisi anamabala aphuzi ahambisanayo ngaphezulu. Lesi sifo sesikhunta sivame kakhulu KwaZulu-Natal futhi sisakazeka ngokushesha ezimeni ezinomswakama.
+1168	Yenza maduze — kusakazeka ngokushesha
+1169	Susa futhi ubhubhise amaqabunga athelelekile — ungawenzi umanyolo
+1170	Thenga i-fungicide equkethe i-mancozeb noma i-tebuconazole
+1171	Tshala izinhlobo zikabhontshisi ezimelana ne-rust ngesizini ezayo
+1172	Awunayo i-fungicide? Fafaza ngesisombululo se-baking soda — isipuni esisodwa ngelitha lamanzi namaconsi ambalwa esepha yokuwasha izitsha njalo ezinsukwini ezi-3. Susa amaqabunga athelelekile kakhulu ngesandla.
+1173	i-blossom end rot
+1174	I-Blossom End Rot — Ukuntula I-calcium
+1175	Amabala amnyama acwiliswe avela ekugcineni kwamatamatisi akho, upelepele noma i-squash. Lesi akusiyo isifo — kubangelwa ukuntula i-calcium esithelweni, ngokuvamile ngenxa yokunisela okungahambi njalo.
+1176	Qapha — thuthukisa ukunisela ukuvimbela okunye
+1177	Nisela njalo ngendlela efanayo — ukunisela okungahambi njalo kuyimbangela enkulu
+1178	Faka i-mulch ezungeze isisekelo sezitshalo ukugcina umswakama womhlaba
+1179	Thenga ukufafaza kwe-calcium esitolo sakho sensimu bese ukufaka emaqabungeni nasezithelweni ezikhulayo
+1180	Gwema umanyolo onama-nitrogen amaningi — alwa ne-calcium ekufunxweni
+1181	Susa izithelo ezithintekile — aziyikululama kodwa izithelo ezintsha ziyophila kahle
+1182	Hlola i-pH yomhlaba — i-calcium ayitholakali emhlabeni onoshevu kakhulu
+1183	Chitha isipuni esisodwa se-agricultural lime emalitheni angu-4 amanzi bese unisela ezungeze isisekelo sesitshalo. Amagobolondo amaqanda aphihliziwe axutshwe emhlabeni nawo engeza i-calcium ngokuhamba kwesikhathi.
+1184	i-common scab
+1185	I-Common Scab — Isifo Sesikhumba Samazambane
+1186	Amabala aqinile afana nokhokho noma izilonda ezikhuphukile avela esikhumbeni samazambane akho. Lokhu kubangelwa i-bacterium yomhlaba futhi kubi kakhulu emhlabeni owomile onamanzi e-alkaline. Amazambane asadliwa kodwa ukubukeka kuyathinteka.
+1187	Qapha — kuthinta izinga hhayi ukusinda
+1188	Amazambane asaphephile ukudliwa — susa isikhumba esithintekile
+1189	Nisela njalo ngesikhathi sokwakhiwa kwamazambane — izikhathi ezomile zenza i-scab ibe mbi
+1190	Wehlise i-pH yomhlaba ngokungeza i-sulphur noma ikhompositi enoshevu — i-scab ikhetha umhlaba we-alkaline
+1191	Zungezisa izitshalo — ungatshali amazambane endaweni efanayo iminyaka emi-3
+1192	Tshala izinhlobo ezimelana ne-scab ngesizini ezayo
+1193	Gwema ukungeza umquba omusha noma i-lime ngaphambi kokutshala amazambane
+1194	Akukho ukwelashwa ngamakhemikhali okudingekayo ku-scab encane. Gxila ekunisela njalo nasekungezeni ikhompositi enoshevu njengezinaliti zomhlambi noma i-peat ukwehlisa i-pH yomhlaba ngokwemvelo.
+1195	Ayikwazanga ukubona inkinga ngokucacile
+1196	Asikwazanga ukubona isifo ngokucacile kulesi sithombe. Zama ukuthatha esinye isithombe ngokukhanya okungcono, eduze nelaqabunga elithintekile kakhulu.
+1197	Thatha esinye isithombe ukuze uthole imiphumela engcono
+1198	Thatha isithombe esicacile ekukhanyeni kwemvelo okuhle
+1199	Gxilisa ikhamera ngqo elaqabungeni elithintekile kakhulu
+1200	Qinisekisa ukuthi indawo ethintekile igcwalisa ingxenye enkulu yohlaka
+1201	Uma inkinga iqhubeka buza isisebenzi sakho sokunweba sezolimo noma umthengisi wezolimo
+1202	Qapha isitshalo sakho ngokucophelela futhi uzame ukuskena futhi ngesithombe esicacile.
+1203	Ukuhlola izimpawu
+1204	Ukwelashwa
+1205	Ukugoma
+1206	Inothi
+1207	Kululekile
+1208	Awekho amahlolo okwamanje
+1209	Kubukeka kahle
+1210	Kuyaqashwa
+1211	Kudinga udokotela wezilwane
+1212	Biza udokotela wezilwane kahulumeni manje
+1213	Lesi sifo silawulwayo. Ngokomthetho kumele usibike.
+1214	Kuphuthuma, kusuku olufanayo
+1215	Thola udokotela wezilwane namuhla. Izilwane zingafa ngokushesha.
+1216	Bona udokotela wezilwane kuleli sonto
+1217	Kuyelashwa, kodwa ungakushiyi.
+1218	Qapha futhi uphathe
+1219	Phatha epulazini, qaphela ukushintsha.
+1220	Amabhamuza noma izilonda emlonyeni
+1221	Umlomo nezinyawo
+1222	Ukuconsa amathe / amathe anwebekayo
+1223	Amabhamuza phakathi kwezinsimbi
+1224	Ukuhlephuka noma ukungafuni ukuhamba
+1225	Iphunga elibi noma ukubola phakathi kweminwe yezinyawo
+1226	Ukushisa ngenyawo elilodwa, ukushaya kwenhliziyo okunamandla ezinyaweni
+1227	Ayifuni ukuhamba, igoba emuva ngezithende
+1228	Izilonda ezindebeni, empumulweni noma emazinyweni
+1229	Ulimi oluvuvukile oluluhlaza okwesibhakabhaka
+1230	Ayidli / ayidli utshani
+1231	Jikelele
+1232	Idikiwe, isima yodwa kwabanye
+1233	Imfiva, izindlebe nempumulo eshisayo
+1234	Ukufa kungazelelwe ngaphandle kwesexwayiso
+1235	Ukulahlekelwa isimo emasontweni
+1236	Iqinile, ihamba kanzima
+1237	Ukuhlasela okungavamile, ukuhlokoma noma ukuziphatha okungenasasasa
+1238	Imilenze yangemuva ibuthakathaka noma ishaywe yisifo sokuhlukumeza
+1239	Izigaxa eziqinile noma izimpande esikhumbeni
+1240	Isikhumba
+1241	Ukuvuvuka ngaphansi kwesikhumba
+1242	Uboya buyawa, ukuhuzuka nokuhlohla
+1243	Izibungu, noma iphunga elibi eboyeni noma esilondeni
+1244	Isigaxa esiqinile eduze kwe-lymph gland (umhlathi, ihlombe, uhlangothi)
+1245	Ukuhuzuka umkhosi nomsila kuze kuxebuke, ukulahlekelwa izinwele
+1246	Iso eliconsayo noma elinomuzwa
+1247	Ikhanda
+1248	Impumulo econsayo
+1249	Izinkophe, izindebe noma izikhala ngaphezu kwamehlo kuvuvukile
+1250	Ukuvuvuka okushisayo ngaphansi komhlathi noma emphinjeni, uketshezi oluphuzi olujiyile empumulweni
+1251	Ukuvuvuka okuthambile ngaphansi komhlathi (bottle jaw)
+1252	Umhlathi oqinile, isikhumba sesithathu seso siyabonakala, ukuqina kwemisipha
+1253	Imithambo yezinzwa
+1254	Ukukhwehlela
+1255	Isifuba
+1256	Ukuphefumula ngokukhathala
+1257	Amagwebu empumulweni
+1258	Isihudo
+1259	Amathumbu
+1260	Uhlangothi lwesobunxele luvuvukile (bloat)
+1261	Ukukhwaza phansi, ukugingqika, ukushaya noma ukubheka esiswini
+1262	Umchamo obomvu noma omnyama
+1263	Igazi
+1264	Amagagasi nezinkophe ezimhlophe
+1265	Amagagasi noma amehlo aphuzi
+1266	Isiphulile noma silahlekelwe yinsane
+1267	Ukuzala
+1268	Ikhulelwe kakhulu futhi ayiphilile
+1269	Isinqe esishisayo, esiqinile noma esivuvukile
+1270	Ukwehla kwesikhashana kobisi
+1271	Ingane yemvu, yembuzi noma yenkonyane ibuthakathaka, ayiyuphi
+1272	Ukuzungeza, ukucindezela ikhanda, ukuziphatha okuyinqaba
+1273	Isifo sezinyawo nomlomo
+1274	Isifo Sezinyawo Nomlomo: Bika Ngokushesha
+1275	Igciwane elisakazeka kakhulu elisabalala kumhlambi nasemapulazini aseduze ngokushesha okukhulu.
+1276	Kuyisifo esilawulwayo eNingizimu Afrika futhi ukuqubuka kuholela ekuvinjelweni kokunyakaza.
+1277	Izimbuzi nezimvu zivame ukubonisa izimpawu ezincane kuphela kodwa zisakaza.
+1278	Misa konke ukunyakaza kwezilwane ukungena nokuphuma epulazini ngokushesha
+1279	Shayela udokotela wakho wezilwane kahulumeni namuhla. Kungumsebenzi womthetho
+1280	Gcina izilwane ezigulayo zikude nabanye abasemhlambini
+1281	Ungavakasheli amanye amapulazi, futhi bulala igciwane amabhuzu namathayi emoto
+1282	I-Anthrax Engaba Khona: Ungayivuli Isidumbu
+1283	Isifo se-bacteria esivamise ukubonisa ngokufa kungazelelwe, ngokuvamile ngegazi elimnyama elisuka empumulweni noma esinqeni.
+1284	Siyingozi kubantu futhi siyisifo esilawulwayo. Amahhashi nawo angasithola.
+1285	UNGAKUSIKI noma ukhumule isikhumba sesidumbu. Lokhu kusakaza izinhlamvu ezihlala amashumi eminyaka
+1286	Shayela udokotela wakho wezilwane kahulumeni ngokushesha
+1287	Gcina abantu nezinye izilwane zikude nesidumbu
+1288	Geza kahle uma uthinte isilwane
+1289	I-Rabies Engaba Khona: Hlala Kude Ubize Udokotela Wezilwane
+1290	Igciwane elibulalayo elithwalwa yizinja, amakhanka nezimongoza futhi lidluliselwa ngokulunywa. Izilwane zingaba
+1291	nolaka noma zihlokome ngendlela engavamile, zicitshe amathe, noma zilahlekelwe ukusebenza kwemilenze yangemuva. Libulala nabantu.
+1292	Ungathinti amathe noma ufake isandla emlonyeni wesilwane
+1293	Gcina abantu, izingane nezinja zikude futhi ubize udokotela wakho wezilwane kahulumeni ngokushesha
+1294	Uma noma ubani elunyiwe noma ekhotshwe esiliswini, hamba emtholampilo ngokushesha
+1295	Gcina izinja namahhashi akho egomiwe minyaka yonke
+1296	I-Brucellosis
+1297	Ukuphuphutheka Okungabhubhisayo Okungaba Khona
+1298	Isifo se-bacteria esibangela ukuphuphutheka engxenyeni yokugcina yokukhulelwa.
+1299	Siphethelela nabantu, futhi siyisifo esilawulwayo esidinga ukuhlolwa.
+1300	Ungaphathi izilwane ezisanda kuphuphutheka noma ukulandela ngezandla ezingenalutho
+1301	Shayela udokotela wakho wezilwane kahulumeni ukuhlela ukuhlolwa kwegazi komhlambi noma umhlambi
+1302	Hlukanisa owesifazane ophuphuthekile
+1303	Ungaphuzi ubisi olungapasteurizi
+1304	I-Rift Valley Fever
+1305	I-Rift Valley Fever Engaba Khona: Ibike
+1306	Igciwane elithwalwa yizimiyane elilandela imvula enkulu. Libangela ukuphuphutheka okukhulu nokufa kwezingane ezisanda kuzalwa
+1307	zezimvu nezembuzi. Abantu bayithola egazini nasezintweni eziphuphuthekile, ngakho iyingozi nakuwe.
+1308	Shayela udokotela wakho wezilwane kahulumeni. Siyisifo okumele sibikwe
+1309	Gqoka amagilavu nomask uma uphatha izilwane ezifile noma eziphuphuthekile, uzingcwabe ujule
+1310	Ungaphuzi ubisi olungavuthwanga
+1311	Buza udokotela wakho wezilwane ngokugoma ngaphambi kwesizini yemvula elandelayo
+1312	I-Bovine Tuberculosis
+1313	I-TB Engaba Khona
+1314	Isifo se-bacteria esihamba kancane esibangela ukukhwehlela okungapheli nokwehla kwesisindo.
+1315	Siphethelela abantu ngobisi olungavuthwanga futhi siyisifo esilawulwayo.
+1316	Shayela udokotela wakho wezilwane kahulumeni ukuhlela ukuhlolwa kwe-tuberculin
+1317	Hlukanisa isilwane esikhwehlelayo
+1318	Ungathengisi noma ukhiphe isilwane kuze kube sesihloliwe
+1319	I-Sheep Scab
+1320	I-Sheep Scab Engaba Khona: Ibike
+1321	Isibungu esenza izimvu ziluhlohle, zihuzuke futhi zilahlekelwe uboya ngamabala. Siyisifo esilawulwayo futhi
+1322	umhlambi othelelekile ungabekwa ngaphansi kwemikhawulo yokunyakaza kuze kube ucwiliswa.
+1323	Shayela udokotela wakho wezilwane kahulumeni. Ungasihambisi isimhlambi
+1324	Gcina izimvu zikude nezindonga zomakhelwane
+1325	Udokotela wezilwane uzokutshela ukuthi yiliphi icwiliso noma ukwelashwa okumele usebenzise nokuthi kaningi kangakanani
+1326	Isifo Samahhashi Sase-Afrika
+1327	Isifo Samahhashi Sase-Afrika Esingaba Khona: Sibike
+1328	Igciwane elithwalwa yizimpukane ezincane elivamile ezinyangeni ezifudumele, ezimanzi. Lingabangela imfiva, amagwebu empumulweni nokuvuvuka
+1329	ngaphezu kwamehlo, futhi livame ukubulala. Siyisifo esilawulwayo futhi ukunyakaza kwamahhashi kuyakhawulwa
+1330	ezindaweni ezithintekile.
+1331	Shayela udokotela wakho wezilwane nodokotela wezilwane kahulumeni manje. Gcina ihhashi esitebeleni ekushoneni nasekuphumeni kwelanga
+1332	Gcina ihhashi lipholile futhi lizolile, futhi ungalilayishi noma ulithuthe
+1333	Sebenzisa i-insect repellent futhi ugcine amanye amahhashi esitebeleni ngenkathi izimpukane ezincane zisebenza
+1334	Goma minyaka yonke njengoba udokotela wakho wezilwane ekluleka. Igomo kumele linikezwe ngaphambi kwesizini
+1335	Isifo Sesikhumba Esinezigaxa
+1336	Isifo segciwane esisakazwa yizimpukane nezimiyane eziluma, esibangela izigaxa eziqinile esikhumbeni sonke.
+1337	Sisakazeka ngokushesha ezinyangeni ezifudumele, ezimanzi.
+1338	Biza udokotela wakho wezilwane ukuze athole ukwelashwa okusekelayo namakhambi okulwa ne-bacteria yesibili
+1339	Hlukanisa izilwane ezithintekile futhi ulawule izimpukane nezinduna
+1340	Goma okunye emhlambini uma udokotela wakho wezilwane ekluleka kanjalo
+1341	I-Blackquarter
+1342	I-Blackquarter (Blackleg)
+1343	I-bacterium yomhlaba ebangela ukuvuvuka okugcwele igesi emisipheni emikhulu, ngokuvamile ezilwaneni ezincane, ezondliwe kahle.
+1344	Ukufa kuvame ukuza ngaphakathi kosuku.
+1345	Biza udokotela wezilwane ngokushesha. Icala langaphambi kwesikhathi lingasindiswa ngekhambi le-antibiotic elilungile
+1346	Hambisa umhlambi kuleyo kamu
+1347	Goma okunye emhlambini minyaka yonke
+1348	I-Heartwater
+1349	Isakazwa yinduna ye-bont. Ibangela imfiva bese izimpawu zezinzwa: ukuhamba ngokuphakamisa, ukuzungeza nokuqhaqhazela.
+1350	Izimbuzi nezimvu zifa ngokushesha kakhulu.
+1351	Biza udokotela wezilwane ngokuphuthuma. Ukwelashwa kwangaphambi kwesikhathi kuyasebenza
+1352	Cwilisa noma ufafaze izinduna
+1353	Hlola umhlambi wonke ngezinduna ze-bont
+1354	I-Redwater
+1355	I-Redwater (Babesiosis)
+1356	Isibungu esithwalwa yinduna esibhubhisa amangqamuzana egazi abomvu, siphendula umchamo ube mnyama noma onsundu.
+1357	Biza udokotela wezilwane. Idinga umjovo othile, futhi ukucindezeleka kokuphathwa kungabulala isilwane esigulayo
+1358	Gcina isilwane sizolile emthunzini, ungasiqhubi
+1359	Buyekeza uhlelo lwakho lokulawula izinduna
+1360	I-Gallsickness
+1361	I-Gallsickness (Anaplasmosis)
+1362	Isibungu esithwalwa yinduna esibangela ukuntuleka kwegazi okukhulu namagagasi aphuzi. Umchamo uhlala unombala ojwayelekile,
+1363	yileyo ndlela eyehlukaniswa ngayo ne-redwater.
+1364	Biza udokotela wezilwane ukuze alashe
+1365	Phatha isilwane kancane kakhulu ngangokunokwenzeka
+1366	Lawula izinduna emhlambini wonke
+1367	I-Three-Day Stiffsickness
+1368	Igciwane elisakazwa yizimpukane ezincane. Izinkomo ziqina futhi zihlephuke izinsuku ezimbalwa futhi ngokuvamile ziyalulama zodwa.
+1369	Nikeza umthunzi, amanzi ahlanzekile nokudla okuthambile okufinyelelekayo
+1370	Buza udokotela wakho wezilwane ngezidambisi zokuvuvukala
+1371	Qapha izilwane ezilele phansi. Zidinga ukujikijelwa ukugwema umonakalo wokucindezela
+1372	I-Mastitis
+1373	Ukutheleleka kwesinqe. Ubisi luba namanzi, luqongelele noma lunamabala egazi futhi ikota ishisa futhi iqine.
+1374	Izingane eziyonka esinqeni esithelelekile zihlala zilambile.
+1375	Khipha ikota ethintekile njalo
+1376	Thola ukwelashwa okulungile kudokotela wakho wezilwane
+1377	Gaya izilwane ezithelelekile ekugcineni futhi ubulale igciwane ezinkomeni
+1378	Lahla ubisi lwezilwane ezelashiwe isikhathi sonke sokuhoxiswa
+1379	I-Wireworm Nezibungu Zangaphakathi
+1380	Izibungu
+1381	Umthwalo omkhulu wezibungu ubangela ukuntuleka kwegazi, i-bottle jaw nokwehla kwesisindo, kubi kakhulu ezilwaneni ezincane ngemva kwemvula.
+1382	Izibungu manje zimelana nemithi eminingi yezibungu, ngakho ukuqagela kuchitha imali.
+1383	Buza udokotela wakho wezilwane ngokubalwa kwamaqanda ezibungu ngaphambi kokunikeza umhlambi wonke umuthi
+1384	Nikeza kuphela izilwane ezidinga, futhi zungezise isithako esisebenzayo ngeseluleko
+1385	Phumuza futhi uzungezise amakamu
+1386	I-Bloat
+1387	Igesi ebanjwe ku-rumen ivuvukisa uhlangothi lwesobunxele. Etshanini obuluhlaza obunothile ingabulala ngaphakathi kwehora.
+1388	Vusa isilwane sihambe
+1389	Biza udokotela wezilwane ngokushesha uma ukuphefumula kunzima
+1390	Hambisa umhlambi kutshani obunothile be-legume futhi unikeze izinto ezomile kuqala
+1391	I-Pinkeye
+1392	Ukutheleleka kwe-bacteria kweso okusakazekayo okusakazwa yizimpukane nothuli. Uma kuyekwa kungenza isilwane sibe yimpumputhe.
+1393	Elapha kusenesikhathi ngomkhiqizo weso ocutshungulwa udokotela wakho wezilwane
+1394	Hlukanisa izilwane ezithintekile futhi ulawule izimpukane
+1395	Nikeza umthunzi ukunciphisa ukukhanya nothuli
+1396	I-Coccidiosis
+1397	I-Coccidiosis (Isihudo Sezilwane Ezincane)
+1398	Isibungu samathumbu esishaya amawundlu, izingane zembuzi nenkonyane emapeni agcwele, amanzi. Isihudo, kwesinye isikhathi segazi,
+1399	nokwehla kwesisindo ngokushesha. Izilwane ezincane ziphelelwa amanzi ngokushesha.
+1400	Nikeza amanzi ahlanzekile nama-electrolyte, futhi ugcine isilwane sifudumele futhi somile
+1401	Biza udokotela wezilwane ukuze athole ukwelashwa okulungile kwiqembu lonke
+1402	Hambisa izilwane ezincane kukamu ehlanzekile, eyomile futhi ume ukudla kungangcoliswa
+1403	I-Pneumonia
+1404	Ukutheleleka kwamaphaphu, ngokuvamile ngemva kokuthuthwa, ubusuku obubandayo noma amapeni anothuli. Ukuphefumula ngokukhathala kuyisibonakaliso sokuthi
+1405	isilwane sisenkingeni futhi sidinga udokotela wezilwane ngosuku olufanayo.
+1406	Hlukanisa isilwane futhi usinikeze indawo yokukhosela emoyeni nasemswakameni
+1407	Biza udokotela wezilwane. Ama-antibiotic asebenza kuphela uma ehambisana negciwane
+1408	Uma ukuphefumula kunzima noma isilwane singemi, sithathe njengesiphuthumayo
+1409	I-Pulpy Kidney
+1410	I-Pulpy Kidney (Enterotoxaemia)
+1411	I-bacterium eqhuma emathunjini lapho izilwane zisuka ngokushesha zibe sotshani obuluhlaza obunothile noma ekudleni okunothile.
+1412	Amawundlu nezingane zembuzi ezikhula ngokushesha kakhulu zitholakala zifile noma ziqhaqhazela.
+1413	Biza udokotela wezilwane ngokushesha. Ukwelashwa akuvamile ukuba ngesikhathi, ngakho ukuvikela kubalulekile
+1414	Goma umhlambi ngegomo le-multi-clostridial futhi uvuselele ngaphambi kwemvula
+1415	Shintsha ukudla kancane ngesonto futhi ungavumeli izilwane ezilambile zidle ngokweqile
+1416	I-Barber's Pole Worm
+1417	I-Barber's Pole Worm (Haemonchus)
+1418	Isibungu sesiswini esiphuza igazi esikhula esimweni sezulu esifudumele, esimanzi. Izilwane ziba mhlophe futhi zibe buthakathaka zinomhlathi
+1419	ovuvukile, ngokuvamile ngaphandle kwesihudo. Singabulala iwundlu noma ingane yembuzi ngaphakathi kwezinsuku.
+1420	Yenza ngosuku olufanayo: hlola umbala wesinkophe esingaphansi seqembu lonke
+1421	Buza udokotela wakho wezilwane ngokubalwa kwamaqanda ezibungu nomuthi wezibungu olungele ipulazi lakho
+1422	Elapha kuphela ezimhlophe, futhi ugcine ikamu lazo lihlezi
+1423	I-Orf
+1424	I-Orf (Scabby Mouth)
+1425	Igciwane elenza izilonda eziqinile ezindebeni, empumulweni nakwesinye isikhathi esinqeni. Amawundlu nezingane zembuzi zingenqaba ukuncela.
+1426	Livamise ukuphela emasontweni angu-3 kuya kwangu-4. Abantu bangalithola ngokuthinta izilonda.
+1427	Gqoka amagilavu uma uphatha izilwane ezithintekile futhi uhlanze izandla zakho
+1428	Siza izingane ezibuthakathaka ukuba zondle. Biza udokotela wezilwane uma zingadli noma izilonda zisabalala
+1429	Buza ngokugoma ngaphambi kokuzalwa kwamawundlu noma kwezingane zembuzi

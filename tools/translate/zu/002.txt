@@ -1,0 +1,290 @@
+540	Faka ukuthi amalitha amangaki ngehora ageleza lapho ithafa elilodwa livuliwe
+541	Isixhumanisi sevalvu kumele siqale ngo-http:// noma https://
+542	Engeza uhlelo lokunisela
+543	Ukuthi amanzi afika kanjani ezitshalweni.
+544	U-{0}% wamanzi avela kulolu hlobo lohlelo ufika ezitshalweni. Okusele kulahleka emoyeni, ekugelezeni nasekuhwamukeni.
+545	Amalitha ngehora lapho ithafa elilodwa livuliwe
+546	Kudonsa ku
+547	Angiqinisekile
+548	Isixhumanisi sevalvu ehlakaniphile (akuphoqelekile)
+549	Kuphela uma une-valve ehlakaniphile noma i-relay ku-Wi-Fi yakho. Isixhumanisi esinamagama {minutes} siba nesikhathi, isibonelo http://192.168.1.50/relay/0?turn=on&timer={seconds}. Sishiye sineze uma uzonisela ngesandla uvumele uhlelo lukutshele nini.
+550	Engeza uhlelo
+551	Alukho isixhumanisi sevalvu esibekelwe u-{0}.
+552	Isixhumanisi sevalvu asiyona ikheli lewebhu.
+553	Ivalvu iphendule ngephutha {0}.
+554	Ayikwazanga ukufinyelela ivalvu. Ingabe ikuyo i-Wi-Fi efanayo?
+555	Imvula yenze umsebenzi, ukusebenza kweqiwe
+556	Khetha uhlelo lokunisela leli thafa kuqala.
+557	Uhlelo aludingi amanzi namuhla.
+558	Ummbila
+559	Utamatisi
+560	Isipinashi
+561	Ikhabishi
+562	Izaqathi
+563	U-anyanisi
+564	Amazambane
+565	I-Butternut
+566	Ubhontshisi
+567	Upelepele
+568	Ubhatata
+569	Nisela
+570	Yeqa, imvula
+571	Phumula
+572	Phezulu
+573	Maphakathi
+574	Phansi
+575	{0} isebenzisa u-{1} mm namuhla (isici sesitshalo {2} ngokuphindwe ngu-{3} mm okuhwamuka kwisimo sezulu).
+576	Izimpande zifinyelela ku-{0} cm we-{1} lomhlaba.
+577	Ibamba u-{0} mm futhi isitshalo singasebenzisa u-{1} mm ngaphambi kokuba sihlupheke.
+578	Cishe u-{0} mm usetshenziswa manje.
+579	Akudingeki ukunisela kuleli sonto: kulindeleke u-{0} mm wemvula ewusizo.
+580	Akudingeki ukunisela kuleli sonto: umhlaba ubamba okwanele.
+581	Umhlaba uphelelwa amanzi alula {0}. Faka u-{1} mm.
+582	Lokhu kusebenzisa isibikezelo sedemo.
+583	Lokhu kusebenzisa isibikezelo sokugcina esigciniwe ngoba akukho uphawu.
+584	Zwa umhlaba ubese utshela uhlelo ukuze lithuthuke. Ngaphandle kokuhlola licabanga ukuthi umhlaba usetshenziswe uhhafu.
+585	Amahora angu-{0} nemizuzu engu-{1}
+586	Msombuluko
+587	Lwesibili
+588	Lwesithathu
+589	Lwesine
+590	Lwesihlanu
+591	Mgqibelo
+592	Sonto
+593	Autopilot ivule ivalvu ye-{0}.
+594	I-AI yokunisela
+595	Nisela kuphela uma izitshalo zikudinga
+596	I-AI igcina ibhalansi yamanzi yansuku zonke yethafa ngalinye futhi ikutshela ukuthi unisele nini, kangakanani nokuthi isikhathi esingakanani.
+597	Engeza ofuna ukukutshala nokuthi ithafa ngalinye likhulu kangakanani, i-AI ibe isingenza uhlelo.
+598	Engeza isitshalo
+599	Misa ipulazi lakho ukuze uthole izikhathi ezinembile zokusebenza
+600	Engeza usayizi wepulazi, umhlaba nendlela unisela ngayo. Kuze kube yileso sikhathi i-AI icabanga umhlaba we-loam nezisakazi zamanzi.
+601	Ayikwazanga ukuthola isimo sezulu.
+602	Siyathola isimo sezulu...
+603	Amathafa akho
+604	Ukuthi isebenza kanjani: i-AI ilandela ibhalansi yamanzi ye-FAO-56 esetshenziswa odokotela bezolimo. Usuku ngalunye isitshalo sisebenzisa ukuhwamuka kwesimo sezulu esiphindwe isici sesitshalo,
+605	imvula efinyelela ezimpandeni igcwalisa umhlaba, futhi ukunisela kuthunyelwa kuphela uma isitshalo sizophelelwa. Kungumodeli osekelwe ezimpawini, hhayi inethiwekhi ye-neural.
+606	Ayibuboni umhlaba wakho, ngakho ukuwuzwa ngokushesha kuyenza ibe nembile kakhulu. Ayivuli lutho ngokwayo ngaphandle uma uxhuma ivalvu ehlakaniphile.
+607	Akudingeki ukunisela namuhla
+608	{0} {1} amanzi namuhla
+609	Kuleli sonto: amalitha angu-{0} ahleliwe.
+610	{0} ibamba amalitha angu-{1}. Akukho okudonswa kuyo kuleli sonto.
+611	{0}: amalitha angu-{1} ahlala cishe izinsuku ezingu-{2} zalolu hlelo.{3}
+612	Autopilot
+613	Xhuma ivalvu ehlakaniphile enhlelweni ku-Ipulazi lami futhi i-AI ingayivula ekuseni ngalinye uhlelo olufuna amanzi. Kuze kube yileso sikhathi ikutshela ukuthi wenzeni futhi wena uyenze.
+614	Ivuliwe. Uma uvula uhlelo phakathi kuka-05:00 no-11:00 futhi ithafa liyadingeka, i-AI ivula ivalvu yalo amaminithi ahleliwe. Ayilisebenzisi ithafa kabili ngosuku.
+615	Ivaliwe. {0} {1} ivalvu exhunyiwe.
+616	Namuhla isebenza kuphela ngenkathi uhlelo luvuliwe. Ukusebenza ifoni ikhiyiwe kudinga i-hab encane epulazini. Lokho kusohlelweni lwendlela.
+617	{0}  -  {1} m2  -  umhlaba ugcwele u-{2}%
+618	Linisiwe namuhla
+619	Iqinisekile: {0}
+620	Faka u-{0} mm: amalitha angu-{1}
+621	{0}. Kungcono ngaphambi kuka-08:00.
+622	Khetha ukuthi leli thafa linisela kanjani ku-Ipulazi lami ukuze uthole isikhathi sokusebenza.
+623	{0}, ukusebenza ngo-{1}%
+624	Vula ivalvu manje
+625	Ivalvu ivuliwe ye-{0}.
+626	Ngininisele
+627	Akukho ukunisela namuhla. Imvula yenza umsebenzi: kulindeleke u-{0} mm wemvula ewusizo.
+628	Akukho ukunisela namuhla. Umhlaba usabamba okwanele.
+629	Kubaliwe njengamanzi alondoloziwe
+630	Ngizibambile namuhla
+631	Usulinisele leli thafa namuhla.
+632	Umhlaba unjani?
+633	Kungani i-AI ithi lokhu
+634	Manje
+635	Ingabe lokhu bekulungile?
+636	Impendulo yakho yakha amaphuzu okunemba ekhasini le-Impact.
+637	Yebo, kulungile
+638	Cha, kungalungile
+639	Kugciniwe. Siyabonga.
+640	Sihlole izinsuku zesibikezelo ezingu-{0} ngokuqhathaniswa nesimo sezulu esenzekile.
+641	I-Impact
+642	Esikwazi ukukufakazela
+643	Wonke amanani lapha alinganiswe kule foni ngezimpendulo zakho nesimo sezulu sangempela.
+644	Ngalinye likhombisa ukuthi limile emacaleni amangaki. Amasampula amancane aphawulwa, awafihlwa.
+645	IDATHA YESAMPULA yedemonstreshini. Hhayi imiphumela yangempela. Akukho okugciniwe lapha.
+646	Ukunemba kokuxilongwa
+647	Ukuhlolwa kwesibikezelo sesimo sezulu
+648	Amanzi alondoloziwe
+649	Ukunemba kosuku lokuvuna
+650	Hamba nakho
+651	Kopisha yonke into erekhodiwe njengefayela le-spreadsheet (CSV) ukuze uyithumele kumeluleki, umxhasi noma isisebenzi sokunweba.
+652	Kopisha ubufakazi njenge-CSV
+653	Kukopishiwe. Kunamathisele ku-spreadsheet noma umyalezo.
+654	Khombisa amanani ami angempela
+655	Khombisa isampula enamalebula
+656	Imikhawulo eqotho: ukuhlulela komlimi kungumbono, hhayi ukuhlolwa kwelabhorethri. Ukuhlolwa kwesibikezelo kusebenzisa i-Open-Meteo
+657	ukubukwa kwesifunda, hhayi isiteshi sesimo sezulu epulazini lakho. Amalitha alondoloziwe abala kuphela imvula eyenze umsebenzi wokusebenza
+658	owaqinisekisa ukuthi ushiye. Ngaphansi kwamacala angu-{0} sithi "ambalwa kakhulu ukuthi sikuthi kuyiqiniso".
+659	n = {0}, ambalwa kakhulu ukuthi sikuthi kuyiqiniso
+660	Azikho izimpendulo okwamanje. Ngemva kokuskena, thinta u-Yebo, Cha noma Angiqinisekile ngaphansi komphumela.
+661	Yileyo ndlela uhlelo lufunda ngayo ukuthi lilungile yini emasimini akho.
+662	livumelane nawe
+663	Ibanga elingu-95%
+664	Lapho i-scanner iqinisekile ngo-80% noma ngaphezulu: {0} ilungile ({1}).
+665	Ngaphansi kuka-80%: {0} ilungile ({1}).
+666	{0} ziphawulwe Angiqinisekile futhi zishiywe ngaphandle.
+667	Izinsuku zesibikezelo ezingu-{0} zigciniwe futhi ziyalinda. Buya ngemva kokudlula kwazo uhlelo luzoqhathanisa ngasinye nalokho isimo sezulu esikwenzile.
+668	Uhlelo lugcina isibikezelo sosuku ngalunye futhi luqhathanise nesimo sezulu sangempela uma usuku seludlulile. Vula ikhadi lesimo sezulu ukuze uqale.
+669	ukubikezela imvula okulungile
+670	ukuphutha okumaphakathi kokushisa
+671	Isibikezelo ngasinye senziwe ngosuku lwangaphambilini futhi saqhathaniswa nemvula nokushisa okuphezulu okubonwe.
+672	Imvula ibalwa ku-1 mm noma ngaphezulu. Izinsuku ezingu-{0} ezengeziwe ziyalinda.
+673	Awekho amanzi alondoloziwe aqinisekisiwe okwamanje. Lapho imvula yenza umsebenzi wokunisela futhi uqinisekisa ukuthi ushiye,
+674	amalitha ucwaningo lwansuku zonke lwalungawadonsa abalwa lapha. Ukuhlehliswa akuyona ukonga, ngakho akubalwa.
+675	akudonswanga
+676	ukusebenza okweqiwe
+677	Maka isitshalo njengesivunwe ekhasini lethafa lakhe. Uhlelo luqhathanisa usuku lwangempela nosuku olulubikezele.
+678	ukuphutha okumaphakathi
+679	phakathi kwezinsuku ezi-3
+680	kuvamise ukuba
+681	Izivuno ezingu-{0} zimbalwa kakhulu ukuthi sithi kunephethini.
+682	Isampula
+683	Ithafa likatamatisi
+684	Isibikezelo semvula, ukusebenza kweqiwe
+685	Umbhede wesipinashi
+686	Nolifa Grow
+687	Akwaziwa
+688	Ikhaya
+689	Umlando
+690	Imephu
+691	Mayelana
+692	KwaZulu-Natal
+693	Akukho okubikiwe.
+694	Imibiko engu-{0}  •  {2}
+695	Ukuthi kuphathwa kanjani
+696	Azikho izibiko lapha ngqo, kodwa ukuqubuka kwezifo ezindaweni eziyizungezile kusabalalisa ukushisa kule ndawo.
+697	Akukho ukuqubuka kwezifo okubikiwe kule ndawo. Uma ubona okuthile, bika ukuze omakhelwane bazilungiselele.
+698	{0} ezinkingeni ezithinta le ndawo
+699	I-hexagon ngayinye ihlanganisa cishe u-10 km. Imibiko ibekwa ngendawo, hhayi epulazini.
+700	Biza udokotela wakho wezilwane
+701	Kubikwe kudokotela wezilwane kahulumeni, olawula ukunyakaza kwezilwane
+702	Hex({0},{1})
+703	Eastern Cape
+704	Free State
+705	Gauteng
+706	Limpopo
+707	Mpumalanga
+708	North West
+709	Northern Cape
+710	Western Cape
+711	Izingulube
+712	Izinkukhu
+713	Amaqanda
+714	Ubisi
+715	Imifino
+716	Izithelo
+717	Okusanhlamvu nommbila
+718	Uju
+719	Ukudla utshani bendle
+720	Utshani obutshaliwe
+721	Utshani obomile
+722	I-Silage
+723	I-Lick noma okungezelelwe
+724	Okusanhlamvu noma isiqephu se-feedlot
+725	Insalela yesitshalo
+726	Okuqukethwe kugciniwe.
+727	gcina isicelo sakho
+728	Ayikwazanga ukuvula ikhamera noma izithombe. Vumela ukufinyelela ku-Settings uzame futhi.
+729	layisha lesi sithombe
+730	Ayikwazanga ukuthola indawo yakho. Vula indawo ku-Nolifa Grow uma ume epulazini.
+731	thumela isicelo sakho
+732	igama lakho eliphelele
+733	inombolo yakho ye-ID
+734	inombolo yakho yefoni
+735	igama lepulazi
+736	isifundazwe
+737	indawo yepulazi
+738	usayizi wepulazi
+739	okulimayo
+740	ukuvuma kwakho
+741	isithombe se-ID yakho
+742	i-selfie ephethe i-ID yakho
+743	isithombe somhlaba wakho
+744	Kusadingeka: {0}.
+745	Kwengeziwe
+746	Engeza okuningi
+747	Thatha futhi
+748	Thatha isithombe
+749	Kuse-Nolifa ukuze kubuyekezwe. Sizokuthumelela umyalezo. Awukwazi ukukushintsha ngenkathi sibheka.
+750	Kugunyaziwe. Ipulazi lakho liqinisekisiwe futhi abathengi babona iphrofayili yepulazi lakho.
+751	Sidinga okwengeziwe kuwe: {0}
+752	Akugunyaziwe: {0}
+753	Qinisekiswa ukuze uthengise
+754	Abathengi bathembela emapulazini ahloliwe yi-Nolifa. Lokhu futhi kwakha iphrofayili yepulazi lakho ku-Nolifa Drop futhi kusiza odokotela bethu baqonde ukuthi ulima kanjani. Abasebenzi bayakufunda. I-ID yakho nezithombe azibonisiwe abathengi.
+755	1. Ungubani
+756	Njengoba kunjalo ku-ID yakho.
+757	Igama nesibongo esiphelele
+758	Inombolo ye-ID yaseNingizimu Afrika
+759	Inombolo yefoni
+760	2. Ibhizinisi lakho
+761	Igama lebhizinisi elibhalisiwe (uma likhona)
+762	Inombolo yokubhalisa ye-CIPC (uma ikhona)
+763	3. Ipulazi
+764	Igama lepulazi noma lokuhweba
+765	Isifundazwe
+766	Idolobha eliseduze
+767	Usayizi wepulazi ngamahektare
+768	Ngiyaliphethe ilizwe
+769	Ngiyalihayela
+770	Okwabiwa umphakathi noma imvume yokuhlala
+771	Indawo yepulazi
+772	Ma epulazini bese uthinta inkinobho.
+773	4. Okuthengisayo
+774	5. Indlela unakekela ngayo izilwane zakho
+775	Odokotela bethu bakufunda lokhu ukuze baqonde ipulazi lakho. Qotho: kubasiza ukukusiza.
+776	Badlani?
+777	Ukudla ngokuningiliziwe: izinhlobo, amanani, kaningi kangakanani
+778	Basela kuphi? (ibhorehole, idamu, umfula, isitsha)
+779	Amakamu, amabhuku, indawo yokukhosela nomthunzi
+780	Amagomo owanikezayo nokuthi kaningi kangakanani
+781	Ukwelapha izikelemu nokucwiliswa, kaningi kangakanani
+782	Usebenzisa yimuphi udokotela wezilwane? (igama nedolobha)
+783	Uzihlukanisa izilwane ezintsha noma ezigulayo? Kanjani?
+784	Ugcina kanjani amarekhodi? (ama-ear tag, amabhuku, uhlelo)
+785	6. Indlela utshala ngayo izitshalo zakho
+786	5. Indlela utshala ngayo izitshalo zakho
+787	Ukunisela nomthombo wamanzi
+788	Umanyolo, izitshalo zokuchuza nembewu osebenzisa yona
+789	Indlela uvuna, ugeza, upakisha futhi ugcine ngayo
+790	Izithombe
+791	Zithathwe ngekhamera manje. Abasebenzi baqhathanisa i-ID ne-selfie.
+792	Isithombe se-ID yakho
+793	Ingaphambili likakhadi lakho le-ID noma ikhasi lesithombe likakhadi lakho elihlakaniphile, ekukhanyeni okuhle.
+794	I-selfie ephethe i-ID yakho
+795	Phatha i-ID eduze nobuso bakho ukuze kubonakale kokubili.
+796	Umhlaba wakho
+797	Insimu yakho, amakamu noma izakhiwo. Okungaphezu kokukodwa kungcono.
+798	Amasertifikhethi namaphepha
+799	Isivumelwano somhlaba noma ileyisi noma incwadi ye-PTO, ukubhaliswa kwebhrendi noma komnikazi wezilwane, isitifiketi sempilo yezilwane noma incwadi kadokotela, amaphepha okuphepha kokudla uma unawo.
+800	Konke okukhona lapha kuyiqiniso. I-Nolifa ingakuhlola, igcine i-ID nezithombe zami ngokuphepha ukuze kuqinisekiswe ngaphansi kwe-POPIA, futhi yabelane ngephrofayili yepulazi lami (hhayi i-ID yami) nabathengi nodokotela.
+801	Gcina okusalungiswa
+802	Thumela ku-Nolifa
+803	Ayikwazanga ukuthola indawo yakho. Vula indawo, noma ume lapho ibhorehole kufanele ibe khona.
+804	Thinta "Sebenzisa indawo yami" endaweni ofuna ibhorehole.
+805	thumela isicelo sakho
+806	yamukela inkomba yamanani
+807	Umgubhi othembekile, ongumbiza
+808	Cela umgubhi wamabhorehole othembekile we-Nolifa ukuthi eze epulazini lakho noma emphakathini wakho. Uthola inkomba yamanani ebhaliwe ngentengo evamile yokugubha ngaphambi kokuthi kuqale.
+809	Njengelungu le-{0} uthola u-{1}% ohlezini lwentengo evamile yokugubha.
+810	Amalungu athola isaphulelo ekugubheni: u-{0}% weLungu no-{1}% we-Max. Awukalona ilungu? Inkomba yamanani iyentengo evamile.
+811	Isithembiso samalitha angu-50 000
+812	Epulazini lami
+813	Emphakathini
+814	Kufanele kuye kuphi?
+815	Sebenzisa indawo yami
+816	Izikhombisi-ndlela noma ikheli
+817	Ifoni yomgubhi
+818	Noma yini umgubhi okufanele ayazi
+819	Ngiyavuma ukugcina isigcini samanzi se-Nolifa.
+820	Siyathumela
+821	Cela inkomba yamanani
+822	Izicelo zakho
+823	Ibhorehole elingu-{0}  ·  {1}
+824	Okuvamile {0}{1}
+825	Yamukela le nkomba yamanani
+826	kulindwe inkomba yamanani
+827	inkomba yamanani isilungile
+828	ukugubha kubhukiwe
+829	Ilungu

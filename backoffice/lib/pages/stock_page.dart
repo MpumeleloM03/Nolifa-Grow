@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:printing/printing.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
 import '../labels.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 String d(DateTime t) => '${t.day} ${_months[t.month - 1]} ${t.year}';
 String q(double v) => v == v.roundToDouble() ? v.round().toString() : v.toStringAsFixed(2);

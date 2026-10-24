@@ -4,7 +4,7 @@ import '../members/application_screen.dart';
 import '../members/borehole_screen.dart';
 import '../members/membership_screen.dart';
 import '../members/vet_screens.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart'
@@ -27,6 +27,8 @@ import '../theme/glass.dart';
 import '../water/supplier_screen.dart';
 import '../widgets/language_toggle.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 /// Personal details, the farm's store details, language, and the account.
 class SettingsTab extends ConsumerStatefulWidget {
   const SettingsTab({super.key});
@@ -70,8 +72,8 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
                   initialValue: region,
                   isExpanded: true,
                   dropdownColor: AppTheme.sheet,
-                  decoration: const InputDecoration(
-                      labelText: 'Region', prefixIcon: Icon(Icons.place_rounded, size: 20)),
+                  decoration: InputDecoration(
+                      labelText: tr('Region'), prefixIcon: Icon(Icons.place_rounded, size: 20)),
                   items: [for (final r in regions) DropdownMenuItem(value: r, child: Text(r))],
                   onChanged: (v) {
                     setState(() => _region = v ?? _region);

@@ -1,0 +1,300 @@
+830	Max
+831	Kulindwe udokotela wezilwane
+832	Udokotela wezilwane uyabheka
+833	Kuphenduliwe
+834	Ukuvakashelwa kucelwe
+835	Ukuvakashelwa kubhukiwe
+836	Kuvaliwe
+837	Ayikwazanga ukuvula ikhasi lenkokhelo. Zama futhi.
+838	qala inkokhelo
+839	kubhalise
+840	Ulilungu le-{0}
+841	Kuqale {0}. Isikhathi sakho sezinyanga ezingu-24 siqhubeka kuze kube ngu-{1}. Amavidiyo odokotela wezilwane angu-{2} ngenyanga{3}, kanye nesaphulelo se-borehole ye-Nolifa.
+842	Isinyathelo esisodwa esisele: khokha inyanga yokuqala
+843	Ucele ukujoyina njengelungu le-{0} ngo-{1} ngenyanga. Khokha inyanga yokuqala ngekhadi. Uhlelo lwakho luvulwa ngokushesha lapho inkokhelo iqinisekiswa, futhi izinyanga ezingu-24 ziqala ngalolo suku.
+844	IMODI YOKULINGA. Akukho mali yangempela ethathwayo. Ekhasini lenkokhelo sebenzisa imininingwane yekhadi lokuhlola evela ohlwini lwamakhadi okuhlola e-Yoco.
+845	Kuvulwa inkokhelo
+846	Khokha {0} ngekhadi
+847	Ngemva kokukhokha, buyela kule skrini. Iyazibuyekeza.
+848	Nakekela umhlambi wakho nodokotela wezilwane
+849	Thumela udokotela wakho wezilwane ividiyo, uthole ukuxilongwa okubhaliwe nohlelo, futhi nixoxe ohlelweni.
+850	{0} ngenyanga
+851	Kufika kumavidiyo angu-{0} ngenyanga, ngalinye kufika emizuzwini emi-2
+852	Udokotela wezilwane uwabuyekeza futhi abhale ukuthi yini, kungani, ikhambi nokuthi lisiza kanjani
+853	Xoxa nodokotela wezilwane ngaphakathi kohlelo
+854	Isaphulelo kumgubhi othembekile we-Nolifa
+855	Cela udokotela wezilwane eze epulazini lakho ukuze enze ukuhlolwa (izindawo zabalingani, KwaZulu-Natal manje)
+856	Funda lokhu ngaphambi kokujoyina
+857	Ubulungu bungeqile ezinyangeni ezingu-24. I-{0} ngu-{1} ngenyanga, ngakho {2} esikhathini sonke. Kuqala lapho i-Nolifa iqinisekisa inkokhelo yakho yokuqala. Amavidiyo odokotela wezilwane aphinda aqale njalo ngenyanga yekhalenda futhi awadluli. Ukuvakashelwa kuphela lapho sinodokotela wezilwane womlingani.
+858	Ngiyaqonda ukuthi lokhu kuyisibopho sezinyanga ezingu-24 se-{0}.
+859	Siyakubhalisa
+860	Joyina njenge-{0}
+861	Udokotela wezilwane ubheka isilwane sakho
+862	Amazwi odwa awakwazi ukutshela udokotela wezilwane ukuthi kuphi okungalungile. Rekhoda isilwane, udokotela wezilwane uzobuka, athi uthi yini nokuthi kungani, futhi akutshele ukuthi wenzeni.
+863	Ubulungu bakho bulindele inkokhelo
+864	Amavidiyo odokotela wezilwane ngamalungu
+865	Buvulwa ngokushesha lapho i-Nolifa iqinisekisa inkokhelo yakho yokuqala.
+866	Amalungu athumela amavidiyo afika ku-4 ngenyanga (R3 000), noma ayi-15 nokuvakashelwa udokotela wezilwane (Max, R7 000). Ubulungu buyizinyanga ezingu-24.
+867	Bona ubulungu
+868	Awasekho amavidiyo kule nyanga
+869	Thumela ividiyo entsha{0}
+870	Ukuhlola okusheshayo ngenkathi ulindile
+871	Maka izimpawu ozibonayo. Ichaza izifo ezilawulwayo nezimo eziphuthumayo kuqala. Iluleko, hhayi ukuxilongwa.
+872	Amacala akho
+873	layisha amacala akho
+874	Awekho amacala okwamanje.
+875	Leyo vidiyo imizuzu engu-{0} namasekhondi angu-{1}. Umkhawulo imizuzu emi-2. Khetha emfushane.
+876	Ayikwazanga ukufunda leyo vidiyo. Zama ukuyirekhoda futhi.
+877	Nikeza icala isihloko esifushane, njengo-"Inkomo ehlephayo".
+878	Engeza ividiyo okungenani eyodwa.
+879	Usele namavidiyo angu-{0} kule nyanga. Susa u-{1}.
+880	Kuvulwa icala lakho
+881	Kulayishwa ividiyo {0} kwangu-{1}. Ngedatha yeselula lokhu kungathatha amaminithi ambalwa.
+882	thumela ividiyo yakho
+883	Ividiyo entsha yodokotela wezilwane
+884	Yisiphi isilwane?
+885	Engeza izilwane kumhlambi wakho ukuze ukhethe esisodwa, noma sichaze ngezansi.
+886	Isihloko esifushane, njengo-"Inkomo ehlephayo"
+887	Yini oyibonile, selokhu nini, idle ini, ukwelashwa kunoma ikuphi kuze kube manje?
+888	Amavidiyo (afika emizuzwini emi-2 ngalinye)
+889	Bonisa isilwane sonke sihamba, bese ubheka eduze inkinga, bese ukudla nokuphuza kwaso. Ukukhanya okuhle kuyasiza.
+890	Ividiyo {0}  ·  amasekhondi angu-{1}
+891	Rekhoda manje
+892	Kusuka kugalari
+893	Thumela kudokotela wezilwane
+894	thumela lokho
+895	Usuku olungcono lokuvakashelwa udokotela wezilwane
+896	Cela ukuvakashelwa kwepulazi
+897	Lapho ukutholwa khona, amakhodi esango, ukuthi yiziphi izilwane
+898	Cela
+899	Ukuvakashelwa kucelwe. Udokotela wezilwane uzoqinisekisa usuku.
+900	Icala
+901	Ividiyo engu-{0} ithunyelwe
+902	Udokotela wezilwane uzobuka ividiyo yakho abhale emuva lapha. Hlola leli cala impendulo. Izaziso zokuphendula azakhiwa okwamanje.
+903	Ukuxilongwa kukadokotela wezilwane
+904	Ababa ukuthi yini
+905	Kungani ecabanga kanjalo
+906	Kusiza kanjani lokho
+907	Ukuphatha nokunakekela
+908	Ukuphuthuma kangakanani
+909	Lokhu kungumbono wokude ovela evidiyweni. Uma isilwane siba sibi, biza udokotela wezilwane ukuze asibone ngokubona.
+910	Cela udokotela wezilwane avakashele ipulazi
+911	Ukuvakashelwa kucelwe. Udokotela wezilwane uzoqinisekisa usuku engxoxweni.
+912	Ukuvakashelwa kubhukelwe {0}. {1}
+913	Ukuvakashelwa kuyingxenye yobulungu be-Max.
+914	Xoxa nodokotela wezilwane
+915	layisha ingxoxo
+916	Udokotela wezilwane
+917	Wena
+918	Azikho izimilayezo okwamanje.
+919	Thumela umyalezo kudokotela wezilwane
+920	ISO 11784/11785
+921	I-ear tag kagesi (RFID)
+922	I-tag ebonakalayo
+923	I-ear tag yepulasitiki ephrintiwe
+924	Uphawu / ithathuu
+925	Uphawu olushisiwe, oluqandisiwe noma ithathuu
+926	Inombolo yokuphatha
+927	Inombolo yakho epulazini
+928	Epulazini
+929	Kuthengisiwe
+930	Kufile
+931	Umlimi
+932	Isitshalo sakho sibukeka siphilile
+933	Asikho isifo noma umonakalo otholakele kulesi sitshalo. Qhubeka nalokho okwenzayo.
+934	Akukho okudingekayo
+935	Qhubeka nohlelo lwakho lwamanje lokunisela
+936	Qinisekisa ukuthi isitshalo sithola ukukhanya kwelanga okwanele
+937	Hlola futhi emva kwezinsuku ezi-7
+938	Akukho ukwelashwa okudingekayo.
+939	Early_Blight
+940	I-Early Blight — Ukutheleleka Ngesikhunta
+941	Isitshalo sakho sinesifo sesikhunta esiqala emaqabungeni amadala aphansi futhi sisakazeke phezulu. Amabala aphuzi nsundu aqhakazile anamasongo aphuzi avela emaqabungeni.
+942	Yenza maduze — lokhu kuyasabalala uma kungelashwa
+943	Thenga i-fungicide esekelwe ethusini esitolo sakho sensimu noma se-hardware esiseduze
+944	Fafaza lonke isitshalo ebusuku, hhayi elangeni eliqondile
+945	Phinda ufafaze njalo ezinsukwini ezi-7 kuze kube amaqabunga ebukeka ephilile
+946	Nisela phansi esitshalweni — gwema ukuwisa amaqabunga
+947	Awukho umuthi wesikhunta? Hlanganisa isipuni esisodwa se-baking soda nelitha elilodwa lamanzi namaconsi ambalwa esepha yokuwasha izitsha. Fafaza amaqabunga athintekile njalo ezinsukwini ezi-3.
+948	Late_Blight
+949	I-Late Blight — Isifo Esiqatha Sesikhunta
+950	Lesi yisifo esiqatha esingalibhubhisa lonke isitshalo sakho ngokushesha. Amabala amnyama agcwele amanzi avela emaqabungeni nasezindebeni. Isikhunta esimhlophe singabonakala ngaphansi kwamaqabunga.
+951	Kuphuthuma — yenza ngokushesha
+952	Susa futhi ubhubhise zonke izitshalo ezithelelekile kakhulu ngokushesha
+953	Ungakwenzi umanyolo ngempahla ethelelekile — yishise noma uyifake esikhwameni sezibi
+954	Thenga i-fungicide equkethe i-chlorothalonil noma i-mancozeb
+955	Fafaza zonke izitshalo ezisele kahle
+956	Fafaza njalo ezinsukwini ezi-5 kuze kungabi khona izimpawu ezintsha
+957	Gwema ukusebenza nezitshalo lapho zimanzi
+958	Awukho umuthi wesikhunta? Susa izingxenye ezithelelekile ngokushesha bese ufafaza izitshalo ezisele ngengxube yesipuni esisodwa se-copper sulphate esichithwe emalitheni angu-10 amanzi.
+959	Leaf_Miner
+960	I-Leaf Miner — Umonakalo Wezinambuzane
+961	Izinambuzane ezincane zigubha ngaphakathi emaqabungeni zishiya imizila ejikelezayo emhlophe noma ephuzi. Lokhu kwenza isitshalo sibe buthakathaka futhi kuncishise amandla aso okufunxa ukukhanya kwelanga.
+962	Qapha — bamba kusenesikhathi
+963	Susa futhi ubhubhise amaqabunga agubhwe kakhulu
+964	Thenga i-insecticide esekelwe ku-spinosad esitolo sakho sensimu
+965	Fafaza isitshalo uqonde ngaphansi kwamaqabunga lapho kubekwa khona amaqanda
+966	Phinda njalo ezinsukwini ezi-7 kuya ku-10
+967	Izicupho eziphuzi ezinamathelayo ezibekwe eduze nezitshalo zingabamba izimiyane ezindala
+968	Awukho umuthi wezinambuzane? Fafaza amaqabunga ngamafutha e-neem axutshwe namanzi — izipuni ezi-2 ngelitha. Qondisa ngaphansi kwamaqabunga. Phinda njalo ezinsukwini ezi-5.
+969	ukuntula ukudla kwezitshalo
+970	Ukuntula Ukudla Kwezitshalo — Isitshalo Sakho Sidinga Ukondliwa
+971	Isitshalo sakho asithola ukudla okwanele emhlabeni. Lokhu kubangela amaqabunga aphuzi, ukukhula okumile nezithelo ezimbi.
+972	Yenza maduze — isitshalo siba buthakathaka
+973	Thenga umanyolo olinganiselayo — funa i-NPK ebhalwe ku-lebula kunoma yisiphi isitolo sensimu
+974	Faka umanyolo emhlabeni omanzi — ungalokothi kumhlaba owomile ngoba ungashisa izimpande
+975	Ngamaqabunga aphuzi ikakhulukazi engeza i-nitrogen — funa i-urea noma i-ammonium nitrate
+976	Ngamaqabunga ansomi engeza umanyolo we-phosphorus
+977	Ngemiphetho yamaqabunga ensundu engeza umanyolo we-potassium
+978	Phinda ufake njalo emasontweni angu-2 kuya ku-4 ngesikhathi sokukhula
+979	Awukho umanyolo? Itiye lekhompositi liyasebenza — cwilisa ikhompositi emanzini amahora angu-24 uphinde unisele isitshalo ngoketshezi. Amakhasi eziphuzi akhiweyo eduze nezimpande engeza i-potassium.
+980	isikhunta esimhlophe
+981	Isikhunta Esimhlophe — Ungqimba Olumhlophe Lwesikhunta
+982	Ungqimba olumhlophe noma oluphuzi oluyizimpuphu luvela emaqabungeni akho. Lesi yisifo sesikhunta esikhula ezimeni ezifudumele ezomile futhi sisakazeka ngokushesha.
+983	Susa amaqabunga athintekile kakhulu ngokushesha
+984	Thuthukisa ukugeleza komoya ezungeze isitshalo sakho ngokunqamula amagatsha ahlangene
+985	Thenga i-fungicide esekelwe ku-sulphur noma ukufafaza kwe-potassium bicarbonate
+986	Fafaza zonke izindawo ezithintekile kahle
+987	Phinda njalo ezinsukwini ezi-7 kuze kungabi khona ukukhula okusha
+988	Gwema ukunisela kusuka phezulu — nisela phansi kuphela
+989	Hlanganisa isipuni esisodwa se-baking soda nesigamu sethisipuni yesepha yokuwasha izitsha kulitha elilodwa lamanzi. Fafaza amaqabunga athintekile njalo ezinsukwini ezi-3. Lokhu kuyasebenza kahle ezimeni ezincane.
+990	Isifo Se-Rust — Amabala Esikhunta Awolintshi
+991	Amabala ayizimpuphu awolintshi, aphuzi noma ansundu avela emaqabungeni akho. Lesi yisifo sesikhunta esisakazeka emoyeni futhi sibi kakhulu esimweni sezulu esinamanzi.
+992	Susa futhi ubhubhise wonke amaqabunga athelelekile — ungawenzi umanyolo
+993	Thenga i-fungicide equkethe i-myclobutanil noma i-tebuconazole
+994	Fafaza lonke isitshalo kuhlanganise nangaphansi kwamaqabunga
+995	Phinda njalo ezinsukwini ezi-7 kuya ku-14
+996	Gwema ukuwisa amaqabunga lapho unisela
+997	Awukho umuthi wesikhunta? Hlanganisa isipuni esisodwa se-baking soda nelitha elilodwa lamanzi bese ufafaza izindawo ezithintekile njalo ezinsukwini ezi-3. Susa amaqabunga athintekile kakhulu ngesandla.
+998	ibala lamaqabunga
+999	Ibala Lamaqabunga — Amabala Esikhunta Noma E-bacteria
+1000	Amabala amnyama noma agcwele amanzi avela emaqabungeni akho. Lokhu kungabangelwa yizikhunta noma i-bacteria futhi kusakazeka ngokuphalaza kwamanzi nomoya.
+1001	Qapha — elapha ngaphambi kokuthi kusabalale
+1002	Susa amaqabunga athintekile uwalahle kude nensimu yakho
+1003	Gwema ukunisela kusuka phezulu — nisela phansi esitshalweni
+1004	Thenga i-fungicide esekelwe ethusini esitolo sakho sensimu
+1005	Fafaza lonke isitshalo uqonde ukukhula okusha
+1006	Phinda njalo ezinsukwini ezi-10
+1007	Fafaza ngengxube yethisipuni elilodwa le-baking soda namaconsi ambalwa esepha yokuwasha izitsha kulitha elilodwa lamanzi. Faka njalo ezinsukwini ezi-3 kuya kwezi-5 emaqabungeni athintekile.
+1008	igciwane le-mosaic
+1009	Igciwane le-Mosaic — Ukutheleleka Ngegciwane
+1010	Isitshalo sakho sinokutheleleka kwegciwane okubonakala ngamaphethini amabala aphuzi nahlaza emaqabungeni. Lesi sifo sisakazwa yizinambuzane ikakhulukazi ama-aphid futhi asinakho ukwelashwa.
+1011	Kuphuthuma — susa izitshalo ezithelelekile
+1012	Susa futhi ubhubhise izitshalo ezithelelekile ngokushesha ukuvikela ezinye eziseduze
+1013	Ungakwenzi umanyolo ngempahla ethelelekile
+1014	Lawula ama-aphid ezitshalweni ezisele usebenzisa i-insecticide — asakaza leli gciwane
+1015	Geza izandla namathuluzi akho ngemva kokuphatha izitshalo ezithelelekile
+1016	Tshala izinhlobo ezimelana negciwane ngesizini ezayo
+1017	Akukho ukulawula ngamakhemikhali kwegciwane ngokwalo. Gxila ekulawuleni ama-aphid ngokufafaza amafutha e-neem — izipuni ezi-2 ngelitha lamanzi. Fafaza njalo ezinsukwini ezi-5.
+1018	I-Alternaria — Isifo Samaqabunga Sesikhunta
+1019	Amabala amnyama noma amnyama anamasongo aphuzi avela emaqabungeni akho. Lesi sifo sesikhunta sisakazeka ezimeni ezifudumele ezimanzi futhi singathinta nezithelo.
+1020	Susa wonke amaqabunga athintekile uwalahle
+1021	Fafaza lonke isitshalo ebusuku
+1022	Thuthukisa ukugeleza komoya ezungeze izitshalo ngokunqamula
+1023	Gwema ukunisela kusuka phezulu
+1024	Fafaza ngesisombululo se-baking soda — isipuni esisodwa ngelitha lamanzi namaconsi ambalwa esepha yokuwasha izitsha. Faka njalo ezinsukwini ezi-3 ezindaweni ezithintekile.
+1025	ukutheleleka nge-bacteria
+1026	Ukutheleleka Nge-bacteria Kutholakele
+1027	Isitshalo sakho sinokutheleleka nge-bacteria. I-bacteria ibangela amabala agcwele amanzi, amaqabunga aphuzi nezicubu ezibolayo. Isakazeka ngokushesha ezimeni ezimanzi nangamathuluzi angcolisiwe.
+1028	Susa wonke amaqabunga nezindebe ezithelelekile ngokushesha
+1029	Lahla impahla ethelelekile — ungayenzi umanyolo
+1030	Thenga i-bactericide esekelwe ethusini esitolo sakho sensimu
+1031	Fafaza lonke isitshalo kahle kuhlanganise nezindebe
+1032	Gwema ukuwisa amaqabunga lapho unisela — nisela phansi kuphela
+1033	Bulala igciwane amathuluzi akho nge-bleach encibilikisiwe ngemva kokuwasebenzisa
+1034	Phinda ukufafaza njalo ezinsukwini ezi-7 kuze kuphele izimpawu
+1035	Awukho umuthi we-bacteria? Fafaza ngengxube yesipuni esisodwa se-copper sulphate esichithwe emalitheni angu-10 amanzi. Faka njalo ezinsukwini ezi-5. Susa izingxenye ezithelelekile kakhulu ngesandla.
+1036	ukutheleleka ngesikhunta
+1037	Ukutheleleka Ngesikhunta Kutholakele
+1038	Isitshalo sakho sinokutheleleka ngesikhunta. Izikhunta zisakazeka ngezinhlamvu ezithwalwa umoya namanzi. Zikhula ezimeni ezifudumele ezinomswakama futhi zingasakazeka ezitshalweni eziseduze ngokushesha.
+1039	Susa wonke amaqabunga abonakala ethelelekile uwalahle kude nensimu yakho
+1040	Thenga i-fungicide enobubanzi obukhulu esitolo sakho sensimu noma se-hardware
+1041	Fafaza lonke isitshalo ebusuku lapho kupholile
+1042	Gxila ngaphansi kwamaqabunga lapho izinhlamvu zifihlwe khona
+1043	Phinda njalo ezinsukwini ezi-7 kuze kungabi khona izimpawu ezintsha
+1044	Thuthukisa ukugeleza komoya ezungeze isitshalo ngokunqamula amagatsha ahlangene
+1045	Awukho umuthi wesikhunta? Hlanganisa isipuni esisodwa se-baking soda namaconsi ambalwa esepha yokuwasha izitsha kulitha elilodwa lamanzi. Fafaza njalo ezinsukwini ezi-3 kuzo zonke izindawo ezithintekile.
+1046	Ukuhlasela Kwama-aphid — Ukuhlasela Kwezinambuzane
+1047	Izinambuzane ezincane ezithambile zidla ujusi wesitshalo sakho. Ama-aphid ahlangana ekukhuleni okusha nangaphansi kwamaqabunga abangela ukugoqeka, ukuphuzi nokukhula okumile. Asakaza nezifo zamagciwane phakathi kwezitshalo.
+1048	Yenza maduze — amakholoni akhula ngokushesha
+1049	Hlola ngaphansi kwamaqabunga amaqoqo ezinambuzane ezincane eziluhlaza, ezimnyama noma ezimhlophe
+1050	Fafaza izitshalo ngomsinga onamandla wamanzi ukuze ukhiphe ama-aphid
+1051	Thenga isepha yezinambuzane noma ukufafaza amafutha e-neem esitolo sakho sensimu
+1052	Fafaza lonke isitshalo uqonde ukukhula okusha nangaphansi kwamaqabunga
+1053	Phinda njalo ezinsukwini ezi-5 kuya kwezi-7 kuze kungabonakali ama-aphid
+1054	Letha ama-ladybird ensimini yakho — adla ama-aphid ngokwemvelo
+1055	Hlanganisa isipuni esisodwa sesepha yokuwasha izitsha nelitha elilodwa lamanzi. Fafaza ngqo emakholonini ama-aphid njalo ezinsukwini ezi-2 kuya kwezi-3. Isepha ibhubhisa ungqimba lwawo lokuvikela.
+1056	I-Whitefly — Isilwanyana Sezinambuzane Eziandizayo
+1057	Izinambuzane ezincane ezimhlophe eziandizayo zihlasela isitshalo sakho. Ama-whitefly adla ujusi wesitshalo ngaphansi kwamaqabunga abangela ukuphuzi nokuphuphuma. Akhiqiza futhi uju oluncangathelayo oluholela esikhuntini esimnyama.
+1058	Yenza maduze — isakazeka ezitshalweni eziseduze
+1059	Nyakazisa isitshalo kancane — ama-whitefly azondizela phezulu njengamafu uma ekhona
+1060	Thenga izicupho eziphuzi ezinamathelayo esitolo sakho sensimu bese uzilengisa eduze kwezitshalo ezithintekile
+1061	Fafaza ngesepha yezinambuzane noma amafutha e-neem uqonde ngaphansi kwamaqabunga
+1062	Susa amaqabunga ahlaselwe kakhulu
+1063	Phinda ukufafaza njalo ezinsukwini ezi-5 amasonto ama-3
+1064	Fafaza ngengxube yesipuni esisodwa sesepha yokuwasha izitsha nelitha elilodwa lamanzi ngaphansi kwamaqabunga njalo ezinsukwini ezi-3. Amakhadi aphuzi enziwe ngekhadibhodi eliphuzi elimbozwe nge-petroleum jelly nawo abamba abadala.
+1065	ukubola kwezimpande
+1066	Ukubola Kwezimpande — Umonakalo Wokunisela Ngokweqile
+1067	Izimpande zesitshalo sakho ziyabola ngenxa yomhlaba ogcwele amanzi. Lokhu ngokuvamile kubangelwa ukunisela ngokweqile noma ukuphuma kwamanzi okungalungile. Izimpawu zihlanganisa amaqabunga aphuzi, ukuphuphuma naphezu komhlaba omanzi, nezimpande ezinsundu ezithambile.
+1068	Kuphuthuma — isitshalo singase singasinde uma singelashwa
+1069	Yeka ukunisela ngokushesha
+1070	Susa isitshalo embizeni yaso noma usimbe ngokucophelela
+1071	Hlola izimpande — izimpande eziphilile ziyimhlophe futhi ziqinile, izimpande ezibolile zinsundu futhi zithambile
+1072	Sika zonke izimpande ezibolile ngesikere esihlanzekile
+1073	Vumela izimpande zome amahora ambalwa
+1074	Tshala kabusha emhlabeni omusha ophuma amanzi kahle
+1075	Nisela kancane kusukela manje — kuphela uma i-5cm ephezulu yomhlaba yomile
+1076	Awukho umuthi wesikhunta? Fafaza izimpande ezinqunyiwe ngempuphu ye-cinnamon ngaphambi kokutshala kabusha — inezakhiwo zemvelo ezilwa nesikhunta. Qinisekisa ukuthi isitsha esisha noma indawo yokutshala iphuma amanzi kahle.
+1077	Umonakalo Welanga — Ilanga Eliqondile Kakhulu
+1078	Isitshalo sakho senziwe umonakalo yilanga eliqondile ngokweqile. Amabala amhlophe noma ansundu aqhekekayo avela emaqabungeni abheke ilanga ngqo. Lokhu akusiyo isifo futhi akusakazeki.
+1079	Qapha — hambisa isitshalo uma kungenzeka
+1080	Hambisa izitshalo ezisemabhodleleni endaweni enokukhanya okungaqondile noma okuhlungiwe
+1081	Ezitshalweni zensimu enza umthunzi usebenzisa indwangu yomthunzi engu-30 kuya ku-50 ekhulwini
+1082	Susa amaqabunga alimale kakhulu
+1083	Nisela kaningi ngezikhathi eziyisishise — ukunisela ekuseni kungcono
+1084	Ukukhula okusha kuzophila lapho isitshalo sisesikhundleni esingcono
+1085	Awunayo indwangu yomthunzi? Sebenzisa ingubo yokulala endala noma isaka le-hessian ukwenza umthunzi wesikhashana ngesikhathi esishisa kakhulu phakathi kwe-11am kanye ne-3pm.
+1086	izibungu zesicabucabu
+1087	Izibungu Zesicabucabu — Izinambuzane Ezincane Zesicabucabu
+1088	Izibungu zesicabucabu ezincane kakhulu zidla isitshalo sakho. Funa umnotho omncane emaqabungeni nasezindebeni, namabala amancane aphuzi noma amhlophe ebusweni bamaqabunga. Zikhula ezimeni eziyisishise ezomile.
+1089	Yenza maduze — zisakazeka ngokushesha esimweni sezulu esomile
+1090	Funa umnotho omncane phakathi kwamaqabunga nezindebe ukuze uqinisekise izibungu zesicabucabu
+1091	Fafaza lonke isitshalo ngamanzi — izibungu zesicabucabu zizonda umswakama
+1092	Thenga i-miticide noma ukufafaza amafutha e-neem esitolo sakho sensimu
+1093	Fafaza njalo ezinsukwini ezi-3 amasonto ama-2 uqonde ngaphansi kwamaqabunga
+1094	Khulisa umswakama ezungeze isitshalo ngokufafaza njalo
+1095	Hlanganisa izipuni ezi-2 zamafutha e-neem nelitha elilodwa lamanzi namaconsi ambalwa esepha yokuwasha izitsha. Fafaza njalo ezinsukwini ezi-3. Noma ngokunye ugcobe amaqabunga ngendwangu emanzi ukuze ususe izibungu ngokomzimba.
+1096	isikhunta esimnyama sabantu
+1097	Isikhunta Se-downy — Isifo Sesikhunta
+1098	Isifo sesikhunta esibangela amabala aphuzi phezu kwamaqabunga ngokukhula okuyimpuphu okumpunga noma okuncomo ngaphansi. Sisakazeka ngokushesha ezimeni ezipholile ezimanzi futhi singabhubhisa izitshalo ngokushesha.
+1099	Yenza maduze — kusakazeka ngokushesha esimweni sezulu esimanzi
+1100	Susa wonke amaqabunga athelelekile ngokushesha
+1101	Thuthukisa ukugeleza komoya ngokunqamula ukukhula okuhlangene
+1102	Thenga i-fungicide equkethe ithusi noma i-chlorothalonil
+1103	Fafaza lonke isitshalo kuhlanganise nangaphansi kwamaqabunga
+1104	Phinda njalo ezinsukwini ezi-7 kuze kuphele izimpawu
+1105	Fafaza ngesisombululo se-copper sulphate — isipuni esisodwa emalitheni angu-10 amanzi. Faka njalo ezinsukwini ezi-5. Susa amaqabunga athintekile kakhulu ngesandla ngokushesha.
+1106	Isikhunta Esiphuzi — Isifo Sesikhunta Se-Botrytis
+1107	Isikhunta esiphuzi esimpuphu sikhula emaqabungeni, ezindebeni noma ezithelweni zesitshalo sakho. I-Botrytis ikhula ezimeni ezipholile ezinomswakama futhi isakazeka emoyeni. Ingabhubhisa izimbali nezithelo ngokushesha.
+1108	Kuphuthuma — kusakazeka ngokushesha kakhulu
+1109	Susa yonke impahla yesitshalo ethelelekile ngokushesha — iyibeke esikhwameni uyilahle
+1110	Thuthukisa ukugeleza komoya ezungeze izitshalo ngokunqamula nokuziqhelelanisa
+1111	Nciphisa umswakama — gwema ukuwisa amaqabunga lapho unisela
+1112	Thenga i-fungicide equkethe i-iprodione noma i-chlorothalonil
+1113	Fafaza njalo ezinsukwini ezi-7 kuze kuhlanzeke
+1114	Awukho umuthi wesikhunta? Susa zonke izingxenye ezithintekile ngokushesha bese ufafaza izicubu eziphilile ezisele nge-bicarbonate yesoda. Thuthukisa ukungena komoya ngokusemandleni akho.
+1115	ibala elimpunga lamaqabunga
+1116	Ibala Elimpunga Lamaqabunga — Isifo Esivamile Sommbila
+1117	Izilonda ezimpunga noma ezinsundu ezimise okwesikwele zivela emaqabungeni akho ommbila zigijima ngokuhambisana nemithambo yamaqabunga. Lesi singesinye sezifo ezivame kakhulu futhi ezilimaza kakhulu zommbila KwaZulu-Natal.
+1118	Yenza maduze — kungabangela ukulahlekelwa okukhulu kwesivuno
+1119	Susa futhi ubhubhise amaqabunga athelelekile kakhulu
+1120	Thenga i-fungicide equkethe i-azoxystrobin noma i-propiconazole kumthengisi wakho wezolimo
+1121	Fafaza ngempawu yokuqala yokutheleleka futhi uphinde njalo ezinsukwini ezi-14
+1122	Tshala izinhlobo zommbila ezimelana nesifo ngesizini ezayo
+1123	Zungezisa izitshalo — ungatshali ummbila endaweni efanayo unyaka ngamunye
+1124	Gwema ukutshala ezindaweni ezinamanzi angaphumi kahle
+1125	Awukho umuthi wesikhunta? Susa amaqabunga athelelekile futhi uthuthukise ukugeleza komoya ezungeze izitshalo. Ukuzungezisa izitshalo ngesizini ezayo kungukuvikela okungcono kakhulu kwesikhathi eside.
+1126	igciwane lemigqa yommbila
+1127	Igciwane Lemigqa Yommbila — Isifo Segciwane
+1128	Imigqa eyephuzi noma imivimbo igijima emaqabungeni akho ommbila. Lesi sifo segciwane sisakazwa yizimpukane zamaqabunga futhi sivame kakhulu KwaZulu-Natal. Asikho isikhathi sokwelapha uma isitshalo sesithelelekile.
+1129	Susa futhi ubhubhise zonke izitshalo zommbila ezithelelekile ngokushesha

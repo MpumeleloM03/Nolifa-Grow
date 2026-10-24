@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show Pill;
 import '../theme/app_theme.dart';
@@ -7,6 +7,7 @@ import 'weather_models.dart';
 import 'weather_service.dart';
 import 'weather_threats.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 const _short = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 String _icon(DayForecast d) {

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +14,8 @@ import '../theme/glass.dart';
 import 'members_service.dart';
 import 'membership_screen.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 const _maxSeconds = 120;
 
 Widget _frame(BuildContext context, String title, List<Widget> children) => Scaffold(
@@ -244,7 +246,7 @@ class _NewConsultState extends ConsumerState<NewConsultScreen> {
         maxLength: 1000,
         style: AppTheme.callout.copyWith(color: AppTheme.textPrimary),
         decoration: InputDecoration(
-          hintText: 'What have you noticed, since when, what has it eaten, any treatment so far?',
+          hintText: tr('What have you noticed, since when, what has it eaten, any treatment so far?'),
           hintStyle: AppTheme.caption,
           filled: true,
           fillColor: AppTheme.glassFill,
@@ -335,7 +337,7 @@ class _ConsultScreenState extends ConsumerState<ConsultScreen> {
       builder: (_) => AlertDialog(
         backgroundColor: AppTheme.sheet,
         title: Text('Request a farm visit', style: AppTheme.title3),
-        content: TextField(controller: notes, maxLines: 3, decoration: const InputDecoration(hintText: 'Where to find you, gate codes, which animals')),
+        content: TextField(controller: notes, maxLines: 3, decoration: InputDecoration(hintText: tr('Where to find you, gate codes, which animals'))),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
           TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Request')),

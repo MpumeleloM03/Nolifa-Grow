@@ -79,7 +79,24 @@ select is(public.water_vote('z1'), 'counted', 'a new epoch opens after the old o
 select is((select epoch from public.water_incidents where id = 'z1-2'), 2, 'epoch 2');
 select is((select count(*)::int from public.water_incidents where zone_id = 'z1' and stage <> 'resolved'), 1, 'only one live incident per zone');
 
+-- dry taps: the dam is full, the street is not ---------------------------------------------------------
+select pg_temp.as_user(:u, '{"utility": true}');
+select lives_ok(format($f$insert into public.water_zones (id, data) values ('z6', %L)$f$,
+  pg_temp.zone('z6', 90, 2) || '{"source": "DWS weekly State of Dams"}'), 'a zone may name its data source');
+select throws_ok(format($f$insert into public.water_zones (id, data) values ('z7', %L)$f$,
+  pg_temp.zone('z7', 90, 2) || jsonb_build_object('source', repeat('x', 300))), '42501', null, 'a very long source is refused');
+select pg_temp.as_user(:v1);
+select is(public.water_vote('z6'), 'notEligible', 'a healthy dam does not open a low-supply request');
+select is(public.water_vote('z6', 'nonsense'), 'notEligible', 'an unknown reason is refused');
+select is(public.water_vote('z6', 'dry_taps'), 'counted', 'dry taps can be reported while the dam is full');
+select is((select data ->> 'reason' from public.water_incidents where id = 'z6-1'), 'dry_taps', 'the incident keeps its reason');
+select is(public.water_vote('z6', 'dry_taps'), 'alreadyVoted', 'one person is still one report');
+select pg_temp.as_user(:v2);
+select is(public.water_vote('z6'), 'counted', 'a neighbour can join with a plain request');
+select is((select data ->> 'stage' from public.water_incidents where id = 'z6-1'), 'requested', 'enough different people send it on');
+
 -- prefs are private --------------------------------------------------------------------------------------
+select pg_temp.as_user(:v1);
 select lives_ok(format($f$insert into public.water_prefs (uid, data) values (%L, %L)$f$, :v1,
   '{"zoneId":"z1","household":4,"tankLitres":5000,"herd":10}'::jsonb), 'own prefs save');
 select throws_ok(format($f$insert into public.water_prefs (uid, data) values (%L, %L)$f$, :v1,

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../models/diagnosis_record.dart';
@@ -18,6 +18,7 @@ import 'outbreak_service.dart';
 import 'plant_id_service.dart';
 import 'region_service.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// A finished on-phone diagnosis.
 class CropScanResult {
   final String id;

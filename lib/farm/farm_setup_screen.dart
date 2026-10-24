@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show Pill, SectionTitle;
@@ -9,6 +9,8 @@ import '../theme/glass.dart';
 import 'farm_models.dart';
 import 'farm_store.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 /// Farm size, soil, where the water comes from, how it gets to the plants and
 /// which plot uses which system. This is what the irrigation AI plans from.
 class FarmSetupScreen extends ConsumerStatefulWidget {
@@ -210,7 +212,7 @@ class _SourceTile extends ConsumerWidget {
           ),
           IconButton(
             icon: Icon(Icons.delete_outline_rounded, size: 20, color: AppTheme.textTertiary),
-            tooltip: 'Remove',
+            tooltip: tr('Remove'),
             onPressed: () => ref.read(farmStoreProvider.notifier).removeSource(s.id),
           ),
         ]),
@@ -285,7 +287,7 @@ class _SystemTile extends ConsumerWidget {
         ),
         IconButton(
           icon: Icon(Icons.delete_outline_rounded, size: 20, color: AppTheme.textTertiary),
-          tooltip: 'Remove',
+          tooltip: tr('Remove'),
           onPressed: () => ref.read(farmStoreProvider.notifier).removeSystem(s.id),
         ),
       ]),

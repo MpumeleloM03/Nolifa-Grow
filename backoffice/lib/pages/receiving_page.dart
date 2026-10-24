@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
 import '../app.dart';
 import '../labels.dart';
 import 'package:printing/printing.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// Deposits the farms announced, to check in at the door. A check-in weighs
 /// the goods, takes the temperature, gives the lot a tag and a bay, and offers
 /// the tag to print straight away.

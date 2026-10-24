@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'offline_cache.dart';
 import 'resilient.dart';
 
 /// Where the shared Nolifa database lives. Pass these when building:
@@ -25,6 +26,11 @@ class SupabaseBoot {
     try {
       await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
       ready = true;
+      // Saved copies belong to the person who was signed in.
+      Supabase.instance.client.auth.onAuthStateChange.listen((s) {
+        if (s.event == AuthChangeEvent.signedOut) OfflineCache.clearAll();
+      });
+      SyncStatus.instance.watchConnectivity();
     } catch (e) {
       ready = false;
       debugPrint('supabase: init failed, running in Local mode: $e');
@@ -43,6 +49,7 @@ Stream<List<Map<String, dynamic>>> liveTable(SupabaseClient db, String table,
     resilientRows(
       open: () => db.from(table).stream(primaryKey: [key]),
       fetch: () async => [for (final r in await db.from(table).select()) Map<String, dynamic>.from(r)],
+      cacheKey: '${db.auth.currentUser?.id ?? 'anon'}:$table',
     );
 
 /// The stored document of a row, with its id added.

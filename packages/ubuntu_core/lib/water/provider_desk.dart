@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../market/market_widgets.dart';
@@ -8,6 +8,7 @@ import 'water_models.dart';
 import 'water_store.dart';
 import 'water_widgets.dart';
 
+import '../tr_text.dart' show Text;
 /// What the water provider sees: requests that reached the threshold, and the
 /// controls to answer them.
 class ProviderDeskScreen extends StatelessWidget {

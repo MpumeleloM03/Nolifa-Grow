@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show SupabaseClient;
 import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot, friendlyError, resilientRows;
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 SupabaseClient get _db => SupabaseBoot.client;
 
 final _cases = StreamProvider((ref) => resilientRows(

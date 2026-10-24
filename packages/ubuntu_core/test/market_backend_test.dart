@@ -253,7 +253,7 @@ void main() {
       expect(o.released, isTrue);
       expect(farmer.s.farmEarned, o.mySalesNet);
       expect(farmer.s.farmEarned, 120 * 0.92); // R120 less 8%
-      expect(winner.s.driverEarned, 20); // 80% of R25
+      expect(winner.s.driverEarned, 24); // a short trip pays the R24 minimum
       expect(loser.s.driverEarned, 0);
       expect(buyer.s.escrowHeld, 0);
 

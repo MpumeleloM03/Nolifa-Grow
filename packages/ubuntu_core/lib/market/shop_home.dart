@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
@@ -14,6 +14,7 @@ import 'market_store.dart';
 import 'market_widgets.dart';
 import 'shop_screens.dart';
 
+import '../tr_text.dart' show Text;
 /// Nolifa Drop's front door, laid out like a food app: where you are, a search,
 /// a few promotions, then farms (the "restaurants") with their offerings.
 class ShopHomePage extends ConsumerStatefulWidget {

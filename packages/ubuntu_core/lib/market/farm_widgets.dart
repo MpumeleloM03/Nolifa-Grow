@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
@@ -11,6 +11,7 @@ import 'market_store.dart';
 import 'market_widgets.dart';
 import 'shop_screens.dart';
 
+import '../tr_text.dart' show Text;
 /// The shopping bag with a count. Opens the basket.
 class CartButton extends ConsumerWidget {
   const CartButton({super.key});

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show CaseCard, Reveal, SectionTitle, marketProvider;
 import '../models/outbreak_report.dart';
@@ -9,6 +9,7 @@ import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'community_section.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// One place for everything the community is telling you: what neighbours
 /// reported (like fall armyworm on maize), what is happening in your area and
 /// elsewhere in KwaZulu-Natal, and the community chat, where every post is

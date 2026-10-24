@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
@@ -11,6 +11,8 @@ import 'market_store.dart';
 import 'market_widgets.dart';
 import 'trust_screens.dart';
 
+import '../tr_text.dart' show Text;
+import '../tr.dart' show tr, trn;
 /// Opens turn-by-turn directions to a place. The driver app supplies the real
 /// one (it needs a maps plugin); returns false when nothing could be opened.
 /// Draws the route for an accepted job: the driver, the farm and the customer.
@@ -275,7 +277,7 @@ Future<void> askCustomerPin(BuildContext context, MarketStore store, Order order
             keyboardType: TextInputType.number,
             maxLength: 4,
             style: AppTheme.title2,
-            decoration: InputDecoration(errorText: err, counterText: ''),
+            decoration: InputDecoration(errorText: trn(err), counterText: ''),
           ),
           if (order.pin != null)
             Text('Demo PIN: ${order.pin}', style: AppTheme.caption),

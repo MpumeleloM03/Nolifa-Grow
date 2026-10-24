@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io' show SocketException;
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'offline_cache.dart';
 
 /// Turns a raw failure into a sentence a farmer or driver can act on. Nothing
 /// that reaches a screen should ever be an exception's own text.
@@ -36,9 +37,14 @@ String friendlyError(Object? e, {String doing = 'do that'}) {
 /// last good list stays on screen, the list is re-read once, and the channel is
 /// opened again after a growing pause. Callers only see an error if there has
 /// never been any data at all.
+///
+/// With a [cacheKey] the latest rows are also kept on the phone. On the next
+/// start they are shown at once, so a farmer with no signal still sees the last
+/// water levels, road alerts and orders (see [OfflineCache]).
 Stream<List<Map<String, dynamic>>> resilientRows({
   required Stream<List<Map<String, dynamic>>> Function() open,
   required Future<List<Map<String, dynamic>>> Function() fetch,
+  String? cacheKey,
 }) {
   late final StreamController<List<Map<String, dynamic>>> out;
   StreamSubscription<List<Map<String, dynamic>>>? sub;
@@ -51,6 +57,18 @@ Stream<List<Map<String, dynamic>>> resilientRows({
     if (closed) return;
     hasData = true;
     out.add(rows);
+    SyncStatus.instance.live();
+    if (cacheKey != null) OfflineCache.save(cacheKey, rows);
+  }
+
+  // Shown first, then replaced as soon as the network answers.
+  Future<void> showSaved() async {
+    if (cacheKey == null) return;
+    final saved = await OfflineCache.load(cacheKey);
+    if (saved == null || closed || hasData) return;
+    hasData = true;
+    out.add(saved.rows);
+    SyncStatus.instance.servedCache(saved.at);
   }
 
   void connect() {
@@ -64,6 +82,7 @@ Stream<List<Map<String, dynamic>>> resilientRows({
       try {
         emit(await fetch().timeout(const Duration(seconds: 15)));
       } catch (e2) {
+        SyncStatus.instance.failed();
         if (!hasData && !closed) out.addError(e2);
       }
       retry?.cancel();
@@ -73,7 +92,10 @@ Stream<List<Map<String, dynamic>>> resilientRows({
   }
 
   out = StreamController<List<Map<String, dynamic>>>(
-    onListen: connect,
+    onListen: () {
+      showSaved();
+      connect();
+    },
     onCancel: () {
       closed = true;
       retry?.cancel();

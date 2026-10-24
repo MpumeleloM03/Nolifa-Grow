@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart'
@@ -25,6 +25,8 @@ import '../theme/glass.dart';
 import '../community/community_alerts_screen.dart';
 import 'alarm.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 /// One disease in one region, however many people reported it.
 class AreaOutbreak {
   final String disease;
@@ -382,7 +384,7 @@ class _ReportOutbreakSheetState extends ConsumerState<_ReportOutbreakSheet> {
           initialValue: _disease,
           isExpanded: true,
           dropdownColor: AppTheme.sheet,
-          decoration: const InputDecoration(labelText: 'What are you seeing?'),
+          decoration: InputDecoration(labelText: tr('What are you seeing?')),
           items: [for (final o in options) DropdownMenuItem(value: o, child: Text(o))],
           onChanged: (v) => setState(() => _disease = v),
         ),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show Pill, SectionTitle;
@@ -8,6 +8,7 @@ import '../theme/glass.dart';
 import 'impact_models.dart';
 import 'impact_store.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 String pct(double v) => '${(v * 100).round()}%';
 
 /// "Was this right?" under a diagnosis. The farmer sees the plant or animal

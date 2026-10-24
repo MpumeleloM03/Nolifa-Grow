@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_theme.dart';
 import 'glass.dart';
 
+import '../tr_text.dart' show Text;
 /// How the app picks its palette: follow the phone, or pin light or dark.
 enum AppearanceMode { system, light, dark }
 

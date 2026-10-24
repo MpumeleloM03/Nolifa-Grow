@@ -1,5 +1,5 @@
 import 'package:ubuntu_core/ubuntu_core.dart' show friendlyError;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
@@ -13,6 +13,7 @@ import '../../services/health_log_service.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/glass.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 class AddCattleScreen extends ConsumerStatefulWidget {
   final Cattle? existing;
 

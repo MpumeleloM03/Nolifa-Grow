@@ -4,6 +4,7 @@ import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:ubuntu_core/ubuntu_core.dart' show NoticeSender;
 
+import 'package:ubuntu_core/tr.dart' show tr;
 /// Real notifications on the phone. iOS asks the person once; after that this
 /// shows a banner even while the app is open.
 class PhoneNotifier implements NoticeSender {
@@ -46,8 +47,8 @@ class PhoneNotifier implements NoticeSender {
     try {
       await _plugin.show(
         id: _id++,
-        title: title,
-        body: body,
+        title: tr(title),
+        body: tr(body),
         notificationDetails: const NotificationDetails(
           iOS: DarwinNotificationDetails(presentAlert: true, presentBanner: true, presentSound: true, presentBadge: true),
           android: AndroidNotificationDetails('nolifa_updates', 'Nolifa updates',
@@ -77,8 +78,8 @@ class PhoneNotifier implements NoticeSender {
       if (!at.isAfter(now)) at = at.add(const Duration(days: 1));
       await _plugin.zonedSchedule(
         id: id,
-        title: title,
-        body: body,
+        title: tr(title),
+        body: tr(body),
         scheduledDate: at,
         notificationDetails: const NotificationDetails(
           iOS: DarwinNotificationDetails(presentAlert: true, presentBanner: true, presentSound: true),

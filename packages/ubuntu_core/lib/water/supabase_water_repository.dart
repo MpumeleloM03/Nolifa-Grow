@@ -34,9 +34,9 @@ class SupabaseWaterRepository implements WaterRepository {
   /// One database function opens or joins the incident and counts the vote in
   /// a single step, so a person cannot vote twice and the count cannot drift.
   @override
-  Future<VoteResult> vote(WaterZone zone, String uid) async {
+  Future<VoteResult> vote(WaterZone zone, String uid, {bool dryTaps = false}) async {
     try {
-      final res = await _db.rpc('water_vote', params: {'p_zone': zone.id});
+      final res = await _db.rpc('water_vote', params: {'p_zone': zone.id, 'p_reason': dryTaps ? 'dry_taps' : 'low_supply'});
       return switch (res) {
         'counted' => VoteResult.counted,
         'alreadyVoted' => VoteResult.alreadyVoted,

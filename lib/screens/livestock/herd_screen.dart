@@ -1,5 +1,5 @@
 import 'package:ubuntu_core/ubuntu_core.dart' show friendlyError;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/cattle.dart';
@@ -13,6 +13,8 @@ import 'add_cattle_screen.dart';
 import 'animal_detail_screen.dart';
 import 'herd_widgets.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 class HerdScreen extends ConsumerStatefulWidget {
   const HerdScreen({super.key});
 
@@ -49,7 +51,7 @@ class _HerdScreenState extends ConsumerState<HerdScreen> {
               style: AppTheme.footnote.copyWith(
                   color: AppTheme.textPrimary, fontFamily: 'Menlo'),
               decoration: InputDecoration(
-                hintText: 'tag_number,breed,sex\nZA0012,Nguni,cow',
+                hintText: tr('tag_number,breed,sex\nZA0012,Nguni,cow'),
                 hintStyle: AppTheme.caption,
                 filled: true,
                 fillColor: AppTheme.glassFill,
@@ -137,13 +139,13 @@ class _HerdScreenState extends ConsumerState<HerdScreen> {
                   Expanded(child: Text('Herd register', style: AppTheme.title2)),
                   IconButton(
                     icon: const Icon(Icons.file_download_outlined, size: 22),
-                    tooltip: 'Import CSV',
+                    tooltip: tr('Import CSV'),
                     onPressed: _import,
                   ),
                   herd.maybeWhen(
                     data: (list) => IconButton(
                       icon: const Icon(Icons.file_upload_outlined, size: 22),
-                      tooltip: 'Export CSV',
+                      tooltip: tr('Export CSV'),
                       onPressed: list.isEmpty ? null : () => _export(list),
                     ),
                     orElse: () => const SizedBox.shrink(),
@@ -158,7 +160,7 @@ class _HerdScreenState extends ConsumerState<HerdScreen> {
                   onChanged: (v) => setState(() => _query = v.toLowerCase()),
                   style: AppTheme.subhead.copyWith(color: AppTheme.textPrimary),
                   decoration: InputDecoration(
-                    hintText: 'Search tag, name, breed or camp',
+                    hintText: tr('Search tag, name, breed or camp'),
                     hintStyle: AppTheme.subhead,
                     prefixIcon: Icon(Icons.search_rounded,
                         size: 20, color: AppTheme.textTertiary),

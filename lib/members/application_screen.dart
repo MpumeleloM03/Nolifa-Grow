@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +10,8 @@ import '../theme/glass.dart';
 import 'id_check.dart';
 import 'members_service.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 const provinces = [
   'Eastern Cape', 'Free State', 'Gauteng', 'KwaZulu-Natal', 'Limpopo', 'Mpumalanga', 'North West', 'Northern Cape', 'Western Cape',
 ];
@@ -205,7 +207,7 @@ class _FarmApplicationState extends ConsumerState<FarmApplicationScreen> {
           enabled: !_locked,
           style: AppTheme.callout.copyWith(color: AppTheme.textPrimary),
           decoration: InputDecoration(
-            labelText: label,
+            labelText: trn(label),
             labelStyle: AppTheme.caption,
             filled: true,
             fillColor: AppTheme.glassFill,
@@ -225,7 +227,7 @@ class _FarmApplicationState extends ConsumerState<FarmApplicationScreen> {
           onChanged: (_) => setState(() {}),
           style: AppTheme.callout.copyWith(color: AppTheme.textPrimary),
           decoration: InputDecoration(
-            labelText: label,
+            labelText: trn(label),
             labelStyle: AppTheme.caption,
             prefixIcon: Icon(icon, size: 20),
             filled: true,
@@ -315,7 +317,7 @@ class _FarmApplicationState extends ConsumerState<FarmApplicationScreen> {
                 _field('farmName', 'Farm or trading name', Icons.agriculture_rounded),
                 DropdownButtonFormField<String>(
                   initialValue: provinces.contains(_d['province']) ? _d['province'] as String : null,
-                  decoration: InputDecoration(labelText: 'Province', filled: true, fillColor: AppTheme.glassFill, border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppTheme.rChip))),
+                  decoration: InputDecoration(labelText: tr('Province'), filled: true, fillColor: AppTheme.glassFill, border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppTheme.rChip))),
                   items: [for (final p in provinces) DropdownMenuItem(value: p, child: Text(p))],
                   onChanged: _locked ? null : (v) => _set('province', v),
                 ),

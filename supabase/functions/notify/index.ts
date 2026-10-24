@@ -36,13 +36,20 @@ Deno.serve(async (req) => {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: 'Nolifa <onboarding@resend.dev>', to: [r.to_email], subject: r.subject, html }),
+      body: JSON.stringify({ from: Deno.env.get('NOTIFY_FROM') ?? 'Nolifa <onboarding@resend.dev>', to: [r.to_email], subject: r.subject, html }),
     });
     if (res.ok) {
       sent++;
-      await db.from('outbox').update({ status: 'sent', sent_at: new Date().toISOString(), error: null }).eq('id', r.id);
+      // A sign-in code is wiped the moment it has been sent.
+      await db.from('outbox').update({
+        status: 'sent', sent_at: new Date().toISOString(), error: null,
+        ...(r.kind === 'login_code' ? { body: '(code removed after sending)' } : {}),
+      }).eq('id', r.id);
     } else {
-      await db.from('outbox').update({ status: 'failed', error: (await res.text()).slice(0, 300) }).eq('id', r.id);
+      await db.from('outbox').update({
+        status: 'failed', error: (await res.text()).slice(0, 300),
+        ...(r.kind === 'login_code' ? { body: '(code removed)' } : {}),
+      }).eq('id', r.id);
     }
   }
   return new Response(JSON.stringify({ sent, tried: rows?.length ?? 0 }), { status: 200 });

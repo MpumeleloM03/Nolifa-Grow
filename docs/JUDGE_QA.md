@@ -7,7 +7,7 @@ Short answers first, detail after. Where something is simulated in the prototype
 ## Money
 
 **Who pays what?**
-The buyer pays items, delivery and a 3% service fee (minimum R2, maximum R15). The seller pays a commission only when a sale completes: 8% on Starter, 5% on Grow, 3% on Co-op. The driver earns 80% of the delivery fee. Nolifa Drop keeps the service fee, the commission and the other 20% of delivery. Example in the app: a R129.03 order becomes R92.92 to the farm, R20.00 to the driver and R16.11 to Nolifa Drop. The split is shown before paying and on every receipt.
+The buyer pays items, delivery and a 3% service fee (minimum R2, maximum R15). The seller pays a commission only when a sale completes: 8% on Starter, 5% on Grow, 3% on Co-op. The driver is paid for the work: R12 a delivery plus R2.50 for every road kilometre, never under R24. The buyer's delivery fee pays towards it and Nolifa tops up the rest from the service fee and commission. The server records the amount when the PIN is accepted. Nolifa Drop keeps the service fee and commission after paying the driver. The split is shown before paying and on every receipt.
 
 **Do we charge farms a monthly fee?**
 Yes. Every selling farm pays a platform fee that includes support: Starter R49, Grow R99, Co-op R199 a month, on top of the commission. Grow pays for itself above about R1 700 of monthly sales, Co-op above about R5 000. A farm cannot sell until it has registered, been verified and chosen a plan. Supply Radar for businesses (Watch R1 500, Command R6 500, Enterprise custom) is the roadmap product, not in the three apps yet.

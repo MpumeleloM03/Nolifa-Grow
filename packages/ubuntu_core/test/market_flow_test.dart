@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ubuntu_core/delivery/driver_pay.dart';
 import 'package:ubuntu_core/market/drive_page.dart';
 import 'package:ubuntu_core/market/market_hub.dart';
 import 'package:ubuntu_core/market/radar_page.dart';
@@ -93,7 +94,7 @@ void main() {
     expect(o.serviceFee, 2.22);
     expect(o.total, r2(74 + o.deliveryFee + 2.22));
     expect(r2(o.farmNet + o.driverPay + o.platformTake), o.total);
-    expect(o.driverPay, r2(o.deliveryFee * 0.8)); // 80% of the delivery fee
+    expect(o.driverPay, DriverPay.forKm(DriverPay.km(o))); // paid for the work, not a share of the fee
     await settle(tester);
   });
 
@@ -148,8 +149,8 @@ void main() {
     expect(store.deliverWithPin('UD-1033', '1946'), isTrue);
     expect(c.read(marketProvider).orderById('UD-1033')!.status, OrderStatus.delivered);
     await settle(tester);
-    // Driver is paid 80% of R30 once the window closes.
-    expect(c.read(marketProvider).driverEarned, 310 + 24);
+    // The seeded order is R30, an unknown distance counts as 10 km: R12 + 10 km at R2.50.
+    expect(c.read(marketProvider).driverEarned, 310 + 37);
   });
 
   testWidgets('unverified drivers cannot go online until all checks pass', (tester) async {

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
@@ -8,6 +8,8 @@ import 'market_widgets.dart';
 import 'shop_screens.dart';
 import 'trust_screens.dart' show ScreenFrame;
 
+import '../tr_text.dart' show Text;
+import '../tr.dart' show tr, trn;
 /// What a household has saved, what it paid in fees, and what it could save today.
 class HouseholdSavings {
   final double groupSaved; // group buys and shared delivery, from the store's running total
@@ -130,7 +132,7 @@ class _Deal extends ConsumerWidget {
             ]),
           ),
           IconButton(
-            tooltip: 'Add to basket',
+            tooltip: tr('Add to basket'),
             icon: Icon(Icons.add_circle_rounded, color: AppTheme.sprout),
             onPressed: () => addToBasket(context, ref, p),
           ),

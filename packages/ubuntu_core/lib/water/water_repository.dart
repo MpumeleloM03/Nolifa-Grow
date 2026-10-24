@@ -17,6 +17,7 @@ Map<String, dynamic> waterZoneToJson(WaterZone z) => {
           {'t': r.at.millisecondsSinceEpoch, 'level': r.level}
       ],
       'latest': z.readings.isEmpty ? null : z.level,
+      if (z.source != null) 'source': z.source,
     };
 
 WaterZone waterZoneFromJson(Map<String, dynamic> m, {bool demo = false}) => WaterZone(
@@ -27,6 +28,7 @@ WaterZone waterZoneFromJson(Map<String, dynamic> m, {bool demo = false}) => Wate
       population: (m['population'] as num?)?.toInt() ?? 0,
       voteThreshold: (m['voteThreshold'] as num?)?.toInt() ?? 100,
       demo: demo,
+      source: m['source'] as String?,
       readings: [
         for (final r in (m['readings'] as List? ?? const []))
           WaterReading(
@@ -112,7 +114,10 @@ abstract class WaterRepository {
 
   /// Adds one person's voice. Opens an incident if the supply is low and none
   /// is open. Sends the request on once enough different people have voted.
-  Future<VoteResult> vote(WaterZone zone, String uid);
+  ///
+  /// [dryTaps] opens a request even when the reservoir is healthy: dams are bulk
+  /// storage, and a burst main or a shutdown can leave a street dry.
+  Future<VoteResult> vote(WaterZone zone, String uid, {bool dryTaps = false});
 
   // What the water provider does (needs the utility permission when shared).
   Future<void> upsertZone(WaterZone zone);
@@ -195,11 +200,11 @@ class LocalWaterRepository implements WaterRepository {
   }
 
   @override
-  Future<VoteResult> vote(WaterZone zone, String uid) async {
+  Future<VoteResult> vote(WaterZone zone, String uid, {bool dryTaps = false}) async {
     await _ensure();
     var active = activeIncidentFor([for (final m in _incidents!) waterIncidentFromJson(m)], zone.id);
     if (active == null) {
-      if (!zone.status.canRequestHelp) return VoteResult.notEligible;
+      if (!dryTaps && !zone.status.canRequestHelp) return VoteResult.notEligible;
       final epoch = _incidents!
               .where((m) => m['zoneId'] == zone.id)
               .fold<int>(0, (a, m) => (m['epoch'] as num).toInt() > a ? (m['epoch'] as num).toInt() : a) +

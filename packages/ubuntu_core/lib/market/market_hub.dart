@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
@@ -15,6 +15,7 @@ import 'shop_home.dart';
 import 'market_widgets.dart';
 import 'trust_screens.dart';
 
+import '../tr_text.dart' show Text;
 /// One tab of the hub. Each app picks which tabs it shows.
 class HubTab {
   final String emoji;

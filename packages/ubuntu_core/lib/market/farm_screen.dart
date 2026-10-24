@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
@@ -8,6 +8,7 @@ import 'market_store.dart';
 import 'market_widgets.dart';
 import 'shop_screens.dart';
 
+import '../tr_text.dart' show Text;
 /// One farm's page: who they are, how they deliver, and everything they sell.
 class FarmScreen extends ConsumerStatefulWidget {
   final String farmId;

@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../utils/language_provider.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 class LanguageToggle extends ConsumerWidget {
   const LanguageToggle({super.key});
 

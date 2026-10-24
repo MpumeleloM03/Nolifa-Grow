@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart'
     show
@@ -25,6 +25,7 @@ import '../store/order_rows.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// The selling side: what the farm has made, what has to go out, and what the
 /// neighbours bought.
 class OrdersTab extends ConsumerWidget {

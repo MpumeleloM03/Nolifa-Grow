@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
 import '../app.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 const hubName = 'Durban hub';
 
 class Tile extends StatelessWidget {

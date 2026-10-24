@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show Pill, Reveal, RingGauge, SectionTitle;
@@ -15,6 +15,8 @@ import '../weather/weather_service.dart';
 import '../weather/weather_threats.dart';
 import 'crop_store.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 String shortDate(DateTime d) => '${d.day} ${_months[d.month - 1]}';
 
@@ -200,7 +202,7 @@ class CropDetailScreen extends ConsumerWidget {
                 title: Text(plot.name),
                 actions: [
                   IconButton(
-                    tooltip: 'Remove plot',
+                    tooltip: tr('Remove plot'),
                     icon: const Icon(Icons.delete_outline_rounded),
                     onPressed: () async {
                       final ok = await showDialog<bool>(

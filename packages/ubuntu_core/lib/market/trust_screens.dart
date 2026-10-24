@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
@@ -9,6 +9,8 @@ import 'market_store.dart';
 import 'honesty.dart';
 import 'market_widgets.dart';
 
+import '../tr_text.dart' show Text;
+import '../tr.dart' show tr, trn;
 /// Shield and close buttons shown at the top right of every hub page.
 class HeaderActions extends StatelessWidget {
   final VoidCallback? onClose;
@@ -18,7 +20,7 @@ class HeaderActions extends StatelessWidget {
   Widget build(BuildContext context) =>
       Row(mainAxisSize: MainAxisSize.min, children: [
         IconButton(
-          tooltip: 'Trust and safety',
+          tooltip: tr('Trust and safety'),
           icon: Icon(Icons.verified_user_rounded, color: AppTheme.sprout),
           onPressed: () => Navigator.push(context,
               MaterialPageRoute(builder: (_) => const TrustCenterScreen())),
@@ -196,7 +198,7 @@ class TrustCenterScreen extends ConsumerWidget {
             'Items + delivery + 3% service fee (min R2, max R15)'),
         _Row('Farmer pays',
             '8% commission, 5% on Grow, 3% on Co-op. Only when a sale completes'),
-        _Row('Driver earns', '80% of the delivery fee'),
+        _Row('Driver earns', 'R12 a delivery plus R2.50 a km'),
         _Row('Nolifa Drop keeps', 'Service fee + commission + 20% of delivery',
             strong: true),
         Divider(height: AppTheme.s6),
@@ -675,10 +677,10 @@ class MoneySplitCard extends StatelessWidget {
         line(AppTheme.sprout, 'Farm', farmNote, farm),
         if (driver > 0)
           line(AppTheme.livestockAccent, 'Driver',
-              '80% of delivery, paid on delivery', driver),
+              'R12 a delivery plus R2.50 a km, paid on delivery', driver),
         line(const Color(0xFF7FB7FF), 'Nolifa Drop',
             driver > 0
-                ? 'Service fee, commission, 20% of delivery'
+                ? 'Service fee and commission, after topping up the driver'
                 : 'Service fee and commission', platform),
         if (refund > 0)
           line(AppTheme.danger, 'Refunded to you',

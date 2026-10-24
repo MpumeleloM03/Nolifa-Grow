@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
@@ -7,6 +7,7 @@ import 'water_models.dart';
 import 'water_screens.dart';
 import 'water_store.dart';
 
+import '../tr_text.dart' show Text;
 /// Set once the low-water pop-up has been shown in this run of the app, so it
 /// greets a person on opening and then leaves them alone.
 final lowWaterPromptShownProvider = StateProvider<bool>((ref) => false);

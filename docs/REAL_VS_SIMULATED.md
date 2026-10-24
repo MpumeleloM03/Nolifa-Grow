@@ -42,3 +42,9 @@ Demo farms and products, demo orders and wallet balances, the made-up alerts (lo
 - **Warehouse staff:** in the Supabase dashboard, add a row to the `staff` table with their user id (Authentication, Users shows it). Certifiers go in `certifiers`, verified people in `verified_users`. They sign in to the back office at https://nolifa-backoffice.web.app with the account they signed up with. The back office shows their user ID if they have no access yet.
 - **Certifiers:** create `certifiers/<their user id>` the same way. They record inspections on the Certificates page. A room cannot take goods until a certificate covers it.
 - **Islilo Farming:** sign up in Nolifa Grow, set the farm name to Fatboy Butcheries and the suburb to uMhlanga, finish business setup and verification, then Orders, "Quick start: add the Fatboy Butcheries range".
+
+
+## Added 25 October 2026
+- Real: cloud water zones (DWS dam levels for 5 KZN supply systems, filled by `water-dams` from a South African connection), dry-tap requests, a water provider account with the server `utility` claim, server-recorded driver payouts, offline cache of shared lists.
+- Real but test mode: Yoco card payments. Plant.id online scans need the key set as a function secret.
+- Not built: CAPTCHA, email confirmation, push for a closed app, SMS/USSD, monthly billing for months 2 to 24.

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/cattle.dart';
 import '../../models/health_event.dart';
@@ -6,6 +6,7 @@ import '../../models/species.dart';
 import '../../services/health_log_service.dart';
 import '../../theme/app_theme.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 Color healthColor(HealthState s) => switch (s) {
       HealthState.sick => AppTheme.danger,
       HealthState.watch => AppTheme.warn,

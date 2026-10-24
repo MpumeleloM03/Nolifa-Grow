@@ -1,0 +1,312 @@
+2081	Ukulethwa kwasendaweni
+2082	Ukulethwa nge-hab
+2083	Ipulazi liyaletha
+2084	I-hab yaseThekwini
+2085	I-hab yasePietermaritzburg
+2086	I-hab yaseRichards Bay
+2087	Kusethwe yipulazi
+2088	Ipulazi liyilethela lona uqobo.
+2089	Engeza ikheli lakho ukuze ubone ukulethwa kanye nentengo ngqo.
+2090	Umshayeli ulanda epulazini futhi ayilethe emnyango wakho. {0} km.
+2091	Usuku olu-1 kuya ku-2
+2092	Ipulazi lingamakhilomitha angu-{0} ukude, ngakho ligqoka nge-{1} futhi umshayeli wasendaweni uletha ingxenye yokugcina
+2093	Ideski le-hab
+2094	Akukho lutho ku-hab
+2095	{0} {1} idlula
+2096	I-hab
+2097	Ngena, hlunga, khulula
+2098	Ipulazi lilahla i-oda lalo lapha futhi libonisa ikhodi enezinombolo ezi-4 esikhwameni sokupakisha. Yibhale ukuze ungenise i-oda.
+2099	Uma isihlungiwe, ikhulule futhi abashayeli abaseduze bengxenye yokugcina bangayithatha.
+2100	Idemo: amapulazi ne-hab kungamanga futhi ahambisa ama-oda ngokuzenzakalela emva kokulinda okufushane. Ungenza kuqala. Ikhodi ikhonjiswa ku-oda ngalinye ukuze uyizame.
+2101	Indawo yokugcina impahla: ukwamukela, isitoko, amakamelo
+2102	Ngenisa izinkokhelo zamapulazi, ubone isitoko esinamatag namazinga okushisa asekamelweni elibandayo.
+2103	Awekho ama-oda adlula nge-hab okwamanje.
+2104	Leyo khodi ayifani ne-oda.
+2105	Isendleleni isuka epulazini
+2106	Kulahlwe, kulindwe ukungeniswa
+2107	Kugcinwe, kulungele ukukhethwa
+2108	Kungeniswe, kulungele ukuhlungwa
+2109	Ikhodi yedemo: {0}
+2110	Ikhodi esikhwameni
+2111	Ngenisa
+2112	Khetha ekugcineni bese ukhulula
+2113	Khulula kubashayeli
+2114	Awekho amanani anele e-{0} ekamelweni elisebanzini. Cela ipulazi lilahle okwengeziwe.
+2115	{0}: {1} kusuka ku-{2}
+2116	Kukhethwe {0}
+2117	ezinsukwini ezingu-{0}
+2118	Okuphansi {0} C. Vala izitshalo ezithambile ngaphambi kokushona kwelanga futhi ungenise izilwane.
+2119	Bona isibikezelo
+2120	Isibikezelo se-Open-Meteo
+2121	Kushisa kakhulu {0}
+2122	Kufika ku-{0} C. Nisela izilwane kakhulu, gcina imfuyo emthunzini futhi unisele izitshalo ekuseni.
+2123	Kulindeleke u-{0} mm. Imigwaqo ephansi nemifula kungagcwala, ngakho ukulethwa kungahlehla.
+2124	Izifudumezo ezifika ku-{0} km/h. Qinisa indwangu yomthunzi, amathanele nezinto ezixegayo.
+2125	{0}. {1} km kuwe,
+2126	kubonwe ngu-{0} {1}.
+2127	Bona izexwayiso zomgwaqo
+2128	Kubikwe ngabashayeli
+2129	Amapulazi angu-{0} aqinisekisile lokhu. Hlola izilwane nezitshalo zakho.
+2130	Skena manje
+2131	Kuqinisekiswe udokotela wezilwane
+2132	Kuqinisekiswe omakhelwane
+2133	Nolifa/1.0
+2134	I-akhawunti yakho
+2135	Imenyu
+2136	Engeza ikheli lakho lokulethwa
+2137	Ama-oda ami
+2138	Isikhwama nezirisidi
+2139	Izivumelwano zokusindisa, ukuthenga ngamaqembu nezinkokhelo
+2140	I-escrow, ama-PIN, izimpikiswano
+2141	Usizo nokusekelwa
+2142	Awekho ama-oda okwamanje
+2143	Khetha ipulazi kuthebhu yeShop futhi i-oda lakho livela lapha.
+2144	Isendleleni
+2145	Ngaphambilini
+2146	Kugciniwe ✅
+2147	Imininingwane yomuntu siqu
+2148	Inombolo yeselula
+2149	Ifoni iqinisekisiwe
+2150	Qinisekisa ifoni yakho ukuze uvote ngamanzi
+2151	Ikheli lepulazi noma lokulanda
+2152	Ikheli lokulethwa
+2153	Indawo noma idolobha
+2154	Igama lepulazi (liboniswa ngokugqamile)
+2155	Umugqa owodwa mayelana nepulazi lakho
+2156	Ukulethwa kusethwe ekhasini lebhizinisi.
+2157	Ama-oda nezinkokhelo
+2158	Ama-oda amasha, ukulethwa, izinkokhelo
+2159	Izexwayiso zamanzi
+2160	Izitsha ezisezingeni eliphansi nezibuyekezo zamalori
+2161	Izexwayiso zokuqubuka
+2162	Izifo zemfuyo nezitshalo eduze kwakho
+2163	Kugciniwe
+2164	Ukuhlolwa kudinga ukubukwa futhi
+2165	Qeda izinyathelo ukuze uqale ukuthengisa
+2166	Kuhloliwe futhi kugunyaziwe. Akukho mikhawulo.
+2167	Imikhiqizo emisha kuze kufike ku-{0} ngenkathi ukuhlolwa kwakho kuhlelwa. Izinsuku ezingu-{1} ezisele ukuyiqeda.
+2168	Lungisa okuqaphelwe umhloli bese ubhuka futhi. Imibhalo yakho imisiwe.
+2169	I-Nolifa Drop ibhala amapulazi abhalisiwe, aqinisekisiwe, anohlelo futhi abonise umhlaba wawo. Igcina abathengi bephephile.
+2170	Kugunyazwe yi-Nolifa. Ubuntu bakho, ibhizinisi, umhlaba nemininingwane yepulazi kuhloliwe, futhi abathengi babona iphrofayili yepulazi lakho.
+2171	Sihlola i-ID yakho, ibhizinisi lakho, lapho ipulazi likhona nokuthi likhulu kangakanani, amasertifikhethi akho, nendlela unakekela ngayo izilwane nezitshalo zakho. Abasebenzi be-Nolifa bayakubuyekeza ngaphambi kokuthi uthengise.
+2172	Vula isicelo sami
+2173	Bhalisa ibhizinisi lakho
+2174	Kubhalisiwe njenge-{0}{1}
+2175	Umlimi, i-co-op noma inkampani ingathengisa. Inombolo yokubhalisa ayiphoqelekile kubantu ngabanye.
+2176	Inombolo yokubhalisa (akuphoqelekile)
+2177	Bhalisa
+2178	Qinisekiswa
+2179	Ubuntu nei-akhawunti yezinkokhelo kuhloliwe. Abathengi babona ibheji lakho.
+2180	{0} kwamahlolo angu-{1} enziwe: i-ID, i-akhawunti yasebhange yezinkokhelo, indawo yepulazi.
+2181	Qinisekisa ipulazi lami
+2182	Khetha uhlelo
+2183	Uhlelo lwe-{0} • R{1} ngenyanga • ikhomishini engu-{2}%
+2184	Imali yenkundla yenyanga ihlanganisa ukusekelwa nesitolo sakho. Khetha ehambisana nobuningi bakho.
+2185	Shintsha uhlelo
+2186	Bona izinhlelo
+2187	Khombisa umhlaba nezitshalo zakho
+2188	Izithombe zomhlaba wakho, isitshalo nomthombo wamanzi zingenile. Ungathengisa imikhiqizo emisha manje, ngemikhawulo.
+2189	Thatha izithombe ezinomsindo wendawo zensimu yakho, isitshalo sakho nomthombo wakho wamanzi. Kusebenza ungekho ku-inthanethi futhi kulayishwe kamuva. Lokhu kuvula ukuthengisa ngemikhawulo ngokushesha, ngaphandle kokulinda ukuvakashelwa.
+2190	Engeza izithombe
+2191	Ukuthi ama-oda akho alethwa kanjani
+2192	🚜 Ngiyaletha
+2193	Uletha ama-oda ekhasimende wena uqobo. Ugcina yonke imali yokulethwa oyibekile, futhi i-PIN yekhasimende isakhulula inkokhelo yakho.
+2194	Umshayeli we-Nolifa oqinisekisiwe ulanda epulazini lakho. Amakhasimende akhokha imali yokulethwa kusukela ku-R{0}. Umshayeli ukhokhelwa uhambo, futhi i-Nolifa yengeza emalini uma ingaphelele.
+2195	Imali yakho yokulethwa
+2196	Mahhala
+2197	Kubiza malini
+2198	Imali yenkundla yenyanga
+2199	Ihlanganisa ukusekelwa
+2200	Ikhomishini ngokuthengisa ngakunye
+2201	Kuphela uma ukhokhelwa
+2202	Imali yesevisi yomthengi
+2203	Ikhokhwa ikhasimende, hhayi wena
+2204	Ukulethwa
+2205	Okwakho
+2206	Ikhasimende likhokha
+2207	Uyibeka imali
+2208	Umshayeli ukhokhelwa ngohambo
+2209	Imali yami ihlala ivikelekile kanjani?
+2210	Ukhokha ku-escrow. Ipulazi likhokhelwa kuphela ngemva kokunikeza i-PIN yokulethwa noma lapho inkathi yokuvikeleka iphela.
+2211	Kukhona okungalungile nge-oda lami
+2212	Vula i-oda uthinte Bika inkinga phakathi kwenkathi yokuvikeleka. Umlamuli uyabuyekeza futhi imali ihlala ibanjiwe kuze kube yileso sikhathi.
+2213	Ubani oletha?
+2214	Amanye amapulazi aziletha wona. Amanye asebenzisa i-Nolifa Delivery, lapho umakhelwane oqinisekisiwe elanda. Ikhadi lepulazi likhombisa ukuthi yiliphi.
+2215	Imali ikhokhela ini?
+2216	Imali encane yesevisi yomthengi (3%, ubuncane u-R2, ubukhulu u-R15) ihlanganisa izinkokhelo, i-escrow nokusekelwa. Ukulethwa kuya kumshayeli.
+2217	Usabambekile? Ukusekelwa: help@nolifa.example (ikheli ledemo). Ezinsukwini zomsebenzi 8 kuya ku-5.
+2218	Ukuhlolwa endaweni
+2219	Akubhukiwe
+2220	Kucelwe
+2221	Kubhukiwe
+2222	Kuphumelele
+2223	Akuphumelelanga
+2224	Umhloli uhlola ukuthi umhlaba, indlela ulima ngayo namanzi kuphephile ekudleni. Kususa imikhawulo futhi kukuvumela ukubhala amaqanda, ubisi nempahla ecutshungulwayo.
+2225	{0} Ngokuvamile phakathi kwezinsuku ezingu-{1}.
+2226	Idemo: umhloli uyadlula
+2227	Idemo: akadluli
+2228	Qinisekisa ifoni yakho
+2229	Inombolo yefoni eqinisekisiwe ikuvumela ukuvota esicelweni samanzi, ngakho ivoti ngalinye liyisuntu langempela. Inombolo eyodwa ibalwa kanye.
+2230	Ifoni yakho iqinisekisiwe. Ungavota ezicelweni zamanzi.
+2231	Inombolo yeselula (0821234567)
+2232	Thumela ikhodi
+2233	Idemo: akukho-SMS ethunyelwayo. Ikhodi yakho ngu-{0}. Ekukhiqizweni ifika nge-SMS.
+2234	Ikhodi enezinombolo ezi-4
+2235	Leyo khodi ayifani
+2236	🚨 Ilayini yokuphepha
+2237	Indawo yakho yamanje nemininingwane yomsebenzi kwabelwana nayo neqembu lokuphepha le-Nolifa Drop. Esimweni esiphuthumayo shaya u-10111 noma u-112.
+2238	Vala
+2239	Shayela
+2240	Thola imali emgwaqweni wakho
+2241	🟢 Uku-inthanethi
+2242	⚫ Awuku-inthanethi
+2243	Umshayeli oqinisekiswe yi-Nolifa
+2244	Kuqophiwe
+2245	Qinisekiswa ukuze uqale ukuthola imali
+2246	{0} kwamahlolo angu-{1} asele. Ngaphandle kokuqinisekiswa, akukho amajoba.
+2247	Umsebenzi wakho okhona
+2248	Amajoba aseduze nawe
+2249	Ngena ku-inthanethi ukubona amajoba okulethwa aseduze nawe.
+2250	Awekho amajoba avulekile okwamanje. Amasha avela njengoba abantu beyala.
+2251	{0} izinto  •  {1}
+2252	Yamukela umsebenzi
+2253	🔑 I-PIN yekhasimende
+2254	Cela ikhasimende i-PIN yalo enezinombolo ezi-4. Inkokhelo ikhululwa kuphela ngemva kokuthi ifane. Ngemva kwemizamo engalungile engu-{0} i-oda liyakhiywa.
+2255	I-PIN yedemo: {0}
+2256	Asikwazanga ukuhlola i-PIN. Hlola uphawu lwakho bese uzama futhi.
+2257	Ama-PIN amaningi angalungile. I-oda likhiyiwe, impikiswano ivuliwe futhi imali ihlala ibanjiwe.
+2258	Leyo PIN ayifani. {0} {1} isele
+2259	Ayikwazanga ukuvula amamephu. Hamba uye ku-{0}.
+2260	Isithombe siyadingeka njengobufakazi kuqala.
+2261	Hamba uye ku-{0}
+2262	Letha ku-{0}
+2263	{0}  •  uthola {1}
+2264	Hamba uye epulazini
+2265	Hamba uye ekhasimende
+2266	Kulandiwe: thatha isithombe
+2267	Kulethiwe: thatha isithombe, bese i-PIN
+2269	Imifino eluhlaza, ekhethwe ekuseni namuhla
+2271	Utamatisi, u-anyanisi nopelepele
+2273	Ufulawa wommbila ogayiwe ngetshe ne-samp
+2275	Amaqanda nezinkukhu zasekhaya
+2277	Izithelo ze-citrus nama-avocado asuka e-Ixopo
+2279	Ubhontshisi, ibutternut nokunye
+2281	Amanzi, igesi namandla ezikhathini zokucisha kukagesi
+2282	Entsha epulazini
+2283	Ipulazi liyaletha · mahhala
+2284	Ipulazi liyaletha · R{0}
+2285	I-Nolifa Delivery · R{0}
+2286	Leli pulazi alithengisi okwamanje.
+2287	Okusha ku-Nolifa Drop
+2288	{0}-{1} imizuzu
+2289	Kuqinisekisiwe
+2290	{0} uletha i-oda lakho emnyango wakho. Usakhokha nge-escrow futhi uqinisekise nge-PIN yakho.
+2291	Umakhelwane oqinisekisiwe ulanda epulazini futhi akulethele.
+2292	Abakuthengisayo
+2293	🚜 Ipulazi liyaletha
+2294	🛵 I-Nolifa Delivery
+2295	♻️ Izivumelwano zokusindisa
+2296	Isitolo sakho
+2297	{0} km  •  {1}-{2} imizuzu  •  {3}
+2298	Ukhilimu wenyama yenkomo
+2299	Fatboy Butcheries
+2300	Umhlanga
+2301	Ifilet yenkomo
+2302	Isitshulu senyama yenkomo
+2303	I-T-bone yenkomo
+2304	Isifuba senkomo
+2305	Isoseji lenkomo
+2306	Isifuba senkukhu
+2307	Amathanga enkukhu
+2308	Izinti zenkukhu
+2309	Amaphiko enkukhu
+2310	Mahhala kwabo bonke, njalo
+2311	Isiskena sezitshalo nesihloli sezimpawu zezinkomo
+2312	Amathuluzi avikela ipulazi awabizi lutho.
+2313	Irada yamanzi, izibikezelo nezwi lomphakathi
+2314	Akekho okhokhela ukuxwayiswa noma ukucela usizo.
+2315	Imephu yokuqubuka, izexwayiso nomphakathi
+2316	Ukubika nokufunda kumahhala.
+2317	Ukuthenga ukudla namanzi
+2318	Amakhasimende akhokha imali encane yesevisi, kuphela ku-oda.
+2319	Kukhokhelwa: ukuthengisa ku-Nolifa Drop
+2320	Uhlelo kusukela ku-R49 ngenyanga luhlanganisa izinkokhelo ku-escrow, ukufanisa ukulethwa, izimpikiswano nosizo.
+2321	Ukhokha futhi ikhomishini kuphela uma ukuthengisa kuphela, ngakho ipulazi elingathengisi lutho lidla kuphela uhlelo.
+2322	I-Starter ziqhelisa ngokwazo ngamabhasikidi ambalwa ngenyanga. Lamanani yisiqalo esizokuhlola nabalimi ngaphambi kokuqala.
+2323	Ungekho ku-inthanethi nokuku-inthanethi
+2324	I-Nolifa yakhelwe uphawu olungahambi kahle. Ezinye izinto zisebenza ngaphandle kwalo. Ezinye zidinga uxhumo, noma omunye umuntu.
+2325	Isebenza ngaphandle kophawu
+2326	Isebenza efonini yakho
+2327	Isiskena samaqabunga (imodeli isefonini)
+2328	Isihloli sezimpawu zezinkomo nerejista yomhlambi
+2329	Umlandeli wempilo yezitshalo nezinhlelo zesisakazi samanzi
+2330	Konke osukulilayishile: ama-oda akho, isikhwama, ukuskena okugciniwe nokufundwa kokugcina kwamanzi
+2331	Ukuthatha izithombe zobufakazi. Zithunyelwa uma ubuya ku-inthanethi
+2332	Kudinga uxhumo
+2333	Kufinyelela abanye abantu noma amasevisi
+2334	Ukubeka noma ukukhokhela i-oda, nokubona isitoko sepulazi esiphilayo
+2335	Ukufundwa kwamanzi okusha, ivoti lomphakathi nempendulo yomhlinzeki
+2336	Imibiko yokuqubuka ifinyelela omakhelwane, nokudla komphakathi
+2337	Amamephu, izindlela nokuhamba komshayeli
+2338	Izaziso ezivela kwabanye abantu
+2339	Kudinga omunye umuntu
+2340	Akukho okwenzekayo kuze benze
+2341	Ukulethwa: umshayeli, noma ipulazi, kumele amukele futhi alilethe
+2342	Amaloli amanzi: umhlinzeki (noma umphakeli wepulazi) kumele aphendule
+2343	Ukuqinisekiswa kokuqubuka: omakhelwane baqinisekisa ngaphambi kokuthi umbiko uvezwe
+2344	Ukuhlolwa: umhloli kumele avakashele
+2345	Kule prototype izinhlelo zigcina idatha efonini, ngakho amafoni amabili awabonani kuze kuvulwe iseva yenethiwekhi eyabelwanayo.
+2346	Okufananisiwe kule prototype
+2347	Izinkokhelo ne-escrow. Akukho mali yangempela ehambayo. I-FNB izogcina izimali ekukhiqizweni.
+2348	Ukuhlolwa kobuntu, ibhange ne-Home Affairs. Isinyathelo ngasinye siyinkinobho yedemo.
+2349	Imiphumela yokuhlolwa kwepulazi nomhlaba, nezinqumo zikadokotela wezilwane nomlamuli.
+2350	Ukufundwa kwamanzi nezimpendulo zomhlinzeki, nomsebenzi womakhelwane nomshayeli kumodi yedemo.
+2351	Ukwabelana phakathi kwamafoni. Kudinga iseva eyabelwanayo, evaliwe.
+2352	Okwangempela: imithetho yemali ne-escrow, i-PIN, ingqondo yezimpikiswano, izibikezelo, ukuskena kwe-AI nokugcinwa efonini.
+2353	Ikhasimende
+2354	Isitolo
+2355	Amanzi, imigwaqo nokuqubuka eduze kwakho
+2356	Akukho okudinga wena okwamanje
+2357	Siqapha amazinga edamu, imigwaqo nemibiko yokuqubuka endaweni yakho. Isexwayiso sivela lapha futhi njengesaziso ngokushesha lapho sivela.
+2358	Imibiko yokuqubuka
+2359	Ayikho imibiko eduze kwakho. Abalimi bayifaka ku-Nolifa Grow.
+2360	{0} {1} evela emapulazini aseduze nawe.
+2361	Imifino
+2362	Okusanhlamvu
+2363	Ubisi namaqanda
+2364	Inyama nezinkukhu
+2365	Izidingo
+2366	I-Starter
+2367	I-Grow
+2368	Qala ukuthengisela omakhelwane bakho
+2369	Kubalimi abancane abasebenzayo
+2370	Kuma-co-op namapulazi ezentengiselwano
+2371	Isitolo sakho ku-Nolifa Drop
+2372	Ukusekelwa ngochungechunge lwezingxoxo, ezinsukwini zomsebenzi
+2373	I-escrow nezinkokhelo nge-FNB
+2374	Ikhomishini engu-8% ngokuthengisa ngakunye
+2375	Konke okuku-Starter
+2376	Ukusekelwa okubalulekile, izinsuku ezi-7 ngesonto
+2377	Ukuxilongwa kwe-AI okungenamkhawulo namarekhodi ezempilo
+2378	Isibikezelo sengozi yokuqubuka sezinsuku ezi-7
+2379	Ikhomishini engu-5% ngokuthengisa ngakunye
+2380	Konke okuku-Grow, kufika emapulazini angu-25
+2381	Amarekhodi omhlambi nezitshalo abelwanayo
+2382	Amathuluzi e-oda eliningi nezinkokhelo ze-co-op
+2383	Ilayini yosizo ezinikele
+2384	Ikhomishini engu-3% ngokuthengisa ngakunye
+2385	I-Nolifa Delivery
+2386	I-FNB Pay
+2387	I-Instant Money
+2388	Imali uma kulethwa
+2389	Thinta ukukhokha ku-akhawunti yakho ye-FNB
+2390	Sebenzisa ibhalansi yakho ye-eBucks, uthole okwengeziwe emuva
+2391	Akudingeki i-akhawunti yasebhange
+2392	Khokha umshayeli lapho efika
+2393	I-oda alifikanga
+2394	Izinto zilimele noma zonakele
+2395	Izinto ezingalungile noma ezilahlekile
+2396	Ukulethwa kwehlehle kakhulu
+2397	Inkinga nomshayeli
+2398	I-PIN yokulethwa ifakwe kabi izikhathi ezi-3
+2399	Ukubuyiselwa imali okuphelele

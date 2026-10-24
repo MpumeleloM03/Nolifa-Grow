@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import '../theme/app_theme.dart';
 import 'resilient.dart';
 
+import '../tr_text.dart' show Text;
+import '../tr.dart' show tr, trn;
 /// The delete-account flow every app shows: say what goes, ask for the word
 /// DELETE, run it, and explain plainly if it cannot be done yet.
 Future<void> confirmDeleteAccount(BuildContext context, Future<void> Function() delete) async {
@@ -21,7 +23,7 @@ Future<void> confirmDeleteAccount(BuildContext context, Future<void> Function() 
               'Finished orders stay for the other person\'s accounts, with your name and address taken out. A membership you paid for is not refunded.',
               style: AppTheme.footnote),
           const SizedBox(height: AppTheme.s3),
-          TextField(controller: c, enabled: !busy, decoration: const InputDecoration(labelText: 'Type DELETE to confirm')),
+          TextField(controller: c, enabled: !busy, decoration: InputDecoration(labelText: tr('Type DELETE to confirm'))),
           if (error != null) Padding(padding: const EdgeInsets.only(top: 8), child: Text(error!, style: TextStyle(color: AppTheme.danger))),
         ]),
         actions: [

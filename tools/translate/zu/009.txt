@@ -1,0 +1,254 @@
+2740	Ukwabelana ngomlando wokuthengisa ne-FNB ukuze uthole isikweletu nomshuwalense akuphoqelekile futhi ungakuvala noma nini.
+2741	Yabelana ngamarekhodi epulazi ne-FNB
+2742	Kuvuliwe. Kusetshenziselwa ukuhlolwa kwangaphambili kwesikweletu
+2743	Kuvaliwe. Azikho izinkonzo zesikweletu
+2744	Prototype: amabhalansi nezinkokhelo lapha kufananisiwe. Akukho mali yangempela ehambayo kuze kuxhunywe izinkokhelo ze-FNB.
+2745	Ku-escrow
+2746	Ipulazi liqophile
+2747	Umshayeli uqophile
+2748	Umsebenzi
+2749	Kuxazululiwe
+2750	Izinhlelo zamapulazi
+2751	Ipulazi ngalinye likhokha imali encane yenkundla yenyanga ehlanganisa ukusekelwa, kanye nekhomishini ekuthengisweni ngakunye. Khuphukela phezulu uma ukuthengisa kwakho kwenza ikhomishini ephansi ifanele.
+2752	R0 / ngenyanga
+2753	R{0} / ngenyanga
+2754	Ekuthengisweni kuka-R1 000 ugcina u-R{0}
+2755	Uhlelo lwakho
+2756	Cela i-Nolifa i-{0}
+2757	I-Nolifa ivula uhlelo lwakho lapho inkokhelo yakho iqinisekiswa. Xhumana nathi ukuze ushintshe.
+2758	Ungu-{0} ✅
+2759	I-Grow iyazikhokhela uma uthengisa cishe u-R1 700 ngenyanga. I-Co-op ishaya i-Grow ngaphezu kuka-R5 000 cishe. Khansela noma nini, akukho kukhiywa.
+2760	Qinisekiswa njengomshayeli
+2761	Qinisekisa ipulazi lakho
+2762	Uqinisekisiwe. Abathengi babona ibheji lakho.
+2763	Qeda zonke izinyathelo ukuze ungene ku-inthanethi futhi wamukele amajoba.
+2764	Qeda zonke izinyathelo ukuze ubhale imikhiqizo. Abathengi bathemba amapulazi aqinisekisiwe.
+2765	Idemo: ukuhlolwa ngakunye kufananisiwe futhi akukho okuhlolwayo kumodi yefoni kuphela. Ngesizindalwazi esabelwanayo, abantu bafaka izicelo futhi abasebenzi be-Nolifa babuyekeza amadokhumenti abo.
+2766	Umshayeli
+2767	R12 ngokulethwa ngakunye kanye no-R2.50 ngekhilomitha, kukhokhwa ekulethweni
+2768	Nolifa Drop
+2769	Imali yesevisi nekhomishini, ngemva kokwengeza kumshayeli
+2770	Imali yesevisi nekhomishini
+2771	Kubuyiselwe kuwe
+2772	Emuva endleleni yakho yokuqala yokukhokha
+2773	⚖️ Bika inkinga
+2774	Ukuvula icala kuqandisa inkokhelo. Akekho okhokhelwayo kuze kuxazululwe.
+2775	Umphumela ongaba khona: {0}
+2776	Kwenzekeni? (akuphoqelekile)
+2777	Isithombe sobufakazi sinamathiselwe
+2778	Engeza isithombe njengobufakazi
+2779	Qandisa inkokhelo uvule icala
+2780	Le nkokhelo isivele ikhishiwe. Xhumana nokunakekelwa kwamakhasimende e-FNB ukuze kubuyekezwe.
+2781	Kuyabuyekezwa
+2782	Isinqumo phakathi kwamahora angu-48 ekukhiqizweni.
+2783	{0}  •  ukuzethemba kwe-AI {1}%{2}
+2784	Esidlangalaleni: amapulazi aseduze ayaziswa.
+2785	Kuyimfihlo kuze kube {0}.
+2786	Abalimi abaqinisekisiwe kuphela abangaqinisekisa iqubuko, ngakho imibiko ayikwazi ukukhohlisa.
+2787	Isifo sesitshalo
+2788	Isifo semfuyo
+2789	Ukuhlasela kwezinambuzane
+2790	Ukungcoliswa kwamanzi
+2791	🚩 Bika icala
+2792	Umbiko wakho uhlolwa yi-AI manje. Uxwayisa amanye amapulazi kuphela ngemva kokuthi omakhelwane baqinisekisa noma udokotela wezilwane eqinisekisa.
+2793	Ubonani? (isb. i-leaf rust)
+2794	Isithombe ne-GPS kunamathiselwe
+2795	Namathisela isithombe
+2796	Thumela ukuze kuhlolwe
+2797	Indawo yakho
+2798	Umgodi
+2799	Dambisa, indawo emaphakathi
+2800	Isikhukhula
+2801	Amanzi emgwaqweni, ungawelani uma ungawuboni umgwaqo
+2802	Ingozi
+2803	Ingozi phambili, linda ukuhlehla
+2804	Imisebenzi yomgwaqo
+2805	Umgwaqo ovaliwe noma ukumisa nokuqhubeka kwendlela eyodwa
+2806	Umgwaqo uvaliwe
+2807	Umgwaqo uvaliwe, thola enye indlela
+2808	Amaphoyisa / ibhulokhi
+2809	Ibhulokhi noma indawo yokuhlola phambili
+2810	Amalambu ethrafikhi acishiwe
+2811	Amandla acishiwe, wathathe njengendawo yokumisa ezintathu
+2812	Izilwane emgwaqweni
+2813	Izinkomo noma izimbuzi emgwaqweni
+2814	Ihora eledlule
+2815	umzuzu
+2816	Umshayeli wesampula
+2817	Umgodi ojulile endleleni yesobunxele
+2818	Ibhuloho eliphansi ngaphansi kwamanzi ngemva kwemvula
+2819	Amalambu acishiwe esiphambanweni esikhulu
+2820	Misa uqhubeke, linda imizuzu eyi-10
+2821	Ikuphi emgwaqweni?
+2822	Abanye abashayeli kulo mgwaqo bayaxwayiswa ngokushesha.
+2823	Vula indawo ukuze sikwazi ukubeka isexwayiso.
+2824	{0} kubikiwe. Abashayeli abaseduze bayaxwayiswa.
+2825	Omunye usevele ubike lokhu. Sikubale njengokubonwa okunye.
+2826	Abashayeli abaqinisekisiwe kuphela abangabika. Qeda ukuhlolwa kwakho kuqala.
+2827	{0}  -  {1} {2} bakubonile
+2828	Kusekhona
+2829	Kuhambile
+2830	Izexwayiso zomgwaqo
+2831	Ithrafikhi ephilayo evela ku-TomTom, nezexwayiso ezibikwe abashayeli be-Nolifa. Ngayinye ithi ivela kuphi.
+2832	Kubikwe abashayeli be-Nolifa
+2833	Abashayeli babika imigodi, izikhukhula, izingozi namabhulokhi lapho beshayela. Isexwayiso siyaphela ngokwaso ngaphandle uma omunye umshayeli eqinisekisa, futhi siyehla lapho abashayeli bethi sesihambile.
+2834	Bika ingozi
+2835	Qinisekiswa ukuze ubike
+2836	Prototype: izexwayiso zihlala kule foni kuze kuxhunywe isizindalwazi esabelwanayo. Amasampula aphawuliwe.
+2837	Akekho umshayeli we-Nolifa obike ingozi muva nje. Lokho akusho ukuthi imigwaqo icacile: lena akuyona umbiko wethrafikhi.
+2838	Ithrafikhi ephilayo
+2839	TomTom
+2840	Vula indawo ukuze i-Nolifa ibone izehlakalo ngaphakathi kwama-25 km kuwe.
+2841	Ithrafikhi ephilayo ayikwazanga ukulayishwa. Hlola uphawu lwakho.
+2842	Idatha yethrafikhi ayikafiki. Iyabuyekezwa njalo ngemizuzu emi-5.
+2843	I-TomTom ayibonisi izehlakalo ezinkulu ngaphakathi kwama-25 km kuwe okwamanje.
+2844	{0} kude  ·  TomTom  ·  {1}
+2845	Azikho izehlakalo zethrafikhi ngaphakathi kwama-25 km
+2846	Ithrafikhi {0} {1} ngaphakathi kwama-25 km{2}
+2847	akukho okubikiwe ngabashayeli
+2848	{0} evela kubashayeli
+2849	Inkungu
+2850	Izimo eziyingozi
+2851	Imvula enkulu
+2852	Iqhwa
+2853	Ithrafikhi enzima
+2854	Umgwaqo ovaliwe (ichibi)
+2855	Umgwaqo uvaliwe
+2856	Umoya onamandla
+2857	Imoto eyonakele
+2858	Isehlakalo sethrafikhi
+2859	kubuyekezwe khona manje
+2860	kubuyekezwe imizuzu engu-{0} edlule
+2861	kubuyekezwe amahora angu-{0} edlule
+2862	{0} {1} km kude
+2863	{0}. Kuvela kuthrafikhi ye-TomTom.
+2864	yenza lokho
+2865	Faka izinombolo ezi-6 ezivela ku-imeyili.
+2866	Leyo khodi ayilungile, noma iphelelwe yisikhathi. Hlola i-imeyili noma ucele entsha.
+2867	Hlola i-imeyili yakho
+2868	I-akhawunti yakho ingavuma abantu futhi isuse imali, ngakho siqinisekisa ukuthi ngowakho. Sikuthumelela ikhodi enezinombolo ezi-6 nge-imeyili.
+2869	Sithumele ikhodi enezinombolo ezi-6 ku-{0}. Isebenza imizuzu eyi-10.
+2870	Qinisekisa
+2871	Thumela ikhodi entsha ngemva kwamasekhondi angu-{0}
+2872	Thumela ikhodi entsha
+2873	Susa i-akhawunti yakho?
+2874	Lokhu kususa ukungena kwakho, iphrofayili yakho, umhlambi wakho namarekhodi empilo, imibhalo yakho, izithombe zakho namadokhumenti e-ID, namacala akho kadokotela wezilwane. Akunakuhlehliswa.\n\n
+2875	Ama-oda aqediwe ahlala ku-akhawunti zomunye umuntu, igama nekheli lakho kususiwe. Ubulungu obukhokhele abubuyiselwa imali.
+2876	Bhala DELETE ukuze uqinisekise
+2877	Gcina i-akhawunti yami
+2878	Bhala DELETE ngonhlamvu ezinkulu ukuze uqhubeke.
+2879	susa i-akhawunti yakho
+2880	Kuyasuswa
+2881	Susa konke
+2882	Usuku lokuzalwa kuleyo nombolo alusiyo usuku lwangempela.
+2883	Lolo suku lokuzalwa lusesikhathini esizayo.
+2884	Kumele ube neminyaka engu-18 noma ngaphezulu ukuze uthengise ku-Nolifa.
+2885	Leyo nombolo ye-ID ayivumelekile. Hlola inombolo ngayinye.
+2886	Inombolo ye-ID ibukeka ilungile.
+2887	Sebenzisa ifomethi ye-CIPC, njengo-2015/123456/07.
+2888	Unyaka kuleyo nombolo awulungile.
+2889	Sebenzisa inombolo yeselula yaseNingizimu Afrika, njengo-082 123 4567.
+2890	Lokho kuthathe isikhathi eside kakhulu. Hlola uphawu lwakho uzame futhi.
+2891	Akukho inthanethi. Hlola uphawu lwakho uzame futhi.
+2892	Ukungena kwakho kuphelile. Ngena futhi.
+2893	Asikwazanga ukukungenisa. Zama futhi.
+2894	I-akhawunti yakho ayivumelekile ukuthi {0} okwamanje.
+2895	Lokho sekukhona.
+2896	Iseva ayikwazanga ukuthi {0}. Zama futhi emva kwesikhashana.
+2897	Kukhona okungahambanga kahle. Zama futhi emva kwesikhashana.
+2898	Ukubukeka
+2899	Isistimu ilandela isilungiselelo sefoni yakho.
+2900	Isistimu
+2901	Ukukhanya
+2902	Ubumnyama
+2903	Faka @
+2904	 Idatha egciniwe evela ku-{0}.
+2905	Awuku-inthanethi.{0}
+2906	Ikamelo eliqandisiwe
+2907	Ikamelo elipholile
+2908	Ikamelo elipholile kancane
+2909	Indawo yokugcina eyomile
+2910	{0} kuya ku-{1} C
+2911	Kulindelekile
+2912	Ekugcineni
+2913	Konke kuthunyelwe
+2914	Kulahlwe
+2915	Ikamelo ligcina ibanga lalo lokushisa amahora angu-24
+2916	Amaprobhu okushisa ayalinganiswa futhi arekhodwa
+2917	Izindawo zihlanzekile futhi zivikelekile ekudleni
+2918	Ukulawulwa kwezinambuzane kukhona
+2919	Amandla asekelayo noma i-alamu uma amandla ehluleka
+2920	Impahla igcinwa ngaphezu phansi futhi kude nezindonga
+2921	Kulindelekile {0}
+2922	Ikamelo lingaphandle kwebanga
+2923	Alukho ithegi okwamanje
+2924	{0} kwezingu-{1} {2} zisele  -  {3}
+2925	Ikhoneni {0}
+2926	Ingene ku-{0} C
+2927	Sebenzisa ngaphambi kuka-{0} ({1})
+2928	Sebenzisa ngaphambi kuka-{0}
+2929	Beka ukunikezwa kwakho
+2930	Letha isitoko ku-warehouse ye-Nolifa futhi sihlolwe, sibhalwe ithegi futhi sigcinwe ekamelweni elibandayo ngezinga lokushisa elifanele.
+2931	Abathengi abakhona kude basetshenziselwa lapha, ngakho awuzishayeli zonke ama-oda wena. Konke kurekhodwa futhi uyakubona lapha.
+2932	Beka impahla
+2933	Prototype: ideski le-warehouse libona izinkokhelo zakho kule foni kuphela. Zabelwana lapho i-backend ivulwa.
+2934	Ekugcineni manje
+2935	Izinkokhelo zakho
+2936	Akukho okubekiwe okwamanje.
+2937	Uletha ini?
+2938	Faka ukuthi malini, ngama-kg noma amayunithi
+2939	Hlola ikamelo nosuku lokusebenzisa ngaphambi
+2940	I-warehouse iyangenisa lapho zifika.
+2941	Umkhiqizo (isibonelo Ukhilimu wenyama yenkomo)
+2942	Kungakanani (kg noma amayunithi)
+2943	Uhlobo
+2944	Ikamelo lokugcina
+2945	Sebenzisa ngaphambi
+2946	Uyilethela
+2947	Kusasa
+2948	Ezinsukwini ezi-3
+2949	Tshela i-warehouse
+2950	I-warehouse: {0}
+2951	Ukwamukela {0}
+2952	Isitoko {0}
+2953	Amakamelo
+2954	Ngenisa izinkokhelo emnyango: linganisa isisindo, thatha izinga lokushisa, bese wamukela noma usibuyisele emuva.
+2955	Azikho izinkokhelo ezilindelekile okwamanje.
+2956	Kubuyiselwe emuva
+2957	Faka isisindo nezinga lokushisa.
+2958	{0}  -  kumenyezelwe {1} {2}
+2959	{0}, kumele kufike {1}. Sebenzisa ngaphambi kuka-{2}
+2960	Isisindo ({0})
+2961	Izinga lokushisa (C)
+2962	Buyisela emuva
+2963	Kubuyiselwe emuva emnyango ngabasebenzi
+2964	Impahla ephelelwa yisikhathi kuqala ikhethwa kuqala.
+2965	Akukho lutho ekugcineni.
+2966	Ikamelo ngalinye linebanga lokushisa. Ukufundwa ngaphandle kwalo kuphakamisa i-alamu futhi kubamba impahla yekamelo kuma-oda.
+2967	Idemo: lokhu kufundwa kwezinzwa kufananisiwe. I-warehouse yangempela izobanikeza kuma-probe ekamelweni ngalinye.
+2968	Ngaphandle kwebanga. Kumele kube {0}. Impahla kuleli kamelo ibanjwa kuze kululame.
+2969	Ibanga {0}{1}
+2970	Rekhoda ebangeni
+2971	Umnyango ushiywe uvuliwe
+2972	Ukunikezwa kumenyezelwe: {0} {1}, {2}
+2973	Abasebenzi be-warehouse kuphela abangangenisa impahla.
+2974	Lokhu kunikezwa akulindele ukungeniswa.
+2975	Faka inani elifikile.
+2976	Alukho isitifiketi esivumelekile esihlanganisa i-{0}. Umqinisekisi kumele ahlole kuqala.
+2977	Kufike ku-{0} C. Impahla ye-{1} kumele ibe {2}.
+2978	Kwenqatshiwe emnyango. {0}
+2979	Kungeniswe: {0} {1} ku-{2} C. Ithegi {3}, ikhoneni {4}
+2980	Kwenqatshiwe: {0}
+2981	Kukhethwe {0} {1} ku-oda {2}
+2982	Kuhanjiswe ekhoneni {0} kuya ku-{1}
+2983	Kususiwe {0} {1}: {2}
+2984	Selidlulile usuku lokusebenzisa. Kulahlwe, {0} {1} kususiwe
+2985	Isitoko sedemo
+2986	Kungeniswe: {0} kg ku-{1} C. Ithegi {2} (isitoko sedemo)
+2987	I-eThekwini Water and Sanitation, ihlinzekwa uhlelo lwe-Umgeni
+2992	I-Msunduzi ne-uMgungundlovu, ihlinzekwa izinhlelo ze-Upper Umgeni ne-Mooi
+2995	I-iLembe, ihlinzekwa uhlelo lwe-Mdloti
+2997	Izifunda ze-King Cetshwayo nezakwaZulu, zihlinzekwa izinhlelo ze-Mhlathuze, Hluhluwe nePongola
+3002	I-Newcastle ne-Uthukela, ihlinzekwa izinhlelo ze-Ngagane ne-Tugela
+3008	imvula enkulu ilindelekile ({0} mm)
+3009	imvula ilindelekile ({0} mm)

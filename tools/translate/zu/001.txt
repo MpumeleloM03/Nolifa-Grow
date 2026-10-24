@@ -1,0 +1,261 @@
+275	Isifo sesikhumba esinezigaxa
+276	Isifo sezinyawo nomlomo (udokotela kahulumeni)
+277	I-Brucellosis (udokotela kahulumeni)
+278	I-Anthrax
+279	Umlenze omnyama ne-botulism
+280	Amanzi abomvu nesifo senyongo
+281	I-Rabies
+282	Okunye
+283	Isinso esithambile (enterotoxaemia)
+284	Ulimi oluluhlaza (Blue tongue)
+285	Imfiva yeSigodi iRift Valley
+286	Isifo samahhashi sase-Afrika
+287	I-Tetanus
+288	Kugcinwe kurekhodi luka-{0}.
+289	Engeza isikhathi
+290	Azikho izikhathi ezibekiwe. Engeza esisodwa ukuze ifoni ikukhumbuze.
+291	Kwenziwe namuhla
+292	Kwenziwe
+293	Susa lesi sikhathi
+294	Ukunakekela umhlambi
+295	Amanzi, ukudla nemigomo
+296	Ifoni yakho ikukhumbuza ngalezi zikhathi. Lokho okukumakayo kwakha irekhodi lepulazi lakho, odokotela nabathengi abangalethemba.
+297	Izikhumbuzo zefoni
+298	Isaziso ngesikhathi ngasinye ngezansi, nsuku zonke.
+299	Pha umhlambi ukudla
+300	Uphakela ini?
+301	Usawoti wezilwane (lick), utshani obomile, isilage, utshani, uhlobo lokudla namanani. Odokotela bethu bakufunda lokhu ukuze baqonde ukuthi izilwane zakho zigcinwa kanjani.
+302	Isibonelo: ukudla utshani bendle, u-2 kg we-maize lick ngenkomo ngayinye ngosuku, utshani obomile ebusika
+303	Ukugoma
+304	Engeza izilwane kumhlambi wakho ukuze ugcine irekhodi lazo lokugoma.
+305	{0} kwezingu-{1} zigomiwe futhi zisesikhathini. {2}
+306	layisha umhlambi wakho
+307	Kusesikhathini
+308	Igomo lokuvuselela liyadingeka
+309	Akugomiwe
+310	Akuphendulwanga
+311	Ingabe u-{0} ugomiwe?
+312	Uthe cha ngo-{0}
+313	Khetha ukuthi yiliphi igomo.
+314	Kugomiwe: {0}
+315	Umlimi ubika ukuthi akugomiwe
+316	egcina lokho
+317	Yebo
+318	Yiliphi igomo?
+319	Linikeziwe ngo-{0}/{1}/{2}
+320	Sigcina leli rekhodi eliqotho. Udokotela wezilwane angabe eseluleka ukuthi yimaphi amagomo adingwa umhlambi wakho endaweni yakho.
+321	Kuyagcinwa
+322	Nisela umhlambi amanzi
+323	Hlola ukuthi izitsha zamanzi zigcwele futhi zihlanzekile, bese ukumaka ku-Nolifa Grow.
+324	Isikhathi sokudla
+325	Isikhathi sokuphakela izilwane zakho. Kumake ku-Nolifa Grow uma sekwenziwe.
+326	Imibiko yomakhelwane
+327	Endaweni yakho
+328	Akukho ukuqubuka kwezifo okubikiwe endaweni yakho. Uma ubona okuthile, bika ukuze omakhelwane bazilungiselele.
+329	Kwezinye izindawo zaKwaZulu-Natal
+330	Umphakathi
+331	Yonke into ethunyelwe isekelwa ubufakazi: isithombe osithathile nokuhlolwa kwe-AI efonini yakho.
+332	Yabelana ngobufakazi nendawo yakho
+333	Ayikho imibiko yamanzi okwamanje. Thatha isithombe setange noma sepompi uyabelane.
+334	Akukho lutho lapha okwamanje. Skena okuthile bese uyabelana ukuze omakhelwane bazilungiselele.
+335	Evela kumasipala
+336	Azikho izibuyekezo okwamanje. Uma umasipala wakho noma umhlinzeki wamanzi ephendula isicelo somphakathi, ubona lapha ukuthi usizo luzofika nini. Akuwona wonke amasipala asiza abalimi ngamanzi okwamanje.
+337	Abalimi abaqinisekisiwe kuphela abangaqinisekisa okuthunyelwe, ngakho imibiko ayikwazi ukukhohlisa.
+338	Qinisekisa
+339	Nawe uyakubona lokhu
+340	Nami ngiyakubona lokhu
+341	Omakhelwane abangu-{0} baqinisekisile
+342	Awekho amanzi nhlobo
+343	Amanzi angcolile noma asengozini
+344	Ingcindezi ephansi
+345	Ithanka lifikile, siyabonga
+346	Ibhorehole ingasiza abanye
+347	Kuskenwe kule foni: {0}, ukuzethemba kungu-{1}%{2}
+348	Ukuhlolwa kwezimpawu kule foni: {0}, ukufana kungu-{1}%. {2}.
+349	Isithombe sithathwe endaweni futhi sinamathiselwe
+350	Kwabelwane nendawo yakho
+351	Thatha isithombe futhi
+352	Yabelana ngobufakazi
+353	Akukho bufakazi, akukho okuthunyelwayo. Isithombe sakho nokuhlolwa kwe-AI kuhamba nakho.
+354	🐄 Isilwane
+355	💧 Amanzi
+356	Skena iqabunga nge-AI
+357	Skena futhi
+358	Ukuzethemba kungu-{0}% kule foni
+359	Okufana kakhulu: {0}
+360	Thatha isithombe sesilwane
+361	Thatha isithombe setange noma sepompi
+362	Engeza inothi (akuphoqelekile)
+363	Thumela endaweni yami
+364	Skena iqabunga kuqala. Umphumela uyibufakazi.
+365	Khetha izimpawu uthathe isithombe ukuze uthumele.
+366	Thatha isithombe ukuze uthumele.
+368	I-Late Blight kumazambane
+369	Isakazeke emigqeni emithathu selokhu kwaMsombuluko ngemva kwemvula.
+370	Kuskenwe efonini yakhe: Late Blight, ukuzethemba kungu-91%
+372	Izinkomo ezine ezinezigaxa entanyeni. Ngizihlukanise ngabiza udokotela wezilwane.
+373	Ukuhlolwa kwezimpawu efonini yakhe: Isifo sesikhumba esinezigaxa, kuyafana kakhulu
+375	Ingcindezi ephansi, amapompi aphelelwa amanzi ngesikhathi sakusihlwa
+376	Ithange lisekota. Ipompo yebhorehole isasebenza ezinkomeni.
+377	Isithombe sesilinganisi setange sinamathiselwe
+379	I-Fall armyworm kummbila
+380	Itholwe kusenesikhathi. Kusprayiwe namhlanje ekuseni futhi ngizoskena futhi ngoLwesihlanu.
+381	Kuskenwe efonini yakhe: umonakalo we-armyworm, ukuzethemba kungu-84%
+382	Isithombo
+383	Amaqabunga akhulayo
+384	Ukuhluma kwezimbali
+385	Izithelo zigcwala
+386	Ukukhula kwamaqabunga
+387	Usayizi ogcwele
+388	Phezulu kukhula
+389	Izimpande ziyavuvuka
+390	Kuyakhula
+391	Ukuhluma kwamathasseli
+392	Okusanhlamvu kugcwala
+393	Sekulungele ukuvunwa
+394	Skena iqabunga ukuze uqale ukulandela impilo yaleli thafa. Kuze kube yilapho wenza kanjalo, isilinganiso sisuselwa kukhalenda yesitshalo kuphela.
+395	Ukuskena kokugcina bekuyizinsuku ezingu-{0} ezedlule. Skena futhi kuleli sonto.
+396	{0} bekuphuthuma. Kwelashe manje, bese uskena futhi emva kwezinsuku ezi-3. Kuyahlehlisa ukukhula.
+397	{0} idinga ukunakwa maduze. Landela izinyathelo zokwelapha bese uskena futhi emva kwesonto.
+398	Isisakazi samanzi sinikeza cishe u-{0}% walokho lesi sitshalo esikudingayo. Sisebenzise isikhathi eside noma wengeze ukusebenza kwesibili.
+399	Ukunisela kuncane kancane ku-{0}% wokudingayo. Engeza amaminithi ambalwa.
+400	Ukunisela kungu-{0}% wokudingayo. Okukhulu kakhulu kuletha ukubola kwezimpande. Nciphisa isikhathi sokusebenza.
+401	Alukho uhlelo lwesisakazi samanzi. Isilinganiso sicabanga imvula. Beka oluthile ukuze ukukhula kuhambe kahle.
+402	Vuna phakathi kwezinsuku ezingu-{0} ukuze uthole izinga elingcono kakhulu.
+403	Isikhathi esingcono sokuvuna sesidlulile. Vuna manje ukugwema ukulahlekelwa.
+404	Isivuno sisondele. Lungiselela abathengi ku-Nolifa Drop nempahla yokupakisha.
+405	Mas
+406	Nhl
+407	Nda
+408	Mba
+409	Nhla
+410	Nhlang
+411	Ntu
+412	Ncw
+413	Man
+414	Mfu
+415	Lwe
+416	Zib
+417	Isikhathi esingcono sokuvuna sesidlulile
+418	Sekulungele ukuvunwa manje
+419	Vuna ezinsukwini ezingu-{0}
+420	Vuna ezinsukwini ezingu-{0} kuya ku-{1}
+421	Izitshalo zami
+422	I-AI yempilo yezitshalo
+423	Engeza okutshalile. I-AI ilandela ithafa ngalinye, ikutshele ukuthi liphumele kuphi nokuthi uzovuna nini, futhi ikusize ukubeka izisakazi zamanzi.
+424	Azikho izitshalo okwamanje. Engeza ithafa lakho lokuqala uthole usuku lokuvuna.
+425	Akuskenwanga
+426	Impilo {0}
+427	Isisakazi samanzi sivuliwe
+428	Leli thafa lisusiwe.
+429	Susa ithafa
+430	Susa u-{0}?
+431	Ukuskena kwalo nohlelo lwesisakazi samanzi kususwa nakho.
+432	Gcina
+433	Cishe {0}
+434	Usuku {0} lwezingu-{1} ezilinganiselwayo
+435	Ukuzethemba {0}
+436	Ngokwekhalenda
+437	Kuhamba kancane ngo-{0}%
+438	Isilinganiso esisuselwa kukhalenda yesitshalo, ukuskena kwakho nokunisela kwakho. Siba nembile njalo uma uskena.
+439	Impilo yesitshalo
+440	Akukaskenwa
+441	Skena iqabunga ukuze uqale
+442	Kuskenwe {0}
+443	Skena leli thafa manje
+444	Isisakazi samanzi
+445	Alukho uhlelo lwesisakazi samanzi. Isitshalo sidinga cishe amalitha angu-{0} ngosuku kuleli zinga.
+446	Amaminithi angu-{0} ngo-{1}
+447	{0} L ngosuku uma kudingeka {1} L
+448	Ukusebenza okulandelayo {0} ngo-{1}:00
+449	Shintsha uhlelo lwesisakazi samanzi
+450	Misa isisakazi samanzi
+451	Isivuno
+452	Sesivunwe? Tshela uhlelo usuku. Lilaphanisa nosuku olubikezele lapho wengeza isitshalo, futhi yilokho okukala ukunemba kwalo ekhasini le-Impact.
+453	Maka njengesivunwe namuhla
+454	Kuvunwe {0}?
+455	Lapho ukwengeza uhlelo lulindele {0}. Ithafa lisuswa ohlwini lwakho.
+456	Hhayi okwamanje
+457	Yebo, kuvunwe
+458	Faka usayizi wethafa ngamamitha eskwele
+459	Namuhla
+460	Isonto elilodwa eledlule
+461	Amasonto ama-2 edlule
+462	Inyanga eyodwa edlule
+463	Okutshale nokuthi nini. I-AI ibala okunye.
+464	Igama lethafa (akuphoqelekile)
+465	Usayizi wethafa ngamamitha eskwele
+466	Kutshaliwe
+467	Qala ukulandela
+468	Uhlelo lwesisakazi samanzi
+469	{0}: {1} m² kwezingu-{2}
+470	{0} L ngosuku kwezingu-{1} L ezidingekayo
+471	Kumile kakhulu. Isitshalo sizokhula kancane.
+472	Kuncane kancane.
+473	Kwedlula okudingayo. Kunengozi yokubola kwezimpande.
+474	Cishe kulungile kuleli zinga.
+475	Ukugeleza kwesisakazi samanzi (L ngomzuzu)
+476	Amaminithi ngokusebenza ngakunye
+477	Izikhathi zokuqala
+478	Vumela i-AI iphakamise uhlelo
+479	Gcina uhlelo
+480	Vala uhlelo
+481	I-Nolifa ayikuvulele isisakazi samanzi. Sisebenzise ngalolu hlelo futhi i-AI iluthatha ukulinganisa isivuno sakho.
+482	Isihlabathi
+483	Siphuma amanzi ngokushesha, sibamba kancane. Nisela njalo, ngamanani amancane.
+484	I-Loam
+485	Indawo ephakathi elinganiselayo. Ibamba amanzi futhi iphuma kahle.
+486	Ubumba
+487	Libamba okuningi kodwa lifunxa kancane. Nisela kangaka njalo, futhi kancane.
+488	Ithange lemvula
+489	Ibhorehole
+490	Ipompi kamasipala
+491	Umfula noma idamu
+492	Imipayipi yokudonsisa
+493	Izisakazi zamanzi
+494	I-centre pivot
+495	Ukukhukhula noma imisele
+496	Ipayipi noma ibhodlela lokunisela
+497	Kumile
+498	Kuyaphihlika, izitshalo ziyadinwa
+499	Kuhle
+500	Kumanzi uma ugubha ubude besandla
+501	Kumanzi
+502	Kumanzi kakhulu noma imvula isanda kuna
+503	Ipulazi lami
+504	Misa ipulazi lakho
+505	Tshela i-AI yokunisela ukuthi ipulazi likhulu kangakanani, ukuthi umhlaba unjani nokuthi amanzi afika kanjani ezitshalweni.
+506	Usayizi nomhlaba
+507	Usayizi wepulazi ngamahektare
+508	I-hektare eyodwa ingamamitha eskwele angu-10 000, cishe amabala ebhola abu-1.4.
+509	Amathafa akho ahlangana abe ngu-{0} ha, ngaphezu kwepulazi. Hlola osayizi.
+510	Umhlaba
+511	Imithombo yamanzi
+512	Engeza
+513	Engeza ithange, ibhorehole noma ipompi ukuze i-AI ikutshele ukuthi amanzi akho ahlala izinsuku ezingaki.
+514	Izinhlelo zokunisela
+515	Engeza ukuthi unisela kanjani: imipayipi yokudonsisa, izisakazi zamanzi, i-pivot, ukukhukhula noma ipayipi.
+516	Uhlelo olunisela ithafa eliphi
+517	Engeza izitshalo zakho kuqala, bese ukhetha ukuthi ngasinye sinisela kanjani.
+518	Alukho uhlelo okwamanje
+519	Khetha
+520	Imvula kuphela
+521	Amalitha angu-{0} kwangu-{1}
+522	Kufika kumalitha angu-{0} ngosuku
+523	Susa
+524	Buyekeza izinga
+525	Kukhona malini ku-{0}?
+526	Khansela
+527	Gcina
+528	{0}  -  {1} L ngehora  -  u-{2}% wamanzi afika ezitshalweni
+529	Kudonsa ku-{0}
+530	Ivalvu ehlakaniphile ixhunyiwe
+531	Faka usayizi wethange ngamalitha
+532	Lowo sayizi akubonakali elungile
+533	Engeza umthombo wamanzi
+534	Lapho kuvela khona amanzi okunisela.
+535	Igama (akuphoqelekile)
+536	Usayizi wethange ngamalitha
+537	Okukhulu ongakuthatha ngosuku, amalitha (akuphoqelekile)
+538	Kunamalitha amangaki manje
+539	Engeza umthombo

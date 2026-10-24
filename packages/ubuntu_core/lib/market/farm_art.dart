@@ -1,7 +1,8 @@
 import 'dart:math' as math;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import '../theme/app_theme.dart';
 
+import '../tr_text.dart' show Text;
 /// Tiles emoji across a banner at a slight tilt, so a card reads as what it
 /// sells even before you read it. Deterministic: the same emojis always lay
 /// out the same way.

@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import '../market/market_models.dart';
+import 'driver_pay.dart';
 
 /// One job with its two ends placed on the map.
 class JobPoint {
@@ -40,6 +41,10 @@ class Batch {
   int get farms => stops.where((s) => s.kind == StopKind.pickup).length;
   int get drops => stops.where((s) => s.kind == StopKind.drop).length;
   double get perHour => minutes == 0 ? 0 : r2(payout / (minutes / 60));
+
+  /// Fuel for the whole run, and what is left per hour after it.
+  double get fuel => DriverPay.fuelCost(km);
+  double get netPerHour => minutes == 0 ? 0 : r2((payout - fuel) / (minutes / 60));
 }
 
 double kmBetween(double aLat, double aLng, double bLat, double bLng) {

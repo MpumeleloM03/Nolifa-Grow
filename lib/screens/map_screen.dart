@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/outbreak_report.dart';
@@ -15,6 +15,7 @@ import '../utils/language_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show marketProvider;
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 class DiseasePoint {
   final String region;
   final LatLng location;

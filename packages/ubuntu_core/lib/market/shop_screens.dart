@@ -1,10 +1,11 @@
 import 'dart:ui' show PathMetric;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import '../delivery/delivery_plan.dart';
+import '../delivery/driver_pay.dart';
 import '../warehouse/warehouse_store.dart';
 import 'market_models.dart';
 import 'market_store.dart';
@@ -13,6 +14,7 @@ import 'honesty.dart';
 import 'market_widgets.dart';
 import 'trust_screens.dart';
 
+import '../tr_text.dart' show Text;
 // ---------------------------------------------------------------- SHOP PIECES
 
 /// Adds a product to the basket. A basket holds one farm at a time, so if it
@@ -392,6 +394,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final s = ref.watch(marketProvider);
     final store = ref.read(marketProvider.notifier);
     final fee = s.deliveryFee;
+    final plan = s.deliveryPlan;
+    final driverEstimate = plan == null
+        ? 0.0
+        : DriverPay.forKm(DriverPay.kmFor(route: plan.route.name, fee: fee, distanceKm: plan.farmKm));
     final total = s.cartTotal;
     final cashTooBig = _method == PayMethod.cash && total > 500;
     final commission = s.cartCommission;
@@ -564,10 +570,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         const SizedBox(height: AppTheme.s4),
                         MoneySplitCard(
                           farm: r2(s.cartSubtotal * (1 - commission) + (s.cartSelfDelivery ? fee : 0)),
-                          driver: s.cartSelfDelivery ? 0 : r2(fee * Fees.driverShare),
+                          driver: s.cartSelfDelivery ? 0 : driverEstimate,
                           platform: r2(s.serviceFee +
                               s.cartSubtotal * commission +
-                              (s.cartSelfDelivery ? 0 : fee * (1 - Fees.driverShare))),
+                              (s.cartSelfDelivery ? 0 : fee - driverEstimate)),
                           farmNote: 'Sale less ${(commission * 100).round()}% commission, paid after delivery',
                         ),
                       ],

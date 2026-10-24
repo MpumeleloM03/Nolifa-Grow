@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +17,8 @@ import 'herd_widgets.dart';
 import 'location_picker_screen.dart';
 import 'symptom_checker_screen.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 String _day(DateTime d) => '${d.day} ${_months[d.month - 1]} ${d.year}';
 
@@ -70,7 +72,7 @@ class AnimalDetailScreen extends ConsumerWidget {
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.edit_outlined, size: 20),
-                    tooltip: 'Edit details',
+                    tooltip: tr('Edit details'),
                     onPressed: () => Navigator.push(
                         context, MaterialPageRoute(builder: (_) => AddCattleScreen(existing: a))),
                   ),
@@ -164,7 +166,7 @@ class AnimalDetailScreen extends ConsumerWidget {
               maxLines: 3,
               style: AppTheme.subhead.copyWith(color: AppTheme.textPrimary),
               decoration: InputDecoration(
-                hintText: 'What was done, which product, which vet',
+                hintText: tr('What was done, which product, which vet'),
                 hintStyle: AppTheme.subhead,
                 filled: true,
                 fillColor: AppTheme.glassFill,

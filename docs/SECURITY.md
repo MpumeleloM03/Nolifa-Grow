@@ -55,3 +55,12 @@ Four risks were raised by the team. Here is each one, what the apps do now, and 
 
 ## Known gaps
 - Rules tests unrun. Escrow and identity simulated. No App Check or rate limiting on the backend. The verification claim service does not exist yet.
+
+
+## Added 25 October 2026
+- **Email code for staff accounts.** Admins, hub staff, certifiers, vets, mediators and water providers must enter a 6-digit emailed code once per sign-in. Enforced in the database: `is_admin()` and the other role checks also need a verified session (`second_factor_ok()`). Codes are hashed, last 10 minutes, allow 5 tries, 5 sends a day. The code in the outbox is hidden from the back office and wiped when sent. It is OFF until an admin turns it on in Back office > Security, and needs a verified sending domain before it can reach anyone but the Resend account owner. `app_settings.staff_2fa=false` turns it off from SQL if someone is locked out.
+- **Passwords:** at least 8 characters with a letter and a number, in the apps and in Supabase Auth.
+- **ID photo log.** The back office writes `id_photo_views` before it opens an ID or selfie. Nobody can edit or delete the list.
+- **Plant.id key** moved to the `plant-id` function (daily allowance per person). The old key that was in the app source had run out of credits and is in git history: treat it as leaked.
+- **Back office headers:** CSP, HSTS, Referrer-Policy, Permissions-Policy, frame denial.
+- **Not done:** CAPTCHA (needs Cloudflare Turnstile or hCaptcha keys), email confirmation (needs a verified sending domain and SMTP), per-IP rate limits beyond Supabase defaults.

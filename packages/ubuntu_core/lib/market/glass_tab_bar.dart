@@ -1,7 +1,8 @@
 import 'dart:ui';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import '../theme/app_theme.dart';
 
+import '../tr_text.dart' show Text;
 /// The floating glass bottom bar every Nolifa app uses. Each tab is an icon and
 /// a label; [badges] puts a small count on a tab (for example new orders).
 class GlassTabBar extends StatelessWidget {

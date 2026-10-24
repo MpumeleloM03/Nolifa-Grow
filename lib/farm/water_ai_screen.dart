@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show Pill, RingGauge, SectionTitle;
@@ -13,6 +13,8 @@ import 'farm_setup_screen.dart';
 import 'farm_store.dart';
 import 'irrigation_ai.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 const _water = Color(0xFF5AB8F0);
 
 /// The irrigation AI: for every plot, whether to water today, how much and for
@@ -65,7 +67,7 @@ class _WaterAiScreenState extends ConsumerState<WaterAiScreen> {
                 title: const Text('Irrigation AI'),
                 actions: [
                   IconButton(
-                    tooltip: 'My farm',
+                    tooltip: tr('My farm'),
                     icon: const Icon(Icons.tune_rounded),
                     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FarmSetupScreen())),
                   ),
@@ -338,7 +340,7 @@ class _PlotCard extends ConsumerWidget {
           for (final f in SoilFeel.values)
             ActionChip(
               label: Text(f.label),
-              tooltip: f.hint,
+              tooltip: trn(f.hint),
               onPressed: () {
                 HapticFeedback.selectionClick();
                 store.soilCheck(p.id, f);

@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:latlong2/latlong.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show Pill;
 import '../models/outbreak_report.dart';
@@ -9,6 +9,7 @@ import '../theme/app_theme.dart';
 import 'area_report.dart';
 import 'hex_grid.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// The nearest named region to a point, for labelling a hexagon.
 String regionNear(LatLng p) {
   RegionInfo? best;

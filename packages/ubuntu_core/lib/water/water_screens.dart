@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/rendering.dart' show RenderAbstractViewport;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +18,7 @@ import 'water_models.dart';
 import 'water_store.dart';
 import 'water_widgets.dart';
 
+import '../tr_text.dart' show Text;
 /// The community water page as a tab, with an optional close button.
 ///
 /// [extraSections] lets the host app slot its own cards in (Nolifa adds the
@@ -360,9 +361,9 @@ class _VoiceSection extends ConsumerWidget {
   final WaterZone zone;
   const _VoiceSection({required this.state, required this.zone});
 
-  Future<void> _ask(BuildContext context, WidgetRef ref) async {
+  Future<void> _ask(BuildContext context, WidgetRef ref, {bool dryTaps = false}) async {
     HapticFeedback.mediumImpact();
-    final result = await ref.read(waterProvider.notifier).vote();
+    final result = await ref.read(waterProvider.notifier).vote(dryTaps: dryTaps);
     if (result == VoteResult.counted || !context.mounted) return;
     // Not eligible while the supply is already low means the request moved on
     // to the provider before this tap landed.
@@ -383,6 +384,7 @@ class _VoiceSection extends ConsumerWidget {
         VoteResult.alreadyVoted => 'You already asked for help. Each person counts once.',
         VoteResult.notVerified => 'Verify your phone to vote.',
         _ when low => 'This request is already with the provider.',
+        _ when dryTaps => 'A request for your area is already being handled.',
         _ => 'Help requests open when supply drops below 40%.',
       }),
     ));
@@ -405,7 +407,7 @@ class _VoiceSection extends ConsumerWidget {
           onAsk: () => _ask(context, ref),
         )
       else
-        _CalmCard(zone: zone, resolved: resolved),
+        _CalmCard(zone: zone, resolved: resolved, onDryTaps: () => _ask(context, ref, dryTaps: true)),
     ]);
   }
 }
@@ -413,7 +415,8 @@ class _VoiceSection extends ConsumerWidget {
 class _CalmCard extends StatelessWidget {
   final WaterZone zone;
   final WaterIncident? resolved;
-  const _CalmCard({required this.zone, required this.resolved});
+  final VoidCallback onDryTaps;
+  const _CalmCard({required this.zone, required this.resolved, required this.onDryTaps});
 
   @override
   Widget build(BuildContext context) => GlassCard(
@@ -424,8 +427,13 @@ class _CalmCard extends StatelessWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('No help needed right now', style: AppTheme.headline),
               const SizedBox(height: 2),
-              Text('Help requests open when supply drops below 40%. ${zone.name} is at ${zone.level.round()}%.',
+              Text('The dams behind ${zone.name} are ${zone.level.round()}% full. A full dam does not always mean a running tap.',
                   style: AppTheme.footnote),
+              const SizedBox(height: AppTheme.s3),
+              GlassButton(label: 'My taps are dry', icon: Icons.water_drop_outlined, onPressed: onDryTaps),
+              const SizedBox(height: 2),
+              Text('When ${zone.voteThreshold} different verified neighbours say so, the request goes to the provider.',
+                  style: AppTheme.caption),
               if (resolved != null) ...[
                 const SizedBox(height: AppTheme.s2),
                 _ResolvedLine(incident: resolved!),

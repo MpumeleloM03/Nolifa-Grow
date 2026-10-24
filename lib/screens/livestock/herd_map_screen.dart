@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
@@ -13,6 +13,7 @@ import '../../theme/glass.dart';
 import 'animal_detail_screen.dart';
 import 'herd_widgets.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// Sick animals that sit within this distance of each other may be spreading
 /// something between them.
 const clusterMetres = 1500.0;

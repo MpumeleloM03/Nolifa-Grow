@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/cattle.dart';
@@ -9,6 +9,7 @@ import '../../services/health_log_service.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/glass.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// Tick what you see and get guidance. Open it for one animal and the result
 /// can be saved into that animal's health record; open it without one and it
 /// asks which kind of animal first.

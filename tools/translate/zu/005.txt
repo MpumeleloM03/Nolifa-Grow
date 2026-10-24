@@ -1,0 +1,321 @@
+1430	I-Bluetongue
+1431	Igciwane elithwalwa yizimpukane ezincane ezinyangeni ezifudumele, ezimanzi. Izimvu zithola imfiva, ulimi oluvuvukile olunombala oluluhlaza okwesibhakabhaka, ubuso obuvuvukile
+1432	nezinyawo ezibuhlungu. Udokotela wakho wezilwane uzokutshela uma kumele kubikwe.
+1433	Biza udokotela wakho wezilwane namuhla
+1434	Gcina izilwane emthunzini ngokudla okuthambile namanzi ahlanzekile
+1435	Goma minyaka yonke ngaphambi kwesizini yezimpukane ezincane
+1436	I-Flystrike
+1437	I-Flystrike (Izibungu)
+1438	Izimpukane zibeka amaqanda ebuweni obungcolile noma esilondeni futhi izibungu zidla enyameni. Imvu ehlaselwe ingafa
+1439	ngaphakathi kwezinsuku.
+1440	Faka isilwane emthunzini ubize udokotela wezilwane ngosuku olufanayo
+1441	Sika uboya ezungeze indawo ukuze ihlanzwe
+1442	Hlola umhlambi wonke. Gcina imisila ihlanzekile futhi izilonda zimbozwe
+1443	I-Footrot
+1444	Ukutheleleka kwe-bacteria phakathi kweminwe yezinyawo okusakazeka emakamu amanzi. Izilwane zidla zikhothame ngamadolo futhi
+1445	zilahlekelwe isimo. Isilwane esisodwa singatheleleka iqembu.
+1446	Sika uphondo olubolile futhi welashe njengoba udokotela wakho wezilwane ekukhombisa
+1447	Hlukanisa izilwane ezihlephayo futhi uhambise umhlambi kukamu eyomile
+1448	Faka izilwane ezintsha ekuhlukaniseni amasonto amabili ngaphambi kokuba zijoyine umhlambi
+1449	I-Caseous Lymphadenitis
+1450	Isifo Samathumba (CLA)
+1451	Amathumba anamandla ahamba kancane ku-lymph glands aqhuma futhi asakaza ukutheleleka emakamu. Izilwane zibukeka ziphilile kodwa
+1452	izigaxa ziqhubeka nokubuya.
+1453	Ungacindezeli noma usike isigaxa ngokwakho. Ubomvu butheleleka ikamu iminyaka
+1454	Cela udokotela wakho wezilwane akhuphe futhi aphathe ngokuphepha, kude nezinye izilwane
+1455	Susa izilwane ezinamathumba aphindaphindayo ngeseluleko. Amagomo ayatholakala
+1456	I-Pregnancy Toxaemia
+1457	I-Pregnancy Toxaemia (Isifo Samawundlu Amabili)
+1458	Imvu noma imbuzi ekhulelwe kakhulu, ngokuvamile iphethe amawele, ayikwazi ukudla okwanele futhi umzimba wayo ubhidliza amafutha.
+1459	Isima yodwa, iyaqhaqhazela futhi ingaba yimpumputhe noma ife ngaphakathi kwezinsuku.
+1460	Biza udokotela wezilwane ngosuku olufanayo. Ukwelashwa kwangaphambi kwesikhathi kusindisa owesifazane
+1461	Nikeza ukudla okuhle namanzi ahlanzekile ngamanani amancane, kaningi
+1462	Isizini ezayo skena amawele futhi unikeze abesifazane abakhulelwe sekwedlule ukudla okwengeziwe
+1463	I-Colic
+1464	Ubuhlungu besisu esivela emathunjini. Amanye amacala adlula azenzakalelayo, kodwa ithumbu eligoqiwe libulala. Ihhashi eliqhubeka
+1465	nokugingqika, lithonya izithukuthuku noma linesisu esivuvukile liyisimo esiphuthumayo.
+1466	Biza udokotela wakho wezilwane ngokushesha futhi ususe konke ukudla
+1467	Hambisa ihhashi kancane emhlabeni othambile. Ungalivumeli ligingqike ngokuqatha, futhi ungalishiyi lodwa
+1468	Ungapheli imithi ngaphandle uma udokotela wakho wezilwane ekutshela
+1469	Qaphela ukushaya kwenhliziyo, umbala wamagagasi nokuthula kokugcina ukuze utshele udokotela wezilwane
+1470	I-Laminitis
+1471	I-Laminitis (Founder)
+1472	Ukuvuvukala okubuhlungu ngaphakathi kwezinsimbi. Ngokuvamile kulandela utshani obunothile bentwasahlobo, ukudla ngokweqile noma imfiva enkulu.
+1473	Ngaphandle kokwelashwa okusheshayo ithambo elisensimbini lingajika.
+1474	Biza udokotela wezilwane ngosuku olufanayo
+1475	Susa ihhashi etshanini nasekudleni okunothile, futhi ulinikeze umbhede ojulile othambile
+1476	Ungalibophi ukuthi lihambe. Amanzi abandayo ezinsimbini angasiza ukuthulisa ubuhlungu kuze kufike udokotela wezilwane
+1477	I-Strangles
+1478	Ukutheleleka kwe-bacteria okusakazekayo kakhulu okwenza ama-gland angaphansi komhlathi avuvuke aqhume.
+1479	Kusakazeka phakathi kwamahhashi ngezandla, ngamabhakede nangezinto zokugibela.
+1480	Hlukanisa ihhashi nanoma yini elithinta yona. Geza izandla phakathi kwamahhashi
+1481	Biza udokotela wezilwane ukuze aqinisekise futhi anqume ukwelashwa
+1482	Gcina amahhashi amasha noma avakashelayo kude kuze kuphele ukuqubuka futhi udokotela wezilwane athi kuphephile
+1483	I-Equine Influenza
+1484	Umkhuhlane Wamahhashi
+1485	Igciwane elisakazeka ngokushesha elibangela ukukhwehlela okomile, imfiva nempumulo econsayo. Amahhashi adinga ukuphumula noma angathola
+1486	i-pneumonia.
+1487	Phumuza ihhashi amasonto amaningana futhi ulligcine emoyeni ohlanzekile
+1488	Hlukanisa amahhashi ayagula ubize udokotela wezilwane uma kunemfiva engaphezu kuka-38.5 C
+1489	Gcina ukugoma kusesikhathini
+1490	I-Equine Piroplasmosis
+1491	I-Biliary (Imfiva Yenduna Yehhashi)
+1492	Isibungu esithwalwa yinduna esibhubhisa amangqamuzana egazi abomvu. Ihhashi linemfiva, alidli futhi libonisa
+1493	amagagasi aphuzi noma amhlophe nakwesinye isikhathi umchamo omnyama.
+1494	Biza udokotela wezilwane ngokuphuthuma. Ukwelashwa kuncike esikhathini
+1495	Gcina ihhashi limile futhi emthunzini
+1496	Hlola izinduna nsuku zonke futhi usebenzise uhlelo lokulawula izinduna
+1497	I-bacteria yomhlaba ingena esilondeni esijulile noma ekuqhokweni kwenyawo futhi yenze imisipha iqine. Ihhashi lima liqinile njengehhashi
+1498	lokugingqika linomhlathi oqinile nesikhumba sesithathu seso siphuma phezu kweso. Ngokuvamile liyabulala.
+1499	Biza udokotela wezilwane ngokushesha futhi ugcine ihhashi esitebeleni esimnyama, esizolile
+1500	Ungaliphathi ngokuqatha. Umsindo nokuthinta kuvusa ukuqina
+1501	Goma yonke ihhashi ngokumelene ne-tetanus, futhi uvuselele ngemva kwezilonda
+1502	I-Hoof Abscess
+1503	Ubomvu obubanjiwe ensimbini benza ihhashi lihlephe ngokuzumayo ngomlenze owodwa, kunokushisa ezinyaweni nokushaya kwenhliziyo okunamandla.
+1504	Biza udokotela wakho wezilwane noma umgwedli wezinsimbi ukuze athole futhi akhiphe
+1505	Gcina insimbi ihlanzekile futhi yomile, bese uyicwilisa njengoba kukhonjisiwe
+1506	Hlola ukuthi ukugoma kwe-tetanus kusesikhathini
+1507	Izibungu Zamahhashi
+1508	Umthwalo omkhulu wezibungu ubangela isimo esibi, uboya obudikiwe, ukuthula okuthambile ne-colic. Ukunikeza ngokweqile kuzala
+1509	izibungu ezimelana nemithi.
+1510	Buza udokotela wakho wezilwane ngokubalwa kwamaqanda ezibungu bese unikeza ngokuya ngomphumela
+1511	Qoqa ukuthula emadlelweni kaningi futhi uphumuze amakamu
+1512	Phatha amahhashi amancane njengaye asengozini kakhulu
+1513	I-Sweet Itch
+1514	I-allergy ekulumeni yizimpukane ezincane. Ihhashi lihuzuka umkhosi nomsila kuze kuxebuke ezinyangeni ezifudumele futhi isikhumba siyaqina.
+1515	Faka ihhashi esitebeleni ekushoneni nasekuphumeni kwelanga lapho izimpukane ezincane ziluma
+1516	Sebenzisa i-midge rug ne-repellent, futhi gcina ihhashi lisuke emanzini
+1517	Buza udokotela wakho wezilwane uma isikhumba sixebukile noma sithelelekile
+1518	Izinkomo
+1519	Inkomo
+1520	INguni
+1521	IBonsmara
+1522	IBrahman
+1523	I-Afrikaner
+1524	IDrakensberger
+1525	IHolstein
+1526	IJersey
+1527	I-Angus
+1528	Izimbuzi
+1529	Imbuzi
+1530	Imbuzi yeBoer
+1531	ISavanna
+1532	IKalahari Red
+1533	Imbuzi yendabuko
+1534	ISaanen
+1535	Izimvu
+1536	IDorper
+1537	IMerino
+1538	IDamara
+1539	IMeatmaster
+1540	INamaqua Afrikaner
+1541	IPersian
+1542	Amahhashi
+1543	Ihhashi
+1544	IBoerperd
+1545	INooitgedachter
+1546	Iponi yaseBasuto
+1547	IThoroughbred
+1548	ISA Warmblood
+1549	Isitshalo ngasinye sinendaba. Sikusiza uyizwe.
+1550	Inguqulo 1.0.0
+1551	Okwenziwa Yi-Nolifa Grow
+1552	I-Nolifa Grow yithuluzi lokuxilonga izifo zezitshalo elinamandla e-AI eliyakhelwe abalimi, abalimi bensimu nabafundi bezolimo baseNingizimu ne-Afrika.\n\nBhekisa ikhamera yakho kunoma yisiphi isitshalo esigulayo uthole ukuxilongwa ngokushesha ngolimi olulula — yini engalungile, ukuthi kubi kangakanani, nokuthi yini ongayenza. Akudingeki ulwazi lwezolimo.
+1553	Ukuthi Isebenza Kanjani
+1554	Uma uxhumeke ku-inthanethi, i-Nolifa Grow isebenzisa i-AI ephezulu yelifu ukuhlaziya isithombe sesitshalo sakho futhi ibone izifo ngokunemba okuphezulu ezimeni ezingaphezu kwekhulu zezitshalo.\n\nUma ungekho ku-inthanethi, uhlelo lushintshela ngokuzenzakalelayo kumodeli ye-AI esefonini ukuze uthole ukuxilongwa njalo noma ensimini engenawo umkhawulo.
+1555	Isexwayiso Esibalulekile
+1556	I-Nolifa Grow inikeza ukuxilongwa okukhiqizwe yi-AI okuhloselwe ukuba isiqondiso kuphela. Imiphumela akufanele ithathe indawo yeseluleko sobungcweti sezolimo. Njalo xhumana nochwepheshe wezolimo oqeqeshiwe noma isisebenzi sokunweba ngezinkinga ezinkulu zezitshalo noma ngaphambi kokwenza izinqumo ezinkulu zokwelapha.
+1557	Yakhiwe Ngu
+1558	I-Nolifa Grow yakhiwa nguMpumelelo Mthethwa, umfundi wezobuchwepheshe bolwazi nonjiniyela ozimele.\n\nYakhelwe abalimi nabalimi bensimu baseNingizimu ne-Afrika abadinga izimpendulo ezisheshayo, ezethembekile ngezitshalo zabo, akudingeki ulwazi lwezolimo.
+1559	Xhumana
+1560	Ngempendulo, ubambiswano, noma usizo:
+1561	© 2025 Nolifa Technologies (Pty) Ltd
+1562	Wonke amalungelo agodliwe.
+1563	Faka i-imeyili yakho kuqala, bese uthinta ukusetha kabusha.
+1564	Isixhumanisi sokusetha kabusha sithunyelwe ku-{0}
+1565	Gcina ipulazi lakho liphilile. Gcina umphakathi wakho unamandla.
+1566	Imodi yasendaweni — kugcinwe kule foni kuphela
+1567	Ngena
+1568	Okungenani izinhlamvu eziyisi-6
+1569	Ukhohlwe iphasiwedi?
+1570	Umusha lapha?
+1571	Dala i-akhawunti
+1572	Dala i-akhawunti
+1573	Joyina inethiwekhi\nyakho yezolimo
+1574	Isifunda sakho sisenza sikuxwayise lapho isifo sisakazeka eduze.
+1575	Igama eliphelele
+1576	Faka igama lakho
+1577	I-imeyili
+1578	Faka i-imeyili evumelekile
+1579	Iphasiwedi
+1580	Okungenani izinhlamvu eziyi-8
+1581	Sebenzisa izinhlamvu nenombolo
+1582	Isifunda sakho
+1583	Ulima ini?
+1584	Izitshalo
+1585	Kokubili
+1586	Sula Umlando
+1587	Uqinisekile ukuthi ufuna ukususa wonke umlando wakho wokuxilongwa?
+1588	Sula
+1589	Namuhla {0}:{1}
+1590	Izolo
+1591	{0} izinsuku ezedlule
+1592	Umlando Wokuxilongwa
+1593	Sula umlando
+1594	Akukho ukuxilongwa okwamanje
+1595	Ukuxilongwa kwezitshalo zakho kuzovela lapha
+1596	Isithombe asisatholakali
+1597	Ukuskena okungekho ku-inthanethi
+1598	Ukuzethemba: {0}%
+1599	gcina lesi silwane
+1600	Susa isilwane?
+1601	Lokhu kususa u-{0} ohlwini lwakho lomhlambi.
+1602	Akunakuhlehliswa.
+1603	Hlela isilwane
+1604	Hlobo luni lwesilwane?
+1605	Inombolo ye-tag
+1606	Isilwane ngasinye sidinga inombolo ye-tag
+1607	Uhlobo lwe-tag
+1608	Uhlobo (akuphoqelekile)
+1609	Isigaba
+1610	Isimo
+1611	Sigcinwa kuphi?
+1612	Igama lekamu noma lepadoku (akuphoqelekile)
+1613	Faka iphini kumephu (akuphoqelekile)
+1614	Iphini lisethiwe. Thinta ukulihambisa.
+1615	Amanothi (akuphoqelekile)
+1616	Gcina izinguquko
+1617	Engeza kumhlambi
+1618	Usuku lokuzalwa (akuphoqelekile)
+1619	Lesi silwane asisekho ohlwini.
+1620	Hlela imininingwane
+1621	Engeza inothi
+1622	Maka njengelululekile
+1623	Kumakwe njengokululekile ngumlimi
+1624	Lapho sikhona
+1625	Irekhodi lezempilo
+1626	Akukho okurekhodiwe okwamanje. Hlola izimpawu noma wengeze inothi lapho ugoma noma welapha.
+1627	Engeza kurekhodi luka-{0}
+1628	Okwenziwe, yimuphi umkhiqizo, yimuphi udokotela wezilwane
+1629	I-tag {0} · {1}
+1630	U-{0} ukuphi?
+1631	Kuphinwe {0}
+1632	Alukho indawo okwamanje.
+1633	Hambisa iphini
+1634	Faka iphini kumephu
+1635	Bekubukeka njengo-{0}
+1636	Izimpawu: {0}
+1637	phakathi kwe-1.5 km komunye nomunye. Zihlukanise ubize udokotela wakho wezilwane.
+1638	Azikho izilwane ezinephini okwamanje. Vula isilwane ufake iphini kumephu.
+1639	{0} kwezingu-{1} zinamaphini. Ezisele azinayo indawo.
+1640	Ngenisa umhlambi
+1641	Namathisela i-CSV ethunyelwe umphakeli wakho we-tag. Amagama ezinkolamu avela ku-Allflex,
+1642	i-Datamars ne-Shearwell ayaziwa ngokuzenzakalelayo.
+1643	Menlo
+1644	Ngenisa
+1645	Kungeniswe izilwane ezingu-{0}{1}
+1646	Akukho okungeniswe
+1647	Izilwane ezingu-{0} zikopishwe njenge-CSV
+1648	Engeza isilwane
+1649	Engeza u-{0}
+1650	Irejista lomhlambi
+1651	Ngenisa i-CSV
+1652	Thumela i-CSV
+1653	Funa i-tag, igama, uhlobo noma ikamu
+1654	Umhlambi wakho awulayishi
+1655	{0} Donsa phansi ukuze uzame futhi.
+1656	Azikho izilwane okwamanje
+1657	Engeza isilwane sakho sokuqala, noma ungenise i-CSV evela kumphakeli wakho we-tag.
+1658	Akukho okufanayo
+1659	Awunazo izingu-{0} ohlwini okwamanje.
+1660	Akukho lutho emhlambini wakho olufana nalokho okusesha.
+1661	Konke {0}
+1662	Engeza izilwane, ngenisa ama-tag, thumela amarekhodi akho
+1663	Imephu yomhlambi
+1664	Bona ukuthi isilwane ngasinye sikuphi, sinombala ngokwempilo
+1665	Hlola izimpawu
+1666	Maka okubonayo uthole isiqondiso
+1667	Kudinga ukunakwa
+1668	Epulazini
+1669	izinhloko zemfuyo
+1670	Zikuphi?
+1671	Thinta imephu ukufaka iphini kukamu.
+1672	Iphini libekiwe. Thinta futhi ukulihambisa.
+1673	Sebenzisa le ndawo
+1674	Ubonani?
+1675	Ubonani ku-{0}?
+1676	Maka konke okusebenzayo. Okuningi okumakayo, siqondiso esingcono.
+1677	YIPHI ISILWANE?
+1678	Khetha uhlobo lwesilwane futhi izimpawu zokubheka ziyavela.
+1679	Lokhu kungaba yini
+1680	Kubekwe ngokuthi izimpawu zakho zifana kanjani. Lokhu kuyisiqondiso, hhayi ukuxilongwa.
+1681	Kugcinwe erekhodini lezempilo
+1682	Gcina erekhodini luka-{0}
+1683	{0}% kuyafana
+1684	OKUKUFANELE UKWENZE
+1685	IThekwini Elikhulu
+1686	I-Early Blight
+1687	28 May 2026
+1688	27 May 2026
+1689	I-Leaf Spot
+1690	26 May 2026
+1691	25 May 2026
+1692	KZN Midlands
+1693	I-Late Blight
+1694	I-Powdery Mildew
+1695	Ogwini Olusenyakatho
+1696	I-Leaf Miner
+1697	Ogwini Olusenzansi
+1698	I-Rust
+1699	Ukutheleleka Ngesikhunta
+1700	KwaZulu
+1701	I-Maize Streak Virus
+1702	I-Grey Leaf Spot
+1703	Enyakatho KZN
+1704	Ukutheleleka Nge-bacteria
+1705	24 May 2026
+1706	Kancane
+1707	Okuningi
+1708	Thinta noma yiluphi uhlangothi ukubona okuthinta
+1709	Konke
+1710	Umphumela Wokuxilongwa
+1711	Imodi engekho ku-inthanethi — xhuma ukuze uthole imiphumela enembile
+1712	Awuku-inthanethi. Xhuma ku-inthanethi ukuze uthole ukuxilongwa okunembe kakhulu.
+1713	Lokhu kusho ukuthini
+1714	Okufanele ukwenze manje
+1715	Ikhambi Lasekhaya
+1716	Skena Esinye Isitshalo
+1717	Lokhu kuxilongwa kukhiqizwe yi-AI futhi kuhloselwe ukuba isiqondiso kuphela. Njalo xhumana nochwepheshe wezolimo oqeqeshiwe noma isisebenzi sokunweba ngezinkinga ezinkulu zezitshalo.
+1718	Ukusetha kabusha iphasiwedi kudinga isizindalwazi esabelwanayo. Kwimodi yasendaweni, ngena nge-imeyili yakho.
+1719	Asikwazanga ukufinyelela iseva. Hlola uxhumo lwakho, bese uzama futhi.
+1720	I-imeyili noma iphasiwedi akulungile.
+1721	I-akhawunti isivele ikhona yalolo imeyili.
+1722	Iphasiwedi ibuthakathaka kakhulu. Sebenzisa okungenani izinhlamvu eziyi-8, ngezinhlamvu nenombolo.
+1723	Leyo kheli le-imeyili alibukeki lilungile.
+1724	Imizamo eminingi kakhulu. Linda isikhashana bese uzama futhi.
+1725	Qinisekisa i-imeyili yakho kuqala, bese ungena.
+1726	inombolo ye-tag
+1727	i-id kagesi
+1728	i-id ebonakalayo
+1729	i-id yesilwane
+1730	i-tag yokuphatha
+1731	izinga le-tag
+1732	uhlobo lwe-tag
+1733	uhlobo lwesilwane
+1734	igama lesilwane
+1735	igama lohlobo
+1736	usuku lokuzalwa
+1737	usuku lokuzalwa
+1738	Kudingeka umugqa wesihloko okungenani isilwane esisodwa.
+1739	Ayikho ikholomu ye-tag etholakele. Kulindelwe elilodwa kwala: {0}.
+1740	{0} sekusemhlambini wakho
+1741	Imodeli ayilayishiwe: {0}
+1742	Ayikwazanga ukuhumusha isithombe
+1743	Ayikwazanga ukufunda lesi sithombe. Zama futhi ekukhanyeni okungcono.
+1745	Sawubona wonke umuntu. Ingabe omunye ubona amabala aphuzi emaqabungeni etamatisi kuleli sonto?
+1747	Yebo, kunjalo nakimi eduze nePinetown. Kuqale ngemva kwemvula.
+1749	I-Early blight ihamba endaweni. Fafaza ngaphambi kokuthi ifinyelele esithelweni.
+1751	I-Late blight iqinisekisiwe emapulazini amabili ngaphandle kweHowick. Hlola amazambane akho.
+1753	Siyabonga ngesexwayiso. Ngizofafaza kusasa ekuseni.
+1755	Izinkomo ezimbili ziyahlephuka futhi ziconsa amathe kakhulu. Udokotela wezilwane kahulumeni uyeza kusasa.
+1758	Isoso lomhlambi

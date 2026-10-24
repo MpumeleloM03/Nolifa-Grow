@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import '../delivery/driver_pay.dart';
 
 /// The delivery PIN is never stored in the order document. Drivers can read
 /// that document, so it holds only this hash; the buyer keeps the PIN itself.
@@ -426,10 +427,10 @@ class Order {
   double get mySalesNet => r2(mySalesGross * farmFactor * (1 - commission));
   double get myCommission => r2(mySalesGross * farmFactor * commission);
   double get mySales => mySalesGross;
-  /// A Nolifa driver gets 80% of the delivery fee. When the farm delivers
-  /// itself there is no driver, and the farm keeps the whole delivery fee.
-  double get driverPay =>
-      selfDelivery ? 0 : r2(deliveryFee * Fees.driverShare * driverFactor);
+  /// A Nolifa driver is paid for the work: R12 a delivery plus R2.50 a road km,
+  /// never under R24 (see [DriverPay]). When the farm delivers itself there is
+  /// no driver, and the farm keeps the whole delivery fee.
+  double get driverPay => selfDelivery ? 0 : r2(DriverPay.forKm(DriverPay.km(this)) * driverFactor);
   double get selfDeliveryPay => selfDelivery ? r2(deliveryFee * driverFactor) : 0;
   double get farmGross => r2(subtotal * farmFactor);
   double get farmNet => r2(farmGross * (1 - commission));

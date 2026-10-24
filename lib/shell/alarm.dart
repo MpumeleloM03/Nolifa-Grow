@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart'
@@ -31,6 +31,7 @@ import '../weather/weather_service.dart';
 import '../weather/weather_threats.dart';
 import 'alerts_tab.dart' show AreaOutbreak, buildAreaOutbreaks, showOutbreakDetails;
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// Everything that needs the farmer's attention right now.
 class AlarmItems {
   final List<WeatherThreat> weather;

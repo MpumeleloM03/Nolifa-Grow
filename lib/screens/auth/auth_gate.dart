@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ubuntu_core/ubuntu_core.dart' show SecondFactorGuard;
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/glass.dart';
@@ -19,8 +20,9 @@ class AuthGate extends ConsumerWidget {
           loading: () => const _Splash(),
           // A failed session check is never a dead end: sign-in still works.
           error: (_, __) => const LoginScreen(),
-          data: (user) =>
-              user == null ? const LoginScreen() : const GrowShell(),
+          data: (user) => user == null
+              ? const LoginScreen()
+              : SecondFactorGuard(key: ValueKey('2fa-${user.uid}'), child: const GrowShell()),
         );
   }
 }

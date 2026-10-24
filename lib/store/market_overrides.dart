@@ -54,6 +54,14 @@ List<Override> marketOverrides() => [
           return Plan.values.firstWhere((x) => x.name == p, orElse: () => Plan.starter);
         }),
       ],
-      // A farm that registers as a water supplier can answer community requests.
-      waterUtilityProvider.overrideWith((ref) => ref.watch(supplierProvider).supplier.enabled),
+      // On the shared backend only an account Nolifa has granted the water
+      // provider permission can answer requests; the server refuses anyone else.
+      // On the phone alone, a farm that registers as a supplier gets the desk.
+      waterUtilityProvider.overrideWith((ref) {
+        if (SupabaseBoot.ready) {
+          ref.watch(currentUserProvider.select((u) => u?.uid));
+          return SupabaseBoot.client.auth.currentUser?.appMetadata['utility'] == true;
+        }
+        return ref.watch(supplierProvider).supplier.enabled;
+      }),
     ];

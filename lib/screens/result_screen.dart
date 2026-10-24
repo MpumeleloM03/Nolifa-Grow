@@ -1,8 +1,9 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import '../impact/impact_screen.dart';
 import '../models/disease_info.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 class ResultScreen extends StatelessWidget {
   final File image;
   final String label;

@@ -1,13 +1,17 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show SupabaseClient;
-import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot, friendlyError, resilientRows;
+import 'package:ubuntu_core/ubuntu_core.dart' show SecondFactorScreen, SupabaseBoot, friendlyError, resilientRows;
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 SupabaseClient get _db => SupabaseBoot.client;
 
 Future<void> _open(String bucket, String path) async {
+  // The view is written down before the photo is opened. If it cannot be
+  // logged, the photo stays closed.
+  await _db.rpc('log_photo_view', params: {'p_bucket': bucket, 'p_path': path});
   final url = await _db.storage.from(bucket).createSignedUrl(path, 600);
   await launchUrl(Uri.parse(url), webOnlyWindowName: '_blank');
 }
@@ -36,6 +40,7 @@ final _outbox = StreamProvider((ref) => _live('outbox', 'id'));
 final _memberships = StreamProvider((ref) => _live('memberships', 'uid'));
 final _boreholes = StreamProvider((ref) => _live('borehole_requests', 'id'));
 final _reserves = StreamProvider((ref) => _live('water_reserves', 'id'));
+final _photoViews = StreamProvider<List<Map<String, dynamic>>>((ref) => _live('id_photo_views', 'id').map((r) => [...r]..sort((a, b) => (b['id'] as num).compareTo(a['id'] as num))));
 
 Widget _empty(String t) => Padding(padding: const EdgeInsets.all(24), child: Text(t));
 Widget _pad(List<Widget> c) => ListView(padding: const EdgeInsets.all(20), children: c);
@@ -482,6 +487,112 @@ class _OutboxState extends ConsumerState<OutboxPage> {
             isThreeLine: true,
           ),
         ),
+    ]);
+  }
+}
+
+/// The second factor switch: staff accounts must enter an emailed code once per
+/// sign-in. Turning it on asks for a code straight away, so the admin who flips it
+/// is never locked out by their own change.
+class SecurityPage extends ConsumerStatefulWidget {
+  const SecurityPage({super.key});
+
+  @override
+  ConsumerState<SecurityPage> createState() => _SecurityState();
+}
+
+class _SecurityState extends ConsumerState<SecurityPage> {
+  bool _on = false;
+  bool _loaded = false;
+  bool _busy = false;
+  List<Map<String, dynamic>> _exempt = const [];
+  final _uid = TextEditingController();
+  final _why = TextEditingController();
+
+  @override
+  void dispose() {
+    _uid.dispose();
+    _why.dispose();
+    super.dispose();
+  }
+
+  Future<void> _load() async {
+    try {
+      final o = await _db.rpc('second_factor_overview') as Map?;
+      if (o == null || !mounted) return;
+      setState(() {
+        _on = o['on'] == true;
+        _exempt = [for (final e in (o['exempt'] as List? ?? const [])) Map<String, dynamic>.from(e as Map)];
+      });
+    } catch (_) {}
+  }
+
+  Future<void> _toggle(bool v) async {
+    setState(() => _busy = true);
+    try {
+      await _db.rpc('set_staff_2fa', params: {'p_on': v});
+      if (!mounted) return;
+      setState(() => _on = v);
+      if (v) {
+        // The change applies to this very session, so confirm it right now.
+        await Navigator.of(context).push(MaterialPageRoute(
+            builder: (c) => SecondFactorScreen(onVerified: () => Navigator.of(c).pop())));
+      }
+      await _load();
+    } catch (e) {
+      if (mounted) _say(context, friendlyError(e, doing: 'change that'));
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_loaded) {
+      _loaded = true;
+      _load();
+    }
+    return _pad([
+      Text('Security', style: Theme.of(context).textTheme.headlineSmall),
+      const Text('Admins, hub staff, certifiers, vets, mediators and water providers hold powers that can hurt people if a password leaks. '
+          'With this switch on, each of them also enters a 6-digit code emailed to their account, once per sign-in. Farmers, drivers and households are not asked.'),
+      const SizedBox(height: 12),
+      SwitchListTile(
+        value: _on,
+        onChanged: _busy ? null : _toggle,
+        title: const Text('Require an emailed code for staff accounts'),
+        subtitle: const Text('Codes can only be emailed to an address Nolifa can send to. Check that your mail domain is verified before adding more staff.'),
+      ),
+      const Divider(height: 32),
+      Text('Exempt accounts', style: Theme.of(context).textTheme.titleMedium),
+      const Text('Use only for test accounts whose mailbox cannot receive mail yet. Each exemption needs a reason and is listed here.'),
+      const SizedBox(height: 8),
+      if (_exempt.isEmpty) const Text('None.'),
+      for (final e in _exempt) ListTile(dense: true, title: Text('${e['uid']}'), subtitle: Text('${e['reason']}')),
+      const SizedBox(height: 8),
+      Row(children: [
+        Expanded(child: TextField(controller: _uid, decoration: const InputDecoration(labelText: 'Account ID'))),
+        const SizedBox(width: 12),
+        Expanded(child: TextField(controller: _why, decoration: const InputDecoration(labelText: 'Reason'))),
+        const SizedBox(width: 12),
+        FilledButton(
+          onPressed: () => _run(context, () async {
+            await _db.rpc('exempt_from_2fa', params: {'p_uid': _uid.text.trim(), 'p_reason': _why.text.trim()});
+            _uid.clear();
+            _why.clear();
+            await _load();
+          }, 'Exempted.', 'exempt that account'),
+          child: const Text('Exempt'),
+        ),
+      ]),
+      const Divider(height: 32),
+      Text('Who opened ID photos', style: Theme.of(context).textTheme.titleMedium),
+      const Text('Every time staff open an ID or selfie, it is written here first. Nobody can edit or delete this list.'),
+      const SizedBox(height: 8),
+      ...[
+        for (final v in (ref.watch(_photoViews).valueOrNull ?? const <Map<String, dynamic>>[]).take(25))
+          ListTile(dense: true, title: Text('${v['staff_email'] ?? v['staff_uid']}'), subtitle: Text('${v['path']}  ·  ${v['at']}')),
+      ],
     ]);
   }
 }

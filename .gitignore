@@ -50,3 +50,4 @@ packages/*/.dart_tool/
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 macos/Runner/GoogleService-Info.plist
+dist/

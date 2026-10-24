@@ -1,0 +1,77 @@
+0	Letha ukudla okusha namanzi. Ukhokhelwe lapho kufika.
+1	Qala ukulethela abantu endaweni yakho. Kuthatha iminithi elilodwa.
+2	Kuse-Nolifa ukuze kubuyekezwe. Sizokutshela uma ungaqala.
+3	Kugunyaziwe. Ungangena ku-inthanethi.
+4	Sidinga okwengeziwe: {0}
+5	Yiba umshayeli
+6	Faka isicelo sokushayela
+7	Abashayeli bathwala ukudla futhi bayazi lapho abantu behlala khona, ngakho i-Nolifa ihlola umshayeli ngamunye ngaphambi komsebenzi wokuqala. Abasebenzi baqhathanisa i-ID yakho nesithombe sakho. Izithombe zigcinwa ziyimfihlo.
+8	Imoto yakho
+9	Inombolo yepuleti
+10	Ikhodi yelayisense
+11	Lutho (ibhayisikili)
+12	Ingaphambili likakhadi lakho le-ID, ekukhanyeni okuhle.
+13	Phatha i-ID eduze nobuso bakho.
+14	Ilayisense yokushayela
+15	Ingaphambili likakhadi.
+16	Eceleni, inombolo yepuleti ibonakala.
+17	Konke okukhona lapha kuyiqiniso. I-Nolifa ingakuhlola futhi igcine i-ID nezithombe zami ngokuphepha ukuze kuqinisekiswe ngaphansi kwe-POPIA.
+18	Omunye umshayeli uthathe elinye lalawo majoba ngaphambilini. Khetha elinye iqoqo.
+19	Amaqoqo aseduze nawe
+20	Amapulazi amaningi, uhambo olulodwa, inkokhelo eyodwa. Thinta iqoqo ukuze ubone indlela.
+21	Awekho amajoba okwamanje. Hlala ku-inthanethi. Amasha avela njengoba abantu beyala.
+22	Ilayini yokuphepha
+23	Indawo yakho yamanje nemininingwane yomsebenzi kwabelwana nayo neqembu lokuphepha le-Nolifa. Esimweni esiphuthumayo shaya u-10111 noma u-112.
+24	Uku-inthanethi
+25	Awuku-inthanethi
+26	Qeda ukuqinisekiswa ukuze uqale
+27	Sifuna amaqoqo
+28	Ngena ku-inthanethi ukuze ubone amaqoqo
+29	Misa
+30	{0} {1}  ·  {2} {3}  ·  izinto ezingu-{4}
+31	{0} km  ·  cishe {1}  ·  {2} ngehora
+32	{0} ngehora ngemva kukaphethiloli ({1})
+33	Amapulazi angu-{0} · ukulethwa okungu-{1} · izinto ezingu-{2} · {3} km · {4}{5}
+34	Cishe {0} ngehora ngemva kuka-{1} kaphethiloli
+35	Siyalithatha
+36	Thatha leli qoqo
+37	Ukhokhelwa kuwo wonke amajoba akulo uma ngamunye elethwe nge-PIN yekhasimende.
+38	Kusele ukumisa okungu-{0}{1}
+39	Landa ku-{0}
+40	Izinto ezingu-{0} ezivela ku-{1} {2}. Thatha isithombe sempahla.
+41	Cela ikhasimende i-PIN yalo enezinombolo ezi-4. {0}
+42	Landela indlela
+43	Ngiyilandile
+44	Faka i-PIN uletha
+45	Konke kulethiwe. Inkokhelo ikhululwa uma ikhasimende ngalinye liqinisekisa noma ngemva kwenkathi yokuvikeleka.
+46	Ngemva kwalokho
+47	Unebhayisikili noma ibhakkie? Landa ama-oda emapulazini aseduze uwalethe komakhelwane bakho.
+48	Ukhokhelwa uma i-PIN ifana
+49	Ikhasimende likunika i-PIN enezinombolo ezi-4 emnyango. Ukulethwa kuyaphela futhi ukhokhelwa uma ifana. Ukhokhelwa ngomsebenzi owenzile: u-R12 ngokulethwa ngakunye kanye no-R2.50 ngekhilomitha ngalinye.
+50	Uqinisekisiwe futhi uphephile
+51	Umshayeli ngamunye uyahlolwa ngaphambi kokungena ku-inthanethi. Ilayini yokuphepha yabelana ngendawo yakho neqembu uma kukhona okungahambi kahle.
+53	Ayikwazanga ukulayisha imephu
+54	{0} km  •  cishe imizuzu engu-{1}{2}{3}
+55	Wena > Ipulazi > Ikhasimende
+56	Wena > Ikhasimende
+57	I-akhawunti
+58	Imininingwane yakho nokuqinisekiswa
+59	Uqinisekisiwe
+60	Qinisekiswa ukuze ungene ku-inthanethi
+61	Amakhasimende namapulazi abona ibheji lakho.
+62	Amajoba
+63	Imali engenayo
+64	Ukhokhelwa uma ikhasimende liqinisekisa
+65	Usuthole
+66	Okunye okungu-{0} uma amakhasimende eqinisekisa
+67	R{0} + R{1} ngekhilomitha
+68	Amakhilomitha angu-{0} ashayelwe
+69	Ukulethwa kwakamuva
+70	Ukulethwa okuqediwe kuvela lapha.
+71	Izinkokhelo
+72	Ukuthi ukhokhelwa kanjani
+73	Ukhokhelwa ngomsebenzi, hhayi ngosayizi we-oda: u-R{0} ngokulethwa ngakunye kanye no-R{1} ngekhilomitha ngalinye lomgwaqo, futhi akunakuba ngaphansi kuka-R{2}.
+74	Uma imali yokulethwa yekhasimende ingakumboli lokho, i-Nolifa ikhokha umehluko.
+75	Iseva ibhala inani lapho i-PIN yekhasimende yamukelwa, futhi likhululwa uma liqinisekisa, noma ngokuzenzakalelayo ngemva kwamahora ama-2.
+76	Ukubuyiselwa imali okuphelele noma isikhalazo ngokuziphatha kukukhansela. Amapulazi aziletha wona awasebenzisi abashayeli.
+77	Uphethiloli awengezelwa phezulu. Sibeka u-R{0} ngekhilomitha ngemoto encane, ngakho isikrini seqoqo sikubonisa inkokhelo yakho ngehora ngaphambi nangemva kukaphethiloli. Uma izindleko zakho zangempela ziphezulu, sitshele ku-I-akhawunti > Usizo.

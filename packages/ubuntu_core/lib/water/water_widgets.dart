@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 import 'package:flutter/foundation.dart' show listEquals;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import '../theme/app_theme.dart';
 import 'water_models.dart';
 
+import '../tr_text.dart' show Text;
+import '../tr.dart' show tr, trn;
 // Small pieces shared by the water page and the provider desk. Nothing here
 // reads state: every widget takes what it shows, so each can be tested alone.
 
@@ -103,7 +105,7 @@ class WaterBackRow extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(AppTheme.s2, AppTheme.s2, AppTheme.s6, 0),
         child: Row(children: [
           IconButton(
-            tooltip: 'Back',
+            tooltip: tr('Back'),
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
           ),
@@ -176,7 +178,7 @@ class AmountStepper extends StatelessWidget {
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           IconButton(
-            tooltip: 'Decrease $subject',
+            tooltip: tr('Decrease $subject'),
             visualDensity: VisualDensity.compact,
             onPressed: onMinus,
             icon: const Icon(Icons.remove_rounded, size: 18),
@@ -186,7 +188,7 @@ class AmountStepper extends StatelessWidget {
             child: Text(value, textAlign: TextAlign.center, style: AppTheme.headline),
           ),
           IconButton(
-            tooltip: 'Increase $subject',
+            tooltip: tr('Increase $subject'),
             visualDensity: VisualDensity.compact,
             onPressed: onPlus,
             icon: const Icon(Icons.add_rounded, size: 18),

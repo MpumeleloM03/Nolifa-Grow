@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart'
@@ -14,6 +14,7 @@ import '../theme/glass.dart';
 import 'community_store.dart';
 import 'proof_post.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// How the share sheet gets a proof photo and a crop scan. Tests replace them.
 final proofPickerProvider = Provider<Future<File?> Function()>((ref) => pickProofPhoto);
 final cropCaptureProvider = Provider<Future<CropScanResult?> Function(BuildContext, WidgetRef)>(

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../market/market_models.dart' show Category, CategoryX;
@@ -10,6 +10,8 @@ import '../theme/glass.dart';
 import 'warehouse_models.dart';
 import 'warehouse_store.dart';
 
+import '../tr_text.dart' show Text;
+import '../tr.dart' show tr, trn;
 const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 String _d(DateTime t) => '${t.day} ${_months[t.month - 1]}';
 String _t(DateTime t) => '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
@@ -494,7 +496,7 @@ class _CheckInState extends ConsumerState<_CheckIn> {
         keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
         style: AppTheme.body,
         decoration: InputDecoration(
-          labelText: label,
+          labelText: trn(label),
           filled: true,
           fillColor: AppTheme.glassFill,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppTheme.rChip)),

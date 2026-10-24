@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import '../theme/app_theme.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 

@@ -19,7 +19,7 @@ class AppTranslations {
       'diagnosis_result': 'Diagnosis Result',
       'confidence': 'Confidence',
       'offline_mode': 'Offline mode — connect for accurate results',
-      'offline_warning': 'You are offline. Connect to the internet for a more accurate diagnosis.',
+      'offline_warning': 'This result comes from the model on your phone, which is less accurate. Connect to the internet for a stronger check.',
       'what_this_means': 'What this means',
       'what_to_do': 'What to do right now',
       'home_remedy': 'Home Remedy',

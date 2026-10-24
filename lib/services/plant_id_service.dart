@@ -1,94 +1,54 @@
-import 'dart:io';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+import 'package:image/image.dart' as img;
+import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot;
 
+/// Online leaf check through the `plant-id` function. The Plant.id key stays on
+/// the server, and each signed-in person has a daily allowance. Returns null when
+/// there is no signal, no allowance left, or no key: the caller then uses the
+/// model on the phone.
 class PlantIdService {
-  static const String _apiKey = 'HcyulXOCMY8YUp4yKhwArRyOTbP3xvvL64btk77sGE2oHavYZG';
-  static const String _baseUrl = 'https://plant.id/api/v3';
+  /// Why the last call returned null: 'limit', 'unavailable', 'offline' or 'signed-out'.
+  String? lastReason;
 
   Future<Map<String, dynamic>?> diagnose(File imageFile) async {
+    lastReason = null;
+    if (!SupabaseBoot.ready || SupabaseBoot.client.auth.currentSession == null) {
+      lastReason = 'signed-out';
+      return null;
+    }
     try {
-      print('PlantId: Starting diagnosis...');
-
-      final imageBytes = await imageFile.readAsBytes();
-      final base64Image = base64Encode(imageBytes);
-
-      print('PlantId: Image encoded, size: ${base64Image.length}');
-
-      final response = await http.post(
-        Uri.parse('$_baseUrl/health_assessment'),
-        headers: {
-          'Api-Key': _apiKey,
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'images': [base64Image],
-          'health': 'all',
-        }),
-      );
-
-      print('PlantId: Response status: ${response.statusCode}');
-      print('PlantId: Response body: ${response.body}');
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final data = jsonDecode(response.body);
-        return _parseResponse(data);
-      } else {
-        print('PlantId: Error response: ${response.body}');
+      final photo = _shrink(await imageFile.readAsBytes());
+      final res = await SupabaseBoot.client.functions
+          .invoke('plant-id', body: {'image': base64Encode(photo)}).timeout(const Duration(seconds: 25));
+      final data = res.data;
+      if (res.status != 200 || data is! Map || data['error'] != null) {
+        lastReason = 'unavailable';
         return null;
       }
+      return Map<String, dynamic>.from(data);
+    } on SocketException {
+      lastReason = 'offline';
+      return null;
     } catch (e) {
-      print('PlantId: Exception: $e');
+      // A 429 arrives as a FunctionException; anything else is treated as down.
+      lastReason = '$e'.contains('429') ? 'limit' : '$e'.toLowerCase().contains('socket') ? 'offline' : 'unavailable';
+      debugPrint('plant id: $lastReason');
       return null;
     }
   }
 
-  Map<String, dynamic>? _parseResponse(Map<String, dynamic> data) {
-    try {
-      print('PlantId: Parsing response...');
-      final result = data['result'];
-      final isHealthy = result['is_healthy']['binary'];
-      final healthProbability = result['is_healthy']['probability'];
-
-      if (isHealthy) {
-        return {
-          'label': 'Healthy',
-          'confidence': (healthProbability * 100).toStringAsFixed(1),
-          'isHealthy': true,
-          'diseases': [],
-        };
-      }
-
-      final diseases = result['disease']['suggestions'] as List;
-      if (diseases.isEmpty) {
-        return {
-          'label': 'Unknown',
-          'confidence': '0',
-          'isHealthy': false,
-          'diseases': [],
-        };
-      }
-
-      final topDisease = diseases[0];
-      final diseaseName = topDisease['name'];
-      final probability = topDisease['probability'];
-
-      return {
-        'label': diseaseName,
-        'confidence': (probability * 100).toStringAsFixed(1),
-        'isHealthy': false,
-        'diseases': diseases
-            .take(3)
-            .map((d) => {
-                  'name': d['name'],
-                  'confidence':
-                      (d['probability'] * 100).toStringAsFixed(1),
-                })
-            .toList(),
-      };
-    } catch (e) {
-      print('PlantId: Parse error: $e');
-      return null;
-    }
+  /// A phone photo is several MB. A leaf reads fine at 1024 px, and the upload
+  /// is often over mobile data.
+  static Uint8List _shrink(Uint8List bytes) {
+    final src = img.decodeImage(bytes);
+    if (src == null) return bytes;
+    final longest = src.width > src.height ? src.width : src.height;
+    final out = longest > 1024
+        ? img.copyResize(src, width: src.width >= src.height ? 1024 : null, height: src.height > src.width ? 1024 : null)
+        : src;
+    return Uint8List.fromList(img.encodeJpg(out, quality: 85));
   }
 }

@@ -124,8 +124,8 @@ class RefusingRepo extends LocalWaterRepository {
   }
 
   @override
-  Future<VoteResult> vote(WaterZone zone, String uid) async =>
-      voteResult ?? await super.vote(zone, uid);
+  Future<VoteResult> vote(WaterZone zone, String uid, {bool dryTaps = false}) async =>
+      voteResult ?? await super.vote(zone, uid, dryTaps: dryTaps);
 
   @override
   Future<void> publishReading(String zoneId, double level, {DateTime? at}) async {
@@ -301,8 +301,22 @@ void main() {
       expect(find.text('Healthy'), findsOneWidget);
       expect(find.text('Chatsworth Reservoir'), findsOneWidget);
       await reveal(t, find.text('No help needed right now'));
-      expect(find.text('Help requests open when supply drops below 40%. Chatsworth is at 74%.'), findsOneWidget);
+      expect(find.text('The dams behind Chatsworth are 74% full. A full dam does not always mean a running tap.'), findsOneWidget);
       expect(find.text('Ask for water help'), findsNothing);
+    });
+
+    waterTest('a healthy dam still lets people say their taps are dry', (t, c) async {
+      c.read(waterProvider.notifier).selectZone('chatsworth');
+      await t.pump(const Duration(milliseconds: 600));
+      await reveal(t, find.text('My taps are dry'));
+      expect(c.read(waterProvider).incidentOf('chatsworth'), isNull);
+      await t.tap(find.text('My taps are dry'));
+      await t.pump(const Duration(milliseconds: 600));
+      final i = c.read(waterProvider).incidentOf('chatsworth');
+      expect(i, isNotNull);
+      expect(i!.votes, 1);
+      // A plain request on a healthy dam is still turned away.
+      expect(await c.read(waterProvider.notifier).vote(), VoteResult.alreadyVoted);
     });
 
     waterTest('host sections are slotted in', (t, c) async {

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show friendlyError;
@@ -11,6 +11,8 @@ import '../theme/glass.dart';
 import 'care_models.dart';
 import 'care_store.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
+import 'package:ubuntu_core/tr.dart' show tr, trn;
 /// Water and feed reminders for the herd, today's ticks, and the vaccination
 /// record for every animal.
 class CareScreen extends ConsumerStatefulWidget {
@@ -107,7 +109,7 @@ class _CareScreenState extends ConsumerState<CareScreen> {
                     ),
                   const Spacer(),
                   IconButton(
-                    tooltip: 'Remove this time',
+                    tooltip: tr('Remove this time'),
                     icon: Icon(Icons.close_rounded, color: AppTheme.textTertiary),
                     onPressed: () => _removeTime(kind, t),
                   ),
@@ -165,7 +167,7 @@ class _CareScreenState extends ConsumerState<CareScreen> {
                       maxLength: 600,
                       style: AppTheme.callout.copyWith(color: AppTheme.textPrimary),
                       decoration: InputDecoration(
-                        hintText: 'For example: veld grazing, 2 kg maize lick per cow a day, hay in winter',
+                        hintText: tr('For example: veld grazing, 2 kg maize lick per cow a day, hay in winter'),
                         hintStyle: AppTheme.caption,
                         filled: true,
                         fillColor: AppTheme.glassFill,

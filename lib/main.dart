@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/services.dart' show SystemUiOverlayStyle;
-import 'package:ubuntu_core/ubuntu_core.dart' show notifierProvider, AppearanceController, AppearanceScope, SupabaseBoot;
+import 'package:ubuntu_core/ubuntu_core.dart' show notifierProvider, AppearanceController, AppearanceScope, LanguageScope, OfflineOverlay, SupabaseBoot, Tr;
 import 'services/image_service.dart';
 import 'services/inference_service.dart';
 import 'services/plant_id_service.dart';
@@ -29,9 +29,11 @@ import 'utils/language_provider.dart';
 import 'utils/translations.dart';
 import 'widgets/language_toggle.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppearanceController.instance.load();
+  await Tr.load();
   await SupabaseBoot.init();
   if (!SupabaseBoot.ready) await LocalBackend.instance.init();
   runApp(
@@ -56,7 +58,7 @@ class NolifaGrowApp extends ConsumerWidget {
         themeMode: mode,
         builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
           value: AppearanceScope.overlay,
-          child: child!,
+          child: LanguageScope(child: OfflineOverlay(child: child!)),
         ),
         home: const AuthGate(),
       ),

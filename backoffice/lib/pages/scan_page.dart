@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
 import 'stock_page.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// Scan a tag with a barcode scanner (it types the code and presses Enter) or
 /// type it. Shows the lot, its history, and lets staff print, move or remove.
 class ScanPage extends ConsumerStatefulWidget {

@@ -1,7 +1,7 @@
 import '../members/vet_screens.dart';
 import '../care/care_screen.dart';
 import '../care/care_store.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show RealDamLevels, Reveal, WaterScreen;
@@ -23,6 +23,7 @@ import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import '../widgets/language_toggle.dart';
 
+import 'package:ubuntu_core/tr_text.dart' show Text;
 /// First thing a farmer sees: scan a crop, check a cow. Everything else on the
 /// page supports those two jobs.
 class HomeTab extends ConsumerStatefulWidget {

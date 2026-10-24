@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
@@ -12,6 +12,7 @@ import 'savings_screen.dart';
 import 'shop_screens.dart';
 import 'trust_screens.dart';
 
+import '../tr_text.dart' show Text;
 // ================================================================ MENU
 
 /// An extra row for the menu, supplied by the app (for example "Sign out").
@@ -511,7 +512,7 @@ class _BusinessScreenState extends ConsumerState<BusinessScreen> {
           Text(
               self
                   ? 'You bring orders to the customer yourself. You keep the whole delivery fee you set, and the customer\'s PIN still releases your payment.'
-                  : 'A verified Nolifa driver collects from your farm. Customers pay a R${Fees.baseDelivery.toStringAsFixed(0)} delivery fee and the driver gets ${(Fees.driverShare * 100).round()}% of it.',
+                  : 'A verified Nolifa driver collects from your farm. Customers pay a delivery fee from R${Fees.baseDelivery.toStringAsFixed(0)}. The driver is paid for the trip, and Nolifa adds to the fee when it falls short.',
               style: AppTheme.footnote),
           if (self) ...[
             const SizedBox(height: AppTheme.s3),
@@ -542,7 +543,7 @@ class _BusinessScreenState extends ConsumerState<BusinessScreen> {
           _fee('Monthly platform fee', 'R${s.plan.price}', 'Includes support'),
           _fee('Commission per sale', '${(s.plan.commission * 100).round()}%', 'Only when you are paid'),
           _fee('Buyer service fee', '3%', 'Paid by the customer, not you'),
-          _fee('Delivery', self ? 'Yours' : 'Customer pays', self ? 'You set the fee' : 'Driver gets 80%'),
+          _fee('Delivery', self ? 'Yours' : 'Customer pays', self ? 'You set the fee' : 'Driver paid per trip'),
         ]),
       ),
     ]);

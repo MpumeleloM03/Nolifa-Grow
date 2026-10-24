@@ -1,0 +1,259 @@
+3010	isonto elishisayo nelomile eliza
+3011	kwehla cishe amaphuzu angu-{0} ngosuku
+3012	kululama cishe amaphuzu angu-{0} ngosuku
+3013	Amadamu ebegcwele ngo-{0}% isonto eledlule futhi ngo-{1}% ngo-{2} (DWS), {3}
+3014	{0}. Ukufundwa kwamasonto onke kuphela, ngakho kuthathe njengesiqondiso.
+3015	DWS State of Dams yamasonto onke, {0}-{1}-{2}
+3017	{0}% esitsheni{1}. Uma omakhelwane abanele bevota, umhlinzeki uthumela amaloli.
+3018	Vota usizo
+3019	Hhayi manje
+3020	Ideski lomhlinzeki
+3021	Phendula izicelo futhi ugcine ukufundwa kusesikhathini
+3022	Leli deski lomhlinzeki wamanzi
+3023	I-akhawunti yakho ayinakho ukufinyelela komhlinzeki. Ukulandela isicelo somphakathi wakho,
+3024	vula ikhasi Lamanzi.
+3025	Ayikwazanga {0}. Hlola imvume nokuxhumeka kwakho.
+3026	Idinga impendulo
+3027	Akukho okulindile
+3028	Izicelo zivela lapha uma umphakathi ufinyelela umkhawulo wawo wokuvota.
+3029	Abantu abacele
+3030	{0} kwangu-{1} abadingekayo
+3031	Abantu abasizwe
+3032	Kufinyelele umhlinzeki {0}
+3033	Thumela amaloli
+3034	Vuma
+3035	Gcina inothi ngezinhlamvu ezingu-{0} noma ngaphansi
+3036	thumela amaloli
+3037	🚛 Thumela amaloli ku-{0}
+3038	Umphakathi ubona ukuthi mangaki amaloli ayeza nokuthi nini.
+3039	Kufika ngemva kwe
+3040	isikhathi sokufika
+3041	Inothi lomphakathi (akuphoqelekile)
+3042	Thumela {0} manje
+3043	Emgwaqweni
+3044	Awekho amaloli emgwaqweni
+3045	Amaloli owathumelayo avela lapha kuze kube uwamaka njengokulethiwe.
+3046	Kuthunyelwe
+3047	maka njengokulethiwe
+3048	Imiphakathi
+3049	Ayikho imiphakathi okwamanje
+3050	Engeza umphakathi ngezansi ukuze uqale ukushicilela ukufundwa.
+3051	{0} abantu  •  kubuyekeziwe {1}
+3052	Kushicilelwe {0}% ye-{1}
+3053	Shicilela ukufundwa
+3054	Engeza umphakathi kuqala. Bese ungashicilela izinga lesitsha sawo lamanzi lapha.
+3055	Izinga lesitsha samanzi
+3056	Manje {0}%. Ukufundwa okusha kubuyekeza isimo nesibikezelo
+3057	sawo wonke umuntu ku-{0}.
+3058	Shicilela
+3059	Engeza umphakathi
+3060	Umphakathi omusha uqala ngokufundwa okukodwa futhi uthi "Akukaneli ukufundwa"
+3061	kuze kube ushicilela okwengeziwe.
+3062	Engeza umphakathi
+3063	Sebenzisa izinhlamvu ezingu-{0} noma ngaphansi
+3064	Kuyadingeka
+3065	Faka inombolo engaphezu kuka-0
+3066	Faka inombolo kusuka ku-1 kuya ku-{0}
+3067	{0} Isitsha samanzi
+3068	Ayikwazanga ukugcina. Hlola uxhumo nemvume yakho, bese uzama futhi.
+3069	🏘️ Engeza umphakathi
+3070	Irada idinga okungenani ukufundwa okungu-4 ngaphambi kokuthi ibikezele.
+3071	Igama lomphakathi
+3072	Isitsha samanzi (akuphoqelekile)
+3073	Amavoti adingekayo ukuze ufike kuwe
+3074	Izinga lokuqala
+3075	Akukaneli ukufundwa ukubikezela.
+3076	isidingo esiphakeme
+3077	imvula ilindelekile
+3078	Kwehla cishe {0}% ngosuku ezinsukwini zokugcina
+3079	Kululama cishe {0}% ngosuku.
+3080	Kuzinzile ezinsukwini zokugcina ezingu-{0}.
+3081	Kuyingozi
+3082	Kuqoqwa amavoti
+3083	Kuthunyelwe kumhlinzeki
+3084	Umhlinzeki usekubonile
+3085	Amaloli asendleleni
+3086	Kuxazululiwe
+3087	Ukunikezwa komphakathi wakho, isibikezelo nosizo
+3088	Umphakathi wakho
+3089	Kubuyekeziwe {0}
+3090	Ukudla komhlinzeki (idemo)
+3091	Kulayishwa imiphakathi
+3092	Akukho ukufundwa kwendawo yakho okwamanje
+3093	Umhlinzeki wakho wamanzi akakabelani ngedatha yale ndawo. Uma enza kanjalo,
+3094	uzobona izinga lokunikezwa, isibikezelo nendlela yokucela usizo lapha.
+3095	Usengakwazi ukulungiselela ngezansi.
+3096	Kuningi esitsheni. Akukho okufanele ukwenze.
+3097	Kuyehla. Kufanele ukuqaphe.
+3098	Kuphansi. Ungacela umhlinzeki usizo manje.
+3099	Kuyingozi. Gcina manje futhi ucele amaloli.
+3100	{0} abantu abasizwe
+3101	Isibikezelo esivela ekufundweni kwesitsha
+3102	Izinsuku zokuphela
+3103	Ayikho usuku lokuphela
+3104	Kuphelile
+3105	Umkhuba
+3106	{0}{1}% ngosuku
+3107	Irada idinga okungenani ukufundwa okungu-4 ovela kumhlinzeki ngaphambi kokuthi ibikezele.
+3108	Abantu abaqinisekisiwe kuphela abangavota, ngakho ivoti ngalinye liyisuntu langempela.
+3109	Usucele usizo. Umuntu ngamunye ubalwa kanye.
+3110	Qinisekisa ifoni yakho ukuze uvote.
+3111	Lesi sicelo sesivele sikumhlinzeki.
+3112	Isicelo sendawo yakho sesivele siyaphathwa.
+3113	Izicelo zosizo zivulwa lapho ukunikezwa kwehla ngaphansi kuka-40%.
+3114	Izwi lomphakathi
+3115	Akudingeki usizo manje
+3116	Amadamu angemuva kwe-{0} agcwele ngo-{1}%. Idamu eligcwele alisho njalo ukuthi ipompi iyasebenza.
+3117	Amapompi ami omile
+3118	Uma omakhelwane abaqinisekisiwe abahlukene abangu-{0} bethi kunjalo, isicelo siya kumhlinzeki.
+3119	Isicelo sokugcina sixazululwe ngo-{0}.
+3120	Yiba owokuqala ukucela
+3121	Isicelo sakho sikuo-{0}
+3122	{0} usekubonile isicelo sakho
+3123	Usizo luyeza
+3124	isicelo siya ku-{0}. Umuntu ngamunye ubalwa kanye.
+3125	Usucele usizo
+3126	Cela usizo lwamanzi
+3127	{0} sendleleni
+3128	Amaloli
+3129	Inothi elivela ku-{0}
+3130	{0}. Kuthunyelwe ngo-{1}.
+3131	Gcwalisa zonke izitsha manje
+3132	Gcina amanzi okuphuza ehlukile ngamanzi okugeza
+3133	Hlehlisa ukugeza nokunisela
+3134	Hlola omakhelwane abangakwazi ukuthwala amanzi
+3135	Uma kuphela
+3136	Sitshele ngekhaya lakho futhi sibala ukuthi yini okufanele ugcine.
+3137	Abantu ekhaya
+3138	Amanzi agciniwe
+3139	amanzi agciniwe
+3140	Imfuyo: izinhloko ezingu-{0} zidinga u-{1} L ngosuku
+3141	Usebenzisa
+3142	{0} L ngosuku
+3143	Amanzi agciniwe ahlala
+3144	Usuku olu-1.0
+3145	Ukuhlela ngo
+3146	Kuntula
+3147	Oda amanzi angu-{0} {1}
+3148	{0} x {1} L = {2} L ngo
+3149	{0}, kulethwa ngumakhelwane.
+3150	Amanzi okuphuza awakathengiswa endaweni yakho. Gcina okusemandleni futhi uhlole omakhelwane bakho.
+3151	Ngaphambi kokuthi kuphele
+3152	Uvikelekile
+3153	{0} L ahlala izinsuku ezingu-{1},
+3154	anele izinsuku ezingu-{0} esizihlelayo.
+3155	Amathuluzi omhlinzeki wamanzi
+3156	Phendula izicelo zomphakathi futhi ushicilele ukufundwa kwesitsha.
+3157	Vula ideski lomhlinzeki
+3158	Izilawuli zedemo
+3159	Kufananisiwe
+3160	Omakhelwane nomhlinzeki wamanzi bafananisiwe lapha. Akukho okwenzayo okufinyelela kumhlinzeki wangempela.
+3161	Kuphuma amanzi esitsheni
+3162	Sebenzisa isikhathi somile
+3163	Setha kabusha idemo
+3164	Umhlinzeki ocabangelayo uyaziphendulela
+3165	{0} imizuzu edlule
+3166	{0} amahora edlule
+3167	cishe njalo ngemizuzu engu-{0}
+3168	cishe njalo emahoreni angu-{0}
+3169	cishe njalo ezinsukwini ezingu-{0}
+3170	Lokhu kuvela kuphi
+3171	Ubani ukulinganisa
+3172	{0}. Umthombo: {1}. Lawa angamazinga angempela edamu avela eMnyangweni Wezamanzi Nokuthuthuka Kwendawo. Idamu eliphilile alisho njalo ukuthi zonke amapompi ziyasebenza, ngakho imibiko yasendaweni namavoti kusabalulekile.
+3173	{0}. Kule demo ukufundwa kufananisiwe futhi kulebulwe njengedemo. Ekukhiqizweni umhlinzeki ushicilela ukufundwa kwesitsha sangempela.
+3174	{0} ushicilela ukufundwa kwesitsha se-{1}. Asiwakhi noma asikhiphi amanani.
+3175	Ukuthi kusha kangakanani
+3176	Akukho ukufundwa okwamanje. Isibikezelo sihlala sineze kuze kube umhlinzeki eshicilela.
+3177	Ukufundwa kokugcina {0}{1}. Isibikezelo siyisibalo futhi sibonisa ukuzethemba kwaso.
+3178	Ubani ophendulayo
+3179	{0} uphendule isicelo lapha. Isibuyekezo sakhe sibonakala kuleli khasi nasemphakathini.
+3180	Umhlinzeki uyavuma izicelo futhi athumele amaloli. Amapulazi anebhorehole noma ithanka angaphendula nge-Nolifa Grow.
+3181	Uma kungekho ophendulayo
+3182	Amavoti akho asabalwa futhi ahlala ebonakala, ngakho isicelo esinganakwa siba sesidlangalaleni. Phakathi nalesi sikhathi uhlelo olungezansi lukutshela ukuthi mangaki amabhodlela angu-25 L avala igebe, omakhelwane bangawalethela, futhi abaphakeli bamapulazi aseduze bangangena.
+3183	Amazinga angempela edamu namuhla
+3184	Siyalanda umbiko wakamuva
+3185	Asikwazanga ukufinyelela eMnyangweni Wezamanzi Nokuthuthuka Kwendawo.
+3186	Akukho ukufundwa kwangempela okutholakalayo okwamanje.
+3187	Ungaphandle kweKwaZulu-Natal. Idatha yangempela yedamu yesifundazwe sakho ayikho kuhlelo okwamanje, ngakho lena amadamu aseKwaZulu-Natal.
+3188	Vula indawo ukuze ubone amadamu anikeza lapho ukhona.
+3189	Kuzinzile kuleli sonto
+3190	{0} {1} amaphuzu ngosuku
+3191	Lawa amadamu amakhulu okunikeza, abuyekezwa ngamasonto. Idamu eliphilile alisho njalo ukuthi zonke amapompi ziyasebenza: ukucisha kwasendaweni kuvela emapayipini nasezipompini, okuyilokho imibiko yomphakathi namavoti okuyilokho.
+3199	I-eThekwini Water (idemo)
+3210	Amathanka ayeza emathangini omphakathi
+3211	Amaloli amanzi angu-{0} aya e-{1}
+3212	Kulindeleke cishe emizuzwini engu-{0}. Linda izitsha zikulungele.
+3213	Cishe izinsuku ezingu-{0} ukuze kube yingozi. Gcina futhi ucele umhlinzeki usizo.
+3214	Ukunikezwa kuyingozi. Gcina manje futhi ucele umhlinzeki amaloli.
+3215	Irada yamanzi: {0} ingase iphelelwe
+3216	Isitsha sisezingeni elingu-{0}% futhi siyehla. Cishe izinsuku ezingu-{1} ukuze kube yingozi.
+3217	Hlola ukunikezwa kwamanzi
+3218	khona manje
+3219	Usuku olu-1 olwedlule
+3220	ngaphansi kosuku
+3221	Akukaneli ukufundwa
+3222	Kuyalulama
+3223	Kuzinzile
+3224	Kuyingozi manje
+3225	Ngaphansi kosuku ukuze kuphele
+3226	Cishe {0} ukuze kuphele
+3227	Ngaphansi kosuku ukuze kube yingozi
+3228	Cishe {0} ukuze kube yingozi
+3229	Emuva
+3230	Nciphisa {0}
+3231	Khulisa {0}
+3232	Alukho okwamanje
+3233	Kulungile
+3234	Ukuzethemba
+3235	Ishadi lesibikezelo. Isitsha sisezingeni elingu-{0} ekhulwini manje,
+3236	cishe amaphesenti angu-{0} ezinsukwini ezingu-{1}.
+3237	Okuphansi 40%
+3238	Okuyingozi 20%
+3239	Ukusetha kabusha iphasiwedi kudinga isizindalwazi esabelwanayo. Ama-akhawunti kumodi yasendaweni ahlala kule foni kuphela, ngakho dala entsha.
+3240	I-imeyili noma iphasiwedi akulungile. Hlola kokubili uzame futhi.
+3241	I-akhawunti ene-imeyili efanayo isivele ikhona. Ngena esikhundleni.
+3242	Sebenzisa okungenani izinhlamvu eziyi-8, ngezinhlamvu nenombolo.
+3243	Imizamo eminingi kakhulu. Linda umzuzu uzame futhi.
+3244	Kukhona okungahambanga kahle ohlangothini lwethu. Zama futhi emva kwesikhashana.
+3245	Engeza igama lakho ukuze omakhelwane bazi ukuthi ungubani.
+3246	Sebenzisa okungenani izinhlamvu eziyi-8.
+3247	Kukhona okungahambanga kahle. Zama futhi.
+3248	Bonisa iphasiwedi
+3249	Fihla iphasiwedi
+3250	Imodi yasendaweni: ama-akhawunti ahlala kule foni
+3251	Le foni ayivumanga uhlelo ukuthi lugcine i-akhawunti yakho. Qala kabusha uhlelo uzame futhi.
+3252	I-akhawunti ene-imeyili efanayo isivele ikhona kule foni. Ngena esikhundleni.
+3253	Bhala i-imeyili yakho ngenhla, bese uthinta Ukhohlwe iphasiwedi.
+3254	Uma u-{0} ene-akhawunti, isixhumanisi sokusetha kabusha siyeza.
+3255	Ukudla namanzi umphakathi wakho ongathembela kukho, ngisho nalapho izinto zingahambi kahle.
+3256	Siyakwamukela futhi
+3257	Faka iphasiwedi yakho.
+3258	Joyina umphakathi wakho. Kuthatha umzuzu.
+3259	Dala i-akhawunti yakho
+3260	Omakhelwane babona igama lakho kuma-oda nasekulethweni. I-imeyili yakho ihlala iyimfihlo.
+3261	Igama lakho
+3262	Iphasiwedi (izinhlamvu eziyi-8+)
+3263	Usuvele umakhelwane?
+3264	Umphakathi ohlala usuthi
+3265	Thenga ngqo emapulazini aseduze nawe. Lapho isifo, isomiso noma ukucisha kuhlaselayo, amapulazi asendaweni agcina ukudla kuhamba. Imali yakho ilinda ku-escrow kuze kube uqinisekisa nge-PIN.
+3266	Amanzi ongathembela kuwo
+3267	Thola isexwayiso ngaphambi kokuthi ukunikezwa kwakho kuphele. Hlola isitsha somphakathi wakho noma nini. Uma kubi, cela amaloli amanzi nomakhelwane bakho.
+3268	Kulethwa emnyango wakho
+3269	Amanye amapulazi akulethela i-oda lakho ngokwawo. Amanye asebenzisa umakhelwane oqinisekisiwe ku-Nolifa Delivery. Noma kunjani, i-PIN oyinikeza emnyango ikhulula inkokhelo.
+3270	Yeqa
+3271	Asiye
+3272	Okulandelayo
+3273	Ikhasi {0} lika-{1}
+3275	{0}, KwaZulu-Natal, iNingizimu Afrika
+3276	Idemo: umshayeli uhamba ngomgwaqo wangempela
+3277	I-akhawunti yomhlinzeki wamanzi
+3278	Ukumodi yedemo
+3279	Ukumodi ephilayo
+3280	Omakhelwane, abashayeli nomhlinzeki wamanzi bafananisiwe ukuze uzame konke.
+3281	Ubona kuphela abantu bangempela, imibhalo yangempela nokufundwa kwamanzi kwangempela.
+3282	Ukushintsha phakathi kwedemo nemodi ephilayo, vula Ukwethembeka Nokuphepha uphinde usebenzise Imodi Yohlelo.
+3283	Vula Ukwethembeka Nokuphepha
+3284	I-akhawunti nemodi yohlelo
+3285	Idemo noma ephilayo, ongena njengobani
+3286	{0} ama-oda{1} asendleleni
+3287	Imikhiqizo emisha ilindele emapulazini aseduze nawe.
