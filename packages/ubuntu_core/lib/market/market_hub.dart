@@ -6,6 +6,7 @@ import '../theme/glass.dart';
 import 'alert_actions.dart';
 import 'market_store.dart' show marketProvider, placeErrorProvider;
 import '../roads/road_screens.dart' show RoadAlertsCard;
+import '../roads/traffic.dart' show trafficWatcherProvider;
 import '../water/water_screens.dart' show RealDamLevels;
 import 'glass_tab_bar.dart';
 import '../water/water_store.dart';
@@ -56,6 +57,7 @@ class _MarketHubState extends ConsumerState<MarketHub> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e), duration: const Duration(seconds: 6), behavior: SnackBarBehavior.floating));
       ref.read(placeErrorProvider.notifier).state = null;
     });
+    ref.watch(trafficWatcherProvider);
     final tabs = widget.tabs ?? defaultDropTabs(onMenu: () => openDropMenu(context));
     final i = _i.clamp(0, tabs.length - 1);
     final VoidCallback? close = widget.showClose ? () => Navigator.pop(context) : null;

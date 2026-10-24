@@ -110,3 +110,12 @@ supabase secrets set RESEND_API_KEY=re_xxxxx --project-ref ysjitrdzraofzfqhbcfp
 
 Then press "Send waiting alerts now" in Back office, Alerts.
 - Resend's free plan only sends to the address you signed up with until you verify a domain. That is fine while you are the one receiving.
+
+## Live road incidents (TomTom)
+
+`supabase/functions/traffic` pulls live incidents for Durban, the South Coast, the North Coast, the Midlands and Zululand every 5 minutes (a scheduled job in the database) and stores them in `public.traffic_incidents`. Everyone signed in can read them. Only the function writes.
+
+- The key lives only as a server secret: `supabase secrets set TOMTOM_KEY=... --project-ref ysjitrdzraofzfqhbcfp`. It is never in the apps or the repository.
+- TomTom's free tier allows 2 500 requests a day. This uses about 1 440 (5 areas, every 5 minutes).
+- In the apps, people see incidents within 25 km of them, each labelled "TomTom" with its age. Serious ones within 15 km also raise a notification while the app is open. Alerts when the app is closed need Apple and Google push, which are not set up yet.
+- Only drivers can report hazards. Customers read, they do not report.

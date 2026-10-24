@@ -7,6 +7,7 @@ import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'road_models.dart';
 import 'road_store.dart';
+import 'traffic.dart';
 
 /// Where the driver is right now as (latitude, longitude), or null when
 /// location is off or refused. The driver app supplies the real GPS reading.
@@ -180,12 +181,17 @@ class _RoadAlertsScreenState extends ConsumerState<RoadAlertsScreen> {
                   SliverPadding(
                     padding: const EdgeInsets.fromLTRB(AppTheme.s6, AppTheme.s2, AppTheme.s6, AppTheme.s10),
                     sliver: SliverList.list(children: [
-                      Text('Warnings from drivers', style: AppTheme.title1),
+                      Text('Road alerts', style: AppTheme.title1),
                       const SizedBox(height: AppTheme.s1),
-                      Text(
-                          'Drivers report potholes, floods, crashes and roadblocks as they drive. A warning fades by itself unless another driver confirms it, and comes down when drivers say it is gone.',
-                          style: AppTheme.callout),
+                      Text('Live traffic from TomTom, and warnings reported by Nolifa drivers. Each one says where it came from.', style: AppTheme.callout),
                       const SizedBox(height: AppTheme.s4),
+                      _TrafficSection(me: me),
+                      const SizedBox(height: AppTheme.s5),
+                      Text('Reported by Nolifa drivers', style: AppTheme.title3),
+                      const SizedBox(height: AppTheme.s1),
+                      Text('Drivers report potholes, floods, crashes and roadblocks as they drive. A warning fades by itself unless another driver confirms it, and comes down when drivers say it is gone.',
+                          style: AppTheme.footnote),
+                      const SizedBox(height: AppTheme.s3),
                       GlassButton(
                         label: can ? 'Report a hazard' : 'Verify to report',
                         icon: Icons.add_alert_rounded,
@@ -219,6 +225,64 @@ class _RoadAlertsScreenState extends ConsumerState<RoadAlertsScreen> {
   }
 }
 
+/// Live traffic from TomTom within 25 km of this person.
+class _TrafficSection extends ConsumerWidget {
+  final (double, double)? me;
+  const _TrafficSection({required this.me});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final all = ref.watch(trafficIncidentsProvider);
+    final now = DateTime.now();
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Row(children: [
+        Text('Live traffic', style: AppTheme.title3),
+        const SizedBox(width: AppTheme.s2),
+        Pill('TomTom', color: AppTheme.livestockAccent),
+      ]),
+      const SizedBox(height: AppTheme.s2),
+      if (me == null)
+        GlassCard(child: Text('Turn on location for Nolifa to see incidents within 25 km of you.', style: AppTheme.callout))
+      else
+        all.when(
+          loading: () => const Center(child: Padding(padding: EdgeInsets.all(16), child: CircularProgressIndicator())),
+          error: (_, __) => GlassCard(child: Text('Live traffic could not be loaded. Check your signal.', style: AppTheme.callout)),
+          data: (list) {
+            if (list.isEmpty) {
+              return GlassCard(child: Text('No traffic data has arrived yet. It refreshes every 5 minutes.', style: AppTheme.callout));
+            }
+            final near = incidentsNear(list, me!.$1, me!.$2);
+            if (near.isEmpty) {
+              return GlassCard(child: Text('TomTom shows no serious incidents within 25 km of you right now.', style: AppTheme.callout));
+            }
+            return Column(children: [
+              for (final n in near.take(25))
+                Padding(
+                  padding: const EdgeInsets.only(bottom: AppTheme.s2),
+                  child: GlassCard(
+                    padding: const EdgeInsets.all(AppTheme.s4),
+                    child: Row(children: [
+                      Text(n.incident.emoji, style: const TextStyle(fontSize: 28)),
+                      const SizedBox(width: AppTheme.s3),
+                      Expanded(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text('${n.incident.label}${n.incident.description.isNotEmpty && n.incident.description.toLowerCase() != n.incident.label.toLowerCase() ? '  ·  ${n.incident.description}' : ''}', style: AppTheme.headline),
+                          if (n.incident.where.isNotEmpty) Text(n.incident.where, style: AppTheme.footnote),
+                          Text(
+                              '${n.metres < 1000 ? '${n.metres.round()} m' : '${(n.metres / 1000).toStringAsFixed(1)} km'} away  ·  TomTom  ·  ${n.incident.ageText(now)}',
+                              style: AppTheme.caption),
+                        ]),
+                      ),
+                    ]),
+                  ),
+                ),
+            ]);
+          },
+        ),
+    ]);
+  }
+}
+
 /// A short card for the Jobs page: how many warnings are live and one tap to
 /// report or read them.
 class RoadAlertsCard extends ConsumerWidget {
@@ -229,6 +293,8 @@ class RoadAlertsCard extends ConsumerWidget {
     final now = ref.watch(roadClockProvider)();
     final live = ref.watch(roadProvider).live(now);
     final can = ref.watch(roadCanReportProvider);
+    final near = ref.watch(nearbyTrafficProvider);
+    final serious = near?.where((n) => n.incident.serious).length ?? 0;
     return GlassCard(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RoadAlertsScreen())),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -238,7 +304,12 @@ class RoadAlertsCard extends ConsumerWidget {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('Road alerts', style: AppTheme.headline),
-              Text(live.isEmpty ? 'None reported by drivers' : '${live.length} live ${live.length == 1 ? 'warning' : 'warnings'} from drivers', style: AppTheme.footnote),
+              Text(
+                  [
+                    if (near != null) near.isEmpty ? 'No traffic incidents within 25 km' : '${near.length} traffic ${near.length == 1 ? 'incident' : 'incidents'} within 25 km${serious > 0 ? ' ($serious serious)' : ''}',
+                    live.isEmpty ? 'none reported by drivers' : '${live.length} from drivers',
+                  ].join('  ·  '),
+                  style: AppTheme.footnote),
             ]),
           ),
           Icon(Icons.chevron_right_rounded, color: AppTheme.textTertiary),
