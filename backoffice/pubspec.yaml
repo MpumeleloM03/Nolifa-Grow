@@ -41,6 +41,7 @@ dependencies:
   firebase_core: ^3.1.0
   firebase_auth: ^5.1.0
   cloud_firestore: ^5.0.0
+  url_launcher: ^6.3.1
   printing: ^5.15.1
   pdf: ^3.13.1
   barcode: ^2.2.9

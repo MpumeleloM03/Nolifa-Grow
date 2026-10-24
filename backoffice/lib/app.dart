@@ -3,7 +3,9 @@ import 'package:supabase_flutter/supabase_flutter.dart' as sb show User, AuthExc
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
+import 'pages/admin_pages.dart';
 import 'pages/certs_page.dart';
+import 'pages/vet_page.dart';
 import 'pages/orders_page.dart';
 import 'pages/overview_page.dart';
 import 'pages/receiving_page.dart';
@@ -65,7 +67,7 @@ class _Access extends ConsumerWidget {
     return roles.when(
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(body: Center(child: Text(friendlyError(e, doing: 'check your access')))),
-      data: (r) => (r.hub || r.certifier)
+      data: (r) => (r.hub || r.certifier || r.admin || r.vet)
           ? Shell(roles: r)
           : Scaffold(
               body: Center(
@@ -77,7 +79,7 @@ class _Access extends ConsumerWidget {
                       Text('No access yet', style: AppTheme.title1),
                       const SizedBox(height: 8),
                       Text(
-                          'You are signed in as ${_db.auth.currentUser?.email}. A Nolifa admin has to add you as warehouse staff or a certifier before you can use the back office. '
+                          'You are signed in as ${_db.auth.currentUser?.email}. A Nolifa admin has to add you as staff, a certifier, a vet or an admin before you can use the back office. '
                           'Send them this ID: ${_db.auth.currentUser?.id}',
                           style: AppTheme.callout),
                       const SizedBox(height: 16),
@@ -172,7 +174,11 @@ class _ShellState extends ConsumerState<Shell> {
       if (r.hub) ('Stock', Icons.inventory_2_rounded, const StockPage()),
       if (r.hub) ('Pick and cut', Icons.content_cut_rounded, const OrdersPage()),
       if (r.hub) ('Rooms', Icons.ac_unit_rounded, const RoomsPage()),
-      ('Certificates', Icons.verified_rounded, const CertsPage()),
+      if (r.hub || r.certifier) ('Certificates', Icons.verified_rounded, const CertsPage()),
+      if (r.admin) ('Applications', Icons.assignment_ind_rounded, const ApplicationsPage()),
+      if (r.admin) ('Memberships', Icons.card_membership_rounded, const MembershipsPage()),
+      if (r.admin) ('Boreholes', Icons.water_rounded, const BoreholesPage()),
+      if (r.vet) ('Vet cases', Icons.medical_services_rounded, const VetPage()),
     ];
     final idx = _i.clamp(0, pages.length - 1);
     final wide = MediaQuery.of(context).size.width >= 800;

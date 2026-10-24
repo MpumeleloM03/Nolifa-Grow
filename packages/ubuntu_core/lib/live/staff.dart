@@ -10,7 +10,9 @@ import '../supabase/supabase_boot.dart';
 class StaffRoles {
   final bool hub;
   final bool certifier;
-  const StaffRoles({this.hub = false, this.certifier = false});
+  final bool admin;
+  final bool vet;
+  const StaffRoles({this.hub = false, this.certifier = false, this.admin = false, this.vet = false});
 }
 
 final staffRolesProvider = FutureProvider<StaffRoles>((ref) async {
@@ -20,7 +22,9 @@ final staffRolesProvider = FutureProvider<StaffRoles>((ref) async {
     final db = SupabaseBoot.client;
     final staff = await db.from('staff').select('uid').eq('uid', uid).maybeSingle();
     final cert = await db.from('certifiers').select('uid').eq('uid', uid).maybeSingle();
-    return StaffRoles(hub: staff != null, certifier: cert != null);
+    final adm = await db.from('admins').select('uid').eq('uid', uid).maybeSingle();
+    final vet = await db.from('vets').select('uid').eq('uid', uid).maybeSingle();
+    return StaffRoles(hub: staff != null, certifier: cert != null, admin: adm != null, vet: vet != null);
   } catch (e) {
     debugPrint('staff: could not read roles: $e');
     return const StaffRoles();
