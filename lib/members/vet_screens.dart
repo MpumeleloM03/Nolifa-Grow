@@ -374,7 +374,7 @@ class _ConsultScreenState extends ConsumerState<ConsultScreen> {
           ),
       const SizedBox(height: AppTheme.s3),
       if (d == null)
-        GlassCard(child: Text('A vet will look at your video and write back here. You will get a notification.', style: AppTheme.callout))
+        GlassCard(child: Text('A vet will look at your video and write back here. Check this case for the answer. Push alerts for replies are not built yet.', style: AppTheme.callout))
       else
         GlassCard(
           tint: AppTheme.ok.withValues(alpha: 0.10),
