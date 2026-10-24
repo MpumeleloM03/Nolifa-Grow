@@ -27,6 +27,9 @@ abstract class MarketRepository {
   /// Atomically assigns a driver to an open job. False if someone else got it.
   Future<bool> claimJob(String orderId, String uid, String name);
 
+  /// Takes several jobs as one: every job is claimed, or none is.
+  Future<bool> claimBatch(List<String> orderIds, String uid, String name);
+
   Stream<List<ReportCase>> watchCases(String uid);
   Future<void> putCase(ReportCase c, String uid);
 
@@ -163,6 +166,21 @@ class LocalMarketRepository implements MarketRepository {
     m['rev'] = ((m['rev'] as num?) ?? 0).toInt() + 1;
     m['participants'] = [...(m['participants'] as List), uid];
     await _flush('mkt_orders', _orders!);
+    return true;
+  }
+
+  @override
+  Future<bool> claimBatch(List<String> orderIds, String uid, String name) async {
+    await _ensure();
+    bool open(String id) {
+      final m = _orders!.where((x) => x['id'] == id).firstOrNull;
+      return m != null && m['driverId'] == null && m['status'] == 'findingDriver';
+    }
+
+    if (!orderIds.every(open)) return false;
+    for (final id in orderIds) {
+      await claimJob(id, uid, name);
+    }
     return true;
   }
 

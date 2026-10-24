@@ -58,6 +58,10 @@ class SupabaseMarketRepository implements MarketRepository {
       (await _db.rpc('claim_job', params: {'p_id': orderId, 'p_name': name})) == true;
 
   @override
+  Future<bool> claimBatch(List<String> orderIds, String uid, String name) async =>
+      (await _db.rpc('claim_batch', params: {'p_ids': orderIds, 'p_name': name})) == true;
+
+  @override
   Stream<List<ReportCase>> watchCases(String uid) => liveTable(_db, 'market_cases')
       .map((rows) => [for (final r in rows) caseFromJson(Map<String, dynamic>.from(r['data'] as Map), uid)]);
 

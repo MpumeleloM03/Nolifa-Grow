@@ -1470,6 +1470,33 @@ class MarketStore extends Notifier<MarketState> {
     }
   }
 
+  /// Takes a whole batch of jobs at once. On a shared backend it is one atomic
+  /// claim: if any job was taken first, none is taken and the driver is told.
+  Future<bool> acceptBatch(List<String> ids) async {
+    final jobs = [for (final id in ids) if (state.orderById(id) != null) state.orderById(id)!];
+    if (jobs.length != ids.length || jobs.isEmpty) return false;
+    if (jobs.any((o) => o.hubStage != null && o.hubStage != 'released')) return false;
+    final onServer = _repo.shared && !jobs.any((o) => o.seed);
+    if (onServer) {
+      final ok = await _repo.claimBatch(ids, _uid, _name);
+      if (!ok || _disposed) return false;
+    }
+    state = state.copyWith(orders: [
+      for (final o in state.orders)
+        if (ids.contains(o.id))
+          o.copyWith(status: OrderStatus.assigned, driver: _name, driverIsMe: true, driverId: _uid, rev: o.rev + (onServer ? 1 : 0))
+        else
+          o
+    ]);
+    if (!onServer) {
+      for (final id in ids) {
+        final o = state.orderById(id);
+        if (o != null) _guard(_repo.putOrder(o, _uid));
+      }
+    }
+    return true;
+  }
+
   /// Driver collects the goods. The photo taken at pickup is stored as proof.
   void pickedUp(String id) =>
       _patch(id, (o) => o.copyWith(status: OrderStatus.pickedUp, pickupProof: true));

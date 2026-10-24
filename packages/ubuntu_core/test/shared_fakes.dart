@@ -98,6 +98,20 @@ class FakeSharedMarketRepository implements MarketRepository {
   }
 
   @override
+  Future<bool> claimBatch(List<String> orderIds, String uid, String name) async {
+    bool open(String id) {
+      final d = db.orders[id];
+      return d != null && d['driverId'] == null && d['status'] == 'findingDriver';
+    }
+
+    if (!orderIds.every(open)) return false;
+    for (final id in orderIds) {
+      await claimJob(id, uid, name);
+    }
+    return true;
+  }
+
+  @override
   Stream<List<ReportCase>> watchCases(String uid) =>
       _live(() => [for (final d in db.cases.values) caseFromJson(d, uid)]);
 

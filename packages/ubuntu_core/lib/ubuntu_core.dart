@@ -57,3 +57,4 @@ export 'water/water_widgets.dart' show WaterRadarChart, forecastColor, forecastH
 export 'water/water_store.dart';
 export 'supabase/supabase_boot.dart';
 export 'supabase/resilient.dart';
+export 'delivery/batching.dart';
