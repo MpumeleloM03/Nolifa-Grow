@@ -702,7 +702,13 @@ class TrackingScreen extends ConsumerWidget {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(o.driver ?? 'Finding a neighbour…',
+                                Text(
+                                    o.driver ??
+                                        (!o.paid
+                                            ? 'Waiting for your payment'
+                                            : o.status == OrderStatus.newOrder
+                                                ? 'Waiting for the farm to pack it'
+                                                : 'Finding a neighbour…'),
                                     style: AppTheme.headline),
                                 Row(children: [
                                   Icon(Icons.verified_rounded,
@@ -710,9 +716,11 @@ class TrackingScreen extends ConsumerWidget {
                                   const SizedBox(width: 4),
                                   Flexible(
                                     child: Text(
-                                        o.driver == null
-                                            ? 'Nearest Nolifa-verified drivers notified'
-                                            : 'Nolifa-verified driver',
+                                        o.driver != null
+                                            ? 'Nolifa-verified driver'
+                                            : !o.paid || o.status == OrderStatus.newOrder
+                                                ? 'Drivers are asked once it is paid and packed'
+                                                : 'Nearest Nolifa-verified drivers notified',
                                         style: AppTheme.caption),
                                   ),
                                 ]),
