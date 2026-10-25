@@ -83,6 +83,13 @@ void main() {
       await farmer.storage.from('verification').uploadBinary(p, Uint8List.fromList(List.filled(512, 1)), fileOptions: const FileOptions(contentType: 'image/jpeg'));
       await farmer.rpc('add_application_file', params: {'p_kind': k, 'p_path': p});
     }
+    // The logo and the store picture are public, and required.
+    await expectLater(farmer.rpc('submit_application'), throwsA(isA<PostgrestException>()), reason: 'no logo or store picture yet');
+    for (final k in ['farm_logo', 'farm_banner']) {
+      final p = '$fid/$k-1.jpg';
+      await farmer.storage.from('farm-brand').uploadBinary(p, Uint8List.fromList(List.filled(512, 2)), fileOptions: const FileOptions(contentType: 'image/jpeg'));
+      await farmer.rpc('add_application_file', params: {'p_kind': k, 'p_path': p});
+    }
     await farmer.rpc('submit_application');
     // Staff can open the ID photo, other farmers cannot.
     expect((await boss.storage.from('verification').download('$fid/id_front-1.jpg')).length, 512);
@@ -90,7 +97,11 @@ void main() {
     await expectLater(other.storage.from('verification').download('$fid/id_front-1.jpg'), throwsA(anything));
     await boss.rpc('review_application', params: {'p_uid': fid, 'p_decision': 'approved', 'p_note': ''});
     expect((await farmer.from('farm_applications').select().eq('uid', fid).single())['status'], 'approved');
-    expect((await other.from('farm_profiles').select().eq('uid', fid).single())['data']['farmName'], 'Hills');
+    final profile = (await other.from('farm_profiles').select().eq('uid', fid).single())['data'];
+    expect(profile['farmName'], 'Hills');
+    expect(profile['logo'], '$fid/farm_logo-1.jpg', reason: 'approval publishes the logo');
+    expect(profile['banner'], '$fid/farm_banner-1.jpg');
+    expect((await other.storage.from('farm-brand').download('$fid/farm_logo-1.jpg')).length, 512, reason: 'buyers can see it');
   });
 
   test('driver application is checked by staff, and approval opens jobs', () async {

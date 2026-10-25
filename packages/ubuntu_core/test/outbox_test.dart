@@ -17,7 +17,7 @@ void main() {
     offline = false;
     refuse = false;
     box.currentUser = () => 'u1';
-    box.sender = (w) async {
+    box.sender = (w, _) async {
       if (offline) throw const SocketException('Failed host lookup');
       if (refuse) throw const PostgrestException(message: 'not allowed', code: '42501');
       sent.add(w.label);

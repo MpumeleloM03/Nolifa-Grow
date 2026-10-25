@@ -27,13 +27,13 @@ import 'settings_tab.dart';
 
 /// Nolifa after sign-in. One app, three people, each sent to what they use:
 ///
-/// * Community member: Diagnose, Outbreaks, Water, Shop, Me.
+/// * Community member: Shop, Water, Me.
 /// * Farmer: Diagnose, Outbreaks, Water, Sell, Me.
 /// * Driver: Jobs, Roads, Earnings, Me.
 ///
-/// Diagnosis, the live outbreak map and water each have their own tab, so
-/// none of them is a side feature. A community member never sees selling or
-/// driver tools; a driver never sees the farm or the shop.
+/// Diagnosis and the live outbreak map are farmer tools. A community member
+/// buys, follows water and tracks the order; they never see selling, diagnosis
+/// or driver tools, and a driver never sees the farm or the shop.
 class GrowShell extends ConsumerStatefulWidget {
   final int initialTab;
   const GrowShell({super.key, this.initialTab = 0});
@@ -72,12 +72,11 @@ class _GrowShellState extends ConsumerState<GrowShell> {
       pages = const [DriverHome(), RoadAlertsScreen(), EarningsTab(), SettingsTab()];
       badges = {if (open > 0) 0: open};
     } else if (community) {
-      tabs = const [_diagnose, _outbreaks, _water, _shop, _me];
+      // Plant and animal checks and the outbreak map are for farmers.
+      tabs = const [_shop, _water, _me];
       pages = [
-        const HomeTab(),
-        const AlertsTab(),
-        const WaterPage(),
         ShopHomePage(onMenu: () => openDropMenu(context)),
+        const WaterPage(),
         const SettingsTab(),
       ];
       badges = const {};

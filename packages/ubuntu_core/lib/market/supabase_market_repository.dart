@@ -41,7 +41,7 @@ class SupabaseMarketRepository implements MarketRepository {
         'id': p.id,
         'owner_id': p.ownerId ?? uid,
         'data': {...productToJson(p), 'ownerId': p.ownerId ?? uid},
-      });
+      }, client: _db);
 
   /// Row level security already limits the table to what this person may see:
   /// orders they are part of, open jobs for drivers, and hub orders for staff.

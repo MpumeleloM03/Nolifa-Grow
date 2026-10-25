@@ -50,7 +50,7 @@ class SupabaseWaterRepository implements WaterRepository {
       if (!isNetworkError(e)) rethrow;
       // No signal: keep the request on the phone and send it when it is back.
       final sent = await OfflineOutbox.instance.rpc(
-          'Water help request', 'water_vote', {'p_zone': zone.id, 'p_reason': dryTaps ? 'dry_taps' : 'low_supply'});
+          'Water help request', 'water_vote', {'p_zone': zone.id, 'p_reason': dryTaps ? 'dry_taps' : 'low_supply'}, client: _db);
       return sent ? VoteResult.counted : VoteResult.queued;
     }
   }
@@ -109,6 +109,6 @@ class SupabaseWaterRepository implements WaterRepository {
 
   @override
   Future<void> savePrefs(String uid, WaterPrefs prefs) async {
-    await OfflineOutbox.instance.upsert('Water details', 'water_prefs', {'uid': uid, 'data': waterPrefsToJson(prefs)});
+    await OfflineOutbox.instance.upsert('Water details', 'water_prefs', {'uid': uid, 'data': waterPrefsToJson(prefs)}, client: _db);
   }
 }

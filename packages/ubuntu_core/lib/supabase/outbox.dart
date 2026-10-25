@@ -65,7 +65,7 @@ class OfflineOutbox extends ValueNotifier<int> {
   static final instance = OfflineOutbox();
 
   /// Sends one change. Tests replace it.
-  Future<void> Function(PendingWrite w) sender = _sendToSupabase;
+  Future<void> Function(PendingWrite w, SupabaseClient? db) sender = _sendToSupabase;
 
   /// Who is signed in; the queue belongs to them. Tests replace it.
   String? Function() currentUser = () => SupabaseBoot.ready ? SupabaseBoot.client.auth.currentUser?.id : null;
@@ -78,8 +78,8 @@ class OfflineOutbox extends ValueNotifier<int> {
 
   List<PendingWrite> get pending => List.unmodifiable(_queue);
 
-  static Future<void> _sendToSupabase(PendingWrite w) async {
-    final db = SupabaseBoot.client;
+  static Future<void> _sendToSupabase(PendingWrite w, SupabaseClient? client) async {
+    final db = client ?? SupabaseBoot.client;
     switch (w.op) {
       case 'rpc':
         if (w.schema == null) {
@@ -143,13 +143,13 @@ class OfflineOutbox extends ValueNotifier<int> {
 
   /// Sends a change now. Returns true when the server took it, false when it was
   /// kept to send later. A server refusal is thrown, so the screen can say why.
-  Future<bool> send({required String label, required String op, required String target, required Map<String, dynamic> body, String? schema}) async {
+  Future<bool> send({required String label, required String op, required String target, required Map<String, dynamic> body, String? schema, SupabaseClient? client}) async {
     await _load();
     final w = PendingWrite('${DateTime.now().microsecondsSinceEpoch}', op, target, schema, body, label, DateTime.now());
     // Keep order: if older changes are waiting, this one waits behind them.
     if (_queue.isEmpty) {
       try {
-        await sender(w);
+        await sender(w, client);
         return true;
       } catch (e) {
         if (!isNetworkError(e)) rethrow;
@@ -160,14 +160,14 @@ class OfflineOutbox extends ValueNotifier<int> {
     return false;
   }
 
-  Future<bool> rpc(String label, String fn, Map<String, dynamic> params, {String? schema}) =>
-      send(label: label, op: 'rpc', target: fn, body: params, schema: schema);
+  Future<bool> rpc(String label, String fn, Map<String, dynamic> params, {String? schema, SupabaseClient? client}) =>
+      send(label: label, op: 'rpc', target: fn, body: params, schema: schema, client: client);
 
-  Future<bool> insert(String label, String table, Map<String, dynamic> row) =>
-      send(label: label, op: 'insert', target: table, body: row);
+  Future<bool> insert(String label, String table, Map<String, dynamic> row, {SupabaseClient? client}) =>
+      send(label: label, op: 'insert', target: table, body: row, client: client);
 
-  Future<bool> upsert(String label, String table, Map<String, dynamic> row) =>
-      send(label: label, op: 'upsert', target: table, body: row);
+  Future<bool> upsert(String label, String table, Map<String, dynamic> row, {SupabaseClient? client}) =>
+      send(label: label, op: 'upsert', target: table, body: row, client: client);
 
   /// Sends what is waiting, oldest first. Stops at the first network failure.
   Future<int> flush() async {
@@ -179,7 +179,7 @@ class OfflineOutbox extends ValueNotifier<int> {
       while (_queue.isNotEmpty) {
         final w = _queue.first;
         try {
-          await sender(w);
+          await sender(w, null);
           sent++;
         } catch (e) {
           if (isNetworkError(e)) break;

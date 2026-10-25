@@ -8,6 +8,7 @@
 // Skipped when the variables are not set, so the normal suite stays offline.
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ubuntu_core/ubuntu_core.dart';
 
@@ -40,12 +41,22 @@ Future<Person> signIn(Person p) async {
   return Person(p.name, c, p.id);
 }
 
-Order newOrder(String id, String buyer, String farmer, {String route = 'local', String? hubStage, double fee = 25}) => Order(
+/// The order as this person sees it, waiting for the live list to catch up: the first
+/// thing a stream sends can be older than the change that was just made.
+Future<Order> seeOrder(Person p, String id, [bool Function(Order o)? until]) async {
+  final list = await p.market
+      .watchOrders(p.id)
+      .firstWhere((l) => l.any((x) => x.id == id && (until == null || until(x))))
+      .timeout(const Duration(seconds: 15));
+  return list.firstWhere((x) => x.id == id);
+}
+
+Order newOrder(String id, String buyer, String farmer, {String route = 'local', String? hubStage, double fee = 25, PayMethod method = PayMethod.cash}) => Order(
       id: id,
       lines: [OrderLine('Carrots', '🥕', 2, 60, ownerId: farmer, productId: _productId)],
       deliveryFee: fee,
       serviceFee: 3.6,
-      method: PayMethod.fnbPay,
+      method: method,
       status: OrderStatus.newOrder,
       customer: 'Buyer',
       pickup: 'Farm',
@@ -59,6 +70,9 @@ Order newOrder(String id, String buyer, String farmer, {String route = 'local', 
     );
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = null; // the test binding fakes every request; these tests need the real network
+  SharedPreferences.setMockInitialValues({});
   final skip = (_url.isEmpty || _anon.isEmpty || _service.isEmpty)
       ? 'set SUPABASE_URL, SUPABASE_ANON_KEY and SUPABASE_SERVICE_KEY to run'
       : null;
@@ -109,22 +123,86 @@ void main() {
 
       expect(await d1.market.claimJob(o.id, d1.id, 'One'), isTrue);
       expect(await d2.market.claimJob(o.id, d2.id, 'Two'), isFalse);
-      final mine = (await d1.market.watchOrders(d1.id).first).firstWhere((x) => x.id == o.id);
+      final mine = (await seeOrder(d1, o.id, (x) => x.driverIsMe));
       expect(mine.driverIsMe, isTrue);
 
       await d1.market.putOrder(mine.copyWith(status: OrderStatus.pickedUp, pickupProof: true, rev: mine.rev + 1), d1.id);
-      final picked = (await d1.market.watchOrders(d1.id).first).firstWhere((x) => x.id == o.id);
+      final picked = (await seeOrder(d1, o.id, (x) => x.status == OrderStatus.pickedUp));
       // Delivery only happens through the server's PIN check, never by hand.
       await expectLater(d1.market.putOrder(picked.copyWith(status: OrderStatus.delivered, deliveredAt: DateTime.now(), rev: picked.rev + 1), d1.id), throwsA(isA<PostgrestException>()));
       expect((await d1.market.deliverWithPin(o.id, '0000'))['outcome'], 'wrong');
       expect((await d1.market.deliverWithPin(o.id, '4321'))['outcome'], 'delivered');
-      final delivered = (await buyer.market.watchOrders(buyer.id).first).firstWhere((x) => x.id == o.id);
+      final delivered = (await seeOrder(buyer, o.id, (x) => x.status == OrderStatus.delivered));
       expect(delivered.status, OrderStatus.delivered);
 
       await buyer.market.putOrder(delivered.copyWith(released: true, rating: 5, rev: delivered.rev + 1), buyer.id);
-      final paid = (await buyer.market.watchOrders(buyer.id).first).firstWhere((x) => x.id == o.id);
+      final paid = (await seeOrder(buyer, o.id, (x) => x.released));
       expect(paid.released, isTrue);
       expect((await resident.market.watchOrders(resident.id).first).where((x) => x.id == o.id), isEmpty, reason: 'strangers see nothing');
+    });
+
+    test('card order: waits for payment, then the farm can pack it, and everyone is told', () async {
+      final o = newOrder('UD-LIVE-K-$_run', buyer.id, farmer.id, method: PayMethod.fnbPay);
+      await buyer.market.placeOrder(o, buyer.id, '4321');
+      var seen = (await seeOrder(farmer, o.id));
+      expect(seen.paid, isFalse, reason: 'a card order starts unpaid');
+      await expectLater(farmer.market.putOrder(seen.copyWith(status: OrderStatus.findingDriver, rev: seen.rev + 1), farmer.id),
+          throwsA(isA<PostgrestException>()), reason: 'cannot be packed before it is paid');
+      await expectLater(buyer.client.rpc('activate_order_paid', params: {'p_payment': 'x', 'p_checkout': 'y'}),
+          throwsA(isA<PostgrestException>()), reason: 'a phone cannot confirm its own payment');
+      // Yoco's signed message, as the webhook would record it.
+      final pay = await admin.from('payments').insert({'uid': buyer.id, 'kind': 'order', 'tier': 'order', 'amount_cents': 1000, 'checkout_id': 'chk-$_run', 'order_id': o.id}).select('id').single();
+      expect(await admin.rpc('activate_order_paid', params: {'p_payment': pay['id'], 'p_checkout': 'chk-$_run'}), 'paid');
+      seen = (await seeOrder(farmer, o.id, (x) => x.paid));
+      expect(seen.paid, isTrue);
+      await farmer.market.putOrder(seen.copyWith(status: OrderStatus.findingDriver, rev: seen.rev + 1), farmer.id);
+      expect((await seeOrder(d1, o.id)).status, OrderStatus.findingDriver, reason: 'drivers see it once it is packed');
+      final told = await farmer.client.from('notifications').select('kind').eq('uid', farmer.id);
+      expect(told.map((r) => r['kind']), containsAll(['order_new', 'order_paid']), reason: 'the farm is told of the order and the payment');
+    });
+
+    test('tracking: the driver is followed by the buyer and the farm, and by nobody else', () async {
+      final o = newOrder('UD-LIVE-T-$_run', buyer.id, farmer.id);
+      await buyer.market.placeOrder(o, buyer.id, '4321');
+      await farmer.market.putOrder(o.copyWith(status: OrderStatus.findingDriver, rev: 1), farmer.id);
+      await d1.client.schema('delivery_api').rpc('post_location', params: {'p_lat': -29.85, 'p_lng': 31.02, 'p_heading': 90.0, 'p_speed': 30.0, 'p_accuracy': 8.0});
+      expect(await d1.market.claimJob(o.id, d1.id, 'One'), isTrue);
+      final track = await buyer.client.schema('drop_api').rpc('track_order', params: {'p_id': o.id}) as Map;
+      expect((track['driver'] as Map)['lat'], closeTo(-29.85, 1e-6), reason: 'the buyer sees where the driver is');
+      expect((await farmer.client.from('driver_locations').select().eq('driver_id', d1.id)).length, 1, reason: 'and so does the farm');
+      expect(await resident.client.from('driver_locations').select().eq('driver_id', d1.id), isEmpty, reason: 'a stranger sees nothing');
+      await expectLater(resident.client.schema('drop_api').rpc('track_order', params: {'p_id': o.id}), throwsA(isA<PostgrestException>()));
+      // Finish the job so this driver is free for the next test.
+      final mine = (await seeOrder(d1, o.id, (x) => x.driverIsMe));
+      await d1.market.putOrder(mine.copyWith(status: OrderStatus.pickedUp, pickupProof: true, rev: mine.rev + 1), d1.id);
+      expect((await d1.market.deliverWithPin(o.id, '4321'))['outcome'], 'delivered');
+      await d1.client.schema('delivery_api').rpc('go_offline');
+      final after = await d1.client.from('driver_locations').select().eq('driver_id', d1.id).single();
+      expect(after['online'], isFalse);
+    });
+
+    test('farm doors: inventory shows warehouse stock, trucks are quoted and accepted, a plan is paid for', () async {
+      final inv = await farmer.client.schema('grow_api').rpc('my_inventory') as List;
+      final carrots = inv.cast<Map>().firstWhere((p) => p['id'] == _productId);
+      expect(carrots['shopStock'], isNotNull);
+      expect((carrots['warehouse'] as Map?)?['remaining'], anyOf(isNull, 0), reason: 'nothing deposited yet');
+
+      final id = await farmer.client.schema('grow_api').rpc('request_truck', params: {
+        'p_kind': 'refrigerated', 'p_load_kg': 400, 'p_cold': true, 'p_from': 'Howick', 'p_to': 'Durban hub', 'p_km': 120.0,
+        'p_needed_on': DateTime.now().add(const Duration(days: 2)).toIso8601String().substring(0, 10), 'p_notes': 'beef'});
+      await expectLater(resident.client.rpc('quote_truck', params: {'p_id': id, 'p_quote': 1000}), throwsA(isA<PostgrestException>()), reason: 'only staff quote');
+      await hub.client.rpc('quote_truck', params: {'p_id': id, 'p_quote': 3200});
+      await farmer.client.schema('grow_api').rpc('accept_truck', params: {'p_id': id});
+      await hub.client.rpc('finish_truck', params: {'p_id': id});
+      expect((await farmer.client.from('truck_hire').select().eq('id', id).single())['status'], 'done');
+      expect((await farmer.client.from('notifications').select('kind').eq('uid', farmer.id)).map((r) => r['kind']), contains('truck'));
+
+      final pay = await admin.from('payments').insert({'uid': farmer.id, 'kind': 'plan', 'tier': 'grow', 'amount_cents': 9900, 'checkout_id': 'plan-$_run'}).select('id').single();
+      expect(await admin.rpc('activate_plan_paid', params: {'p_payment': pay['id'], 'p_checkout': 'plan-$_run'}), 'activated');
+      expect((await farmer.client.from('seller_plans').select().eq('uid', farmer.id).single())['plan'], 'grow', reason: 'on at once, nothing to refresh');
+      expect((await farmer.client.from('plan_changes').select().eq('uid', farmer.id)).length, 1);
+      // Back to Starter, so later tests pack orders at the commission they expect.
+      await admin.from('seller_plans').delete().eq('uid', farmer.id);
     });
 
     test('market: money and states are protected', () async {
