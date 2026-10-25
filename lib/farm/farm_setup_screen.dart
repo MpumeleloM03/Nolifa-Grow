@@ -10,7 +10,7 @@ import 'farm_models.dart';
 import 'farm_store.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-import 'package:ubuntu_core/tr.dart' show tr, trn;
+import 'package:ubuntu_core/tr.dart' show tr;
 /// Farm size, soil, where the water comes from, how it gets to the plants and
 /// which plot uses which system. This is what the irrigation AI plans from.
 class FarmSetupScreen extends ConsumerStatefulWidget {

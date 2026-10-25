@@ -26,7 +26,7 @@ import '../community/community_alerts_screen.dart';
 import 'alarm.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-import 'package:ubuntu_core/tr.dart' show tr, trn;
+import 'package:ubuntu_core/tr.dart' show tr;
 /// One disease in one region, however many people reported it.
 class AreaOutbreak {
   final String disease;

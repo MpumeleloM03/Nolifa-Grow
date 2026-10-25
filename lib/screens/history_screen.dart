@@ -7,7 +7,7 @@ import '../services/history_service.dart';
 import 'result_screen.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-import 'package:ubuntu_core/tr.dart' show tr, trn;
+import 'package:ubuntu_core/tr.dart' show tr;
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 

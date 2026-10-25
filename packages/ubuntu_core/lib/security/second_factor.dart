@@ -8,7 +8,7 @@ import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 
 import '../tr_text.dart' show Text;
-import '../tr.dart' show tr, trn;
+import '../tr.dart' show tr;
 /// Wraps the signed-in part of an app. An account that holds a staff power
 /// (admin, hub, vet, water provider, mediator, certifier) must prove the sign-in
 /// with a 6-digit code emailed to it. Everyone else goes straight through.

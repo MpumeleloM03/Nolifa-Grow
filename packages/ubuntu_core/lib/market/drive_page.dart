@@ -12,7 +12,7 @@ import 'market_widgets.dart';
 import 'trust_screens.dart';
 
 import '../tr_text.dart' show Text;
-import '../tr.dart' show tr, trn;
+import '../tr.dart' show trn;
 /// Opens turn-by-turn directions to a place. The driver app supplies the real
 /// one (it needs a maps plugin); returns false when nothing could be opened.
 /// Draws the route for an accepted job: the driver, the farm and the customer.

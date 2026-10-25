@@ -18,7 +18,7 @@ import 'location_picker_screen.dart';
 import 'symptom_checker_screen.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-import 'package:ubuntu_core/tr.dart' show tr, trn;
+import 'package:ubuntu_core/tr.dart' show tr;
 const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 String _day(DateTime d) => '${d.day} ${_months[d.month - 1]} ${d.year}';
 

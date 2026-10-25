@@ -1,3 +1,4 @@
+import 'package:flutter/painting.dart' show Color;
 import 'market_models.dart';
 
 /// Demo details for the seeded farms: what a real farm earns over time
@@ -19,6 +20,20 @@ const demoFarmMeta = <String, FarmMeta>{
   'Naidoo Orchards': FarmMeta(4.5, 87, 60, 'Citrus and avocados from Ixopo', '🍊'),
   'Zulu Co-op': FarmMeta(4.6, 64, 45, 'Beans, butternut and more', '🫘'),
   'Nolifa Depot': FarmMeta(4.8, 530, 25, 'Water, gas and power for outages', '💧'),
+};
+
+/// What a real seller says about itself. No rating or delivery time here: those
+/// are earned from real orders, so a real farm shows "New" until it has them.
+class FarmBrand {
+  final String tagline;
+  final String emoji;
+  final String place;
+  final Color color;
+  const FarmBrand(this.tagline, this.emoji, this.place, this.color);
+}
+
+const farmBrands = <String, FarmBrand>{
+  'Fatboy Butcheries': FarmBrand('Fresh beef and chicken, cut to order', '🥩', 'uMhlanga', Color(0xFFAA511E)),
 };
 
 /// A farm as a shopper sees it: a name, how far, how it delivers, and what it
@@ -48,8 +63,9 @@ class Farm {
   double? get rating => meta?.rating;
   int get reviews => meta?.reviews ?? 0;
   int get etaMinutes => meta?.etaMinutes ?? 45;
-  String get tagline => meta?.tagline ?? 'Fresh from the farm';
-  String get emoji => meta?.emoji ?? products.first.emoji;
+  FarmBrand? get brand => farmBrands[name];
+  String get tagline => meta?.tagline ?? brand?.tagline ?? 'Fresh from the farm';
+  String get emoji => meta?.emoji ?? brand?.emoji ?? products.first.emoji;
   bool get verified => meta != null || ownerId != null;
   bool get hasRescue => products.any((p) => p.rescue);
 

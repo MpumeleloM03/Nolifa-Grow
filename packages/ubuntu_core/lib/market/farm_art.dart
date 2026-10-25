@@ -67,6 +67,8 @@ const _farmSlugs = <String, String>{
   'Naidoo Orchards': 'naidoo',
   'Zulu Co-op': 'zulu',
   'Nolifa Depot': 'depot',
+  // A real seller: the butchery's own logo and a photo of its team.
+  'Fatboy Butcheries': 'fatboy',
 };
 
 ImageProvider? farmBanner(String name) => _farmSlugs[name] == null

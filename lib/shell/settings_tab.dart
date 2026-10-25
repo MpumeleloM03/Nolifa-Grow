@@ -28,7 +28,7 @@ import '../water/supplier_screen.dart';
 import '../widgets/language_toggle.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-import 'package:ubuntu_core/tr.dart' show tr, trn;
+import 'package:ubuntu_core/tr.dart' show tr;
 /// Personal details, the farm's store details, language, and the account.
 class SettingsTab extends ConsumerStatefulWidget {
   const SettingsTab({super.key});

@@ -71,8 +71,11 @@ const _heroColors = <List<Color>>[
   [Color(0xFF8E3B2E), Color(0xFF2B1410)],
 ];
 
-List<Color> farmColors(String name) =>
-    _heroColors[name.codeUnits.fold<int>(0, (a, b) => a + b) % _heroColors.length];
+List<Color> farmColors(String name) {
+  final brand = farmBrands[name]?.color;
+  if (brand != null) return [brand, Color.lerp(brand, Colors.black, 0.82)!];
+  return _heroColors[name.codeUnits.fold<int>(0, (a, b) => a + b) % _heroColors.length];
+}
 
 /// A farm the way a food app shows a restaurant: a picture-style banner, the
 /// name in bold, how far and how fast, how it delivers, then what it sells.

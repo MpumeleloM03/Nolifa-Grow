@@ -14,7 +14,7 @@ import 'animal_detail_screen.dart';
 import 'herd_widgets.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-import 'package:ubuntu_core/tr.dart' show tr, trn;
+import 'package:ubuntu_core/tr.dart' show tr;
 class HerdScreen extends ConsumerStatefulWidget {
   const HerdScreen({super.key});
 

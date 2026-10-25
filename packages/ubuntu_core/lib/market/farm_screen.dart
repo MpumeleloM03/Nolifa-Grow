@@ -2,6 +2,8 @@ import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
+import 'farm_art.dart';
+import 'farm_models.dart';
 import 'farm_widgets.dart';
 import 'market_models.dart';
 import 'market_store.dart';
@@ -66,6 +68,11 @@ class _FarmScreenState extends ConsumerState<FarmScreen> {
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(AppTheme.s6, 0, AppTheme.s6, 0),
                 sliver: SliverList.list(children: [
+                  // A farm with its own photo and logo gets them front and centre.
+                  if (farmBanner(farm.name) != null) ...[
+                    Reveal(child: _FarmHero(farm)),
+                    const SizedBox(height: AppTheme.s4),
+                  ],
                   Reveal(
                     child: GlassCard(
                       padding: const EdgeInsets.all(AppTheme.s4),
@@ -144,4 +151,53 @@ class _FarmScreenState extends ConsumerState<FarmScreen> {
       ),
     );
   }
+}
+
+class _FarmHero extends StatelessWidget {
+  final Farm farm;
+  const _FarmHero(this.farm);
+
+  @override
+  Widget build(BuildContext context) => ClipRRect(
+        borderRadius: BorderRadius.circular(AppTheme.rCard),
+        child: SizedBox(
+          height: 210,
+          child: Stack(children: [
+            Positioned.fill(
+              child: Image(image: farmBanner(farm.name)!, fit: BoxFit.cover, alignment: const Alignment(0.35, -0.3)),
+            ),
+            const Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0x00000000), Color(0xD9000000)],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              left: AppTheme.s4,
+              right: AppTheme.s4,
+              bottom: AppTheme.s4,
+              child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                FarmLogo(name: farm.name, emoji: farm.emoji, size: 68),
+                const SizedBox(width: AppTheme.s3),
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                    Text(farm.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTheme.title2.copyWith(color: Colors.white, fontWeight: FontWeight.w800)),
+                    if (farm.brand != null)
+                      Text('${farm.brand!.place}, KwaZulu-Natal',
+                          style: AppTheme.footnote.copyWith(color: Colors.white70)),
+                  ]),
+                ),
+              ]),
+            ),
+          ]),
+        ),
+      );
 }

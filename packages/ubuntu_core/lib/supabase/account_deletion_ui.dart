@@ -3,7 +3,7 @@ import '../theme/app_theme.dart';
 import 'resilient.dart';
 
 import '../tr_text.dart' show Text;
-import '../tr.dart' show tr, trn;
+import '../tr.dart' show tr;
 /// The delete-account flow every app shows: say what goes, ask for the word
 /// DELETE, run it, and explain plainly if it cannot be done yet.
 Future<void> confirmDeleteAccount(BuildContext context, Future<void> Function() delete) async {

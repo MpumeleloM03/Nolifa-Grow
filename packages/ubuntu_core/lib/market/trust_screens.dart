@@ -10,7 +10,7 @@ import 'honesty.dart';
 import 'market_widgets.dart';
 
 import '../tr_text.dart' show Text;
-import '../tr.dart' show tr, trn;
+import '../tr.dart' show tr;
 /// Shield and close buttons shown at the top right of every hub page.
 class HeaderActions extends StatelessWidget {
   final VoidCallback? onClose;

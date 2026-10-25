@@ -310,7 +310,14 @@ class _Slide {
             border: Border.all(color: AppTheme.glassBorder),
           ),
           child: Stack(children: [
-            Positioned.fill(child: Image(image: promoPhoto(photo), fit: BoxFit.cover)),
+            // A seller with its own photo shows it, not a stock vegetable picture.
+            Positioned.fill(
+              child: Image(
+                image: farm.brand != null && farmBanner(farm.name) != null ? farmBanner(farm.name)! : promoPhoto(photo),
+                fit: BoxFit.cover,
+                alignment: const Alignment(0.35, -0.2),
+              ),
+            ),
             const Positioned.fill(child: PhotoScrim()),
             Padding(
               padding: const EdgeInsets.all(AppTheme.s4),

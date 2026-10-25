@@ -12,7 +12,7 @@ import 'care_models.dart';
 import 'care_store.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-import 'package:ubuntu_core/tr.dart' show tr, trn;
+import 'package:ubuntu_core/tr.dart' show tr;
 /// Water and feed reminders for the herd, today's ticks, and the vaccination
 /// record for every animal.
 class CareScreen extends ConsumerStatefulWidget {

@@ -5,7 +5,7 @@ import '../theme/app_theme.dart';
 import 'water_models.dart';
 
 import '../tr_text.dart' show Text;
-import '../tr.dart' show tr, trn;
+import '../tr.dart' show tr;
 // Small pieces shared by the water page and the provider desk. Nothing here
 // reads state: every widget takes what it shows, so each can be tested alone.
 

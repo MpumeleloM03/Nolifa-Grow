@@ -15,7 +15,7 @@ import 'members_service.dart';
 import 'membership_screen.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-import 'package:ubuntu_core/tr.dart' show tr, trn;
+import 'package:ubuntu_core/tr.dart' show tr;
 const _maxSeconds = 120;
 
 Widget _frame(BuildContext context, String title, List<Widget> children) => Scaffold(

@@ -9,7 +9,7 @@ import 'shop_screens.dart';
 import 'trust_screens.dart' show ScreenFrame;
 
 import '../tr_text.dart' show Text;
-import '../tr.dart' show tr, trn;
+import '../tr.dart' show tr;
 /// What a household has saved, what it paid in fees, and what it could save today.
 class HouseholdSavings {
   final double groupSaved; // group buys and shared delivery, from the store's running total
