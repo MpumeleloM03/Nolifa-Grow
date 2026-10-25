@@ -126,7 +126,7 @@ class OrdersScreen extends ConsumerWidget {
       if (orders.isEmpty)
         GlassCard(
           child: Column(children: [
-            const Text('🧺', style: TextStyle(fontSize: 40)),
+            const Glyph('🧺', size: 40),
             const SizedBox(height: AppTheme.s2),
             Text('No orders yet', style: AppTheme.headline),
             Text('Pick a farm on the Shop tab and your order shows up here.',
@@ -214,7 +214,7 @@ class _ProfileFormState extends ConsumerState<ProfileForm> {
     if (!mounted) return;
     setState(() => _saved = true);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Saved ✅'), behavior: SnackBarBehavior.floating));
+        content: Text('Saved'), behavior: SnackBarBehavior.floating));
   }
 
   Widget _switch(String label, String sub, bool v, ValueChanged<bool> on) => SwitchListTile(
@@ -375,7 +375,7 @@ class _BusinessScreenState extends ConsumerState<BusinessScreen> {
       GlassCard(
         tint: (s.canSell ? AppTheme.sprout : AppTheme.warn).withValues(alpha: 0.12),
         child: Row(children: [
-          Text(s.inspectionPassed ? '✅' : (s.canSell ? '🟡' : '🔒'), style: const TextStyle(fontSize: 30)),
+          Glyph(s.inspectionPassed ? '✅' : (s.canSell ? '🟡' : '🔒'), size: 30),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -499,8 +499,8 @@ class _BusinessScreenState extends ConsumerState<BusinessScreen> {
           SegmentedButton<DeliveryMode>(
             showSelectedIcon: false,
             segments: const [
-              ButtonSegment(value: DeliveryMode.platform, label: Text('🛵 Nolifa Delivery')),
-              ButtonSegment(value: DeliveryMode.self, label: Text('🚜 I deliver')),
+              ButtonSegment(value: DeliveryMode.platform, label: Text('Nolifa Delivery')),
+              ButtonSegment(value: DeliveryMode.self, label: Text('I deliver')),
             ],
             selected: {s.profile.delivery},
             onSelectionChanged: (v) {
@@ -619,7 +619,7 @@ class _InspectionCard extends ConsumerWidget {
       tint: (b.inspection == InspectionStatus.passed ? AppTheme.sprout : null)?.withValues(alpha: 0.10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Text('🧑\u200d🌾', style: TextStyle(fontSize: 26)),
+          Glyph('🚜', size: 26),
           const SizedBox(width: AppTheme.s3),
           Expanded(child: Text('On-site inspection', style: AppTheme.headline)),
           Pill(
@@ -734,7 +734,7 @@ class _PhoneVerifyScreenState extends ConsumerState<PhoneVerifyScreen> {
         GlassCard(
           tint: AppTheme.sprout.withValues(alpha: 0.12),
           child: Row(children: [
-            const Text('✅', style: TextStyle(fontSize: 28)),
+            const Glyph('✅', size: 28),
             const SizedBox(width: AppTheme.s3),
             Expanded(child: Text('Your phone is verified. You can vote on water requests.', style: AppTheme.headline)),
           ]),

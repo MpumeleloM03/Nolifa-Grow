@@ -61,7 +61,7 @@ class LotTagCard extends StatelessWidget {
           Pill(statusText, color: statusColor),
         ]),
         const SizedBox(height: AppTheme.s2),
-        Text('${lot.category.emoji} ${lot.productName}', style: AppTheme.headline),
+        Text(lot.productName, style: AppTheme.headline),
         Text(
             lot.inStock
                 ? '${_q(lot.remaining)} of ${_q(lot.qty)} ${lot.unit} left  -  ${lot.farmName}'
@@ -261,7 +261,7 @@ class _DepositSheetState extends ConsumerState<_DepositSheet> {
               Wrap(spacing: AppTheme.s2, children: [
                 for (final c in Category.values)
                   ChoiceChip(
-                    label: Text('${c.emoji} ${c.label}'),
+                    label: Text(c.label),
                     selected: _cat == c,
                     onSelected: (_) => setState(() {
                       _cat = c;
@@ -461,7 +461,7 @@ class _CheckInState extends ConsumerState<_CheckIn> {
     return GlassCard(
       padding: const EdgeInsets.all(AppTheme.s4),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('${l.category.emoji} ${l.productName}', style: AppTheme.headline),
+        Text(l.productName, style: AppTheme.headline),
         Text('${l.farmName}  -  announced ${_q(l.qty)} ${l.unit}', style: AppTheme.footnote),
         Text('${l.zone.label}, must arrive ${l.zone.band}. Use by ${_d(l.useBy)}', style: AppTheme.caption),
         const SizedBox(height: AppTheme.s3),

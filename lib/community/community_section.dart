@@ -48,7 +48,7 @@ class _CommunitySectionState extends ConsumerState<CommunitySection> {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(children: [
-        const Text('🗣️', style: TextStyle(fontSize: 20)),
+        const Glyph('🗣️', size: 20),
         const SizedBox(width: AppTheme.s2),
         Expanded(child: Text('Community', style: AppTheme.title3)),
       ]),
@@ -166,7 +166,7 @@ class _PostCard extends ConsumerWidget {
                           end: Alignment.bottomRight),
                     ),
                     alignment: Alignment.center,
-                    child: Text(emoji, style: const TextStyle(fontSize: 64)),
+                    child: Glyph(emoji, size: 64),
                   ),
           ),
         ),
@@ -376,7 +376,7 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
                       border: Border.all(color: _topic == t ? AppTheme.sprout : AppTheme.glassBorder),
                     ),
                     child: Text(
-                        switch (t) { PostTopic.crop => '🌿 Crop', PostTopic.livestock => '🐄 Animal', PostTopic.water => '💧 Water' },
+                        switch (t) { PostTopic.crop => 'Crop', PostTopic.livestock => 'Animal', PostTopic.water => 'Water' },
                         style: AppTheme.subhead.copyWith(
                             color: _topic == t ? AppTheme.onAccent : AppTheme.textPrimary,
                             fontWeight: FontWeight.w600)),

@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart' hide Text;
 import 'app_theme.dart';
 
+export 'glyph.dart';
+
 import '../tr_text.dart' show Text;
 import '../tr.dart' show tr, trn;
 /// The app-wide backdrop: a deep gradient with two soft colour wells.

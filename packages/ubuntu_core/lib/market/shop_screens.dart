@@ -68,7 +68,7 @@ class CategoryChip extends StatelessWidget {
               borderRadius: BorderRadius.circular(21),
               border: Border.all(color: on ? AppTheme.sprout : AppTheme.glassBorder),
             ),
-            child: Text('$emoji  $label',
+            child: Text(label,
                 style: AppTheme.subhead.copyWith(
                     color: on ? AppTheme.onAccent : AppTheme.textPrimary,
                     fontWeight: FontWeight.w600)),
@@ -100,7 +100,7 @@ class ResilienceCard extends StatelessWidget {
         const SizedBox(width: AppTheme.s3),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('Household readiness 🛡️', style: AppTheme.headline),
+            Text('Household readiness', style: AppTheme.headline),
             Text(
                 score >= 80
                     ? 'Well stocked for an outage. Water and essentials are covered.'
@@ -121,7 +121,7 @@ class SavedCard extends StatelessWidget {
   Widget build(BuildContext context) => GlassCard(
         padding: const EdgeInsets.all(AppTheme.s4),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('💰 Saved', style: AppTheme.caption),
+          Text('Saved', style: AppTheme.caption),
           const SizedBox(height: 2),
           CountUp(saved,
               style: AppTheme.title2.copyWith(color: AppTheme.sprout)),
@@ -154,7 +154,7 @@ class ProductCard extends ConsumerWidget {
               color: AppTheme.glassFillStrong,
               borderRadius: BorderRadius.circular(AppTheme.rControl),
             ),
-            child: Text(p.emoji, style: const TextStyle(fontSize: 34)),
+            child: Glyph(p.emoji, size: 34),
           ),
           const SizedBox(width: AppTheme.s4),
           Expanded(
@@ -175,7 +175,7 @@ class ProductCard extends ConsumerWidget {
                 const SizedBox(width: 6),
                 Text('/ ${p.unit}', style: AppTheme.caption),
                 const Spacer(),
-                if (p.rescue) Pill('♻️ Rescue', color: AppTheme.warn),
+                if (p.rescue) Pill('Rescue', color: AppTheme.warn),
                 if (p.stock != null && p.stock! <= 5 && !p.soldOut) ...[
                   const SizedBox(width: 6),
                   Pill('Only ${p.stock} left', color: AppTheme.livestockAccent),
@@ -200,7 +200,7 @@ class ProductCard extends ConsumerWidget {
                     value: p.groupJoined / p.groupTarget,
                     size: 34,
                     color: joined ? AppTheme.sprout : AppTheme.livestockAccent,
-                    center: const Text('👥', style: TextStyle(fontSize: 12)),
+                    center: const Glyph('👥', size: 12),
                   ),
                   const SizedBox(width: AppTheme.s2),
                   Expanded(
@@ -317,7 +317,7 @@ class OrderTile extends StatelessWidget {
       onTap: () => Navigator.push(context,
           MaterialPageRoute(builder: (_) => TrackingScreen(orderId: order.id))),
       child: Row(children: [
-        Text(order.lines.first.emoji, style: const TextStyle(fontSize: 28)),
+        Glyph(order.lines.first.emoji, size: 28),
         const SizedBox(width: AppTheme.s3),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -419,7 +419,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             Expanded(
               child: s.cart.isEmpty
                   ? Center(
-                      child: Text('Your basket is empty 🧺', style: AppTheme.callout))
+                      child: Text('Your basket is empty', style: AppTheme.callout))
                   : ListView(
                       physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsets.all(AppTheme.s6),
@@ -431,8 +431,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               child: GlassCard(
                                 padding: const EdgeInsets.all(AppTheme.s4),
                                 child: Row(children: [
-                                  Text(s.cartSelfDelivery ? '🚜' : '🛵',
-                                      style: const TextStyle(fontSize: 30)),
+                                  Glyph(s.cartSelfDelivery ? '🚜' : '🛵', size: 30),
                                   const SizedBox(width: AppTheme.s3),
                                   Expanded(
                                     child: Column(
@@ -476,8 +475,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               child: GlassCard(
                                 padding: const EdgeInsets.all(AppTheme.s4),
                                 child: Row(children: [
-                                  Text(store.product(e.value.key).emoji,
-                                      style: const TextStyle(fontSize: 30)),
+                                  Glyph(store.product(e.value.key).emoji, size: 30),
                                   const SizedBox(width: AppTheme.s3),
                                   Expanded(
                                     child: Column(
@@ -533,7 +531,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         GlassCard(
                           tint: AppTheme.sprout.withValues(alpha: 0.10),
                           child: Row(children: [
-                            const Text('🔒', style: TextStyle(fontSize: 26)),
+                            const Glyph('🔒', size: 26),
                             const SizedBox(width: AppTheme.s3),
                             Expanded(
                               child: Text(
@@ -683,7 +681,7 @@ class TrackingScreen extends ConsumerWidget {
                         const CircleAvatar(
                             radius: 24,
                             backgroundColor: Color(0x33FFFFFF),
-                            child: Text('🛵', style: TextStyle(fontSize: 24))),
+                            child: Glyph('🛵', size: 24)),
                         const SizedBox(width: AppTheme.s4),
                         Expanded(
                           child: Column(
@@ -727,14 +725,14 @@ class TrackingScreen extends ConsumerWidget {
                     child: GlassCard(
                       tint: AppTheme.sprout.withValues(alpha: 0.10),
                       child: Row(children: [
-                        Text(o.released ? '✅' : '🔒', style: const TextStyle(fontSize: 26)),
+                        Glyph(o.released ? '✅' : '🔒', size: 26),
                         const SizedBox(width: AppTheme.s3),
                         Expanded(
                           child: Text(
                               o.released
                                   ? (o.refund > 0
                                       ? 'Case resolved. ${rand(o.refund, decimals: 2)} refunded to you.'
-                                      : 'Confirmed. ${rand(o.total, decimals: 2)} released to the farmer and driver. You earned $ebucks eBucks 🎉')
+                                      : 'Confirmed. ${rand(o.total, decimals: 2)} released to the farmer and driver. You earned $ebucks eBucks')
                                   : o.disputed
                                       ? '${rand(o.total, decimals: 2)} frozen in escrow while we review your case.'
                                       : '${rand(o.total, decimals: 2)} held in FNB escrow until you confirm delivery.',
@@ -749,7 +747,7 @@ class TrackingScreen extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 3),
                       child: Row(children: [
-                        Text('${l.emoji}  ${l.qty} × ${l.name}', style: AppTheme.callout),
+                        Text('${l.qty} × ${l.name}', style: AppTheme.callout),
                         const Spacer(),
                         Text(rand(l.total), style: AppTheme.callout),
                       ]),
@@ -885,8 +883,11 @@ class _MapPainter extends CustomPainter {
           ..color = AppTheme.sprout);
 
     void emoji(String e, Offset p, double sz) {
+      final (icon, color) = Glyph.lookup(e);
       final tp = TextPainter(
-          text: TextSpan(text: e, style: TextStyle(fontSize: sz)),
+          text: TextSpan(
+              text: String.fromCharCode(icon.codePoint),
+              style: TextStyle(fontSize: sz, fontFamily: icon.fontFamily, package: icon.fontPackage, color: color)),
           textDirection: TextDirection.ltr)
         ..layout();
       tp.paint(canvas, p - Offset(tp.width / 2, tp.height / 2));
@@ -925,7 +926,7 @@ List<Widget> protectionCards(BuildContext context, WidgetRef ref, Order o) {
           child: GlassCard(
             tint: AppTheme.livestockAccent.withValues(alpha: 0.12),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('🔑 Your delivery PIN', style: AppTheme.headline),
+              Text('Your delivery PIN', style: AppTheme.headline),
               const SizedBox(height: AppTheme.s3),
               Row(children: [
                 for (final d in o.pin!.split(''))
@@ -954,10 +955,10 @@ List<Widget> protectionCards(BuildContext context, WidgetRef ref, Order o) {
       child: Padding(
         padding: const EdgeInsets.only(bottom: AppTheme.s4),
         child: Wrap(spacing: AppTheme.s2, runSpacing: AppTheme.s2, children: [
-          Pill(o.pickupProof ? '📸 Pickup photo taken' : '📸 Pickup photo pending',
+          Pill(o.pickupProof ? 'Pickup photo taken' : 'Pickup photo pending',
               color: o.pickupProof ? AppTheme.sprout : AppTheme.textTertiary),
-          Pill('📍 GPS trail recorded', color: AppTheme.sprout),
-          Pill(o.status == OrderStatus.delivered ? '🔑 PIN used' : '🔑 PIN pending',
+          Pill('GPS trail recorded', color: AppTheme.sprout),
+          Pill(o.status == OrderStatus.delivered ? 'PIN used' : 'PIN pending',
               color: o.status == OrderStatus.delivered ? AppTheme.sprout : AppTheme.textTertiary),
         ]),
       ),
@@ -1019,7 +1020,7 @@ class _ConfirmCardState extends ConsumerState<_ConfirmCard> {
     return GlassCard(
       tint: AppTheme.sprout.withValues(alpha: 0.12),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('📦 Did everything arrive OK?', style: AppTheme.headline),
+        Text('Did everything arrive OK?', style: AppTheme.headline),
         const SizedBox(height: 4),
         Text('Confirm to pay the farmer and driver now. Do nothing and they are paid automatically after 2 hours (12 seconds in this demo).',
             style: AppTheme.footnote),

@@ -81,7 +81,7 @@ class _NotProviderCard extends StatelessWidget {
         padding: const EdgeInsets.only(top: AppTheme.s6),
         child: GlassCard(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('🔒', style: const TextStyle(fontSize: 34)),
+            const Glyph('🔒', size: 34),
             const SizedBox(height: AppTheme.s2),
             Text('This desk is for the water provider', style: AppTheme.title3),
             const SizedBox(height: AppTheme.s2),
@@ -103,7 +103,7 @@ class _EmptyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GlassCard(
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(emoji, style: const TextStyle(fontSize: 28)),
+          Glyph(emoji, size: 28),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -292,7 +292,7 @@ class _DispatchSheetState extends ConsumerState<_DispatchSheet> {
         child: Form(
           key: _form,
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('🚛 Send trucks to ${widget.zoneName}', style: AppTheme.title2),
+            Text('Send trucks to ${widget.zoneName}', style: AppTheme.title2),
             const SizedBox(height: 4),
             Text('The community sees how many trucks are coming and when.', style: AppTheme.footnote),
             const SizedBox(height: AppTheme.s5),
@@ -653,7 +653,7 @@ class _AddCommunitySheetState extends ConsumerState<_AddCommunitySheet> {
         child: Form(
           key: _form,
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('🏘️ Add a community', style: AppTheme.title2),
+            Text('Add a community', style: AppTheme.title2),
             const SizedBox(height: 4),
             Text('The radar needs at least 4 readings before it forecasts.', style: AppTheme.footnote),
             const SizedBox(height: AppTheme.s4),

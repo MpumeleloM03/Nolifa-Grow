@@ -190,7 +190,7 @@ class AlarmScreen extends ConsumerWidget {
                   if (a.count == 0)
                     GlassCard(
                       child: Row(children: [
-                        const Text('✅', style: TextStyle(fontSize: 34)),
+                        const Glyph('✅', size: 34),
                         const SizedBox(width: AppTheme.s3),
                         Expanded(
                           child: Text('Nothing needs you right now. Water is fine, no urgent outbreaks, no orders waiting.',
@@ -268,7 +268,7 @@ class AlarmScreen extends ConsumerWidget {
                           tint: AppTheme.danger.withValues(alpha: 0.10),
                           onTap: () => showOutbreakDetails(context, o),
                           child: Row(children: [
-                            Text(o.kind == OutbreakKind.livestock ? '🐄' : '🌿', style: const TextStyle(fontSize: 26)),
+                            Glyph(o.kind == OutbreakKind.livestock ? '🐄' : '🌿', size: 26),
                             const SizedBox(width: AppTheme.s3),
                             Expanded(
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

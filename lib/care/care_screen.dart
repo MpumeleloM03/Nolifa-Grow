@@ -76,7 +76,7 @@ class _CareScreenState extends ConsumerState<CareScreen> {
           padding: const EdgeInsets.all(AppTheme.s4),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              Text(emoji, style: const TextStyle(fontSize: 26)),
+              Glyph(emoji, size: 26),
               const SizedBox(width: AppTheme.s3),
               Expanded(child: Text(title, style: AppTheme.headline)),
               TextButton.icon(
@@ -237,7 +237,7 @@ class _AnimalVaccineRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: AppTheme.s4, vertical: AppTheme.s3),
         onTap: onTap,
         child: Row(children: [
-          Text(animal.species.emoji, style: const TextStyle(fontSize: 26)),
+          Glyph(animal.species.emoji, size: 26),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

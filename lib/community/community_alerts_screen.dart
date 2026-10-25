@@ -55,7 +55,7 @@ class CommunityAlertsScreen extends ConsumerWidget {
                   if (mine.isEmpty)
                     GlassCard(
                       child: Row(children: [
-                        const Text('🌱', style: TextStyle(fontSize: 28)),
+                        const Glyph('🌱', size: 28),
                         const SizedBox(width: AppTheme.s3),
                         Expanded(
                           child: Text(

@@ -149,7 +149,7 @@ class _AddStockSheetState extends ConsumerState<AddStockSheet> {
   @override
   Widget build(BuildContext context) {
     return SheetFrame(
-      title: '🌱 Add stock',
+      title: 'Add stock',
       subtitle: ref.watch(marketSharedProvider)
           ? 'Neighbours nearby see it as soon as you save.'
           : 'Saved on this phone. Neighbours see it once your store is shared.',
@@ -181,7 +181,7 @@ class _AddStockSheetState extends ConsumerState<AddStockSheet> {
                         border: Border.all(
                             color: on ? AppTheme.sprout : AppTheme.glassBorder),
                       ),
-                      child: Text(e, style: const TextStyle(fontSize: 26)),
+                      child: Glyph(e, size: 26),
                     ),
                   );
                 },
@@ -253,7 +253,7 @@ class _AddStockSheetState extends ConsumerState<AddStockSheet> {
                     activeThumbColor: AppTheme.warn,
                     value: _rescue,
                     onChanged: (v) => setState(() => _rescue = v),
-                    title: Text('♻️ Sell fast at a discount',
+                    title: Text('Sell fast at a discount',
                         style: AppTheme.headline),
                     subtitle: Text(
                       _rescue && usual != null && usual > 0

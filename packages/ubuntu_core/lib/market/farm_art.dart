@@ -3,6 +3,7 @@ import 'package:flutter/material.dart' hide Text;
 import '../theme/app_theme.dart';
 
 import '../tr_text.dart' show Text;
+import 'package:ubuntu_core/theme/glyph.dart';
 /// Tiles emoji across a banner at a slight tilt, so a card reads as what it
 /// sells even before you read it. Deterministic: the same emojis always lay
 /// out the same way.
@@ -35,8 +36,11 @@ class _PatternPainter extends CustomPainter {
       for (var x = -size + offset; x < area.width + size; x += step) {
         final e = emojis[(i + row) % emojis.length];
         i++;
+        final icon = Glyph.lookup(e).$1;
         final tp = TextPainter(
-          text: TextSpan(text: e, style: TextStyle(fontSize: size)),
+          text: TextSpan(
+              text: String.fromCharCode(icon.codePoint),
+              style: TextStyle(fontSize: size, fontFamily: icon.fontFamily, package: icon.fontPackage, color: Colors.white)),
           textDirection: TextDirection.ltr,
         )..layout();
         canvas.save();
@@ -172,7 +176,7 @@ class FarmLogo extends StatelessWidget {
                 color: AppTheme.surface,
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white24)),
-            child: Text(emoji, style: TextStyle(fontSize: size * 0.3)),
+            child: Glyph(emoji, size: size * 0.3, tile: false),
           ),
         ),
       ]),

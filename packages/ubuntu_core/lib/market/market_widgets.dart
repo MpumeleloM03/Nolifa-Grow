@@ -117,7 +117,7 @@ class ParallaxHeader extends SliverPersistentHeaderDelegate {
             opacity: (0.32 - t * 0.5).clamp(0.0, 0.32),
             child: Transform.rotate(
               angle: t * 0.5,
-              child: Text(emoji, style: const TextStyle(fontSize: 118)),
+              child: Glyph(emoji, size: 118, tile: false),
             ),
           ),
         ),
@@ -167,8 +167,6 @@ class SectionTitle extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(0, AppTheme.s6, 0, AppTheme.s3),
         child: Row(
           children: [
-            Text(emoji, style: const TextStyle(fontSize: 20)),
-            const SizedBox(width: AppTheme.s2),
             Expanded(child: Text(text, style: AppTheme.title3)),
             if (trailing != null) trailing!,
           ],
@@ -301,7 +299,7 @@ class _AlertBannerState extends State<AlertBanner>
         onTap: widget.onTap,
         child: Row(
           children: [
-            Text(a.emoji, style: const TextStyle(fontSize: 34)),
+            Glyph(a.emoji, size: 34),
             const SizedBox(width: AppTheme.s4),
             Expanded(
               child: Column(

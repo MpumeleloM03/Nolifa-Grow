@@ -152,7 +152,7 @@ class _SecondFactorScreenState extends State<SecondFactorScreen> {
                   constraints: const BoxConstraints(maxWidth: 420),
                   child: GlassCard(
                     child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      const Text('🔐', style: TextStyle(fontSize: 36)),
+                      const Glyph('🔐', size: 36),
                       const SizedBox(height: AppTheme.s2),
                       Text('Check your email', style: AppTheme.title2),
                       const SizedBox(height: AppTheme.s2),

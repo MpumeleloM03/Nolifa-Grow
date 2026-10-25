@@ -175,7 +175,7 @@ class AlertsTab extends ConsumerWidget {
                   onTap: () => _push(context, WaterScreen(extraSections: const [FarmWaterSection()])),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Row(children: [
-                      const Text('📡', style: TextStyle(fontSize: 18)),
+                      const Glyph('📡', size: 18),
                       const SizedBox(width: AppTheme.s2),
                       Expanded(child: Text('${zone.name} water, next 7 days', style: AppTheme.headline)),
                     ]),
@@ -230,7 +230,7 @@ class OutbreakTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppTheme.s4, vertical: AppTheme.s3),
           onTap: () => showOutbreakDetails(context, o),
           child: Row(children: [
-            Text(o.kind == OutbreakKind.livestock ? '🐄' : '🌿', style: const TextStyle(fontSize: 26)),
+            Glyph(o.kind == OutbreakKind.livestock ? '🐄' : '🌿', size: 26),
             const SizedBox(width: AppTheme.s3),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -364,7 +364,7 @@ class _ReportOutbreakSheetState extends ConsumerState<_ReportOutbreakSheet> {
       children: [
         Row(children: [
           Expanded(
-            child: _Choice('🌿 Crop', _kind == OutbreakKind.plant,
+            child: _Choice('Crop', _kind == OutbreakKind.plant,
                 () => setState(() {
                       _kind = OutbreakKind.plant;
                       _disease = null;
@@ -372,7 +372,7 @@ class _ReportOutbreakSheetState extends ConsumerState<_ReportOutbreakSheet> {
           ),
           const SizedBox(width: AppTheme.s2),
           Expanded(
-            child: _Choice('🐄 Livestock', _kind == OutbreakKind.livestock,
+            child: _Choice('Livestock', _kind == OutbreakKind.livestock,
                 () => setState(() {
                       _kind = OutbreakKind.livestock;
                       _disease = null;

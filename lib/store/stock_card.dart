@@ -98,7 +98,7 @@ class StockCard extends ConsumerWidget {
       padding: const EdgeInsets.all(AppTheme.s4),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(p.emoji, style: const TextStyle(fontSize: 30)),
+          Glyph(p.emoji, size: 30),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child:

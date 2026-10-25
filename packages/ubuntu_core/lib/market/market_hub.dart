@@ -130,7 +130,7 @@ class AlertsPage extends ConsumerWidget {
                   child: GlassCard(
                     tint: AppTheme.ok.withValues(alpha: 0.10),
                     child: Row(children: [
-                      const Text('✅', style: TextStyle(fontSize: 30)),
+                      const Glyph('✅', size: 30),
                       const SizedBox(width: AppTheme.s3),
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -150,7 +150,7 @@ class AlertsPage extends ConsumerWidget {
               padding: const EdgeInsets.only(bottom: AppTheme.s3),
               child: GlassCard(
                 child: Row(children: [
-                  const Text('🦠', style: TextStyle(fontSize: 28)),
+                  const Glyph('🦠', size: 28),
                   const SizedBox(width: AppTheme.s3),
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

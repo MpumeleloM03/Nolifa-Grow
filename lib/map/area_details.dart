@@ -39,7 +39,7 @@ Future<void> showAreaDetails(BuildContext context, HexGrid grid, HexCell cell, D
         children: [
           Padding(
             padding: const EdgeInsets.only(top: AppTheme.s3, bottom: AppTheme.s2),
-            child: Text('$emoji $title', style: AppTheme.headline),
+            child: Text(title, style: AppTheme.headline),
           ),
           if (list.isEmpty)
             Text('Nothing reported.', style: AppTheme.footnote)

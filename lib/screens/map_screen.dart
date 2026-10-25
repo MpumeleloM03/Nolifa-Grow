@@ -215,8 +215,8 @@ class _MapScreenState extends ConsumerState<MapScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(children: [
           chip('All', null),
-          chip('🌿 Crops', OutbreakKind.plant),
-          chip('🐄 Livestock', OutbreakKind.livestock),
+          chip('Crops', OutbreakKind.plant),
+          chip('Livestock', OutbreakKind.livestock),
         ]),
       ),
       Expanded(child: map),

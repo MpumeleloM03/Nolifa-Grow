@@ -154,6 +154,37 @@ class AuthService {
     });
   }
 
+  /// Demo accounts the judges can open with one tap, one per role. The sign-in
+  /// screen shows the emails and password so they can also be typed.
+  static const demoPassword = 'NolifaDemo1';
+  static const demoEmails = {
+    'farmer': 'farmer@demo.nolifa.co.za',
+    'community': 'community@demo.nolifa.co.za',
+    'driver': 'driver@demo.nolifa.co.za',
+  };
+
+  /// Signs in to a demo account, creating it the first time if it is missing.
+  Future<void> demoSignIn(String role) async {
+    final email = demoEmails[role]!;
+    try {
+      await signIn(email, demoPassword);
+      return;
+    } on AuthException {
+      // Not created yet; make it below.
+    }
+    await signUp(
+      name: switch (role) {
+        'community' => 'Lindiwe Ngcobo',
+        'driver' => 'Sipho Dlamini',
+        _ => 'Thandi Mkhize',
+      },
+      email: email,
+      password: demoPassword,
+      region: role == 'community' ? 'Greater Durban' : 'KZN Midlands',
+      farmType: role == 'farmer' ? 'both' : role,
+    );
+  }
+
   Future<void> signOut() => isLocal ? _local.signOut() : _auth.signOut();
 
   /// Deletes the account and everything stored for it. Throws a [StateError]

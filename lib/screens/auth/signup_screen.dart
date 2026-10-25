@@ -22,6 +22,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   String _region = RegionService.regions.first.name;
   String _farmType = 'both';
+  String _role = 'farmer'; // farmer | community | driver
   bool _busy = false;
   bool _hide = true;
   String? _error;
@@ -47,7 +48,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             email: _email.text,
             password: _password.text,
             region: _region,
-            farmType: _farmType,
+            farmType: _role == 'farmer' ? _farmType : _role,
           );
       HapticFeedback.mediumImpact();
       if (mounted) Navigator.pop(context);
@@ -87,12 +88,35 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text('Join your local\nfarming network',
-                              style: AppTheme.title1),
+                          Text('Join Nolifa', style: AppTheme.title1),
                           const SizedBox(height: AppTheme.s2),
                           Text(
-                            'Your region lets us warn you when disease is spreading nearby.',
+                            'Tell us who you are and we set the app up for you.',
                             style: AppTheme.callout,
+                          ),
+                          const SizedBox(height: AppTheme.s5),
+                          _RoleCard(
+                            icon: Icons.agriculture_rounded,
+                            title: 'Farmer',
+                            line: 'I grow crops or keep animals, and sell to people nearby.',
+                            selected: _role == 'farmer',
+                            onTap: () => setState(() => _role = 'farmer'),
+                          ),
+                          const SizedBox(height: AppTheme.s3),
+                          _RoleCard(
+                            icon: Icons.groups_rounded,
+                            title: 'Community member',
+                            line: 'I want plant and animal checks, outbreak and water alerts, and fresh food from nearby farms.',
+                            selected: _role == 'community',
+                            onTap: () => setState(() => _role = 'community'),
+                          ),
+                          const SizedBox(height: AppTheme.s3),
+                          _RoleCard(
+                            icon: Icons.delivery_dining_rounded,
+                            title: 'Driver',
+                            line: 'I deliver orders from farms to homes and get paid per delivery.',
+                            selected: _role == 'driver',
+                            onTap: () => setState(() => _role = 'driver'),
                           ),
                           const SizedBox(height: AppTheme.s6),
                           GlassCard(
@@ -152,15 +176,17 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                                   value: _region,
                                   onChanged: (v) => setState(() => _region = v),
                                 ),
-                                const SizedBox(height: AppTheme.s5),
-                                Text('What do you farm?',
-                                    style: AppTheme.headline),
-                                const SizedBox(height: AppTheme.s3),
-                                _FarmTypePicker(
-                                  value: _farmType,
-                                  onChanged: (v) =>
-                                      setState(() => _farmType = v),
-                                ),
+                                if (_role == 'farmer') ...[
+                                  const SizedBox(height: AppTheme.s5),
+                                  Text('What do you farm?',
+                                      style: AppTheme.headline),
+                                  const SizedBox(height: AppTheme.s3),
+                                  _FarmTypePicker(
+                                    value: _farmType,
+                                    onChanged: (v) =>
+                                        setState(() => _farmType = v),
+                                  ),
+                                ],
                                 if (_error != null) ...[
                                   const SizedBox(height: AppTheme.s3),
                                   Container(
@@ -197,6 +223,73 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// One of the "who are you" choices at the top of sign-up.
+class _RoleCard extends StatelessWidget {
+  final IconData icon;
+  final String title, line;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _RoleCard({
+    required this.icon,
+    required this.title,
+    required this.line,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      selected: selected,
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          curve: Curves.easeOutCubic,
+          padding: const EdgeInsets.all(AppTheme.s4),
+          decoration: BoxDecoration(
+            color: selected ? AppTheme.sprout.withValues(alpha: 0.14) : AppTheme.glassFill,
+            borderRadius: BorderRadius.circular(AppTheme.rControl),
+            border: Border.all(
+              color: selected ? AppTheme.sprout : AppTheme.glassBorder,
+              width: selected ? 2 : 1,
+            ),
+          ),
+          child: Row(children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: selected ? AppTheme.sprout : AppTheme.sprout.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(icon, color: selected ? AppTheme.onAccent : AppTheme.sprout),
+            ),
+            const SizedBox(width: AppTheme.s3),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(title, style: AppTheme.headline),
+                const SizedBox(height: 2),
+                Text(line, style: AppTheme.footnote),
+              ]),
+            ),
+            const SizedBox(width: AppTheme.s2),
+            Icon(
+              selected ? Icons.radio_button_checked_rounded : Icons.radio_button_off_rounded,
+              color: selected ? AppTheme.sprout : AppTheme.textTertiary,
+            ),
+          ]),
         ),
       ),
     );

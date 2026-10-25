@@ -90,7 +90,7 @@ class _FarmScreenState extends ConsumerState<FarmScreen> {
                         ]),
                         const SizedBox(height: AppTheme.s3),
                         Row(children: [
-                          Text(self ? '🚜' : '🛵', style: const TextStyle(fontSize: 28)),
+                          Glyph(self ? '🚜' : '🛵', size: 28),
                           const SizedBox(width: AppTheme.s3),
                           Expanded(
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

@@ -234,7 +234,7 @@ class _NewConsultState extends ConsumerState<NewConsultScreen> {
       const SizedBox(height: AppTheme.s2),
       Wrap(spacing: AppTheme.s2, runSpacing: AppTheme.s2, children: [
         for (final c in active)
-          ChoiceChip(label: Text('${c.species.emoji} ${c.label}'), selected: _animal?.id == c.id, onSelected: (_) => setState(() => _animal = _animal?.id == c.id ? null : c)),
+          ChoiceChip(label: Text(c.label), selected: _animal?.id == c.id, onSelected: (_) => setState(() => _animal = _animal?.id == c.id ? null : c)),
         if (active.isEmpty) Text('Add animals to your herd to pick one, or just describe it below.', style: AppTheme.footnote),
       ]),
       const SizedBox(height: AppTheme.s4),
