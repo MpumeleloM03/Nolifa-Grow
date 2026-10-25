@@ -156,5 +156,6 @@ void _contributeToMap(WidgetRef ref, String disease, String severityColor) {
         kind: OutbreakKind.plant,
         exactLocation: RegionService.jitter(centre, disease + region),
         region: region,
-      );
+      )
+      .ignore(); // a map write never blocks or breaks a diagnosis
 }

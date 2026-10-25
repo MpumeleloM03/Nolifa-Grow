@@ -15,7 +15,8 @@ class AppearanceController extends ChangeNotifier {
   static final AppearanceController instance = AppearanceController._();
 
   static const _key = 'appearance.mode';
-  AppearanceMode _mode = AppearanceMode.system;
+  // Light by default: easier to read outdoors. People can still pick dark.
+  AppearanceMode _mode = AppearanceMode.light;
   AppearanceMode get mode => _mode;
 
   ThemeMode get themeMode => switch (_mode) {
@@ -31,10 +32,10 @@ class AppearanceController extends ChangeNotifier {
       final saved = prefs.getString(_key);
       _mode = AppearanceMode.values.firstWhere(
         (m) => m.name == saved,
-        orElse: () => AppearanceMode.system,
+        orElse: () => AppearanceMode.light,
       );
     } catch (_) {
-      _mode = AppearanceMode.system;
+      _mode = AppearanceMode.light;
     }
     AppTheme.isLight = resolveLight();
   }

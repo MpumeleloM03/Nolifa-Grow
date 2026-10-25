@@ -118,7 +118,7 @@ class FarmCard extends ConsumerWidget {
                     for (final p in farm.products.take(3).toList().reversed)
                       Transform.translate(
                         offset: const Offset(-18, 0),
-                        child: Text(p.emoji, style: const TextStyle(fontSize: 64)),
+                        child: Glyph(p.emoji, size: 64),
                       ),
                   ]),
                 ),
@@ -135,9 +135,9 @@ class FarmCard extends ConsumerWidget {
                 left: AppTheme.s4,
                 top: AppTheme.s3,
                 child: Wrap(spacing: 6, runSpacing: 6, children: [
-                  Pill(self ? '🚜 Farm delivers' : '🛵 Nolifa Delivery',
+                  Pill(self ? 'Farm delivers' : 'Nolifa Delivery',
                       color: self ? AppTheme.livestockAccent : AppTheme.sprout),
-                  if (farm.hasRescue) Pill('♻️ Rescue deals', color: AppTheme.warn),
+                  if (farm.hasRescue) Pill('Rescue deals', color: AppTheme.warn),
                   if (farm.mine) const Pill('Your store', color: Colors.white),
                 ]),
               ),
@@ -230,7 +230,7 @@ class _Offer extends ConsumerWidget {
       ),
       child: Stack(children: [
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(p.emoji, style: const TextStyle(fontSize: 26)),
+          Glyph(p.emoji, size: 26),
           const SizedBox(height: 2),
           Text(p.name,
               maxLines: 1,

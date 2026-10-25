@@ -126,7 +126,7 @@ class PrototypeLimitsBlock extends StatelessWidget {
         tint: AppTheme.warn.withValues(alpha: 0.10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Text('🧪', style: TextStyle(fontSize: 22)),
+            const Glyph('🧪', size: 22),
             const SizedBox(width: AppTheme.s2),
             Expanded(child: Text('What is simulated in this prototype', style: AppTheme.headline)),
           ]),

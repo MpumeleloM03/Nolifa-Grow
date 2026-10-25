@@ -174,7 +174,7 @@ final caseAlertsProvider = Provider<List<MarketAlert>>((ref) {
           severity: c.stage == ReportStage.vetVerified ? 2 : 1,
           cta: 'Scan now',
           farmSide: true,
-          trust: c.stage == ReportStage.vetVerified ? 'Vet verified' : 'Confirmed by neighbours',
+          trust: c.stage == ReportStage.vetVerified ? 'Verified by ${c.verifierLabel}' : 'Confirmed by neighbours',
         )
   ];
 });

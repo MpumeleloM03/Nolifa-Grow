@@ -136,7 +136,7 @@ class _FarmSetupScreenState extends ConsumerState<FarmSetupScreen> {
                         child: GlassCard(
                           padding: const EdgeInsets.symmetric(horizontal: AppTheme.s4, vertical: AppTheme.s3),
                           child: Row(children: [
-                            Text(p.spec.emoji, style: const TextStyle(fontSize: 24)),
+                            Glyph(p.spec.emoji, size: 24),
                             const SizedBox(width: AppTheme.s3),
                             Expanded(
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -196,7 +196,7 @@ class _SourceTile extends ConsumerWidget {
       padding: const EdgeInsets.all(AppTheme.s4),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          Text(s.kind.emoji, style: const TextStyle(fontSize: 26)),
+          Glyph(s.kind.emoji, size: 26),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -274,7 +274,7 @@ class _SystemTile extends ConsumerWidget {
     return GlassCard(
       padding: const EdgeInsets.all(AppTheme.s4),
       child: Row(children: [
-        Text(s.kind.emoji, style: const TextStyle(fontSize: 26)),
+        Glyph(s.kind.emoji, size: 26),
         const SizedBox(width: AppTheme.s3),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -340,7 +340,7 @@ class _SourceSheetState extends ConsumerState<_SourceSheet> {
         children: [
           Wrap(spacing: AppTheme.s2, runSpacing: AppTheme.s2, children: [
             for (final k in WaterSourceKind.values)
-              ChoiceChip(label: Text('${k.emoji} ${k.label}'), selected: _kind == k, onSelected: (_) => setState(() => _kind = k)),
+              ChoiceChip(label: Text(k.label), selected: _kind == k, onSelected: (_) => setState(() => _kind = k)),
           ]),
           const SizedBox(height: AppTheme.s3),
           GlassField(controller: _name, label: 'Name (optional)', icon: Icons.label_rounded),
@@ -410,7 +410,7 @@ class _SystemSheetState extends ConsumerState<_SystemSheet> {
       children: [
         Wrap(spacing: AppTheme.s2, runSpacing: AppTheme.s2, children: [
           for (final k in IrrigationKind.values)
-            ChoiceChip(label: Text('${k.emoji} ${k.label}'), selected: _kind == k, onSelected: (_) => setState(() => _kind = k)),
+            ChoiceChip(label: Text(k.label), selected: _kind == k, onSelected: (_) => setState(() => _kind = k)),
         ]),
         const SizedBox(height: AppTheme.s2),
         Text('${(_kind.efficiency * 100).round()}% of the water from this kind of system reaches the plants. The rest is lost to wind, run-off and evaporation.',

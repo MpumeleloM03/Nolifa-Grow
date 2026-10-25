@@ -95,7 +95,7 @@ class OrdersTab extends ConsumerWidget {
             if (rows.isEmpty)
               GlassCard(
                 child: Row(children: [
-                  const Text('📭', style: TextStyle(fontSize: 30)),
+                  const Glyph('📭', size: 30),
                   const SizedBox(width: AppTheme.s3),
                   Expanded(
                     child: Text(
@@ -149,7 +149,7 @@ class OrdersTab extends ConsumerWidget {
               GlassCard(
                 onTap: () => startAddStock(context, ref),
                 child: Row(children: [
-                  const Text('📸', style: TextStyle(fontSize: 30)),
+                  const Glyph('📸', size: 30),
                   const SizedBox(width: AppTheme.s3),
                   Expanded(
                     child: Text(
@@ -285,7 +285,7 @@ class _SellingStatus extends StatelessWidget {
       onTap: () => Navigator.push(
           context, MaterialPageRoute(builder: (_) => const BusinessScreen())),
       child: Row(children: [
-        Text(limited ? '🟡' : (open ? '✅' : '🔒'), style: const TextStyle(fontSize: 28)),
+        Glyph(limited ? '🟡' : (open ? '✅' : '🔒'), size: 28),
         const SizedBox(width: AppTheme.s3),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

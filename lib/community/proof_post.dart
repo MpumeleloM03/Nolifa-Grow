@@ -107,10 +107,10 @@ enum FeedFilter { crops, livestock, both, water }
 
 extension FeedFilterX on FeedFilter {
   String get label => switch (this) {
-        FeedFilter.crops => '🌿 Crops',
-        FeedFilter.livestock => '🐄 Livestock',
-        FeedFilter.both => '🌾 Both',
-        FeedFilter.water => '💧 Water',
+        FeedFilter.crops => 'Crops',
+        FeedFilter.livestock => 'Livestock',
+        FeedFilter.both => 'Both',
+        FeedFilter.water => 'Water',
       };
 
   bool matches(PostTopic t) => switch (this) {

@@ -267,7 +267,7 @@ class _CattleRow extends ConsumerWidget {
               color: AppTheme.livestockAccent.withValues(alpha: 0.16),
               borderRadius: BorderRadius.circular(AppTheme.rChip),
             ),
-            child: Text(animal.species.emoji, style: const TextStyle(fontSize: 22)),
+            child: Glyph(animal.species.emoji, size: 22),
           ),
           const SizedBox(width: AppTheme.s4),
           Expanded(

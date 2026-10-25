@@ -167,7 +167,7 @@ class _ForecastTile extends StatelessWidget {
   Widget build(BuildContext context) => GlassCard(
         padding: const EdgeInsets.all(AppTheme.s4),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(emoji, style: const TextStyle(fontSize: 28)),
+          Glyph(emoji, size: 28),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -213,7 +213,7 @@ class _SupplierCard extends ConsumerWidget {
       tint: risk == Risk.high && !rerouted ? AppTheme.danger.withValues(alpha: 0.10) : null,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          Text(supplier.emoji, style: const TextStyle(fontSize: 30)),
+          Glyph(supplier.emoji, size: 30),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -317,7 +317,7 @@ class _BackupSheet extends ConsumerWidget {
       ),
       padding: const EdgeInsets.all(AppTheme.s6),
       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('🔁 Backup suppliers for ${supplier.product}', style: AppTheme.title2),
+        Text('Backup suppliers for ${supplier.product}', style: AppTheme.title2),
         const SizedBox(height: 4),
         Text('Nolifa-verified farms outside ${supplier.district} that can absorb volume while ${supplier.name} is cleared.',
             style: AppTheme.footnote),

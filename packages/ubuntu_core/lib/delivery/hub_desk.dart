@@ -30,7 +30,7 @@ class HubDeskCard extends ConsumerWidget {
     return GlassCard(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HubDeskScreen())),
       child: Row(children: [
-        const Text('🏭', style: TextStyle(fontSize: 28)),
+        const Glyph('🏭', size: 28),
         const SizedBox(width: AppTheme.s3),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -95,7 +95,7 @@ class HubDeskScreen extends ConsumerWidget {
                   GlassCard(
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const WarehouseDeskScreen())),
                     child: Row(children: [
-                      const Text('🧊', style: TextStyle(fontSize: 28)),
+                      const Glyph('🧊', size: 28),
                       const SizedBox(width: AppTheme.s3),
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

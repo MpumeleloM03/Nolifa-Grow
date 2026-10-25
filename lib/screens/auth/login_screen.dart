@@ -47,6 +47,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
+  Future<void> _demo(String role) async {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    try {
+      await ref.read(authServiceProvider).demoSignIn(role);
+      HapticFeedback.mediumImpact();
+    } on AuthException catch (e) {
+      HapticFeedback.heavyImpact();
+      if (mounted) setState(() => _error = e.message);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
   Future<void> _reset() async {
     if (_email.text.trim().isEmpty) {
       setState(() => _error = 'Enter your email first, then tap reset.');
@@ -159,6 +176,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: AppTheme.s6),
+                    _DemoPanel(busy: _busy, onPick: _demo),
+                    const SizedBox(height: AppTheme.s4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -182,6 +201,59 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// One-tap demo accounts, so anyone testing the app can see every role.
+class _DemoPanel extends StatelessWidget {
+  final bool busy;
+  final ValueChanged<String> onPick;
+  const _DemoPanel({required this.busy, required this.onPick});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget button(IconData icon, String label, String role) => Expanded(
+          child: Material(
+            color: AppTheme.sprout.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(AppTheme.rControl),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(AppTheme.rControl),
+              onTap: busy ? null : () => onPick(role),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppTheme.s4, horizontal: AppTheme.s1),
+                child: Column(children: [
+                  Icon(icon, color: AppTheme.sprout),
+                  const SizedBox(height: AppTheme.s1),
+                  Text(label,
+                      textAlign: TextAlign.center,
+                      style: AppTheme.footnote.copyWith(
+                          color: AppTheme.textPrimary, fontWeight: FontWeight.w600)),
+                ]),
+              ),
+            ),
+          ),
+        );
+    return GlassCard(
+      padding: const EdgeInsets.all(AppTheme.s5),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Text('Try the demo', style: AppTheme.headline),
+        const SizedBox(height: AppTheme.s1),
+        Text('Open a ready-made account for each role.', style: AppTheme.footnote),
+        const SizedBox(height: AppTheme.s4),
+        Row(children: [
+          button(Icons.agriculture_rounded, 'Farmer', 'farmer'),
+          const SizedBox(width: AppTheme.s2),
+          button(Icons.groups_rounded, 'Community', 'community'),
+          const SizedBox(width: AppTheme.s2),
+          button(Icons.delivery_dining_rounded, 'Driver', 'driver'),
+        ]),
+        const SizedBox(height: AppTheme.s3),
+        SelectableText(
+          '${AuthService.demoEmails.values.join('\n')}\nPassword: ${AuthService.demoPassword}',
+          style: AppTheme.caption,
+        ),
+      ]),
     );
   }
 }

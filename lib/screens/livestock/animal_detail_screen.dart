@@ -205,7 +205,7 @@ class _Header extends StatelessWidget {
     ].join(' · ');
     return GlassCard(
       child: Row(children: [
-        Text(a.species.emoji, style: const TextStyle(fontSize: 44)),
+        Glyph(a.species.emoji, size: 44),
         const SizedBox(width: AppTheme.s4),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

@@ -88,7 +88,7 @@ class _Block extends StatelessWidget {
         tint: tint,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            Text(emoji, style: const TextStyle(fontSize: 24)),
+            Glyph(emoji, size: 24),
             const SizedBox(width: AppTheme.s3),
             Expanded(child: Text(title, style: AppTheme.title3)),
           ]),
@@ -170,7 +170,7 @@ class TrustCenterScreen extends ConsumerWidget {
         onTap: () => Navigator.push(
             context, MaterialPageRoute(builder: (_) => const OfflineGuideScreen())),
         child: Row(children: [
-          const Text('📶', style: TextStyle(fontSize: 26)),
+          const Glyph('📶', size: 26),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -184,7 +184,7 @@ class TrustCenterScreen extends ConsumerWidget {
       GlassCard(
         tint: AppTheme.sprout.withValues(alpha: 0.12),
         child: Row(children: [
-          const Text('🛡️', style: TextStyle(fontSize: 34)),
+          const Glyph('🛡️', size: 34),
           const SizedBox(width: AppTheme.s4),
           Expanded(
             child: Text(
@@ -246,7 +246,7 @@ class TrustCenterScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: AppTheme.s2),
             child: Row(children: [
-              Text(c.emoji, style: const TextStyle(fontSize: 20)),
+              Glyph(c.emoji, size: 20),
               const SizedBox(width: AppTheme.s2),
               Expanded(child: Text(c.title, style: AppTheme.footnote)),
               Pill(c.stage.label,
@@ -271,7 +271,7 @@ class TrustCenterScreen extends ConsumerWidget {
                 'Decision within 48 hours. Refunds go back to your original payment method.'),
             const SizedBox(height: AppTheme.s2),
             for (final r in DisputeReason.values.where((r) => !r.systemOnly))
-              _Row('${r.emoji} ${r.label}', r.remedy),
+              _Row(r.label, r.remedy),
             const SizedBox(height: AppTheme.s2),
             Text(
                 'Not happy with the decision? Ask for a second review. Escalation goes to FNB customer care.',
@@ -380,7 +380,7 @@ class _Stat extends StatelessWidget {
   Widget build(BuildContext context) => GlassCard(
         padding: const EdgeInsets.all(AppTheme.s4),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('$emoji $label', style: AppTheme.caption),
+          Text(label, style: AppTheme.caption),
           const SizedBox(height: 2),
           CountUp(value,
               decimals: 0, style: AppTheme.title2.copyWith(color: color)),
@@ -487,7 +487,7 @@ class PlansScreen extends ConsumerWidget {
                       }
                       store.setPlan(p);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('You are on ${p.label} ✅'),
+                          content: Text('You are on ${p.label}'),
                           behavior: SnackBarBehavior.floating));
                     },
             ),
@@ -662,7 +662,7 @@ class MoneySplitCard extends StatelessWidget {
     return GlassCard(
       padding: const EdgeInsets.all(AppTheme.s4),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('🧾 $title', style: AppTheme.headline),
+        Text('$title', style: AppTheme.headline),
         const SizedBox(height: AppTheme.s3),
         ClipRRect(
           borderRadius: BorderRadius.circular(5),
@@ -737,7 +737,7 @@ class _DisputeSheetState extends ConsumerState<_DisputeSheet> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('⚖️ Report a problem', style: AppTheme.title2),
+                Text('Report a problem', style: AppTheme.title2),
                 const SizedBox(height: 4),
                 Text(
                     'Opening a case freezes the payment. Nobody is paid until it is resolved.',
@@ -754,7 +754,7 @@ class _DisputeSheetState extends ConsumerState<_DisputeSheet> {
                           : null,
                       onTap: () => setState(() => _reason = r),
                       child: Row(children: [
-                        Text(r.emoji, style: const TextStyle(fontSize: 22)),
+                        Glyph(r.emoji, size: 22),
                         const SizedBox(width: AppTheme.s3),
                         Expanded(
                           child: Column(
@@ -838,7 +838,7 @@ class DisputeTimeline extends StatelessWidget {
         Row(children: [
           Expanded(
               child:
-                  Text('⚖️ ${dispute.reason.label}', style: AppTheme.headline)),
+                  Text('${dispute.reason.label}', style: AppTheme.headline)),
           Pill(stage.$1, color: stage.$2),
         ]),
         const SizedBox(height: AppTheme.s3),
@@ -933,14 +933,14 @@ class CaseCard extends ConsumerWidget {
       padding: const EdgeInsets.all(AppTheme.s4),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          Text(c.emoji, style: const TextStyle(fontSize: 26)),
+          Glyph(c.emoji, size: 26),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(c.title, style: AppTheme.headline),
               Text(
-                  '${c.area}  •  AI confidence ${c.aiConfidence}%${c.mine ? '  •  yours' : ''}',
+                  '${c.area}  •  ${c.aiConfidence > 0 ? 'AI confidence ${c.aiConfidence}%' : 'reported by a neighbour'}${c.mine ? '  •  yours' : ''}',
                   style: AppTheme.footnote),
             ]),
           ),
@@ -951,14 +951,17 @@ class CaseCard extends ConsumerWidget {
         Row(children: [
           Expanded(
             child: Text(
-                broadcast
-                    ? 'Public: nearby farms are being alerted.'
-                    : 'Private until ${2 - c.confirmations > 0 ? '${2 - c.confirmations} more farm${2 - c.confirmations == 1 ? '' : 's'} confirm' : 'confirmed'}.',
+                switch (c.stage) {
+                  ReportStage.vetVerified => 'Verified by ${c.verifierLabel}. Nearby farms are alerted.',
+                  ReportStage.corroborated => 'Confirmed by ${c.confirmations} farms. Nearby farms are alerted.',
+                  ReportStage.rejected => 'Checked by ${c.verifierLabel} and rejected. Removed from the map.',
+                  _ => 'Unconfirmed on the map. Alerts go out once ${2 - c.confirmations > 0 ? '${2 - c.confirmations} more farm${2 - c.confirmations == 1 ? '' : 's'} confirm' : 'confirmed'}.',
+                },
                 style: AppTheme.caption.copyWith(
                     color:
                         broadcast ? AppTheme.sprout : AppTheme.textTertiary)),
           ),
-          if (!c.mine && !broadcast)
+          if (!c.mine && !broadcast && c.stage != ReportStage.rejected)
             GestureDetector(
               onTap: () {
                 HapticFeedback.lightImpact();
@@ -1032,7 +1035,7 @@ class _ReportSheetState extends ConsumerState<_ReportSheet> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('🚩 Report a case', style: AppTheme.title2),
+                Text('Report a case', style: AppTheme.title2),
                 const SizedBox(height: 4),
                 Text(
                     'Your report is AI checked now. It only alerts other farms after neighbours confirm it or a vet verifies it.',

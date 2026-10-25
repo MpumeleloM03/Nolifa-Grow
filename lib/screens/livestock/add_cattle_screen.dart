@@ -221,7 +221,7 @@ class _AddCattleScreenState extends ConsumerState<AddCattleScreen> {
                             children: [
                               for (final sp in Species.values)
                                 _Pill(
-                                  label: '${sp.emoji} ${sp.singular}',
+                                  label: sp.singular,
                                   selected: _species == sp,
                                   onTap: () => setState(() {
                                     _species = sp;

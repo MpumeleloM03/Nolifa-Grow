@@ -51,7 +51,7 @@ Future<void> showRoadReportSheet(BuildContext context, WidgetRef ref) async {
                     ),
                     padding: const EdgeInsets.all(6),
                     child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Text(k.emoji, style: const TextStyle(fontSize: 30)),
+                      Glyph(k.emoji, size: 30),
                       const SizedBox(height: 4),
                       Text(k.label, textAlign: TextAlign.center, style: AppTheme.caption, maxLines: 2),
                     ]),
@@ -98,7 +98,7 @@ class HazardTile extends ConsumerWidget {
       padding: const EdgeInsets.all(AppTheme.s4),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          Text(hazard.kind.emoji, style: const TextStyle(fontSize: 30)),
+          Glyph(hazard.kind.emoji, size: 30),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -263,7 +263,7 @@ class _TrafficSection extends ConsumerWidget {
                   child: GlassCard(
                     padding: const EdgeInsets.all(AppTheme.s4),
                     child: Row(children: [
-                      Text(n.incident.emoji, style: const TextStyle(fontSize: 28)),
+                      Glyph(n.incident.emoji, size: 28),
                       const SizedBox(width: AppTheme.s3),
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -300,7 +300,7 @@ class RoadAlertsCard extends ConsumerWidget {
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RoadAlertsScreen())),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Text('🚧', style: TextStyle(fontSize: 28)),
+          const Glyph('🚧', size: 28),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -319,7 +319,7 @@ class RoadAlertsCard extends ConsumerWidget {
           const SizedBox(height: AppTheme.s2),
           Wrap(spacing: 6, runSpacing: 6, children: [
             for (final k in {for (final h in live) h.kind})
-              Pill('${k.emoji} ${live.where((h) => h.kind == k).length}', color: AppTheme.livestockAccent),
+              Pill('${live.where((h) => h.kind == k).length}', color: AppTheme.livestockAccent),
           ]),
         ],
         if (can) ...[

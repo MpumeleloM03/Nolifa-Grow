@@ -311,6 +311,7 @@ class LocalBackend {
               location: LatLng(m['lat'] as double, m['lng'] as double),
               region: m['region'] as String,
               reportedAt: DateTime.fromMillisecondsSinceEpoch(m['at'] as int),
+              caseId: m['caseId'] as String?,
             ))
         .toList();
   }
@@ -321,6 +322,7 @@ class LocalBackend {
     required OutbreakKind kind,
     required LatLng location,
     required String region,
+    String? caseId,
   }) async {
     final all = await _rawOutbreaks();
     all.add({
@@ -332,6 +334,7 @@ class LocalBackend {
       'lng': location.longitude,
       'region': region,
       'at': DateTime.now().millisecondsSinceEpoch,
+      if (caseId != null) 'caseId': caseId,
     });
     await SecurePrefs.setString(_kOutbreaks, jsonEncode(all));
     _outbreaks.add(null);

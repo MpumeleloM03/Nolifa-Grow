@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart'
     show
         Pill,
+        ReportCase,
         WaterRadarChart,
         WaterScreen,
         forecastColor,
@@ -23,6 +24,7 @@ import '../theme/app_theme.dart';
 import '../store/farm_water_section.dart';
 import '../theme/glass.dart';
 import '../community/community_alerts_screen.dart';
+import '../outbreak/outbreak_trust.dart';
 import 'alarm.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
@@ -35,7 +37,10 @@ class AreaOutbreak {
   final String region;
   final int reports;
   final DateTime? latest;
-  const AreaOutbreak(this.disease, this.severity, this.kind, this.region, this.reports, this.latest);
+  final Trust trust;
+  final String? caseId;
+  const AreaOutbreak(this.disease, this.severity, this.kind, this.region, this.reports, this.latest,
+      {this.trust = Trust.confirmed, this.caseId});
 
   Color get color => severity == 'red' ? AppTheme.danger : AppTheme.warn;
   String get severityLabel => severity == 'red' ? 'Urgent' : 'Watch';
@@ -57,28 +62,35 @@ DateTime? _demoDate(String raw) {
 String _tidy(String disease) => disease.replaceAll('_', ' ').trim();
 
 /// Merges the demonstration sightings with live reports and groups them by
-/// disease and region. Healthy scans are not outbreaks, so they are dropped.
-/// Most urgent first, then most reported.
-List<AreaOutbreak> buildAreaOutbreaks(List<OutbreakReport> live, {bool demo = true}) {
-  final groups = <String, List<({String sev, OutbreakKind kind, DateTime? at, String region, String name})>>{};
-  void add(String disease, String sev, OutbreakKind kind, DateTime? at, String region) {
+/// disease and region. Healthy scans are not outbreaks, so they are dropped,
+/// and so are reports a vet or officer rejected. Each group carries how far
+/// its best-backed report has got. Most trusted first, then most urgent.
+List<AreaOutbreak> buildAreaOutbreaks(List<OutbreakReport> live,
+    {bool demo = true, List<ReportCase> cases = const []}) {
+  final byId = {for (final c in cases) c.id: c};
+  final groups = <String,
+      List<({String sev, OutbreakKind kind, DateTime? at, String region, String name, Trust trust, String? caseId})>>{};
+  void add(String disease, String sev, OutbreakKind kind, DateTime? at, String region, Trust trust, String? caseId) {
     if (sev == 'green' || disease.toLowerCase().contains('healthy')) return;
     final name = _tidy(disease);
     groups
         .putIfAbsent('${name.toLowerCase()}|$region', () => [])
-        .add((sev: sev, kind: kind, at: at, region: region, name: name));
+        .add((sev: sev, kind: kind, at: at, region: region, name: name, trust: trust, caseId: caseId));
   }
 
   if (demo) {
     for (final p in kDemoDiseasePoints) {
-      add(p.disease, p.severity, OutbreakKind.plant, _demoDate(p.date), p.region);
+      add(p.disease, p.severity, OutbreakKind.plant, _demoDate(p.date), p.region, Trust.confirmed, null);
     }
     for (final p in kDemoLivestockPoints) {
-      add(p.disease, p.severity, OutbreakKind.livestock, _demoDate(p.date), p.region);
+      add(p.disease, p.severity, OutbreakKind.livestock, _demoDate(p.date), p.region,
+          p.severity == 'red' ? Trust.verified : Trust.confirmed, null);
     }
   }
   for (final r in live) {
-    add(r.disease, r.severity, r.kind, r.reportedAt, r.region);
+    final t = trustOfCase(r.caseId == null ? null : byId[r.caseId]);
+    if (t == null) continue; // rejected
+    add(r.disease, r.severity, r.kind, r.reportedAt, r.region, t, r.caseId);
   }
 
   final out = <AreaOutbreak>[];
@@ -88,9 +100,14 @@ List<AreaOutbreak> buildAreaOutbreaks(List<OutbreakReport> live, {bool demo = tr
     for (final e in g) {
       if (e.at != null && (latest == null || e.at!.isAfter(latest))) latest = e.at;
     }
-    out.add(AreaOutbreak(g.first.name, worst, g.first.kind, g.first.region, g.length, latest));
+    final lead = g.reduce((a, b) => b.trust.index > a.trust.index ? b : a);
+    final withCase = g.where((e) => e.caseId != null && e.trust == lead.trust).firstOrNull;
+    out.add(AreaOutbreak(g.first.name, worst, g.first.kind, g.first.region, g.length, latest,
+        trust: lead.trust, caseId: withCase?.caseId));
   }
   out.sort((a, b) {
+    final t = b.trust.index - a.trust.index;
+    if (t != 0) return t;
     final s = (b.severity == 'red' ? 1 : 0) - (a.severity == 'red' ? 1 : 0);
     return s != 0 ? s : b.reports.compareTo(a.reports);
   });
@@ -109,7 +126,9 @@ class AlertsTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final region = ref.watch(currentUserProvider)?.region ?? '';
     final live = ref.watch(outbreaksProvider).valueOrNull ?? const <OutbreakReport>[];
-    final all = buildAreaOutbreaks(live, demo: ref.watch(marketProvider.select((s) => s.demoMode)));
+    final all = buildAreaOutbreaks(live,
+        demo: ref.watch(marketProvider.select((s) => s.demoMode)),
+        cases: ref.watch(marketProvider.select((s) => s.cases)));
     final communityCount = all.length + ref.watch(marketProvider.select((s) => s.cases.length));
     final w = ref.watch(waterProvider);
     final zone = w.myZone;
@@ -175,7 +194,7 @@ class AlertsTab extends ConsumerWidget {
                   onTap: () => _push(context, WaterScreen(extraSections: const [FarmWaterSection()])),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Row(children: [
-                      const Text('📡', style: TextStyle(fontSize: 18)),
+                      const Glyph('📡', size: 18),
                       const SizedBox(width: AppTheme.s2),
                       Expanded(child: Text('${zone.name} water, next 7 days', style: AppTheme.headline)),
                     ]),
@@ -230,7 +249,7 @@ class OutbreakTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppTheme.s4, vertical: AppTheme.s3),
           onTap: () => showOutbreakDetails(context, o),
           child: Row(children: [
-            Text(o.kind == OutbreakKind.livestock ? '🐄' : '🌿', style: const TextStyle(fontSize: 26)),
+            Glyph(o.kind == OutbreakKind.livestock ? '🐄' : '🌿', size: 26),
             const SizedBox(width: AppTheme.s3),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -240,7 +259,10 @@ class OutbreakTile extends StatelessWidget {
                     style: AppTheme.footnote),
               ]),
             ),
-            Pill(o.severityLabel, color: o.color),
+            if (o.trust == Trust.unconfirmed)
+              Pill(o.trust.label, color: o.trust.color, icon: o.trust.icon)
+            else
+              Pill(o.severityLabel, color: o.color),
             Icon(Icons.chevron_right_rounded, color: AppTheme.textTertiary),
           ]),
         ),
@@ -278,6 +300,8 @@ Future<void> showOutbreakDetails(BuildContext context, AreaOutbreak o) {
           Pill(o.kind == OutbreakKind.livestock ? 'Livestock' : 'Crop', color: AppTheme.textSecondary),
           if (extra != null) Pill(extra, color: o.color),
         ]),
+        const SizedBox(height: AppTheme.s3),
+        CaseTrustRow(caseId: o.caseId, trust: o.trust),
         const SizedBox(height: AppTheme.s3),
         Text('What it is', style: AppTheme.headline),
         const SizedBox(height: AppTheme.s1),
@@ -330,29 +354,39 @@ class _ReportOutbreakSheetState extends ConsumerState<_ReportOutbreakSheet> {
             if (k != 'Healthy') _tidy(k)[0].toUpperCase() + _tidy(k).substring(1)
         ];
 
-  void _send() {
+  bool _sending = false;
+
+  Future<void> _send() async {
     final disease = _disease;
-    if (disease == null) return;
+    if (disease == null || _sending) return;
+    setState(() => _sending = true);
     final user = ref.read(currentUserProvider);
     final region = (user?.region.isNotEmpty ?? false) ? user!.region : 'Other';
     final centre = (RegionService.findByName(region) ?? RegionService.regions.last).center;
-    ref.read(outbreakServiceProvider).report(
-          disease: disease,
-          severity: _severity,
-          kind: _kind,
-          exactLocation: RegionService.jitter(centre, '$disease${DateTime.now().microsecondsSinceEpoch}'),
-          region: region,
-        );
-    // Also opens a neighbour-confirmation case, so other farms are alerted
-    // once two of them see the same thing.
-    ref.read(marketProvider.notifier).submitReport(
+    // Open the neighbour-confirmation case first, so the map point can point
+    // at it: the point stays unconfirmed until two farms back the case.
+    final caseId = ref.read(marketProvider.notifier).submitReport(
         disease, _kind == OutbreakKind.livestock ? '🐄' : '🌿', region);
-    HapticFeedback.mediumImpact();
     final messenger = ScaffoldMessenger.of(context);
+    String msg = 'Sent. It shows on the map as unconfirmed until $kConfirmationsNeeded farms confirm it.';
+    try {
+      await ref.read(outbreakServiceProvider).report(
+            disease: disease,
+            severity: _severity,
+            kind: _kind,
+            exactLocation: RegionService.jitter(centre, '$disease${DateTime.now().microsecondsSinceEpoch}'),
+            region: region,
+            caseId: caseId,
+          );
+      HapticFeedback.mediumImpact();
+    } catch (e) {
+      msg = e.toString().contains('lot of reports')
+          ? 'You have sent a lot of reports today. Try again tomorrow.'
+          : 'Your report was saved, but the map could not be updated. Check your connection.';
+    }
+    if (!mounted) return;
     Navigator.pop(context);
-    messenger.showSnackBar(const SnackBar(
-        content: Text('Reported. It is on the map now.'),
-        behavior: SnackBarBehavior.floating));
+    messenger.showSnackBar(SnackBar(content: Text(msg), behavior: SnackBarBehavior.floating));
   }
 
   @override
@@ -360,11 +394,11 @@ class _ReportOutbreakSheetState extends ConsumerState<_ReportOutbreakSheet> {
     final options = _options;
     return SheetFrame(
       title: 'Report an outbreak',
-      subtitle: 'It shows on the map right away. Other farms get an alert once two neighbours confirm it.',
+      subtitle: 'It shows on the map right away as unconfirmed. Nearby farms are alerted once $kConfirmationsNeeded farms confirm it, and a vet or extension officer can verify it.',
       children: [
         Row(children: [
           Expanded(
-            child: _Choice('🌿 Crop', _kind == OutbreakKind.plant,
+            child: _Choice('Crop', _kind == OutbreakKind.plant,
                 () => setState(() {
                       _kind = OutbreakKind.plant;
                       _disease = null;
@@ -372,7 +406,7 @@ class _ReportOutbreakSheetState extends ConsumerState<_ReportOutbreakSheet> {
           ),
           const SizedBox(width: AppTheme.s2),
           Expanded(
-            child: _Choice('🐄 Livestock', _kind == OutbreakKind.livestock,
+            child: _Choice('Livestock', _kind == OutbreakKind.livestock,
                 () => setState(() {
                       _kind = OutbreakKind.livestock;
                       _disease = null;
@@ -400,9 +434,9 @@ class _ReportOutbreakSheetState extends ConsumerState<_ReportOutbreakSheet> {
             style: AppTheme.caption),
         const SizedBox(height: AppTheme.s4),
         GlassButton(
-          label: 'Send report',
+          label: _sending ? 'Sending...' : 'Send report',
           icon: Icons.send_rounded,
-          onPressed: _disease == null ? null : _send,
+          onPressed: _disease == null || _sending ? null : _send,
         ),
       ],
     );

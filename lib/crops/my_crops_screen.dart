@@ -96,7 +96,7 @@ class MyCropsScreen extends ConsumerWidget {
                   if (plots.isEmpty)
                     GlassCard(
                       child: Row(children: [
-                        const Text('🌱', style: TextStyle(fontSize: 34)),
+                        const Glyph('🌱', size: 34),
                         const SizedBox(width: AppTheme.s3),
                         Expanded(
                           child: Text('No crops yet. Add your first plot and get a harvest date.',
@@ -137,7 +137,7 @@ class _PlotCard extends StatelessWidget {
             value: o.progress,
             size: 64,
             color: o.ready ? AppTheme.warn : AppTheme.plantAccent,
-            center: Text(plot.spec.emoji, style: const TextStyle(fontSize: 26)),
+            center: Glyph(plot.spec.emoji, size: 26),
           ),
           const SizedBox(width: AppTheme.s4),
           Expanded(
@@ -238,7 +238,7 @@ class CropDetailScreen extends ConsumerWidget {
                             size: 92,
                             color: o.ready ? AppTheme.warn : AppTheme.plantAccent,
                             center: Column(mainAxisSize: MainAxisSize.min, children: [
-                              Text(spec.emoji, style: const TextStyle(fontSize: 26)),
+                              Glyph(spec.emoji, size: 26),
                               Text('${(o.progress * 100).round()}%', style: AppTheme.footnote),
                             ]),
                           ),
@@ -431,7 +431,7 @@ class CropDetailScreen extends ConsumerWidget {
                       child: GlassCard(
                         tint: const Color(0xFF5AB8F0).withValues(alpha: 0.12),
                         padding: const EdgeInsets.symmetric(horizontal: AppTheme.s4, vertical: AppTheme.s3),
-                        child: Text('🌧️ $rainNote', style: AppTheme.callout.copyWith(color: AppTheme.textPrimary)),
+                        child: Text('$rainNote', style: AppTheme.callout.copyWith(color: AppTheme.textPrimary)),
                       ),
                     ),
                   for (final a in o.advice)
@@ -504,7 +504,7 @@ class _AddCropSheetState extends ConsumerState<_AddCropSheet> {
         Wrap(spacing: AppTheme.s2, runSpacing: AppTheme.s2, children: [
           for (final c in cropSpecs)
             ChoiceChip(
-              label: Text('${c.emoji} ${c.name}'),
+              label: Text(c.name),
               selected: _crop == c.name,
               onSelected: (_) => setState(() => _crop = c.name),
             ),
