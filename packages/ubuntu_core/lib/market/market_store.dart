@@ -1344,7 +1344,7 @@ class MarketStore extends Notifier<MarketState> {
 
   /// A farmer files a case. It is AI checked immediately, but only reaches
   /// other farms once neighbours confirm it or a vet verifies it.
-  String submitReport(String title, String emoji, String area) {
+  String submitReport(String title, String emoji, String area, {int aiConfidence = 0}) {
     final id = 'c-${_uid.hashCode.abs().toRadixString(36)}-${++_case}';
     final c = ReportCase(
         id: id,
@@ -1353,7 +1353,7 @@ class MarketStore extends Notifier<MarketState> {
         area: area,
         stage: ReportStage.aiChecked,
         confirmations: 0,
-        aiConfidence: 78,
+        aiConfidence: aiConfidence,
         reporterId: _uid,
         mine: true);
     state = state.copyWith(cases: [c, ...state.cases]);
@@ -1364,6 +1364,18 @@ class MarketStore extends Notifier<MarketState> {
       _later(const Duration(seconds: 18), () => _advanceCase(id, 3, ReportStage.vetVerified));
     }
     return id;
+  }
+
+  /// Shows a vet's or extension officer's decision straight away. The server
+  /// (verify_case) is the one that records it; the live feed then agrees.
+  void applyVerification(String id, bool ok, String role) {
+    state = state.copyWith(cases: [
+      for (final c in state.cases)
+        if (c.id == id)
+          c.copyWith(stage: ok ? ReportStage.vetVerified : ReportStage.rejected, verifierRole: role)
+        else
+          c
+    ]);
   }
 
   /// Returns false when this person may not confirm (not a verified farmer).

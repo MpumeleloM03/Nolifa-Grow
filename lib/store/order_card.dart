@@ -100,7 +100,7 @@ class OrderCard extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: AppTheme.s1),
             child: Row(children: [
-              Text(l.emoji, style: const TextStyle(fontSize: 20)),
+              Glyph(l.emoji, size: 20),
               const SizedBox(width: AppTheme.s2),
               Expanded(
                   child: Text('${l.qty} × ${l.name}', style: AppTheme.callout)),
@@ -138,7 +138,7 @@ class OrderCard extends ConsumerWidget {
         if (o.selfDelivery && o.farmIsMe && o.status != OrderStatus.delivered) ...[
           const SizedBox(height: AppTheme.s2),
           Row(children: [
-            const Text('🚜', style: const TextStyle(fontSize: 16)),
+            const Glyph('🚜', size: 16),
             const SizedBox(width: AppTheme.s2),
             Expanded(child: Text('You deliver this one yourself', style: AppTheme.footnote)),
           ]),

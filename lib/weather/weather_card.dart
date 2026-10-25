@@ -30,7 +30,7 @@ class ThreatCard extends StatelessWidget {
       tint: color.withValues(alpha: 0.12),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          Text(t.emoji, style: const TextStyle(fontSize: 28)),
+          Glyph(t.emoji, size: 28),
           const SizedBox(width: AppTheme.s3),
           Expanded(child: Text(t.title, style: AppTheme.headline)),
           Pill(t.urgent ? 'Urgent' : 'Watch', color: color),
@@ -75,7 +75,7 @@ class WeatherCard extends ConsumerWidget {
         error: (_, __) => Text('No forecast yet. It needs a signal once, then it is saved for when you are offline.', style: AppTheme.callout),
         data: (f) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Text('🌤️', style: TextStyle(fontSize: 22)),
+            const Glyph('🌤️', size: 22),
             const SizedBox(width: AppTheme.s2),
             Expanded(child: Text('Weather, ${f.region}', style: AppTheme.headline)),
             if (f.demo) Pill('Demo forecast', color: AppTheme.warn)
@@ -83,7 +83,7 @@ class WeatherCard extends ConsumerWidget {
           ]),
           const SizedBox(height: AppTheme.s2),
           Text(
-              threats.isEmpty ? 'No weather threats this week.' : '${threats.first.emoji} ${threats.first.title}. ${threats.length > 1 ? '${threats.length - 1} more in the alarm.' : 'Details in the alarm.'}',
+              threats.isEmpty ? 'No weather threats this week.' : '${threats.first.title}. ${threats.length > 1 ? '${threats.length - 1} more in the alarm.' : 'Details in the alarm.'}',
               style: AppTheme.subhead.copyWith(
                   color: threats.isEmpty ? AppTheme.ok : (threats.first.urgent ? AppTheme.danger : AppTheme.warn),
                   fontWeight: FontWeight.w700)),

@@ -16,6 +16,11 @@ class OutbreakReport {
   final String region;
   final DateTime reportedAt;
 
+  /// The neighbour-confirmation case this report opened, if any. Its stage
+  /// decides whether the map shows the report as unconfirmed, confirmed or
+  /// verified. Points added by a diagnosis scan have none and stay unconfirmed.
+  final String? caseId;
+
   const OutbreakReport({
     required this.id,
     required this.disease,
@@ -24,6 +29,7 @@ class OutbreakReport {
     required this.location,
     required this.region,
     required this.reportedAt,
+    this.caseId,
   });
 
   /// Roughly 5 km of rounding at KwaZulu-Natal's latitude.
@@ -55,6 +61,7 @@ class OutbreakReport {
         'lng': location.longitude,
         'region': region,
         'reportedAt': reportedAt.millisecondsSinceEpoch,
+        if (caseId != null) 'caseId': caseId,
       };
 
   factory OutbreakReport.fromMap(String id, Map<String, dynamic> d) {
@@ -69,6 +76,7 @@ class OutbreakReport {
       ),
       region: d['region'] as String? ?? '',
       reportedAt: DateTime.fromMillisecondsSinceEpoch(((d['reportedAt'] as num?) ?? DateTime.now().millisecondsSinceEpoch).toInt()),
+      caseId: d['caseId'] as String?,
     );
   }
 }

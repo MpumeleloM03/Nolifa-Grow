@@ -131,7 +131,7 @@ class _FarmWaterSectionState extends ConsumerState<FarmWaterSection> {
       tint: waterBlue.withValues(alpha: 0.10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Text('🐄', style: TextStyle(fontSize: 22)),
+          const Glyph('🐄', size: 22),
           const SizedBox(width: AppTheme.s2),
           Expanded(child: Text('Your herd', style: AppTheme.title3)),
           Pill('${groupDigits(head)} head',

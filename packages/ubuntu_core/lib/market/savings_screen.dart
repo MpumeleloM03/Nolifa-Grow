@@ -123,7 +123,7 @@ class _Deal extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => GlassCard(
         padding: const EdgeInsets.symmetric(horizontal: AppTheme.s4, vertical: AppTheme.s3),
         child: Row(children: [
-          Text(p.emoji, style: const TextStyle(fontSize: 26)),
+          Glyph(p.emoji, size: 26),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

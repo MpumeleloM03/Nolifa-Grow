@@ -4,7 +4,7 @@ import '../care/care_store.dart';
 import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ubuntu_core/ubuntu_core.dart' show RealDamLevels, Reveal, WaterScreen;
+import 'package:ubuntu_core/ubuntu_core.dart' show Reveal;
 import '../models/cattle.dart';
 import '../models/diagnosis_record.dart';
 import '../models/disease_info.dart';
@@ -13,19 +13,20 @@ import '../water/supplier_screen.dart';
 import '../weather/weather_card.dart';
 import '../screens/history_screen.dart';
 import '../screens/livestock/herd_screen.dart';
+import '../screens/livestock/symptom_checker_screen.dart';
 import '../services/auth_service.dart';
 import '../services/cattle_service.dart';
 import '../services/crop_scan.dart';
 import '../services/history_service.dart';
-import '../store/farm_water_section.dart';
-import '../store/store_common.dart' show timeAgo, waterBlue;
+import '../store/store_common.dart' show timeAgo;
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import '../widgets/language_toggle.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-/// First thing a farmer sees: scan a crop, check a cow. Everything else on the
-/// page supports those two jobs.
+/// The Diagnose tab: check a sick plant or animal. Farmers also get their crop
+/// tracker, herd, vets and herd care; community members get the free checks.
+/// Water and the outbreak map have their own tabs, so they are not repeated here.
 class HomeTab extends ConsumerStatefulWidget {
   const HomeTab({super.key});
 
@@ -48,6 +49,7 @@ class _HomeTabState extends ConsumerState<HomeTab> {
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider);
     final name = (user?.name.trim().isNotEmpty ?? false) ? user!.name.trim().split(' ').first : 'there';
+    final community = user?.isCommunity ?? false;
     final herd = ref.watch(herdProvider);
     final head = herd.valueOrNull?.where((c) => c.status == CattleStatus.active).length;
 
@@ -62,7 +64,8 @@ class _HomeTabState extends ConsumerState<HomeTab> {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text('Sawubona, $name', style: AppTheme.largeTitle),
                   const SizedBox(height: AppTheme.s1),
-                  Text('Protect your farm and your community', style: AppTheme.callout),
+                  Text(community ? 'Check a sick plant or animal in seconds' : 'Protect your farm and your community',
+                      style: AppTheme.callout),
                 ]),
               ),
               const LanguageToggle(),
@@ -94,17 +97,18 @@ class _HomeTabState extends ConsumerState<HomeTab> {
                 ]);
               },
             ),
+            if (community || (user?.growsCrops ?? true)) ...[
             const SizedBox(height: AppTheme.s4),
             Reveal(
               child: _ScanCard(
                 emoji: '🌿',
-                title: 'Scan a crop',
+                title: community ? 'Check a sick plant' : 'Scan a crop',
                 line: 'Photograph a leaf. Get the disease and what to do, even with no signal.',
                 action: 'Open camera',
                 icon: Icons.camera_alt_rounded,
                 accent: AppTheme.plantAccent,
                 onTap: _scan,
-                second: GlassButton(
+                second: community ? null : GlassButton(
                   label: 'Crop health AI: my crops',
                   icon: Icons.insights_rounded,
                   accent: const Color(0xFF8FE3C6),
@@ -115,10 +119,25 @@ class _HomeTabState extends ConsumerState<HomeTab> {
                 ),
               ),
             ),
+            ],
+            if (community || (user?.keepsLivestock ?? true)) ...[
             const SizedBox(height: AppTheme.s4),
             Reveal(
               index: 1,
-              child: _ScanCard(
+              child: community
+                  ? _ScanCard(
+                      emoji: '🐄',
+                      title: 'Check a sick animal',
+                      line: 'Tick the signs you see. Controlled diseases like foot-and-mouth are flagged first, with who to call.',
+                      action: 'Check symptoms',
+                      icon: Icons.checklist_rounded,
+                      accent: AppTheme.livestockAccent,
+                      onTap: () {
+                        HapticFeedback.mediumImpact();
+                        _push(const SymptomCheckerScreen());
+                      },
+                    )
+                  : _ScanCard(
                 emoji: '🐄',
                 title: 'Sick animal? Ask a vet',
                 line: 'Film it, and one of our vets will watch it, say what they think it is and why, and tell you what to do. Words alone cannot tell a vet what is wrong.',
@@ -140,33 +159,14 @@ class _HomeTabState extends ConsumerState<HomeTab> {
                 ),
               ),
             ),
-            const SizedBox(height: AppTheme.s4),
-            Reveal(index: 2, child: _CareCard(onOpen: () => _push(const CareScreen()))),
-            const SizedBox(height: AppTheme.s4),
-            Reveal(
-              index: 2,
-              child: GlassCard(
-                tint: waterBlue.withValues(alpha: 0.12),
-                padding: const EdgeInsets.all(AppTheme.s5),
-                onTap: () => _push(const WaterScreen(extraSections: [FarmWaterSection()])),
-                child: Row(children: [
-                  const Text('💧', style: TextStyle(fontSize: 44)),
-                  const SizedBox(width: AppTheme.s4),
-                  Expanded(
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text('Water radar', style: AppTheme.title2),
-                      const SizedBox(height: AppTheme.s1),
-                      Text('Supply forecast, tank days for your herd, and help for your area.',
-                          style: AppTheme.callout),
-                    ]),
-                  ),
-                  Icon(Icons.chevron_right_rounded, color: AppTheme.textTertiary),
-                ]),
-              ),
-            ),
+            ],
+            if (!community) ...[
+              const SizedBox(height: AppTheme.s4),
+              Reveal(index: 2, child: _CareCard(onOpen: () => _push(const CareScreen()))),
+            ],
             const SizedBox(height: AppTheme.s3),
             const Reveal(index: 3, child: WeatherCard()),
-            const Reveal(index: 3, child: RealDamLevels()),
+            if (!community) ...[
             const SizedBox(height: AppTheme.s3),
             Reveal(
               index: 4,
@@ -174,7 +174,7 @@ class _HomeTabState extends ConsumerState<HomeTab> {
                 padding: const EdgeInsets.symmetric(horizontal: AppTheme.s4, vertical: AppTheme.s3),
                 onTap: () => _push(const WaterSupplierScreen()),
                 child: Row(children: [
-                  const Text('🚰', style: TextStyle(fontSize: 26)),
+                  const Glyph('🚰', size: 26),
                   const SizedBox(width: AppTheme.s3),
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -186,6 +186,7 @@ class _HomeTabState extends ConsumerState<HomeTab> {
                 ]),
               ),
             ),
+            ],
           ]),
         ),
       ],
@@ -217,7 +218,7 @@ class _ScanCard extends StatelessWidget {
         onTap: onTap,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            Text(emoji, style: const TextStyle(fontSize: 44)),
+            Glyph(emoji, size: 44),
             const SizedBox(width: AppTheme.s3),
             Expanded(child: Text(title, style: AppTheme.title2)),
           ]),
@@ -309,7 +310,7 @@ class _CareCard extends ConsumerWidget {
       padding: const EdgeInsets.all(AppTheme.s5),
       onTap: onOpen,
       child: Row(children: [
-        const Text('🗓️', style: TextStyle(fontSize: 38)),
+        const Glyph('🗓️', size: 38),
         const SizedBox(width: AppTheme.s4),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

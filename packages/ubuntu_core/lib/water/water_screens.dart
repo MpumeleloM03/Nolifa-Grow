@@ -243,7 +243,7 @@ class _NoReadingsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GlassCard(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('💧', style: const TextStyle(fontSize: 34)),
+          const Glyph('💧', size: 34),
           const SizedBox(height: AppTheme.s2),
           Text('No readings for your area yet', style: AppTheme.title3),
           const SizedBox(height: AppTheme.s2),
@@ -421,7 +421,7 @@ class _CalmCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GlassCard(
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('💚', style: TextStyle(fontSize: 30)),
+          const Glyph('💚', size: 30),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -556,7 +556,7 @@ class _DispatchBanner extends StatelessWidget {
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Text('🚛', style: TextStyle(fontSize: 30)),
+            const Glyph('🚛', size: 30),
             const SizedBox(width: AppTheme.s3),
             Expanded(child: Text('${plural(incident.trucks, 'truck')} on the way', style: AppTheme.title3)),
           ]),
@@ -691,7 +691,7 @@ class _PrepareSection extends ConsumerWidget {
           if (prefs.herd > 0) ...[
             const SizedBox(height: AppTheme.s4),
             Row(children: [
-              const Text('🐄', style: TextStyle(fontSize: 20)),
+              const Glyph('🐄', size: 20),
               const SizedBox(width: AppTheme.s2),
               Expanded(
                 child: Text(
@@ -846,7 +846,7 @@ class _ProviderEntry extends StatelessWidget {
         child: GlassCard(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              const Text('🧰', style: const TextStyle(fontSize: 24)),
+              const Glyph('🧰', size: 24),
               const SizedBox(width: AppTheme.s3),
               Expanded(child: Text('Water provider tools', style: AppTheme.title3)),
             ]),
@@ -877,7 +877,7 @@ class _DemoControls extends ConsumerWidget {
         tint: AppTheme.warn.withValues(alpha: 0.10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Text('🧪', style: const TextStyle(fontSize: 24)),
+            const Glyph('🧪', size: 24),
             const SizedBox(width: AppTheme.s3),
             Expanded(child: Text('Demo controls', style: AppTheme.title3)),
             Pill('Simulated', color: AppTheme.warn),

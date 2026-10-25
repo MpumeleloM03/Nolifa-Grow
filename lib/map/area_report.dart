@@ -3,6 +3,8 @@ import 'package:latlong2/latlong.dart';
 import '../models/disease_info.dart';
 import '../models/livestock_disease.dart';
 import '../models/outbreak_report.dart';
+import '../outbreak/outbreak_trust.dart';
+import 'package:ubuntu_core/ubuntu_core.dart' show ReportCase;
 import '../screens/map_screen.dart' show DiseasePoint, kDemoDiseasePoints, kDemoLivestockPoints;
 import 'hex_grid.dart';
 
@@ -15,11 +17,16 @@ class Sighting {
   final String region;
   final double lat;
   final double lng;
-  const Sighting(this.disease, this.kind, this.severity, this.at, this.region, this.lat, this.lng);
+  final Trust trust;
+  final String? caseId;
+  const Sighting(this.disease, this.kind, this.severity, this.at, this.region, this.lat, this.lng,
+      {this.trust = Trust.confirmed, this.caseId});
 
   /// How hard this sighting heats its hexagon: urgent counts most, and old
   /// reports fade over six weeks so a finished outbreak stops glowing.
+  /// Unconfirmed reports do not heat the map; they show as their own marker.
   double weight(DateTime now) {
+    if (!trust.alerts) return 0;
     final base = switch (severity) { 'red' => 1.0, 'orange' => 0.6, _ => 0.0 };
     final age = now.difference(at).inDays;
     return base * (1 - age / 42).clamp(0.15, 1.0);
@@ -36,7 +43,10 @@ class AreaProblem {
   final int reports;
   final DateTime latest;
   final List<String> response;
-  const AreaProblem(this.disease, this.kind, this.severity, this.reports, this.latest, this.response);
+  final Trust trust;
+  final String? caseId;
+  const AreaProblem(this.disease, this.kind, this.severity, this.reports, this.latest, this.response,
+      {this.trust = Trust.confirmed, this.caseId});
 }
 
 class HexCell {
@@ -46,6 +56,15 @@ class HexCell {
   const HexCell(this.id, this.sightings, this.heat);
 
   bool get isEmpty => sightings.isEmpty;
+
+  /// The strongest trust among this hexagon's own reports, or null if none.
+  Trust? get trust {
+    Trust? best;
+    for (final s in sightings) {
+      if (best == null || s.trust.index > best.index) best = s.trust;
+    }
+    return best;
+  }
 }
 
 /// Demonstration sightings, dated relative to today so the map is never stale.
@@ -62,13 +81,15 @@ List<Sighting> demoSightings(DateTime now) {
   void spread(DiseasePoint p, OutbreakKind kind) {
     final seed = p.disease.hashCode ^ p.location.latitude.hashCode ^ p.location.longitude.hashCode;
     final r = math.Random(seed);
-    out.add(Sighting(tidyName(p.disease), kind, p.severity, shift(p.date), p.region, p.location.latitude, p.location.longitude));
+    final trust = p.severity == 'red' ? Trust.verified : Trust.confirmed;
+    out.add(Sighting(tidyName(p.disease), kind, p.severity, shift(p.date), p.region, p.location.latitude, p.location.longitude,
+        trust: trust));
     for (var i = 0; i < 9; i++) {
       // Closer to the centre is more likely: square the random radius.
       final d = math.pow(r.nextDouble(), 1.6) * 0.32;
       final a = r.nextDouble() * 2 * math.pi;
       out.add(Sighting(tidyName(p.disease), kind, i % 3 == 0 ? 'red' : p.severity, shift(p.date), p.region,
-          p.location.latitude + d * math.sin(a), p.location.longitude + d * math.cos(a)));
+          p.location.latitude + d * math.sin(a), p.location.longitude + d * math.cos(a), trust: trust));
     }
   }
 
@@ -91,9 +112,14 @@ DateTime? _parse(String raw) {
   return (mo == null || d == null || y == null) ? null : DateTime(y, mo, d);
 }
 
-List<Sighting> liveSightings(List<OutbreakReport> live) => [
+/// Real reports, each carrying how far its case has got. Rejected ones leave
+/// the map.
+List<Sighting> liveSightings(List<OutbreakReport> live, [Map<String, ReportCase> cases = const {}]) => [
       for (final r in live)
-        Sighting(tidyName(r.disease), r.kind, r.severity, r.reportedAt, r.region, r.location.latitude, r.location.longitude)
+        if (trustOfCase(r.caseId == null ? null : cases[r.caseId]) case final t?)
+          Sighting(tidyName(r.disease), r.kind, r.severity, r.reportedAt, r.region, r.location.latitude,
+              r.location.longitude,
+              trust: t, caseId: r.caseId)
     ];
 
 /// Groups sightings into hexagons and works out each one's heat.
@@ -129,10 +155,16 @@ List<AreaProblem> problemsIn(HexCell cell) {
   for (final list in g.values) {
     final worst = list.any((s) => s.severity == 'red') ? 'red' : 'orange';
     final latest = list.map((s) => s.at).reduce((a, b) => a.isAfter(b) ? a : b);
+    // The best-backed report speaks for the group; its case gets the buttons.
+    final lead = list.reduce((a, b) => b.trust.index > a.trust.index ? b : a);
+    final withCase = list.where((s) => s.caseId != null && s.trust == lead.trust).firstOrNull;
     out.add(AreaProblem(list.first.disease, list.first.kind, worst, list.length, latest,
-        responseTo(list.first.disease, list.first.kind, worst)));
+        responseTo(list.first.disease, list.first.kind, worst),
+        trust: lead.trust, caseId: withCase?.caseId));
   }
   out.sort((a, b) {
+    final t = b.trust.index - a.trust.index;
+    if (t != 0) return t;
     final s = (b.severity == 'red' ? 1 : 0) - (a.severity == 'red' ? 1 : 0);
     return s != 0 ? s : b.reports.compareTo(a.reports);
   });

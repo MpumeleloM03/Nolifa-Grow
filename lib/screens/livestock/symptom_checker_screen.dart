@@ -114,7 +114,7 @@ class _SymptomCheckerScreenState extends ConsumerState<SymptomCheckerScreen> {
                                     color: _species == sp ? AppTheme.livestockAccent : AppTheme.glassBorderSoft,
                                     width: _species == sp ? 1.5 : 1),
                               ),
-                              child: Text('${sp.emoji} ${sp.singular}',
+                              child: Text(sp.singular,
                                   style: AppTheme.footnote.copyWith(
                                       color: _species == sp ? AppTheme.textPrimary : AppTheme.textSecondary)),
                             ),

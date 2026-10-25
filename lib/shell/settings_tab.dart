@@ -38,7 +38,7 @@ class SettingsTab extends ConsumerStatefulWidget {
 }
 
 class _SettingsTabState extends ConsumerState<SettingsTab> {
-  static const _types = [('plants', '🌿 Crops'), ('livestock', '🐄 Livestock'), ('both', '🌾 Both')];
+  static const _types = [('plants', 'Crops'), ('livestock', 'Livestock'), ('both', 'Both')];
   late String _region = ref.read(currentUserProvider)?.region ?? '';
   late String _type = ref.read(currentUserProvider)?.farmType ?? 'both';
 
@@ -49,6 +49,8 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
     final user = ref.watch(currentUserProvider);
     final regions = [for (final r in RegionService.regions) r.name];
     final region = regions.contains(_region) ? _region : null;
+    final farmer = user?.isFarmer ?? true;
+    final driver = user?.isDriver ?? false;
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -57,7 +59,7 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(AppTheme.s6, AppTheme.s6, AppTheme.s6, AppTheme.s2),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Settings', style: AppTheme.largeTitle),
+              Text(farmer ? 'Settings' : 'Me', style: AppTheme.largeTitle),
               Text(user?.email ?? '', style: AppTheme.callout),
             ]),
           ),
@@ -66,7 +68,7 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
           padding: const EdgeInsets.fromLTRB(AppTheme.s6, AppTheme.s4, AppTheme.s6, 140),
           sliver: SliverList.list(children: [
             ProfileForm(
-              farmer: true,
+              farmer: farmer,
               extraFields: (changed) => [
                 DropdownButtonFormField<String>(
                   initialValue: region,
@@ -80,7 +82,7 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
                     changed();
                   },
                 ),
-                Wrap(spacing: AppTheme.s2, children: [
+                if (farmer) Wrap(spacing: AppTheme.s2, children: [
                   for (final t in _types)
                     ChoiceChip(
                       label: Text(t.$2),
@@ -101,6 +103,7 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
                 ref.invalidate(authStateProvider);
               },
             ),
+            if (farmer) ...[
             const SectionTitle('🩺', 'Membership and vets'),
             _Row(Icons.verified_rounded, 'Nolifa membership', 'Member R3 000 or Max R7 000 a month, 24 months',
                 () => _push(const MembershipScreen())),
@@ -122,11 +125,14 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
                 () => _push(const WaterSupplierScreen())),
             _Row(Icons.water_rounded, 'Nolifa borehole', 'Call a trusted driller, member discount',
                 () => _push(const BoreholeScreen())),
-            _Row(Icons.account_balance_wallet_rounded, 'Wallet and payouts', null,
+            ],
+            _Row(Icons.account_balance_wallet_rounded, farmer || driver ? 'Wallet and payouts' : 'Wallet and receipts', null,
                 () => _push(const WalletScreen())),
-            const SectionTitle('📈', 'Proof'),
-            _Row(Icons.insights_rounded, 'Impact evidence', 'Accuracy, forecast checks and water saved, measured here',
-                () => _push(const ImpactScreen())),
+            if (farmer) ...[
+              const SectionTitle('📈', 'Proof'),
+              _Row(Icons.insights_rounded, 'Impact evidence', 'Accuracy, forecast checks and water saved, measured here',
+                  () => _push(const ImpactScreen())),
+            ],
             const SectionTitle('⚙️', 'App'),
             Reveal(
               child: GlassCard(
@@ -144,7 +150,7 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
             const SizedBox(height: AppTheme.s2),
             _Row(Icons.verified_user_rounded, 'Trust and safety', 'Escrow, disputes, demo or live mode',
                 () => _push(const TrustCenterScreen())),
-            _Row(Icons.info_outline_rounded, 'About Nolifa Grow', null, () => _push(const AboutScreen())),
+            _Row(Icons.info_outline_rounded, 'About Nolifa', null, () => _push(const AboutScreen())),
             const SizedBox(height: AppTheme.s2),
             _Row(Icons.logout_rounded, 'Sign out', null, () {
               HapticFeedback.mediumImpact();

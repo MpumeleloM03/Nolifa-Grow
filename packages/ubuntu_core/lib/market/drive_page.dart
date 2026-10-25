@@ -40,7 +40,7 @@ class DrivePage extends ConsumerWidget {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: AppTheme.sheet,
-        title: Text('🚨 Safety line', style: AppTheme.title3),
+        title: Text('Safety line', style: AppTheme.title3),
         content: Text(
             'Your live location and job details are being shared with the Nolifa Drop safety team. In an emergency call 10111 or 112.',
             style: AppTheme.callout),
@@ -88,7 +88,7 @@ class DrivePage extends ConsumerWidget {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(s.driverOnline ? '🟢 You are online' : '⚫ You are offline',
+                            Text(s.driverOnline ? 'You are online' : 'You are offline',
                                 style: AppTheme.headline),
                             Row(children: [
                               Icon(Icons.verified_rounded,
@@ -140,7 +140,7 @@ class DrivePage extends ConsumerWidget {
                     Navigator.push(context, MaterialPageRoute(builder: (_) => apply != null ? apply() : const VerifyScreen(role: KycRole.driver)));
                   },
                   child: Row(children: [
-                    const Text('🪪', style: TextStyle(fontSize: 28)),
+                    const Glyph('🪪', size: 28),
                     const SizedBox(width: AppTheme.s3),
                     Expanded(
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -195,7 +195,7 @@ class DrivePage extends ConsumerWidget {
               Reveal(
                 child: GlassCard(
                   child: Row(children: [
-                    const Text('😴', style: TextStyle(fontSize: 30)),
+                    const Glyph('😴', size: 30),
                     const SizedBox(width: AppTheme.s3),
                     Expanded(
                         child: Text('Go online to see delivery jobs around you.',
@@ -216,8 +216,7 @@ class DrivePage extends ConsumerWidget {
                       padding: const EdgeInsets.all(AppTheme.s4),
                       child: Column(children: [
                         Row(children: [
-                          Text(jobs[i].lines.first.emoji,
-                              style: const TextStyle(fontSize: 28)),
+                          Glyph(jobs[i].lines.first.emoji, size: 28),
                           const SizedBox(width: AppTheme.s3),
                           Expanded(
                             child: Column(
@@ -266,7 +265,7 @@ Future<void> askCustomerPin(BuildContext context, MarketStore store, Order order
     builder: (_) => StatefulBuilder(
       builder: (ctx, setS) => AlertDialog(
         backgroundColor: AppTheme.sheet,
-        title: Text('🔑 Customer PIN', style: AppTheme.title3),
+        title: Text('Customer PIN', style: AppTheme.title3),
         content: Column(mainAxisSize: MainAxisSize.min, children: [
           Text('Ask the customer for their 4-digit PIN. Payment releases only after it matches. After $maxPinAttempts wrong tries the order locks.',
               style: AppTheme.footnote),
@@ -351,7 +350,7 @@ class _ActiveJob extends ConsumerWidget {
       tint: AppTheme.livestockAccent.withValues(alpha: 0.12),
       child: Column(children: [
         Row(children: [
-          Text(toFarm ? '🌾' : '🏠', style: const TextStyle(fontSize: 30)),
+          Glyph(toFarm ? '🌾' : '🏠', size: 30),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

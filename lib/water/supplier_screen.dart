@@ -69,7 +69,7 @@ class WaterSupplierScreen extends ConsumerWidget {
                     tint: _blue.withValues(alpha: 0.14),
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BoreholeScreen())),
                     child: Row(children: [
-                      const Text('⛏️', style: TextStyle(fontSize: 34)),
+                      const Glyph('⛏️', size: 34),
                       const SizedBox(width: AppTheme.s3),
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -156,7 +156,7 @@ class WaterSupplierScreen extends ConsumerWidget {
                           child: GlassCard(
                             padding: const EdgeInsets.symmetric(horizontal: AppTheme.s4, vertical: AppTheme.s3),
                             child: Row(children: [
-                              const Text('💧', style: TextStyle(fontSize: 22)),
+                              const Glyph('💧', size: 22),
                               const SizedBox(width: AppTheme.s3),
                               Expanded(child: Text('${o.zoneName}: ${groupDigits(o.litres)} L, about ${o.etaMinutes} min', style: AppTheme.subhead.copyWith(color: AppTheme.textPrimary))),
                               Text(timeAgo(o.at), style: AppTheme.caption),

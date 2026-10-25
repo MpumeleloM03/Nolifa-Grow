@@ -103,7 +103,7 @@ class LivestockHomeScreen extends ConsumerWidget {
   static Map<String, int> _countBySpecies(List<Cattle> list) {
     final counts = <String, int>{};
     for (final c in list.where((c) => c.status == CattleStatus.active)) {
-      final k = '${c.species.emoji} ${c.species.plural.toLowerCase()}';
+      final k = '${c.species.plural.toLowerCase()}';
       counts[k] = (counts[k] ?? 0) + 1;
     }
     return counts;
@@ -139,7 +139,7 @@ class _Attention extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: AppTheme.s2),
                 child: Row(children: [
-                  Text(a.species.emoji, style: const TextStyle(fontSize: 22)),
+                  Glyph(a.species.emoji, size: 22),
                   const SizedBox(width: AppTheme.s3),
                   Expanded(child: Text(a.label, style: AppTheme.subhead.copyWith(color: AppTheme.textPrimary))),
                   HealthDot(stateOf(health, a)),

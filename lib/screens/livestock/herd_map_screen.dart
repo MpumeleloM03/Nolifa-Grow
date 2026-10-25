@@ -112,7 +112,7 @@ class _HerdMapScreenState extends ConsumerState<HerdMapScreen> {
                         shape: BoxShape.circle,
                         border: Border.all(color: healthColor(stateOf(health, a)), width: 3),
                       ),
-                      child: Text(a.species.emoji, style: const TextStyle(fontSize: 20)),
+                      child: Glyph(a.species.emoji, size: 20),
                     ),
                   ),
                 ),

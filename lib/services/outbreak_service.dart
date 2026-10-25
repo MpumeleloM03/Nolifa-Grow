@@ -30,7 +30,8 @@ class OutbreakService {
     required OutbreakKind kind,
     required LatLng exactLocation,
     required String region,
-  }) {
+    String? caseId,
+  }) async {
     if (!SupabaseBoot.ready) {
       return LocalBackend.instance.addOutbreak(
         disease: disease,
@@ -38,9 +39,10 @@ class OutbreakService {
         kind: kind,
         location: OutbreakReport.coarsen(exactLocation),
         region: region,
+        caseId: caseId,
       );
     }
-    return _db.from('outbreaks').insert({
+    await _db.from('outbreaks').insert({
       'data': OutbreakReport(
         id: '',
         disease: disease,
@@ -49,6 +51,7 @@ class OutbreakService {
         location: OutbreakReport.coarsen(exactLocation),
         region: region,
         reportedAt: DateTime.now(),
+        caseId: caseId,
       ).toMap(),
     });
   }

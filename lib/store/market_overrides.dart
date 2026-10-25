@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:ubuntu_core/ubuntu_core.dart'
     show
         SupabaseBoot,
@@ -14,12 +15,18 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         marketNameProvider,
         marketRepositoryProvider,
         marketUidProvider,
+        driverApplicationScreenProvider,
+        driverApprovalProvider,
+        navigateProvider,
+        proofPhotoProvider,
         Plan,
         waterRepositoryProvider,
         waterUtilityProvider;
+import '../driver/driver_application.dart';
 import '../members/application_screen.dart';
 import '../members/members_service.dart';
 import '../services/auth_service.dart';
+import '../services/proof_photo.dart';
 import '../water/supplier_store.dart';
 
 /// Plugs the shared Nolifa Drop package into Nolifa's own sign-in and storage,
@@ -35,6 +42,13 @@ List<Override> marketOverrides() => [
         final name = ref.watch(currentUserProvider)?.name.trim() ?? '';
         return name.isEmpty ? 'Neighbour' : name.split(' ').first;
       }),
+      // Drivers: directions open in the phone's maps app, and delivery proof is a
+      // real camera photo.
+      navigateProvider.overrideWithValue((destination) => launchUrl(
+            Uri.parse('https://www.google.com/maps/dir/?api=1&destination=${Uri.encodeComponent(destination)}'),
+            mode: LaunchMode.externalApplication,
+          )),
+      proofPhotoProvider.overrideWithValue(() async => (await pickProofPhoto()) != null),
       marketRepositoryProvider.overrideWith((ref) => SupabaseBoot.ready
           ? SupabaseMarketRepository()
           : LocalMarketRepository()),
@@ -48,6 +62,10 @@ List<Override> marketOverrides() => [
           return st == 'approved';
         }),
         farmApplicationScreenProvider.overrideWithValue(() => const FarmApplicationScreen()),
+        // Drivers apply in the app and Nolifa staff approve them; the server
+        // only gives delivery jobs to approved drivers.
+        driverApplicationScreenProvider.overrideWithValue(() => const DriverApplicationScreen()),
+        driverApprovalProvider.overrideWith((ref) => ref.watch(approvedDriverProvider).valueOrNull),
         // The plan, and so the commission, is set by Nolifa after payment.
         sellerPlanProvider.overrideWith((ref) {
           final p = ref.watch(serverPlanProvider).valueOrNull ?? 'starter';

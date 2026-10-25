@@ -71,7 +71,7 @@ class SpeciesChips extends StatelessWidget {
       child: Row(children: [
         if (includeAll) chip('All ${active.length}', selected == null, () => onChanged(null)),
         for (final s in Species.values)
-          chip('${s.emoji} ${s.plural} ${active.where((a) => a.species == s).length}', selected == s, () => onChanged(s)),
+          chip('${s.plural} ${active.where((a) => a.species == s).length}', selected == s, () => onChanged(s)),
       ]),
     );
   }

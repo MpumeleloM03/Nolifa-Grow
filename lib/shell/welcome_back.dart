@@ -39,16 +39,19 @@ class _WelcomeBackHostState extends ConsumerState<WelcomeBackHost> {
     ref.read(welcomeShownProvider.notifier).state = true;
     final user = ref.read(currentUserProvider);
     final raw = user?.name.trim() ?? '';
-    final name = raw.isEmpty ? 'farmer' : raw.split(' ').first;
+    final community = user?.isCommunity ?? false;
+    final name = raw.isEmpty ? (community ? 'neighbour' : 'farmer') : raw.split(' ').first;
     final threats = ref.read(weatherThreatsProvider);
     final m = ref.read(marketProvider);
-    final toSend = m.farmOrders.where((o) => o.status == OrderStatus.newOrder).length;
+    final toSend = community ? 0 : m.farmOrders.where((o) => o.status == OrderStatus.newOrder).length;
     final w = ref.read(waterProvider);
     final zone = w.myZone;
     final low = zone != null && zone.status.canRequestHelp
         ? '${zone.name} water is ${zone.status.label.toLowerCase()} (${zone.level.round()}%)'
         : null;
-    ref.read(notifierProvider).show(title: 'Welcome back, $name', body: farmerUpdate(toSend, low, 0, threats.isEmpty ? null : threats.first.title));
+    var body = farmerUpdate(toSend, low, 0, threats.isEmpty ? null : threats.first.title);
+    if (community) body = body.replaceFirst('on the farm', 'in your area');
+    ref.read(notifierProvider).show(title: 'Welcome back, $name', body: body);
   }
 
   @override

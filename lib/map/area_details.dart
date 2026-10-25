@@ -3,6 +3,7 @@ import 'package:flutter/material.dart' hide Text;
 import 'package:latlong2/latlong.dart';
 import 'package:ubuntu_core/ubuntu_core.dart' show Pill;
 import '../models/outbreak_report.dart';
+import '../outbreak/outbreak_trust.dart';
 import '../services/region_service.dart';
 import '../store/store_common.dart' show SheetFrame, timeAgo;
 import '../theme/app_theme.dart';
@@ -39,7 +40,7 @@ Future<void> showAreaDetails(BuildContext context, HexGrid grid, HexCell cell, D
         children: [
           Padding(
             padding: const EdgeInsets.only(top: AppTheme.s3, bottom: AppTheme.s2),
-            child: Text('$emoji $title', style: AppTheme.headline),
+            child: Text(title, style: AppTheme.headline),
           ),
           if (list.isEmpty)
             Text('Nothing reported.', style: AppTheme.footnote)
@@ -60,7 +61,10 @@ Future<void> showAreaDetails(BuildContext context, HexGrid grid, HexCell cell, D
                   ]),
                   Text('${p.reports} report${p.reports == 1 ? '' : 's'}  •  ${timeAgo(p.latest, now: now)}', style: AppTheme.caption),
                   const SizedBox(height: AppTheme.s2),
-                  Text('How it is being handled', style: AppTheme.caption.copyWith(color: AppTheme.sprout)),
+                  CaseTrustRow(caseId: p.caseId, trust: p.trust),
+                  const SizedBox(height: AppTheme.s2),
+                  Text(p.trust == Trust.unconfirmed ? 'What to do if you see it too' : 'How it is being handled',
+                      style: AppTheme.caption.copyWith(color: AppTheme.sprout)),
                   for (final step in p.response)
                     Padding(
                       padding: const EdgeInsets.only(top: 2),
@@ -91,7 +95,10 @@ Future<void> showAreaDetails(BuildContext context, HexGrid grid, HexCell cell, D
           group('Livestock', '🐄', animals),
         ],
         const SizedBox(height: AppTheme.s2),
-        Text('Each hexagon covers about 10 km. Reports are placed by area, never at a farm.', style: AppTheme.caption),
+        Text(
+            'Each hexagon covers about 10 km. Reports are placed by area, never at a farm. '
+            'A new report stays unconfirmed until $kConfirmationsNeeded farms confirm it; only then are nearby farms alerted.',
+            style: AppTheme.caption),
       ],
     ),
   );

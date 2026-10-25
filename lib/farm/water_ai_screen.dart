@@ -97,7 +97,7 @@ class _WaterAiScreenState extends ConsumerState<WaterAiScreen> {
                           tint: AppTheme.warn.withValues(alpha: 0.12),
                           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FarmSetupScreen())),
                           child: Row(children: [
-                            const Text('🧭', style: TextStyle(fontSize: 28)),
+                            const Glyph('🧭', size: 28),
                             const SizedBox(width: AppTheme.s3),
                             Expanded(
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -161,7 +161,7 @@ class _Summary extends StatelessWidget {
       tint: _water.withValues(alpha: 0.12),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          Text(today.isEmpty ? '✅' : '💧', style: const TextStyle(fontSize: 34)),
+          Glyph(today.isEmpty ? '✅' : '💧', size: 34),
           const SizedBox(width: AppTheme.s3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -206,7 +206,7 @@ class _Autopilot extends ConsumerWidget {
     return GlassCard(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Text('🤖', style: TextStyle(fontSize: 26)),
+          const Glyph('🤖', size: 26),
           const SizedBox(width: AppTheme.s3),
           Expanded(child: Text('Autopilot', style: AppTheme.headline)),
           Switch(
@@ -263,7 +263,7 @@ class _PlotCard extends ConsumerWidget {
             value: plan.soilFullness,
             size: 58,
             color: plan.soilFullness < 0.25 ? AppTheme.danger : _water,
-            center: Text(p.spec.emoji, style: const TextStyle(fontSize: 22)),
+            center: Glyph(p.spec.emoji, size: 22),
           ),
           const SizedBox(width: AppTheme.s3),
           Expanded(
@@ -392,7 +392,7 @@ class _WeekStrip extends StatelessWidget {
                       : const ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][d.date.weekday - 1],
                   style: AppTheme.caption),
               const SizedBox(height: 2),
-              Text(switch (d.action) { DayAction.water => '💧', DayAction.rainSkip => '🌧️', DayAction.rest => '·' }, style: const TextStyle(fontSize: 16)),
+              Glyph(switch (d.action) { DayAction.water => '💧', DayAction.rainSkip => '🌧️', DayAction.rest => '' }, size: 16),
               Text(d.litres > 0 ? (d.litres >= 1000 ? '${(d.litres / 1000).toStringAsFixed(1)}k' : '${d.litres.round()}') : '-', style: AppTheme.caption),
             ]),
           ),

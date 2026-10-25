@@ -168,7 +168,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           kind: OutbreakKind.plant,
           exactLocation: RegionService.jitter(centre, disease + region),
           region: region,
-        );
+        )
+        .ignore(); // a map write never blocks or breaks a diagnosis
   }
 
   void _showImageOptions(String lang) {

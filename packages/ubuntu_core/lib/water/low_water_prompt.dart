@@ -46,7 +46,7 @@ class _LowWaterPromptHostState extends ConsumerState<LowWaterPromptHost> {
             strong: true,
             padding: const EdgeInsets.all(AppTheme.s5),
             child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text('💧', style: TextStyle(fontSize: 44)),
+              const Glyph('💧', size: 44),
               const SizedBox(height: AppTheme.s2),
               Text('${zone.name} water is ${zone.status.label.toLowerCase()}', style: AppTheme.title2),
               const SizedBox(height: AppTheme.s1),
