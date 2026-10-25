@@ -1158,6 +1158,8 @@ class MarketStore extends Notifier<MarketState> {
   /// the farmer's phone, once per order, because only the owner may edit a
   /// listing.
   void _takeStock(Order o) {
+    // On the shared backend the server takes stock when the order is placed.
+    if (_repo.shared) return;
     if (state.stockApplied.contains(o.id)) return;
     var products = state.products;
     for (final l in o.lines.where((l) => l.mine && l.productId != null)) {

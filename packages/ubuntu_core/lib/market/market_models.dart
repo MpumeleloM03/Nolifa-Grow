@@ -350,6 +350,10 @@ class Order {
   /// True when the goods were already in the Nolifa warehouse when the order
   /// was placed, so no farm drop-off is needed.
   final bool fromStock;
+
+  /// True once the money is in escrow: a confirmed card payment, or cash on
+  /// delivery. A seller cannot pack an order that is not paid.
+  final bool paid;
   final int rev; // bumped on every write so devices can tell which copy is newer
 
   const Order({
@@ -386,6 +390,7 @@ class Order {
     this.distanceKm = 0,
     this.hubStage,
     this.fromStock = false,
+    this.paid = true,
     this.rev = 0,
   });
 
@@ -452,6 +457,7 @@ class Order {
     int? rev,
     String? pin,
     String? hubStage,
+    bool? paid,
   }) =>
       Order(
         id: id,
@@ -487,6 +493,7 @@ class Order {
         distanceKm: distanceKm,
         hubStage: hubStage ?? this.hubStage,
         fromStock: fromStock,
+        paid: paid ?? this.paid,
         rev: rev ?? this.rev,
       );
 

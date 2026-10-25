@@ -263,8 +263,16 @@ void main() {
       expect(c.read(roadProvider).hazards.where((h) => !h.demo), isEmpty);
     });
 
+    testWidgets('with location off the screen says why and offers the fix', (t) async {
+      await mount(t, const RoadAlertsScreen());
+      await t.pump(const Duration(milliseconds: 300));
+      expect(find.text('We cannot see where you are'), findsOneWidget);
+      expect(find.text('Try again'), findsOneWidget);
+    });
+
     testWidgets('"Still there" adds the driver as a sighting', (t) async {
       final c = await mount(t, const RoadAlertsScreen());
+      await t.scrollUntilVisible(find.byType(HazardTile), 300);
       final tile = find.byType(HazardTile).first;
       final id = t.widget<HazardTile>(tile).hazard.id;
       await t.ensureVisible(find.descendant(of: tile, matching: find.text('Still there')));

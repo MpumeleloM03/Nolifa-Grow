@@ -156,6 +156,10 @@
 "It cannot be undone."
 ],
 [
+"Each hexagon covers about 10 km. Reports are placed by area, never at a farm. ",
+"A new report stays unconfirmed until {0} farms confirm it; only then are nearby farms alerted."
+],
+[
 "Every number here is measured on this phone from your own answers and real weather. ",
 "Each one shows how many cases it rests on. Small samples are marked, not hidden."
 ],
@@ -261,6 +265,11 @@
 [
 "You are signed in as {0}. A Nolifa admin has to add you as staff, a certifier, a vet or an admin before you can use the back office. ",
 "Send them this ID: {0}"
+],
+[
+"{0}  ·  seen {1} ago",
+"{0}",
+"  ·  {0}, {1}"
 ],
 [
 "Admins, hub staff, certifiers, vets, mediators and water providers hold powers that can hurt people if a password leaks. ",

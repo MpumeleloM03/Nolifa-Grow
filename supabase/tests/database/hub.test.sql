@@ -14,7 +14,7 @@ language sql as $$
   select jsonb_build_object('id', p_id, 'customerId', p_cust, 'farmerId', p_farm, 'status', 'findingDriver',
     'released', false, 'dispute', null, 'driverId', null, 'hubStage', p_stage, 'route', 'hub',
     'lines', jsonb_build_array(jsonb_build_object('productId', 'P1', 'name', 'Spinach', 'qty', 1, 'price', 20, 'ownerId', p_farm)),
-    'deliveryFee', 35, 'serviceFee', 2, 'pinHash', 'abc', 'method', 'fnbPay',
+    'deliveryFee', 35, 'serviceFee', 2, 'pinHash', 'abc', 'method', 'cash',
     'participants', jsonb_build_array(p_cust, p_farm), 'rev', 0)
 $$;
 

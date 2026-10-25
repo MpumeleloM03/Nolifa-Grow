@@ -10,6 +10,8 @@ import 'pages/orders_page.dart';
 import 'pages/overview_page.dart';
 import 'pages/receiving_page.dart';
 import 'pages/rooms_page.dart';
+import 'pages/trucks_page.dart';
+import 'pages/drivers_live_page.dart';
 import 'pages/scan_page.dart';
 import 'pages/stock_page.dart';
 
@@ -175,6 +177,8 @@ class _ShellState extends ConsumerState<Shell> {
       if (r.hub) ('Stock', Icons.inventory_2_rounded, const StockPage()),
       if (r.hub) ('Pick and cut', Icons.content_cut_rounded, const OrdersPage()),
       if (r.hub) ('Rooms', Icons.ac_unit_rounded, const RoomsPage()),
+      if (r.hub) ('Truck hire', Icons.local_shipping_rounded, const TrucksPage()),
+      if (r.hub || r.admin) ('Drivers live', Icons.my_location_rounded, const DriversLivePage()),
       if (r.hub || r.certifier) ('Certificates', Icons.verified_rounded, const CertsPage()),
       if (r.admin) ('Applications', Icons.assignment_ind_rounded, const ApplicationsPage()),
       if (r.admin) ('Drivers', Icons.two_wheeler_rounded, const DriverApplicationsPage()),

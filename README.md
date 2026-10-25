@@ -82,4 +82,4 @@ The app connects to the shared Supabase project by default. To use your own, see
 | `packages/ubuntu_core/` | Shared engine: marketplace, water, roads, delivery, translations |
 | `supabase/` | Database migrations, Edge Functions and live tests |
 | `backoffice/` | Staff web app for verification and approvals |
-| `docs/` | Setup, business model and security notes |
+| `docs/` | Setup, business model and security notes. `APP_DOORS.md` explains the three app doors |

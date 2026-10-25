@@ -532,7 +532,7 @@ void main() {
       await _pump(tester, 600);
       await tester.tap(find.textContaining('Delivered: take photo'));
       await _pump(tester, 800);
-      expect(find.text('🔑 Customer PIN'), findsOneWidget);
+      expect(find.text('Customer PIN'), findsOneWidget);
       await tester.enterText(find.byType(TextField).last, '1946');
       await tester.tap(find.text('Confirm'));
       await _pump(tester, 600);

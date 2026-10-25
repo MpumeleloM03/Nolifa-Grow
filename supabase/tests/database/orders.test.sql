@@ -14,7 +14,7 @@ create function pg_temp.order_json(p_id text, p_cust text, p_farm text, p_extra 
 language sql as $$
   select jsonb_build_object('id', p_id, 'customerId', p_cust, 'farmerId', p_farm, 'status', 'newOrder',
     'lines', jsonb_build_array(jsonb_build_object('productId', 'P1', 'name', 'Eggs', 'qty', 1, 'price', 80, 'ownerId', p_farm)),
-    'deliveryFee', 25, 'serviceFee', 2.4, 'method', 'fnbPay', 'route', 'local', 'customer', 'Buyer', 'dropArea', 'Street',
+    'deliveryFee', 25, 'serviceFee', 2.4, 'method', 'cash', 'route', 'local', 'customer', 'Buyer', 'dropArea', 'Street',
     'participants', jsonb_build_array(p_cust, p_farm), 'rev', 0) || p_extra
 $$;
 -- An order already in a later state, put there by the server side for the test.

@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot, resilientRows;
+import 'package:ubuntu_core/ubuntu_core.dart' show OfflineOutbox, SupabaseBoot, resilientRows;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/outbreak_report.dart';
@@ -42,7 +42,8 @@ class OutbreakService {
         caseId: caseId,
       );
     }
-    await _db.from('outbreaks').insert({
+    // No signal: the report waits on the phone and goes out when it is back.
+    await OfflineOutbox.instance.insert('Outbreak report', 'outbreaks', {
       'data': OutbreakReport(
         id: '',
         disease: disease,

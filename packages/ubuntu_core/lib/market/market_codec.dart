@@ -145,6 +145,7 @@ Map<String, dynamic> orderToJson(Order o, String uid) {
     'distanceKm': o.distanceKm,
     'hubStage': o.hubStage,
     'fromStock': o.fromStock,
+    'paid': o.paid,
     'rev': o.rev,
   };
 }
@@ -189,6 +190,8 @@ Order orderFromJson(Map<String, dynamic> m, String uid, {bool seed = false}) => 
       distanceKm: (m['distanceKm'] as num?)?.toDouble() ?? 0,
       hubStage: m['hubStage'] as String?,
       fromStock: m['fromStock'] as bool? ?? false,
+      // Orders from before payments were checked have no flag and count as paid.
+      paid: m['paid'] as bool? ?? true,
       seed: seed,
     );
 

@@ -32,11 +32,11 @@ select is((select data ->> 'name' from public.users where uid = :b), 'B', 'and n
 select pg_temp.as_user(:a);
 
 -- outbreak spam ---------------------------------------------------------------------------
-select throws_ok($f$insert into public.outbreaks (data) values ('{"lat":-29.5,"lng":30.2,"severity":"red"}')$f$, '42501', null, 'an unverified account cannot add outbreak reports');
+select throws_ok($f$insert into public.outbreaks (data) values ('{"lat":-29.5,"lng":30.2,"severity":"red"}')$f$, '42501', null, 'a report with no disease named is refused');
 select pg_temp.as_admin();
 insert into public.verified_users (uid) values (:a);
 select pg_temp.as_user(:a);
-select lives_ok($f$insert into public.outbreaks (data) values ('{"lat":-29.5,"lng":30.2,"severity":"red"}')$f$, 'a verified one can');
+select lives_ok($f$insert into public.outbreaks (data) values ('{"lat":-29.5,"lng":30.2,"severity":"red","disease":"Late Blight"}')$f$, 'a signed-in person can report a named disease (it shows as unconfirmed)');
 
 -- driver application ------------------------------------------------------------------------
 select pg_temp.as_user(:drv);

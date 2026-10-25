@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Nolifa uses the camera to scan a leaf or animal, a parcel code, and to take delivery proof photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Nolifa lets you pick a photo of a plant, an animal or a document you already took.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Nolifa records sound with the video you send to a vet.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Nolifa uses your location to show the dams, weather and road warnings where you are.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>

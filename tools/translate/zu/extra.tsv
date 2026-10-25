@@ -61,3 +61,206 @@ When 1 neighbour asks, the request goes to {0}. Each person counts once.	Uma uma
 / tray	/ ithreyi
 / whole	/ lonke
 Monthly platform fee and support. The app does not collect it yet: Nolifa confirms payment and switches the plan on.	Imali yenkundla yenyanga nokusekelwa. Uhlelo aluyiqoqi okwamanje: i-Nolifa iqinisekisa inkokhelo bese ivula uhlelo.
+Bicycle	Isithuthuthu sebhayisikili
+Motorbike	Isithuthuthu
+Car	Imoto
+Bakkie	Ibhakede
+A (motorbike)	A (isithuthuthu)
+B (car)	B (imoto)
+Front of your ID	Ingaphambili lencwadi yakho yokuhlonza
+Driving licence (or ID again for a bicycle)	Ilayisense yokushayela (noma i-ID futhi uma uhamba ngebhayisikili)
+Your vehicle with its plate	Isithuthi sakho nepuleti laso
+Sent. Nolifa will check your details and photos, usually within a day.	Kuthunyelwe. I-Nolifa izobheka imininingwane yakho nezithombe, imvamisa ngaphakathi kosuku.
+Driver applications need the shared database. Connect to it and try again.	Izicelo zabashayeli zidinga isikhungo sedatha esabiwe. Xhuma bese uyazama futhi.
+load your application	layisha isicelo sakho
+You are approved. Go online on the Jobs tab to start earning.	Wamukelwe. Yana ku-inthanethi kuthebhu yemisebenzi uqale ukuthola imali.
+With Nolifa for review. We will let you know.	Ikwa-Nolifa ukubukezwa. Sizokwazisa.
+Nolifa needs more: {0}	I-Nolifa idinga okuningi: {0}
+Fill this in once. Nolifa checks it before your first job.	Gcwalisa lokhu kanye kuphela. I-Nolifa iyakubheka ngaphambi komsebenzi wakho wokuqala.
+ID number	Inombolo ye-ID
+Phone number	Inombolo yocingo
+What do you drive?	Ushayela ini?
+Number plate (write NONE for a bicycle)	Inombolo yepuleti (loba NONE uma uhamba ngebhayisikili)
+I agree that Nolifa may check my ID and licence, and keep these photos safely to verify me.	Ngiyavuma ukuthi i-Nolifa ingahlola i-ID nelayisense yami, futhi igcine lezi zithombe kahle ukungiqinisekisa.
+Fill in everything above	Gcwalisa konke okungenhla
+Paid when the customer gives you their PIN	Ukhokhelwa uma ikhasimende likunika iPIN yalo
+plus {0} waiting for a PIN	kanye no-{0} olindele iPIN
+deliveries done	ukulethwa okuqediwe
+on the go now	kuyaqhubeka manje
+R12 a delivery plus R2.50 a km, never under R24. A farm that delivers itself keeps its own fee.	R12 ngokulethwa ngakunye kanye no-R2.50 ngekhilomitha, akusoze kwaba ngaphansi kuka-R24. Ipulazi elethela lonaligcina imali yalo.
+Your payouts show here after each delivery.	Inkokhelo yakho iyavela lapha ngemva kokulethwa ngakunye.
+{0} km · {1}	{0} km · {1}
+Wallet and payout account	I-wallet ne-akhawunti yenkokhelo
+{0} s ago	{0} s edlule
+Finding a driver	Sithola umshayeli
+Being packed	Iyapakwa
+{0} is on the way. Waiting for their location.	{0} usendleleni. Silindele indawo yakhe.
+Last seen {0}	Kubonwe kokugcina {0}
+to collect from the farm	ukuyothatha epulazini
+to you	kuwe
+{0} is on the way {1}	{0} usendleleni {1}
+{0} is about {1} min away {2}	{0} usebangaba ngu-{1} min kude {2}
+About Nolifa	Mayelana ne-Nolifa
+{0} new: approvals, orders, payouts	{0} okusha: ukuvunywa, ama-oda, izinkokhelo
+Approvals, orders, payouts and alerts	Ukuvunywa, ama-oda, izinkokhelo nezixwayiso
+Diagnose	Hlola
+Outbreaks	Ukuqubuka kwezifo
+Sell	Thengisa
+Roads	Imigwaqo
+Check a sick plant or animal in seconds	Hlola isitshalo noma isilwane esigulayo ngemizuzwana
+Check a sick plant	Hlola isitshalo esigulayo
+Check a sick animal	Hlola isilwane esigulayo
+Tick the signs you see. Controlled diseases like foot-and-mouth are flagged first, with who to call.	Khetha izimpawu ozibonayo. Izifo ezilawulwayo njengesifo sezinyawo nomlomo ziqala ukuboniswa, kanye nokuthi ubize bani.
+Scan a parcel to send out	Skena iphasela ukulithumela
+Inventory	Impahla esitokweni
+Inventory and rooms	Impahla namagumbi
+Shop stock, warehouse stock and temperature	Isitoko sesitolo, isitoko senqolobane nokushisa
+Truck hire	Ukuqasha ilori
+A bakkie or refrigerated truck for bulk loads	Ibhakede noma ilori elipholile lemithwalo emikhulu
+Sent. It shows on the map as unconfirmed until {0} farms confirm it.	Kuthunyelwe. Kuvela emepheni njengokungaqinisekisiwe kuze kuqinisekise amapulazi angu-{0}.
+You have sent a lot of reports today. Try again tomorrow.	Uthumele imibiko eminingi namuhla. Zama futhi kusasa.
+Your report was saved, but the map could not be updated. Check your connection.	Umbiko wakho ugcinwe, kodwa imephu ayizange ibuyekezwe. Hlola uxhumo lwakho.
+It shows on the map right away as unconfirmed. Nearby farms are alerted once {0} farms confirm it, and a vet or extension officer can verify it.	Uvela emepheni ngokushesha njengongaqinisekisiwe. Amapulazi aseduze axwayiswa uma amapulazi angu-{0} eqinisekisa, futhi udokotela wezilwane noma isikhulu sokwandisa singawuqinisekisa.
+Sending...	Iyathunyelwa...
+Unconfirmed report	Umbiko ongaqinisekisiwe
+Unconfirmed	Akuqinisekisiwe
+Join Nolifa	Joyina i-Nolifa
+Tell us who you are and we set the app up for you.	Sitshele ukuthi ungubani sikulungisele i-app.
+I grow crops or keep animals, and sell to people nearby.	Ngitshala izitshalo noma ngifuya izilwane, ngithengisele abantu abaseduze.
+Community member	Ilungu lomphakathi
+I want plant and animal checks, outbreak and water alerts, and fresh food from nearby farms.	Ngifuna ukuhlolwa kwezitshalo nezilwane, izixwayiso zokuqubuka kwezifo namanzi, nokudla okusha emapulazini aseduze.
+I deliver orders from farms to homes and get paid per delivery.	Ngilethela ama-oda emapulazini ngiwayisa emakhaya, ngikhokhelwe ngokulethwa ngakunye.
+Try the demo	Zama idemo
+Open a ready-made account for each role.	Vula i-akhawunti elungisiwe yendima ngayinye.
+What to do if you see it too	Okufanele ukwenze uma nawe ukubona
+Each hexagon covers about 10 km. Reports are placed by area, never at a farm. 	Ihexagoni ngayinye ihlanganisa cishe ama-10 km. Imibiko ibekwa ngendawo, akusoze kwaba epulazini.
+A new report stays unconfirmed until {0} farms confirm it; only then are nearby farms alerted.	Umbiko omusha uhlala ungaqinisekisiwe kuze kuqinisekise amapulazi angu-{0}; kuphela khona amapulazi aseduze axwayiswa.
+The card page could not be opened. Try again.	Ikhasi lekhadi alivulekanga. Zama futhi.
+Card payments are not available right now.	Ukukhokha ngekhadi akutholakali okwamanje.
+We could not reach the card service. Check your signal and try again.	Asikwazanga ukufinyelela insizakalo yamakhadi. Hlola isignali yakho bese uyazama futhi.
+The order is still being saved. Try again in a moment.	I-oda lisagcinwa. Zama futhi ngomzuzwana.
+Could not save that. Check your connection and try again.	Akwenzekanga ukugcina lokho. Hlola uxhumo lwakho bese uyazama futhi.
+Not yet confirmed by other farms.	Ayikaqinisekiswa amanye amapulazi.
+{0} of {1} farms confirmed. Nearby farms are alerted once {2} confirm.	Amapulazi angu-{0} kwangu-{1} aqinisekisile. Amapulazi aseduze axwayiswa uma kuqinisekisa angu-{2}.
+Confirmed by {0} farms. Nearby farms have been alerted.	Kuqinisekiswe amapulazi angu-{0}. Amapulazi aseduze axwayisiwe.
+Verified by a vet or extension officer.	Kuqinisekiswe udokotela wezilwane noma isikhulu sokwandisa.
+Verified by {0}.	Kuqinisekiswe ngu-{0}.
+Thanks. Your confirmation was added.	Siyabonga. Isiqinisekiso sakho sengeziwe.
+Verified. Nearby farms are alerted.	Kuqinisekisiwe. Amapulazi aseduze axwayisiwe.
+Not this	Akukhona lokhu
+Rejected. It has been taken off the map.	Kwenqatshiwe. Kususiwe emepheni.
+As a vet:	Njengodokotela wezilwane:
+As an extension officer:	Njengesikhulu sokwandisa:
+Animal	Isilwane
+Outbreak report	Umbiko wokuqubuka kwesifo
+Open	Vula
+Nothing yet. Approvals, orders, payouts and temperature alerts show up here the moment they happen.	Akukho okwamanje. Ukuvunywa, ama-oda, izinkokhelo nezixwayiso zokushisa kuvela lapha ngokushesha lapho kwenzeka.
+Up to about 1 ton. Cooler boxes for short trips.	Kuze kube cishe yithani elilodwa. Amabhokisi apholile eziqhingini ezimfushane.
+Refrigerated truck	Ilori elipholile
+Keeps meat and dairy cold on the road.	Igcina inyama nobisi kubanda emgwaqweni.
+Flatbed	Ilori eliyisitebhisi
+Bags, crates and equipment. Not for cold goods.	Amasaka, amakhreyiti nemishini. Akusiyo impahla ebandayo.
+Move your goods in bulk	Hambisa impahla yakho eningi
+Need more than a delivery driver can carry? Ask for a bakkie or a refrigerated truck to take stock from your farm to the warehouse. You see a price straight away, Nolifa confirms it, and you accept.	Udinga okungaphezu kwalokho umshayeli wokulethela angakuthwala? Cela ibhakede noma ilori elipholile lithathe isitoko sakho epulazini lisise enqolobaneni. Ubona intengo ngokushesha, i-Nolifa iyiqinisekise, bese uyayamukela.
+Ask for a truck	Cela ilori
+Truck hire needs the shared database.	Ukuqasha ilori kudinga isikhungo sedatha esabiwe.
+Waiting for a quote	Silindele inani
+Quote ready	Inani selilungile
+Cancelled	Kukhanselwe
+{0}  •  {1} kg{2}	{0}  •  {1} kg{2}
+{0} to {1}  •  {2} km	{0} kuya ku-{1}  •  {2} km
+Needed {0}/{1}/{2}	Kudingeka {0}/{1}/{2}
+Quote {0}	Inani {0}
+About {0}	Cishe {0}
+Accept the quote	Yamukela inani
+Say where it starts and where it goes.	Sitshele ukuthi kuqala kuphi nokuthi kuya kuphi.
+How many kg are you sending?	Uthumela ama-kg amangaki?
+Keep it cold	Gcina kubanda
+Load in kg	Umthwalo ngama-kg
+Collect from (farm or town)	Thatha ku- (ipulazi noma idolobha)
+Take to	Yisa ku-
+Needed on {0}/{1}/{2}	Kudingeka ngomhla ka-{0}/{1}/{2}
+Anything the driver should know	Noma yini umshayeli okufanele ayazi
+The distance is worked out when you ask.	Ibanga liyabalwa uma ucela.
+{0} km, about {1}	{0} km, cishe {1}
+Measuring	Iyalinganiswa
+Check price	Hlola intengo
+Send the request	Thumela isicelo
+Waiting for payment	Silindele inkokhelo
+The buyer has not paid yet. You can pack it as soon as the card payment goes through. This updates by itself.	Umthengi akakakhokhi. Ungayipaka uma inkokhelo yekhadi isiphumelele. Lokhu kuyabuyekezwa kuphela.
+Parcel label	Ilebula yephasela
+Scan to send out	Skena ukuthumela
+Follow the driver	Landela umshayeli
+Sell fast at a discount	Thengisa ngokushesha ngesaphulelo
+Stick this on the bag. Scan it to send the order out for a driver.	Namathisela lokhu esikhwameni. Liskene ukuthumela i-oda kumshayeli.
+That code is not one of your orders.	Leyo khodi akuyona eyenye yama-oda akho.
+{0} is not paid yet. Pack it once the card payment goes through.	{0} akakakhokhwa. Yipake uma inkokhelo yekhadi isiphumelele.
+{0} is already waiting for a driver.	{0} usalindele umshayeli.
+{0} has already been sent out.	{0} usuvele wathunyelwa.
+{0} is ready. Drivers can see it now.	{0} usulungile. Abashayeli bayakubona manje.
+send that order out	thumela leli oda
+The camera is not available. Type the order code below.	Ikhamera ayitholakali. Thayipha ikhodi ye-oda ngezansi.
+{0} {1} waiting to go out. Point the camera at the parcel label.	{0} {1} silindele ukuphuma. Khomba ikhamera kulebula yephasela.
+Or type the order code	Noma thayipha ikhodi ye-oda
+Last 5 characters	Izinhlamvu zokugcina ezi-5
+This is what buyers in the shop see.	Yilokhu abathengi abakubona esitolo.
+items in the shop	impahla esitolo
+in the warehouse	enqolobaneni
+running low	iyaphela
+Your rooms	Amagumbi akho
+{0} {1} out of range. Warehouse staff have been told.	{0} {1} ngaphandle komkhawulo. Abasebenzi benqolobane bayazi.
+Add stock on the Sell tab and it shows up here.	Engeza isitoko kuthebhu yokuthengisa bese sivela lapha.
+Warehouse: deposits and stock	Inqolobane: ukufakwa nesitoko
+No reading	Alukho ulwazi
+Should be {0}	Kufanele kube {0}
+In the shop	Esitolo
+No limit	Akukho mkhawulo
+In the warehouse	Enqolobaneni
+None	Lutho
+Past its use-by date	Isidlulile usuku lokusetshenziswa
+Use by today	Sebenzisa namuhla
+Use by in {0} {1}	Sebenzisa phakathi kwe-{0} {1}
+Tap to change the shop count	Thinta ukushintsha inani lesitolo
+Saved on your phone. It goes to the provider as soon as you are back online.	Kugcinwe efonini yakho. Kuya kumhlinzeki uma usubuyele ku-inthanethi.
+Send trucks to {0}	Thumela amalori ku-{0}
+Water help request	Isicelo sosizo lwamanzi
+Water details	Imininingwane yamanzi
+ {0} {1} to send.	 {0} {1} ezothunyelwa.
+Offline.	Awuxhumile.
+Sending.	Iyathunyelwa.
+Sending.{0}	Iyathunyelwa.{0}
+Fresh beef and chicken, cut to order	Inyama yenkomo nenkukhu entsha, inqunywa ngokufunwa
+{0}, KwaZulu-Natal	{0}, KwaZulu-Natal
+On the map	Emepheni
+an extension officer	isikhulu sokwandisa
+a vet	udokotela wezilwane
+Household readiness	Ukulungela komuzi
+Rescue	Ukusiza
+Your basket is empty	Ibhasikidi lakho alinalutho
+Confirmed. {0} released to the farmer and driver. You earned {1} eBucks	Kuqinisekisiwe. {0} ikhishelwe umlimi nomshayeli. Uzuze ama-eBucks angu-{1}
+Your delivery PIN	IPIN yakho yokulethwa
+Pickup photo taken	Isithombe sokuthatha sithathiwe
+Pickup photo pending	Isithombe sokuthatha siyalindelwa
+GPS trail recorded	Umkhondo we-GPS urekhodiwe
+PIN used	IPIN isetshenzisiwe
+PIN pending	IPIN iyalindelwa
+Did everything arrive OK?	Konke kufike kahle?
+Waiting for your payment	Silindele inkokhelo yakho
+The farm packs your order once the card payment goes through. Your money is held safely until you confirm delivery. This page updates by itself.	Ipulazi lipaka i-oda lakho uma inkokhelo yekhadi isiphumelele. Imali yakho igcinwa kahle kuze kube uqinisekisa ukulethwa. Leli khasi liyabuyekezwa lodwa.
+Backup suppliers for {0}	Abahlinzeki abangenele ku-{0}
+Stock change	Ushintsho lwesitoko
+I deliver	Ngiyalethela
+Customer PIN	IPIN yekhasimende
+You are on {0}	Ukwi-{0}
+Verified by {0}. Nearby farms are alerted.	Kuqinisekiswe ngu-{0}. Amapulazi aseduze axwayisiwe.
+Confirmed by {0} farms. Nearby farms are alerted.	Kuqinisekiswe amapulazi angu-{0}. Amapulazi aseduze axwayisiwe.
+Checked by {0} and rejected. Removed from the map.	Kuhloliwe ngu-{0} bese kwenqatshwa. Kususiwe emepheni.
+Unconfirmed on the map. Alerts go out once {0}.	Akuqinisekisiwe emepheni. Izixwayiso ziyathunyelwa uma {0}.
+Report a case	Bika icala
+Location is switched off on this phone. Alerts near you and job tracking need it.	Indawo icishiwe kule foni. Izixwayiso eziseduze nawe nokulandelela umsebenzi kuyayidinga.
+Nolifa is not allowed to use your location yet. Allow it to see alerts near you.	I-Nolifa ayikavunyelwa ukusebenzisa indawo yakho. Yivumele ukubona izixwayiso eziseduze nawe.
+Location was blocked for Nolifa. Open settings and allow it while using the app.	Indawo ivinjelwe i-Nolifa. Vula izilungiselelo uyivumele ngenkathi usebenzisa i-app.
+Nolifa could not find your position. Move to open sky or check your signal, then try again.	I-Nolifa ayikwazanga ukuthola indawo yakho. Hamba ungaphansi kwezulu elivulekile noma uhlole isignali yakho, bese uyazama futhi.
+We cannot see where you are	Asikwazi ukubona ukuthi ukuphi
+Open settings	Vula izilungiselelo
+Try again	Zama futhi

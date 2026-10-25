@@ -348,7 +348,9 @@ void main() {
       final pin = buyer.s.pins[id]!;
       await settle();
       expect(farmer.s.orderById(id)!.selfDelivery, isTrue);
-      expect(farmer.s.products.single.stock, 18); // two came off the shelf
+      // On the shared backend the server takes stock when the order is placed, so
+      // a phone does not subtract it again. (The database tests cover the number.)
+      expect(farmer.s.products.single.stock, 20);
 
       // Packing it makes the farmer the driver: no open job for anyone else.
       farmer.store.packOrder(id);

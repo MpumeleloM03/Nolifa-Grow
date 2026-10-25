@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ubuntu_core/ubuntu_core.dart'
     show
-        DrivePage,
+        DriverTrackingHost,
         GlassTabBar,
         LowWaterPromptHost,
         OrderStatus,
@@ -12,8 +12,10 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         WaterPage,
         marketProvider,
         openDropMenu;
+import '../driver/driver_home.dart';
 import '../driver/earnings_tab.dart';
 import '../services/auth_service.dart';
+import '../services/notices.dart';
 import '../store/farm_water_section.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
@@ -67,7 +69,7 @@ class _GrowShellState extends ConsumerState<GrowShell> {
     if (driver) {
       final open = ref.watch(marketProvider.select((s) => s.openJobs.length));
       tabs = const [_jobs, _roads, _earnings, _me];
-      pages = const [DrivePage(), RoadAlertsScreen(), EarningsTab(), SettingsTab()];
+      pages = const [DriverHome(), RoadAlertsScreen(), EarningsTab(), SettingsTab()];
       badges = {if (open > 0) 0: open};
     } else if (community) {
       tabs = const [_diagnose, _outbreaks, _water, _shop, _me];
@@ -81,7 +83,7 @@ class _GrowShellState extends ConsumerState<GrowShell> {
       badges = const {};
     } else {
       final toSend = ref.watch(marketProvider.select(
-          (s) => s.farmOrders.where((o) => o.status == OrderStatus.newOrder).length));
+          (s) => s.farmOrders.where((o) => o.status == OrderStatus.newOrder && o.paid).length));
       tabs = const [_diagnose, _outbreaks, _water, _sell, _me];
       pages = const [
         HomeTab(),
@@ -102,6 +104,9 @@ class _GrowShellState extends ConsumerState<GrowShell> {
       _ => AppTheme.plantAccent,
     };
 
+    final unread = ref.watch(unreadNoticesProvider);
+    final shownBadges = {...badges, if (unread > 0) tabs.length - 1: unread};
+
     final scaffold = Scaffold(
       extendBody: true,
       body: AppBackdrop(
@@ -118,7 +123,7 @@ class _GrowShellState extends ConsumerState<GrowShell> {
       bottomNavigationBar: GlassTabBar(
         index: i,
         tabs: tabs,
-        badges: badges,
+        badges: shownBadges,
         onTap: (n) {
           HapticFeedback.selectionClick();
           setState(() => _i = n);
@@ -127,11 +132,13 @@ class _GrowShellState extends ConsumerState<GrowShell> {
     );
 
     // Drivers get no farm or water pop-ups: their app is the road.
-    if (driver) return scaffold;
-    return WelcomeBackHost(
-      child: LowWaterPromptHost(
-        waterSections: community ? const [] : const [FarmWaterSection()],
-        child: scaffold,
+    if (driver) return NoticesHost(child: DriverTrackingHost(child: scaffold));
+    return NoticesHost(
+      child: WelcomeBackHost(
+        child: LowWaterPromptHost(
+          waterSections: community ? const [] : const [FarmWaterSection()],
+          child: scaffold,
+        ),
       ),
     );
   }

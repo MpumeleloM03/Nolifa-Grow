@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show FileOptions;
-import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot, friendlyError;
+import 'package:ubuntu_core/ubuntu_core.dart' show SupabaseBoot, friendlyError, resilientRows;
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
@@ -12,25 +12,29 @@ import '../theme/glass.dart';
 import 'package:ubuntu_core/tr_text.dart' show Text;
 
 /// The signed-in driver's application row, or null on the phone alone.
-final driverApplicationProvider = FutureProvider.autoDispose<Map<String, dynamic>?>((ref) async {
-  ref.watch(currentUserProvider.select((u) => u?.uid));
-  if (!SupabaseBoot.ready) return null;
-  final uid = SupabaseBoot.client.auth.currentUser?.id;
-  if (uid == null) return null;
-  final row = await SupabaseBoot.client.from('driver_applications').select().eq('uid', uid).maybeSingle();
-  return row == null ? null : Map<String, dynamic>.from(row);
+final driverApplicationProvider = StreamProvider.autoDispose<Map<String, dynamic>?>((ref) {
+  final uid = ref.watch(currentUserProvider.select((u) => u?.uid));
+  if (uid == null || !SupabaseBoot.ready) return Stream.value(null);
+  final db = SupabaseBoot.client;
+  return resilientRows(
+    open: () => db.from('driver_applications').stream(primaryKey: ['uid']).eq('uid', uid),
+    fetch: () async => [for (final r in await db.from('driver_applications').select().eq('uid', uid)) Map<String, dynamic>.from(r)],
+  ).map((rows) => rows.isEmpty ? null : rows.first);
 });
 
 /// True once Nolifa staff have approved this driver. The server decides; the
 /// app only reads the answer, so a driver cannot approve themselves.
-final approvedDriverProvider = FutureProvider<bool>((ref) async {
-  ref.watch(currentUserProvider.select((u) => u?.uid));
-  if (!SupabaseBoot.ready) return false;
-  try {
-    return await SupabaseBoot.client.rpc('is_approved_driver') == true;
-  } catch (_) {
-    return false;
-  }
+///
+/// Live: the moment staff approve, this turns true and the jobs open, with no
+/// refresh and no restart.
+final approvedDriverProvider = StreamProvider<bool>((ref) {
+  final uid = ref.watch(currentUserProvider.select((u) => u?.uid));
+  if (uid == null || !SupabaseBoot.ready) return Stream.value(false);
+  final db = SupabaseBoot.client;
+  return resilientRows(
+    open: () => db.from('approved_drivers').stream(primaryKey: ['uid']).eq('uid', uid),
+    fetch: () async => [for (final r in await db.from('approved_drivers').select().eq('uid', uid)) Map<String, dynamic>.from(r)],
+  ).map((rows) => rows.isNotEmpty);
 });
 
 /// What Nolifa needs before someone can take delivery jobs: who they are, what

@@ -10,6 +10,7 @@ import '../warehouse/warehouse_store.dart';
 import 'market_models.dart';
 import 'market_store.dart';
 import 'drive_page.dart' show trackMapProvider;
+import 'order_pay.dart';
 import 'honesty.dart';
 import 'market_widgets.dart';
 import 'trust_screens.dart';
@@ -385,6 +386,16 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         farmName != null &&
         ms.cart.entries.every((e) => wh.available(farmName, ms.products.firstWhere((p) => p.id == e.key).name) >= e.value);
     final id = ref.read(marketProvider.notifier).place(_method, fromStock: fromStock);
+    // A card order opens the Yoco page now. If that fails the order still exists
+    // and the tracking page has a Pay button to try again.
+    final pay = ref.read(orderPaymentProvider);
+    if (pay != null && _method != PayMethod.cash && ref.read(marketSharedProvider)) {
+      final why = await pay(id);
+      if (why != null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(why)));
+      }
+    }
+    if (!mounted) return;
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (_) => TrackingScreen(orderId: id, fresh: true)));
   }
@@ -672,6 +683,10 @@ class TrackingScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(AppTheme.s4),
                 child: Column(children: [
+                  if (!o.paid && o.customerIsMe) ...[
+                    Reveal(child: _PayBanner(o)),
+                    const SizedBox(height: AppTheme.s4),
+                  ],
                   Reveal(child: ref.watch(trackMapProvider)?.call(o) ?? _RouteMap(status: o.status)),
                   const SizedBox(height: AppTheme.s4),
                   Reveal(
@@ -1048,6 +1063,56 @@ class _ConfirmCardState extends ConsumerState<_ConfirmCard> {
           icon: Icons.flag_rounded,
           onPressed: () => showDisputeSheet(context, widget.order),
         ),
+      ]),
+    );
+  }
+}
+
+/// Shown until the card payment is confirmed. The seller cannot pack the order
+/// before then. It disappears by itself when the payment goes through.
+class _PayBanner extends ConsumerStatefulWidget {
+  final Order order;
+  const _PayBanner(this.order);
+
+  @override
+  ConsumerState<_PayBanner> createState() => _PayBannerState();
+}
+
+class _PayBannerState extends ConsumerState<_PayBanner> {
+  bool _busy = false;
+  String? _error;
+
+  Future<void> _pay() async {
+    final pay = ref.read(orderPaymentProvider);
+    if (pay == null) return;
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    final why = await pay(widget.order.id);
+    if (mounted) {
+      setState(() {
+        _busy = false;
+        _error = why;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final can = ref.watch(orderPaymentProvider) != null;
+    return GlassCard(
+      tint: AppTheme.warn.withValues(alpha: 0.14),
+      padding: const EdgeInsets.all(AppTheme.s4),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text('Waiting for your payment', style: AppTheme.headline),
+        const SizedBox(height: 2),
+        Text('The farm packs your order once the card payment goes through. Your money is held safely until you confirm delivery. This page updates by itself.', style: AppTheme.footnote),
+        if (_error != null) Padding(padding: const EdgeInsets.only(top: AppTheme.s2), child: Text(_error!, style: AppTheme.footnote.copyWith(color: AppTheme.danger))),
+        if (can) ...[
+          const SizedBox(height: AppTheme.s3),
+          GlassButton(label: 'Pay ${rand(widget.order.total, decimals: 2)} by card', icon: Icons.credit_card_rounded, busy: _busy, onPressed: _pay),
+        ],
       ]),
     );
   }

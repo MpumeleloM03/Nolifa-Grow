@@ -268,8 +268,8 @@ void main() {
     expect(find.text('Checkout'), findsOneWidget);
     await scrollTo(tester, 'Service fee (3%)');
     expect(find.text('Service fee (3%)'), findsOneWidget);
-    await scrollTo(tester, '🧾 Where your money goes');
-    expect(find.text('🧾 Where your money goes'), findsOneWidget);
+    await scrollTo(tester, 'Where your money goes');
+    expect(find.text('Where your money goes'), findsOneWidget);
     await tester.tap(find.textContaining('Pay R'));
     await tester.pump(const Duration(milliseconds: 1600));
     await tester.pump(const Duration(seconds: 1));

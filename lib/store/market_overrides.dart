@@ -17,14 +17,21 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         marketUidProvider,
         driverApplicationScreenProvider,
         driverApprovalProvider,
+        jobMapProvider,
         navigateProvider,
+        orderPaymentProvider,
         proofPhotoProvider,
+        trackMapProvider,
         Plan,
         waterRepositoryProvider,
         waterUtilityProvider;
+import 'package:flutter/widgets.dart' show ValueKey;
 import '../driver/driver_application.dart';
+import '../driver/job_map.dart';
+import '../driver/order_track_map.dart';
 import '../members/application_screen.dart';
 import '../members/members_service.dart';
+import '../members/order_payment.dart';
 import '../services/auth_service.dart';
 import '../services/proof_photo.dart';
 import '../water/supplier_store.dart';
@@ -48,7 +55,13 @@ List<Override> marketOverrides() => [
             Uri.parse('https://www.google.com/maps/dir/?api=1&destination=${Uri.encodeComponent(destination)}'),
             mode: LaunchMode.externalApplication,
           )),
+      // A card order opens Yoco; the shop and the tracking page share this one hook.
+      orderPaymentProvider.overrideWith((ref) => SupabaseBoot.ready ? startOrderPayment : null),
       proofPhotoProvider.overrideWithValue(() async => (await pickProofPhoto()) != null),
+      // The buyer and the seller follow an order live.
+      trackMapProvider.overrideWithValue((order) => OrderTrackMap(order, key: ValueKey('track-${order.id}-${order.status.name}'))),
+      // The map on an accepted job: driver, farm, customer and the route between.
+      jobMapProvider.overrideWithValue((order) => JobRouteMap(order, key: ValueKey('${order.id}-${order.status.name}'))),
       marketRepositoryProvider.overrideWith((ref) => SupabaseBoot.ready
           ? SupabaseMarketRepository()
           : LocalMarketRepository()),

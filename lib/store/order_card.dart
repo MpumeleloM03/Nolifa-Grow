@@ -5,6 +5,8 @@ import 'package:ubuntu_core/ubuntu_core.dart'
     show Order, OrderStatus, Pill, askCustomerPin, marketProvider;
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
+import '../driver/order_track_map.dart';
+import 'scan_dispatch.dart';
 import 'store_common.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
@@ -17,6 +19,7 @@ import 'package:ubuntu_core/tr_text.dart' show Text;
         : (label: 'Paid out', color: AppTheme.sprout);
   }
   if (o.disputed) return (label: 'Case open', color: AppTheme.danger);
+  if (!o.paid && o.status == OrderStatus.newOrder) return (label: 'Waiting for payment', color: AppTheme.warn);
   if (o.selfDelivery) {
     if (o.status == OrderStatus.assigned) {
       return (label: 'Ready to deliver', color: AppTheme.plantAccent);
@@ -143,7 +146,11 @@ class OrderCard extends ConsumerWidget {
             Expanded(child: Text('You deliver this one yourself', style: AppTheme.footnote)),
           ]),
         ],
-        if (o.status == OrderStatus.newOrder) ...[
+        if (o.status == OrderStatus.newOrder && !o.paid) ...[
+          const SizedBox(height: AppTheme.s2),
+          Text('The buyer has not paid yet. You can pack it as soon as the card payment goes through. This updates by itself.', style: AppTheme.footnote),
+        ],
+        if (o.status == OrderStatus.newOrder && o.paid) ...[
           const SizedBox(height: AppTheme.s3),
           GlassButton(
             label: o.selfDelivery ? 'Packed, I am delivering' : 'Packed, request driver',
@@ -152,6 +159,41 @@ class OrderCard extends ConsumerWidget {
               HapticFeedback.mediumImpact();
               ref.read(marketProvider.notifier).packOrder(o.id);
             },
+          ),
+          if (!o.selfDelivery) ...[
+            const SizedBox(height: AppTheme.s2),
+            Row(children: [
+              Expanded(
+                child: GhostButton(
+                  label: 'Parcel label',
+                  icon: Icons.qr_code_2_rounded,
+                  onPressed: () => showParcelLabel(context, o),
+                ),
+              ),
+              const SizedBox(width: AppTheme.s2),
+              Expanded(
+                child: GhostButton(
+                  label: 'Scan to send out',
+                  icon: Icons.qr_code_scanner_rounded,
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ScanDispatchScreen())),
+                ),
+              ),
+            ]),
+          ],
+        ],
+        if (!o.selfDelivery && (o.status == OrderStatus.assigned || o.status == OrderStatus.pickedUp)) ...[
+          const SizedBox(height: AppTheme.s3),
+          GhostButton(
+            label: 'Follow the driver',
+            icon: Icons.my_location_rounded,
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: AppTheme.sheet,
+              builder: (_) => SafeArea(
+                child: Padding(padding: const EdgeInsets.all(AppTheme.s4), child: OrderTrackMap(o)),
+              ),
+            ),
           ),
         ],
         if (o.route == 'hub' && o.farmIsMe && o.status == OrderStatus.findingDriver && o.hubStage != null && o.hubStage != 'released') ...[

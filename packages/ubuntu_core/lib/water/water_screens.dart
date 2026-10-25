@@ -364,6 +364,11 @@ class _VoiceSection extends ConsumerWidget {
   Future<void> _ask(BuildContext context, WidgetRef ref, {bool dryTaps = false}) async {
     HapticFeedback.mediumImpact();
     final result = await ref.read(waterProvider.notifier).vote(dryTaps: dryTaps);
+    if (result == VoteResult.queued && context.mounted) {
+      ScaffoldMessenger.maybeOf(context)?.showSnackBar(const SnackBar(
+          content: Text('Saved on your phone. It goes to the provider as soon as you are back online.')));
+      return;
+    }
     if (result == VoteResult.counted || !context.mounted) return;
     // Not eligible while the supply is already low means the request moved on
     // to the provider before this tap landed.

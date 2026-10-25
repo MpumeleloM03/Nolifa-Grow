@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide Text;
 import '../supabase/offline_cache.dart';
+import '../supabase/outbox.dart';
 import 'app_theme.dart';
 
 import '../tr_text.dart' show Text;
@@ -35,14 +36,21 @@ class OfflinePill extends StatelessWidget {
       '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
 
   @override
-  Widget build(BuildContext context) => ValueListenableBuilder<SyncState>(
+  Widget build(BuildContext context) => ValueListenableBuilder<int>(
+        valueListenable: OfflineOutbox.instance,
+        builder: (context, waiting, _) => _pill(context, waiting),
+      );
+
+  Widget _pill(BuildContext context, int waiting) => ValueListenableBuilder<SyncState>(
         valueListenable: status ?? SyncStatus.instance,
         builder: (context, s, _) {
-          if (!s.offline) return const SizedBox.shrink();
-          final since = s.asOf == null ? '' : ' Saved data from ${clock(s.asOf!)}.';
+          // Changes still waiting show even once the signal is back, until they are sent.
+          if (!s.offline && waiting == 0) return const SizedBox.shrink();
+          final since = (s.asOf == null || !s.offline ? '' : ' Saved data from ${clock(s.asOf!)}.') +
+              (waiting == 0 ? '' : ' $waiting ${waiting == 1 ? 'change waits' : 'changes wait'} to send.');
           return Semantics(
             liveRegion: true,
-            label: 'Offline.$since',
+            label: (s.offline ? 'Offline.' : 'Sending.') + since,
             child: Material(
               type: MaterialType.transparency,
               child: Container(
@@ -54,7 +62,7 @@ class OfflinePill extends StatelessWidget {
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
                   const Icon(Icons.cloud_off_rounded, size: 15, color: Colors.black87),
                   const SizedBox(width: 6),
-                  Text('Offline.$since',
+                  Text(s.offline ? 'Offline.$since' : 'Sending.$since',
                       style: const TextStyle(color: Colors.black87, fontSize: 12, fontWeight: FontWeight.w600)),
                 ]),
               ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../supabase/outbox.dart';
 import '../supabase/supabase_boot.dart';
 import 'market_codec.dart';
 import 'market_models.dart';
@@ -36,7 +37,7 @@ class SupabaseMarketRepository implements MarketRepository {
       .map((rows) => [for (final r in rows) productFromJson(Map<String, dynamic>.from(r['data'] as Map), uid)]);
 
   @override
-  Future<void> putProduct(Product p, String uid) => _db.from('market_products').upsert({
+  Future<void> putProduct(Product p, String uid) => OfflineOutbox.instance.upsert('Stock change', 'market_products', {
         'id': p.id,
         'owner_id': p.ownerId ?? uid,
         'data': {...productToJson(p), 'ownerId': p.ownerId ?? uid},

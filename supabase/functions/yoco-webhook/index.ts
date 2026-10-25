@@ -1,4 +1,4 @@
-// Receives Yoco's signed payment messages. A membership only turns on after the
+// Receives Yoco's signed payment messages. A membership or an order is only marked paid after the
 // signature checks out, the message is fresh, and the checkout is one we made.
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
@@ -48,7 +48,11 @@ Deno.serve(async (req) => {
   if (!paymentId || !checkoutId) return new Response('no reference', { status: 200 });
 
   const db = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-  const { data, error } = await db.rpc('activate_membership_paid', { p_payment: paymentId, p_checkout: checkoutId });
+  // An order or a membership: the payment row says which.
+  const { data: row } = await db.from('payments').select('kind').eq('id', paymentId).maybeSingle();
+  const { data, error } = row?.kind === 'order'
+    ? await db.rpc('activate_order_paid', { p_payment: paymentId, p_checkout: checkoutId })
+    : await db.rpc('activate_membership_paid', { p_payment: paymentId, p_checkout: checkoutId });
   if (error) return new Response('could not record', { status: 500 });
   return new Response(JSON.stringify({ result: data }), { status: 200 });
 });

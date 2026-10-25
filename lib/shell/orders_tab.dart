@@ -18,7 +18,10 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         marketProvider,
         marketSharedProvider;
 import '../store/add_stock_sheet.dart';
+import '../store/inventory_screen.dart';
 import '../store/order_card.dart';
+import '../store/scan_dispatch.dart';
+import '../store/truck_hire_screen.dart';
 import '../store/stock_card.dart';
 import '../store/store_common.dart' show firstName, money, timeAgo;
 import '../store/order_rows.dart';
@@ -43,7 +46,7 @@ class OrdersTab extends ConsumerWidget {
         if (p.mine) p
     ];
     final orders = sortedFarmOrders(s.farmOrders);
-    final toSend = orders.where((o) => o.status == OrderStatus.newOrder).length;
+    final toSend = orders.where((o) => o.status == OrderStatus.newOrder && o.paid).length;
     final onTheWay = orders
         .where((o) =>
             o.status == OrderStatus.findingDriver ||
@@ -92,6 +95,15 @@ class OrdersTab extends ConsumerWidget {
             ],
             SectionTitle('📥', 'Orders received',
                 trailing: toSend == 0 ? null : Pill('$toSend to send', color: AppTheme.warn)),
+            if (toSend > 0)
+              Padding(
+                padding: const EdgeInsets.only(bottom: AppTheme.s3),
+                child: GlassButton(
+                  label: 'Scan a parcel to send out',
+                  icon: Icons.qr_code_scanner_rounded,
+                  onPressed: () => _open(context, const ScanDispatchScreen()),
+                ),
+              ),
             if (rows.isEmpty)
               GlassCard(
                 child: Row(children: [
@@ -170,6 +182,10 @@ class OrdersTab extends ConsumerWidget {
                     child: StockCard(stock[i], key: ValueKey('stock-${stock[i].id}')),
                   ),
                 ),
+            const SectionTitle('📊', 'Inventory'),
+            _Link('Inventory and rooms', 'Shop stock, warehouse stock and temperature', () => _open(context, const InventoryScreen())),
+            const SizedBox(height: AppTheme.s3),
+            _Link('Truck hire', 'A bakkie or refrigerated truck for bulk loads', () => _open(context, const TruckHireScreen())),
             const SectionTitle('👛', 'Money'),
             Row(children: [
               Expanded(

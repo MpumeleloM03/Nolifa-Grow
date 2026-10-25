@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +6,7 @@ import '../market/market_store.dart' show marketUidProvider;
 import '../market/market_widgets.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
+import '../live/device_location.dart' show LocationProblem, locationProblem, openLocationFix;
 import 'road_models.dart';
 import 'road_store.dart';
 import 'traffic.dart';
@@ -147,8 +149,41 @@ class RoadAlertsScreen extends ConsumerStatefulWidget {
   ConsumerState<RoadAlertsScreen> createState() => _RoadAlertsScreenState();
 }
 
-class _RoadAlertsScreenState extends ConsumerState<RoadAlertsScreen> {
-  late final Future<(double, double)?> _where = ref.read(reportLocationProvider)();
+class _RoadAlertsScreenState extends ConsumerState<RoadAlertsScreen> with WidgetsBindingObserver {
+  (double, double)? _me;
+  bool _looked = false;
+  Timer? _tick;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _locate();
+    // Keep the list honest while a driver is on the road.
+    _tick = Timer.periodic(const Duration(seconds: 30), (_) => _locate());
+  }
+
+  @override
+  void dispose() {
+    _tick?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  // Coming back from the settings app is the moment the fix has just been made.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _locate();
+  }
+
+  Future<void> _locate() async {
+    final p = await ref.read(reportLocationProvider)();
+    if (!mounted) return;
+    setState(() {
+      _me = p ?? _me;
+      _looked = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,10 +194,9 @@ class _RoadAlertsScreenState extends ConsumerState<RoadAlertsScreen> {
     return Scaffold(
       body: AppBackdrop(
         child: SafeArea(
-          child: FutureBuilder<(double, double)?>(
-            future: _where,
-            builder: (context, snap) {
-              final me = snap.data;
+          child: Builder(
+            builder: (context) {
+              final me = _me;
               double? away(RoadHazard h) => me == null ? null : metresBetween(me.$1, me.$2, h.lat, h.lng);
               final list = [...live];
               if (me != null) list.sort((a, b) => away(a)!.compareTo(away(b)!));
@@ -186,6 +220,7 @@ class _RoadAlertsScreenState extends ConsumerState<RoadAlertsScreen> {
                       const SizedBox(height: AppTheme.s1),
                       Text('Live traffic from TomTom, and warnings reported by Nolifa drivers. Each one says where it came from.', style: AppTheme.callout),
                       const SizedBox(height: AppTheme.s4),
+                      if (_looked && me == null) LocationFixCard(onRetry: _locate),
                       _TrafficSection(me: me),
                       const SizedBox(height: AppTheme.s5),
                       Text('Reported by Nolifa drivers', style: AppTheme.title3),
@@ -327,6 +362,57 @@ class RoadAlertsCard extends ConsumerWidget {
           GhostButton(label: 'Report a hazard', icon: Icons.add_alert_rounded, onPressed: () => showRoadReportSheet(context, ref)),
         ],
       ]),
+    );
+  }
+}
+
+/// Says why the phone has no position and opens the setting that fixes it.
+class LocationFixCard extends StatelessWidget {
+  final VoidCallback onRetry;
+  const LocationFixCard({super.key, required this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<LocationProblem?>(
+      valueListenable: locationProblem,
+      builder: (context, why, _) {
+        final text = switch (why) {
+          LocationProblem.servicesOff => 'Location is switched off on this phone. Alerts near you and job tracking need it.',
+          LocationProblem.denied => 'Nolifa is not allowed to use your location yet. Allow it to see alerts near you.',
+          LocationProblem.deniedForever => 'Location was blocked for Nolifa. Open settings and allow it while using the app.',
+          _ => 'Nolifa could not find your position. Move to open sky or check your signal, then try again.',
+        };
+        return Padding(
+          padding: const EdgeInsets.only(bottom: AppTheme.s4),
+          child: GlassCard(
+            tint: AppTheme.warn.withValues(alpha: 0.12),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                Icon(Icons.location_off_rounded, color: AppTheme.warn),
+                const SizedBox(width: AppTheme.s2),
+                Expanded(child: Text('We cannot see where you are', style: AppTheme.headline)),
+              ]),
+              const SizedBox(height: AppTheme.s2),
+              Text(text, style: AppTheme.callout),
+              const SizedBox(height: AppTheme.s3),
+              Row(children: [
+                if (why != LocationProblem.unavailable && why != null)
+                  Expanded(
+                    child: GlassButton(
+                      label: 'Open settings',
+                      icon: Icons.settings_rounded,
+                      onPressed: () async {
+                        await openLocationFix();
+                      },
+                    ),
+                  ),
+                if (why != LocationProblem.unavailable && why != null) const SizedBox(width: AppTheme.s2),
+                Expanded(child: GhostButton(label: 'Try again', icon: Icons.refresh_rounded, onPressed: onRetry)),
+              ]),
+            ]),
+          ),
+        );
+      },
     );
   }
 }

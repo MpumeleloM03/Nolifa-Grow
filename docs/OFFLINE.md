@@ -11,16 +11,19 @@ Nolifa is built for patchy signal. What works with none, and what does not.
 | Weather and herd alerts | The last 7-day forecast per place is saved (`forecast_<place>`). The screen says "Saved forecast". |
 | Herd register, care reminders, crop plots, sprinkler plans | Stored on the phone. Reminders are local notifications. |
 | Orders, wallet, saved scans | Last copy is shown from the cache. |
+| Stock changes, water votes, water alert settings, outbreak reports | Queued on the phone (`OfflineOutbox`) and sent in order as soon as signal returns. The pill says how many are waiting. A change the server later refuses is dropped, never retried for ever. |
+| Inventory, notices, temperature of your rooms | Last copy is shown from the cache and updates live when online. |
 
 ## How the cache works
 `resilientRows` keeps the latest rows of every shared list in `shared_preferences` under `offline:v1:<user>:<table>` (max 600 KB per list). On start the saved rows show at once; live data replaces them as soon as the network answers. Sign-out wipes every copy. A small pill at the top of each app says "Offline. Saved data from HH:MM." while live data is not arriving.
 
 ## Needs signal, or another person
-- Placing or paying for an order, a PIN handover, a vote, a vet video upload, a membership payment.
+- Placing or paying for an order, a PIN handover, a vet video upload, a membership payment, a truck request, a parcel scan (it changes an order for drivers).
 - Map tiles (OpenStreetMap) and routing.
 - Push for a closed app. Email alerts work; phone push needs the store builds.
 - SMS or USSD fallback for feature phones is not built.
 
 ## Honest limits
 - A saved copy can be old. The pill shows its time; do not act on a road alert without checking its age.
-- Writes made while offline are not queued. The app says it could not send them.
+- Only the writes listed above are queued. Anything else says it could not be sent and keeps what you typed.
+- A queued change belongs to the person who made it. If someone else signs in on the phone, it is not sent as them.

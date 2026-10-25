@@ -25,7 +25,9 @@
   document.getElementById('dot').textContent = ok ? '✓' : cancelled ? '—' : '!';
   document.getElementById('h').textContent = ok ? 'Payment received' : cancelled ? 'Payment cancelled' : 'Payment did not go through';
   document.getElementById('p').textContent = ok
-    ? 'Thank you. Go back to the Nolifa app. Your membership switches on within a few seconds.'
+    ? (q.get('for') === 'order'
+        ? 'Thank you. Go back to the Nolifa app. The farm is told to pack your order within a few seconds.'
+        : 'Thank you. Go back to the Nolifa app. Your membership switches on within a few seconds.')
     : cancelled ? 'No money was taken. Go back to the Nolifa app to try again.'
     : 'No money was taken. Go back to the Nolifa app and try again, or use another card.';
 </script>

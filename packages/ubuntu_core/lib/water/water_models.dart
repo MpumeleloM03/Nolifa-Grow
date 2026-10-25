@@ -192,7 +192,7 @@ class WaterIncident {
 }
 
 /// What happened when someone tried to add their voice.
-enum VoteResult { counted, alreadyVoted, notEligible, notVerified }
+enum VoteResult { counted, alreadyVoted, notEligible, notVerified, queued }
 
 /// What a person has told the app about their own situation. Private to them.
 class WaterPrefs {

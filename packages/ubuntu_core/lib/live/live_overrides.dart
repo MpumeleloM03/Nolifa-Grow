@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../market/market_store.dart' show marketStartsLiveProvider;
+import '../roads/road_screens.dart' show reportLocationProvider;
 import '../roads/supabase_road_repository.dart';
 import '../roads/road_repository.dart';
 import '../roads/road_store.dart' show roadRepositoryProvider;
@@ -19,6 +20,8 @@ import 'location.dart';
 List<Override> liveOverrides(bool Function() ready) => [
       marketStartsLiveProvider.overrideWithValue(true),
       userLocationProvider.overrideWith((ref) => deviceLocation()),
+      // Road reports and the driver's map read the same real position.
+      reportLocationProvider.overrideWithValue(deviceLocation),
       roadRepositoryProvider.overrideWith(
           (ref) => ready() ? SupabaseRoadRepository() : LocalRoadRepository(seeds: false)),
       hubStaffProvider.overrideWith((ref) => ready() && (ref.watch(staffRolesProvider).valueOrNull?.hub ?? false)),

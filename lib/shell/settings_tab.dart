@@ -25,6 +25,7 @@ import '../services/region_service.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import '../water/supplier_screen.dart';
+import '../services/notices.dart';
 import '../widgets/language_toggle.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
@@ -67,6 +68,8 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(AppTheme.s6, AppTheme.s4, AppTheme.s6, 140),
           sliver: SliverList.list(children: [
+            _NoticesLink(onTap: () => _push(const NoticesScreen())),
+            const SizedBox(height: AppTheme.s4),
             ProfileForm(
               farmer: farmer,
               extraFields: (changed) => [
@@ -193,4 +196,29 @@ class _Row extends StatelessWidget {
           ]),
         ),
       );
+}
+
+class _NoticesLink extends ConsumerWidget {
+  final VoidCallback onTap;
+  const _NoticesLink({required this.onTap});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final unread = ref.watch(unreadNoticesProvider);
+    return GlassCard(
+      onTap: onTap,
+      tint: unread > 0 ? AppTheme.sprout.withValues(alpha: 0.12) : null,
+      child: Row(children: [
+        Icon(Icons.notifications_rounded, color: unread > 0 ? AppTheme.sprout : AppTheme.textSecondary),
+        const SizedBox(width: AppTheme.s3),
+        Expanded(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('Notifications', style: AppTheme.headline),
+            Text(unread > 0 ? '$unread new: approvals, orders, payouts' : 'Approvals, orders, payouts and alerts', style: AppTheme.footnote),
+          ]),
+        ),
+        Icon(Icons.chevron_right_rounded, color: AppTheme.textTertiary),
+      ]),
+    );
+  }
 }

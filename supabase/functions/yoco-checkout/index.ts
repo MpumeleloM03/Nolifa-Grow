@@ -1,5 +1,5 @@
-// Starts a Yoco card payment for the signed-in person's membership. The price
-// comes from the plan on the server, never from the phone.
+// Starts a Yoco card payment for the signed-in person: a membership ({}) or an
+// order ({"orderId": ...}). The price comes from the server, never from the phone.
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
 const PRICE_CENTS: Record<string, number> = { member: 3000_00, max: 7000_00 };
@@ -18,12 +18,33 @@ Deno.serve(async (req) => {
   const uid = u.user.id;
 
   const db = createClient(url, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-  const { data: m } = await db.from('memberships').select('tier,status').eq('uid', uid).maybeSingle();
-  if (!m || m.status !== 'awaiting_payment') return json({ error: 'There is no membership waiting for payment. Join first.' }, 409);
-  const amount = PRICE_CENTS[m.tier];
-  if (!amount) return json({ error: 'Unknown plan.' }, 400);
+  const body0 = await req.json().catch(() => ({}));
+  const orderId: string | undefined = typeof body0?.orderId === 'string' ? body0.orderId : undefined;
 
-  const { data: pay, error: pe } = await db.from('payments').insert({ uid, tier: m.tier, amount_cents: amount }).select('id').single();
+  let amount: number;
+  let tier: string;
+  let kind: 'membership' | 'order';
+  if (orderId) {
+    // An order: the price is the order's own total on the server.
+    const { data: o } = await db.from('market_orders').select('id,customer_id,data').eq('id', orderId).maybeSingle();
+    if (!o || o.customer_id !== uid) return json({ error: 'That is not your order.' }, 403);
+    if (o.data?.paid === true) return json({ error: 'This order is already paid.' }, 409);
+    if (o.data?.method === 'cash') return json({ error: 'Cash on delivery needs no card.' }, 409);
+    const { data: cents } = await db.rpc('order_amount_cents', { p_id: orderId });
+    if (!cents || cents < 500) return json({ error: 'That order has no amount to pay.' }, 400);
+    amount = cents as number;
+    tier = 'order';
+    kind = 'order';
+  } else {
+    const { data: m } = await db.from('memberships').select('tier,status').eq('uid', uid).maybeSingle();
+    if (!m || m.status !== 'awaiting_payment') return json({ error: 'There is no membership waiting for payment. Join first.' }, 409);
+    amount = PRICE_CENTS[m.tier];
+    if (!amount) return json({ error: 'Unknown plan.' }, 400);
+    tier = m.tier;
+    kind = 'membership';
+  }
+
+  const { data: pay, error: pe } = await db.from('payments').insert({ uid, tier, kind, amount_cents: amount, order_id: orderId ?? null }).select('id').single();
   if (pe) return json({ error: 'Could not start the payment.' }, 500);
 
   const site = Deno.env.get('RETURN_URL') ?? 'https://nolifa-backoffice.web.app/paid.html';
@@ -33,11 +54,11 @@ Deno.serve(async (req) => {
     body: JSON.stringify({
       amount,
       currency: 'ZAR',
-      successUrl: `${site}?ok=1`,
+      successUrl: `${site}?ok=1&for=${kind}`,
       cancelUrl: `${site}?cancelled=1`,
       failureUrl: `${site}?failed=1`,
       clientReferenceId: pay.id,
-      metadata: { paymentId: pay.id, uid, tier: m.tier, kind: 'membership' },
+      metadata: { paymentId: pay.id, uid, tier, kind, orderId: orderId ?? '' },
     }),
   });
   const body = await res.json().catch(() => ({}));
