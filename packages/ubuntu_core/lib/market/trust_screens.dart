@@ -7,6 +7,7 @@ import 'account_screens.dart' show driverApplicationScreenProvider, farmApplicat
 import 'market_models.dart';
 import 'market_store.dart';
 import 'honesty.dart';
+import 'order_pay.dart' show planPaymentProvider;
 import 'market_widgets.dart';
 
 import '../tr_text.dart' show Text;
@@ -473,16 +474,29 @@ class PlansScreen extends ConsumerWidget {
                 style: AppTheme.footnote),
             const SizedBox(height: AppTheme.s3),
             GlassButton(
-              label: s.plan == p ? 'Your plan' : (ref.watch(sellerPlanProvider) != null ? 'Ask Nolifa for ${p.label}' : 'Choose ${p.label}'),
+              label: s.plan == p
+                  ? 'Your plan'
+                  : (ref.watch(sellerPlanProvider) != null
+                      ? (ref.watch(planPaymentProvider) != null ? 'Pay R${p.price} and switch to ${p.label}' : 'Ask Nolifa for ${p.label}')
+                      : 'Choose ${p.label}'),
               onPressed: s.plan == p
                   ? null
                   : () {
                       HapticFeedback.mediumImpact();
                       if (ref.read(sellerPlanProvider) != null) {
-                        // Plans cost money, so Nolifa switches them on once payment is confirmed.
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text('Nolifa switches your plan on when your payment is confirmed. Contact us to change it.'),
-                            behavior: SnackBarBehavior.floating));
+                        // Plans cost money. The card page opens, and the server switches the plan on
+                        // the moment the payment is confirmed. This screen follows by itself.
+                        final pay = ref.read(planPaymentProvider);
+                        final messenger = ScaffoldMessenger.of(context);
+                        if (pay == null) {
+                          messenger.showSnackBar(const SnackBar(
+                              content: Text('Nolifa switches your plan on when your payment is confirmed. Contact us to change it.'),
+                              behavior: SnackBarBehavior.floating));
+                          return;
+                        }
+                        pay(p).then((problem) => messenger.showSnackBar(SnackBar(
+                            content: Text(problem ?? 'Pay on the card page. Your ${p.label} plan switches on by itself when it goes through.'),
+                            behavior: SnackBarBehavior.floating)));
                         return;
                       }
                       store.setPlan(p);

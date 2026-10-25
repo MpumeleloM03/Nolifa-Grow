@@ -50,9 +50,8 @@ Deno.serve(async (req) => {
   const db = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
   // An order or a membership: the payment row says which.
   const { data: row } = await db.from('payments').select('kind').eq('id', paymentId).maybeSingle();
-  const { data, error } = row?.kind === 'order'
-    ? await db.rpc('activate_order_paid', { p_payment: paymentId, p_checkout: checkoutId })
-    : await db.rpc('activate_membership_paid', { p_payment: paymentId, p_checkout: checkoutId });
+  const fn = row?.kind === 'order' ? 'activate_order_paid' : row?.kind === 'plan' ? 'activate_plan_paid' : 'activate_membership_paid';
+  const { data, error } = await db.rpc(fn, { p_payment: paymentId, p_checkout: checkoutId });
   if (error) return new Response('could not record', { status: 500 });
   return new Response(JSON.stringify({ result: data }), { status: 200 });
 });

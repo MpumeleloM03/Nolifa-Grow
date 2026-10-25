@@ -22,12 +22,23 @@ def call(method, path, body=None, prefer='return=minimal'):
 
 now = int(time.time() * 1000)
 day = 86400000
-call('POST', '/rest/v1/verified_users?on_conflict=uid', [{'uid': FATBOY}], 'resolution=merge-duplicates,return=minimal')
+# By default Fatboy is left WAITING for approval, so the pitch can show the back office accepting it
+# (the farm is then told, verified, published in Drop and gets its pictures). FATBOY_APPROVED=1 skips that.
+APPROVED = os.environ.get('FATBOY_APPROVED') == '1'
 call('POST', '/rest/v1/farm_applications?on_conflict=uid', [{
-    'uid': FATBOY, 'status': 'approved', 'reviewed_at': '2026-10-25T08:00:00Z', 'review_note': '',
+    'uid': FATBOY, 'status': 'approved' if APPROVED else 'submitted', 'review_note': '',
+    'submitted_at': '2026-10-25T08:00:00Z', 'reviewed_at': '2026-10-25T08:00:00Z' if APPROVED else None,
     'data': {'fullName': 'Islilo Farming', 'farmName': 'Fatboy Butcheries', 'province': 'KwaZulu-Natal', 'town': 'uMhlanga',
-             'businessKind': 'company', 'sells': 'Beef, chicken and sausage, cut to order'}}], 'resolution=merge-duplicates,return=minimal')
-call('POST', '/rest/v1/seller_plans?on_conflict=uid', [{'uid': FATBOY, 'plan': 'grow'}], 'resolution=merge-duplicates,return=minimal')
+             'kind': 'company', 'businessName': 'Islilo Farming', 'farmKind': 'livestock',
+             'products': ['Beef mince', 'Beef fillet', 'Beef T-bone', 'Brisket', 'Beef sausage', 'Chicken breast', 'Chicken thighs', 'Chicken drumsticks', 'Chicken wings']}}],
+     'resolution=merge-duplicates,return=minimal')
+if APPROVED:
+    call('POST', '/rest/v1/verified_users?on_conflict=uid', [{'uid': FATBOY}], 'resolution=merge-duplicates,return=minimal')
+    call('POST', '/rest/v1/seller_plans?on_conflict=uid', [{'uid': FATBOY, 'plan': 'grow'}], 'resolution=merge-duplicates,return=minimal')
+else:
+    call('DELETE', '/rest/v1/verified_users?uid=eq.%s' % FATBOY)
+    call('DELETE', '/rest/v1/seller_plans?uid=eq.%s' % FATBOY)
+    call('DELETE', '/rest/v1/farm_profiles?uid=eq.%s' % FATBOY)
 
 # Their logo and store picture, the way a farm uploads them with its application.
 def upload(path, local, mime):
@@ -43,7 +54,7 @@ upload(logo, os.path.join(ASSETS, 'logo_fatboy.png'), 'image/png')
 upload(banner, os.path.join(ASSETS, 'banner_fatboy.jpg'), 'image/jpeg')
 call('DELETE', '/rest/v1/application_files?uid=eq.%s&kind=in.(farm_logo,farm_banner)' % FATBOY)
 call('POST', '/rest/v1/application_files', [{'uid': FATBOY, 'kind': 'farm_logo', 'path': logo}, {'uid': FATBOY, 'kind': 'farm_banner', 'path': banner}])
-call('POST', '/rest/v1/farm_profiles?on_conflict=uid', [{'uid': FATBOY, 'data': {
+if APPROVED: call('POST', '/rest/v1/farm_profiles?on_conflict=uid', [{'uid': FATBOY, 'data': {
     'farmName': 'Fatboy Butcheries', 'province': 'KwaZulu-Natal', 'town': 'uMhlanga', 'farmKind': 'livestock',
     'products': [], 'practices': {}, 'registered': False, 'logo': logo, 'banner': banner}}], 'resolution=merge-duplicates,return=minimal')
 

@@ -27,6 +27,8 @@
   document.getElementById('p').textContent = ok
     ? (q.get('for') === 'order'
         ? 'Thank you. Go back to the Nolifa app. The farm is told to pack your order within a few seconds.'
+        : q.get('for') === 'plan'
+        ? 'Thank you. Go back to the Nolifa app. Your new plan is on within a few seconds, nothing to refresh.'
         : 'Thank you. Go back to the Nolifa app. Your membership switches on within a few seconds.')
     : cancelled ? 'No money was taken. Go back to the Nolifa app to try again.'
     : 'No money was taken. Go back to the Nolifa app and try again, or use another card.';

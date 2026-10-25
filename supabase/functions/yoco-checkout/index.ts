@@ -1,8 +1,10 @@
-// Starts a Yoco card payment for the signed-in person: a membership ({}) or an
-// order ({"orderId": ...}). The price comes from the server, never from the phone.
+// Starts a Yoco card payment for the signed-in person: a membership ({}), an
+// order ({"orderId": ...}) or a farm plan switch ({"plan": "grow"}). The price comes from the server, never from the phone.
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
 const PRICE_CENTS: Record<string, number> = { member: 3000_00, max: 7000_00 };
+// A farm plan for a month. The same figures as public.plan_price_cents.
+const PLAN_CENTS: Record<string, number> = { starter: 49_00, grow: 99_00, coop: 199_00 };
 const cors = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type' };
 const json = (b: unknown, status = 200) => new Response(JSON.stringify(b), { status, headers: { ...cors, 'Content-Type': 'application/json' } });
 
@@ -20,11 +22,22 @@ Deno.serve(async (req) => {
   const db = createClient(url, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
   const body0 = await req.json().catch(() => ({}));
   const orderId: string | undefined = typeof body0?.orderId === 'string' ? body0.orderId : undefined;
+  const plan: string | undefined = typeof body0?.plan === 'string' ? body0.plan : undefined;
 
   let amount: number;
   let tier: string;
-  let kind: 'membership' | 'order';
-  if (orderId) {
+  let kind: 'membership' | 'order' | 'plan';
+  if (plan) {
+    // A plan switch: only an approved farm, only to a plan it is not on, at the server's price.
+    if (!PLAN_CENTS[plan]) return json({ error: 'Unknown plan.' }, 400);
+    const { data: v } = await db.from('verified_users').select('uid').eq('uid', uid).maybeSingle();
+    if (!v) return json({ error: 'Your farm must be approved by Nolifa before you can pick a plan.' }, 403);
+    const { data: cur } = await db.from('seller_plans').select('plan').eq('uid', uid).maybeSingle();
+    if ((cur?.plan ?? 'starter') === plan) return json({ error: 'You are already on that plan.' }, 409);
+    amount = PLAN_CENTS[plan];
+    tier = plan;
+    kind = 'plan';
+  } else if (orderId) {
     // An order: the price is the order's own total on the server.
     const { data: o } = await db.from('market_orders').select('id,customer_id,data').eq('id', orderId).maybeSingle();
     if (!o || o.customer_id !== uid) return json({ error: 'That is not your order.' }, 403);

@@ -20,6 +20,7 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         jobMapProvider,
         navigateProvider,
         orderPaymentProvider,
+        planPaymentProvider,
         proofPhotoProvider,
         trackMapProvider,
         Plan,
@@ -57,6 +58,7 @@ List<Override> marketOverrides() => [
           )),
       // A card order opens Yoco; the shop and the tracking page share this one hook.
       orderPaymentProvider.overrideWith((ref) => SupabaseBoot.ready ? startOrderPayment : null),
+      planPaymentProvider.overrideWith((ref) => SupabaseBoot.ready ? (plan) => startPlanPayment(plan.name) : null),
       proofPhotoProvider.overrideWithValue(() async => (await pickProofPhoto()) != null),
       // The buyer and the seller follow an order live.
       trackMapProvider.overrideWithValue((order) => OrderTrackMap(order, key: ValueKey('track-${order.id}-${order.status.name}'))),

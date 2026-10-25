@@ -729,7 +729,10 @@ class MarketStore extends Notifier<MarketState> {
   void _applyApproval(bool? approved) {
     if (_disposed) return;
     if (approved != true) {
-      state = state.copyWith(serverApproved: approved);
+      // Waiting for Nolifa (or sent back): the steps the approval ticked go back to open.
+      state = approved == false
+          ? state.copyWith(serverApproved: approved, business: state.business.copyWith(registered: false, evidenceDone: false))
+          : state.copyWith(serverApproved: approved);
       return;
     }
     final b = state.business;
@@ -941,7 +944,13 @@ class MarketStore extends Notifier<MarketState> {
     try {
       final snap = await _repo.loadPrivate(_uid);
       if (_disposed) return;
-      if (snap != null) _applyPrivate(snap);
+      if (snap != null) {
+        _applyPrivate(snap);
+        // The server decides the plan and the approval. A saved copy on the phone must not bring back an old one.
+        final plan = ref.read(sellerPlanProvider);
+        if (plan != null) state = state.copyWith(plan: plan, business: state.business.copyWith(planPaid: true));
+        _applyApproval(ref.read(sellerApprovalProvider));
+      }
     } catch (e) {
       debugPrint('market: could not load saved state: $e');
     }

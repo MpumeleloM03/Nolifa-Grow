@@ -21,6 +21,9 @@ The door functions run as the signed-in person and check who they are. Row level
 ## Farm logo and store picture
 A farm uploads a logo and a store picture with its application (both required; the server refuses a submit without them). They go to the public `farm-brand` bucket, in the farm's own folder. When Nolifa approves the farm, `review_application` copies them into the public `farm_profiles` row. Every phone and the back office follow that table live, so Drop shows the farm's logo and picture as soon as it is approved, and the back office stock table shows the logo beside the farm name. An approved farm can change them later in Settings (`set_farm_brand`). Farms with no picture keep the drawn badge.
 
+## Switching plan by card
+A farm taps a plan in Plans and pays through Yoco. The server holds the price (`plan_price_cents`, `PLAN_CENTS` in `yoco-checkout`), and only Yoco's signed message can switch the plan on (`activate_plan_paid`). The plan changes in `seller_plans` at once, the phone follows it live (no refresh), the farm gets a notice, and the change is written to `plan_changes`. The back office Plans page lists every switch (by card or by staff). This charges one month; nothing bills the farm again next month yet.
+
 ## Approval and notices
 Approving a farm or a driver, a plan, a membership or a payout writes a row in `notifications`. The phone listens to that table live, shows the notice, and unlocks the paid features without a restart.
 

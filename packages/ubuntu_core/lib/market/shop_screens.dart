@@ -708,11 +708,13 @@ class TrackingScreen extends ConsumerWidget {
                                   Icon(Icons.verified_rounded,
                                       size: 14, color: AppTheme.sprout),
                                   const SizedBox(width: 4),
-                                  Text(
-                                      o.driver == null
-                                          ? 'Nearest Nolifa-verified drivers notified'
-                                          : 'Nolifa-verified  •  4.9 ★',
-                                      style: AppTheme.caption),
+                                  Flexible(
+                                    child: Text(
+                                        o.driver == null
+                                            ? 'Nearest Nolifa-verified drivers notified'
+                                            : 'Nolifa-verified driver',
+                                        style: AppTheme.caption),
+                                  ),
                                 ]),
                               ]),
                         ),

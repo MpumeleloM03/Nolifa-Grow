@@ -2964,6 +2964,8 @@ const List<(String, String)> zuTemplates = [
   ('Outbreaks near {0}', 'Amaqubuko eduze kwe-{0}'),
   ('Page {0} of {1}', 'Ikhasi {0} lika-{1}'),
   ('Past use-by. Written off, {0} {1} removed', 'Selidlulile usuku lokusebenzisa. Kulahlwe, {0} {1} kususiwe'),
+  ('Pay R{0} and switch to {1}', 'Khokha i-R{0} bese ushintshela ku-{1}'),
+  ('Pay on the card page. Your {0} plan switches on by itself when it goes through.', 'Khokha ekhasini lekhadi. Uhlelo lwakho lwe-{0} luvuleka lodwa lapho inkokhelo isiphumelele.'),
   ('Pay {0}', 'Khokha {0}'),
   ('Pay {0} by card', 'Khokha {0} ngekhadi'),
   ('Picked  {0}', 'Kukhethwe {0}'),

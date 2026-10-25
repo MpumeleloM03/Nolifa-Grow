@@ -36,6 +36,7 @@ final _applications = StreamProvider((ref) => _live('farm_applications', 'uid'))
 final _driverApps = StreamProvider((ref) => _live('driver_applications', 'uid'));
 final _farmProfiles = StreamProvider((ref) => _live('farm_profiles', 'uid'));
 final _plans = StreamProvider((ref) => _live('seller_plans', 'uid'));
+final _planChanges = StreamProvider<List<Map<String, dynamic>>>((ref) => _live('plan_changes', 'id').map((r) => [...r]..sort((a, b) => (b['id'] as num).compareTo(a['id'] as num))));
 final _outbox = StreamProvider((ref) => _live('outbox', 'id'));
 final _memberships = StreamProvider((ref) => _live('memberships', 'uid'));
 final _boreholes = StreamProvider((ref) => _live('borehole_requests', 'id'));
@@ -403,13 +404,40 @@ class _DecideDriverState extends State<_DecideDriver> {
 class PlansPage extends ConsumerWidget {
   const PlansPage({super.key});
 
+  // Newest first: who changed plan, from what, by card or by staff, and when.
+  Widget _switches(BuildContext context, WidgetRef ref, List<Map<String, dynamic>> farms) {
+    final changes = ref.watch(_planChanges).valueOrNull ?? const <Map<String, dynamic>>[];
+    if (changes.isEmpty) return const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: Text('No plan has been switched yet.'));
+    final names = {for (final f in farms) f['uid'] as String: '${(f['data'] as Map)['farmName']}'};
+    String when(String iso) {
+      final t = DateTime.tryParse(iso)?.toLocal();
+      if (t == null) return iso;
+      String two(int n) => n.toString().padLeft(2, '0');
+      return '${t.day}/${t.month}/${t.year} ${two(t.hour)}:${two(t.minute)}';
+    }
+    return Column(children: [
+      for (final c in changes.take(20))
+        Card(
+          child: ListTile(
+            dense: true,
+            leading: Icon(c['source'] == 'card' ? Icons.credit_card_rounded : Icons.admin_panel_settings_rounded),
+            title: Text('${names[c['uid']] ?? c['uid']}:  ${c['from_plan']} to ${c['to_plan']}'),
+            subtitle: Text('${c['source'] == 'card' ? 'Paid by card, R${((c['amount_cents'] as num) / 100).toStringAsFixed(0)}, on at once' : 'Set by staff'}  ·  ${when('${c['at']}')}'),
+          ),
+        ),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final farms = ref.watch(_farmProfiles).valueOrNull ?? const [];
     final plans = {for (final p in (ref.watch(_plans).valueOrNull ?? const [])) p['uid'] as String: p['plan'] as String};
     return _pad([
       Text('Farm plans', style: Theme.of(context).textTheme.headlineSmall),
-      const Text('Starter 8 percent commission, Grow 5 percent, Co-op 3 percent. A farm is on Starter until you change it here.'),
+      const Text('Starter 8 percent commission, Grow 5 percent, Co-op 3 percent. A farm switches itself by paying in the app and is on the new plan at once. You can also set a plan here.'),
+      const SizedBox(height: 12),
+      Text('Plan switches', style: Theme.of(context).textTheme.titleMedium),
+      _switches(context, ref, farms),
       const SizedBox(height: 12),
       if (farms.isEmpty) const Text('No approved farms yet.'),
       for (final f in farms)
