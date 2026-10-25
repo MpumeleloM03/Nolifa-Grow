@@ -21,8 +21,22 @@ android {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
+    // Two apps from one code base: Nolifa (everyone) and Nolifa Grow (farmers only).
+    flavorDimensions += "app"
+    productFlavors {
+        create("nolifa") {
+            dimension = "app"
+            applicationId = "com.nolifa.app"
+            resValue("string", "app_name", "Nolifa")
+        }
+        create("grow") {
+            dimension = "app"
+            applicationId = "com.nolifagrow.nolifa_grow"
+            resValue("string", "app_name", "Nolifa Grow")
+        }
+    }
+
     defaultConfig {
-        applicationId = "com.nolifagrow.nolifa_grow"
         minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

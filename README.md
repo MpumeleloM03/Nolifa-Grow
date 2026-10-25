@@ -1,13 +1,15 @@
-# Nolifa Grow
+# Nolifa
 
 **Catch it early. Keep your community fed.**
 
-One Android app that protects farming communities in South Africa. Built for the FNB App of
+One app (Android and iOS) that protects farming communities in South Africa. Built for the FNB App of
 the Year theme *Climate resilience and essential services*.
 
 When disease or drought hits a farming community, food and water are the first things people
-lose. Nolifa Grow catches disease early, warns everyone nearby, and keeps food moving from
+lose. Nolifa catches disease early, warns everyone nearby, and keeps food moving from
 local farms to local families.
+
+> Four apps share one backend: **Nolifa** (this app, everything in one), **Nolifa Grow** (the same code as a farmers-only edition), Nolifa Drop and Nolifa Delivery. See `docs/APPS.md`.
 
 ## One app, three people
 
@@ -82,4 +84,4 @@ The app connects to the shared Supabase project by default. To use your own, see
 | `packages/ubuntu_core/` | Shared engine: marketplace, water, roads, delivery, translations |
 | `supabase/` | Database migrations, Edge Functions and live tests |
 | `backoffice/` | Staff web app for verification and approvals |
-| `docs/` | Setup, business model and security notes. `APP_DOORS.md` explains the three app doors |
+| `docs/` | Setup, business model and security notes. `APP_DOORS.md` explains the three app doors, `APPS.md` the four apps |

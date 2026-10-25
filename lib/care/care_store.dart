@@ -1,3 +1,4 @@
+import '../edition.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart' show debugPrint;
@@ -109,13 +110,13 @@ class CareStore extends Notifier<CareState> {
       final hm = _hm(s.waterTimes[i]);
       if (hm == null) continue;
       await n.scheduleDaily(
-          id: _waterBase + i, hour: hm.$1, minute: hm.$2, title: 'Water the herd', body: 'Check the troughs are full and clean, then tick it off in Nolifa Grow.');
+          id: _waterBase + i, hour: hm.$1, minute: hm.$2, title: 'Water the herd', body: 'Check the troughs are full and clean, then tick it off in ${AppEdition.name}.');
     }
     for (var i = 0; i < s.feedTimes.length && i < 40; i++) {
       final hm = _hm(s.feedTimes[i]);
       if (hm == null) continue;
       await n.scheduleDaily(
-          id: _feedBase + i, hour: hm.$1, minute: hm.$2, title: 'Feed time', body: 'Time to feed your animals. Tick it off in Nolifa Grow when it is done.');
+          id: _feedBase + i, hour: hm.$1, minute: hm.$2, title: 'Feed time', body: 'Time to feed your animals. Tick it off in ${AppEdition.name} when it is done.');
     }
   }
 

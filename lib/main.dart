@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 import 'package:ubuntu_core/ubuntu_core.dart' show notifierProvider, AppearanceController, AppearanceScope, LanguageScope, OfflineOverlay, SupabaseBoot, Tr;
+import 'edition.dart';
 import 'services/image_service.dart';
 import 'services/inference_service.dart';
 import 'services/plant_id_service.dart';
@@ -30,7 +31,11 @@ import 'utils/translations.dart';
 import 'widgets/language_toggle.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-Future<void> main() async {
+/// Starts the app as the given edition. `main.dart` runs Nolifa, `main_grow.dart` runs Nolifa Grow.
+Future<void> main() => runNolifa(Edition.nolifa);
+
+Future<void> runNolifa(Edition edition) async {
+  AppEdition.current = edition;
   WidgetsFlutterBinding.ensureInitialized();
   await AppearanceController.instance.load();
   await Tr.load();
@@ -39,19 +44,19 @@ Future<void> main() async {
   runApp(
     ProviderScope(
       overrides: [...marketOverrides(), notifierProvider.overrideWithValue(PhoneNotifier.instance)],
-      child: const NolifaGrowApp(),
+      child: const NolifaApp(),
     ),
   );
 }
 
-class NolifaGrowApp extends ConsumerWidget {
-  const NolifaGrowApp({super.key});
+class NolifaApp extends ConsumerWidget {
+  const NolifaApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppearanceScope(
       builder: (context, light, dark, mode) => MaterialApp(
-        title: 'Nolifa Grow',
+        title: AppEdition.name,
         debugShowCheckedModeBanner: false,
         theme: light,
         darkTheme: dark,

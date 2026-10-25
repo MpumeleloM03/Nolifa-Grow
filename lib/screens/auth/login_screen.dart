@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../edition.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/glass.dart';
@@ -98,10 +99,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text('Nolifa Grow', style: AppTheme.largeTitle),
+                    Text(AppEdition.name, style: AppTheme.largeTitle),
                     const SizedBox(height: AppTheme.s2),
                     Text(
-                      'Keep your farm healthy. Keep your community resilient.',
+                      AppEdition.isGrow
+                          ? 'Keep your farm healthy and sell what it grows.'
+                          : 'Farm, delivery and the marketplace, in one app.',
                       style: AppTheme.callout,
                     ),
                     if (ref.watch(authServiceProvider).isLocal) ...[
@@ -239,18 +242,20 @@ class _DemoPanel extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Text('Try the demo', style: AppTheme.headline),
         const SizedBox(height: AppTheme.s1),
-        Text('Open a ready-made account for each role.', style: AppTheme.footnote),
+        Text(AppEdition.isGrow ? 'Open a ready-made farmer account.' : 'Open a ready-made account for each role.', style: AppTheme.footnote),
         const SizedBox(height: AppTheme.s4),
         Row(children: [
           button(Icons.agriculture_rounded, 'Farmer', 'farmer'),
-          const SizedBox(width: AppTheme.s2),
-          button(Icons.groups_rounded, 'Community', 'community'),
-          const SizedBox(width: AppTheme.s2),
-          button(Icons.delivery_dining_rounded, 'Driver', 'driver'),
+          if (!AppEdition.isGrow) ...[
+            const SizedBox(width: AppTheme.s2),
+            button(Icons.groups_rounded, 'Community', 'community'),
+            const SizedBox(width: AppTheme.s2),
+            button(Icons.delivery_dining_rounded, 'Driver', 'driver'),
+          ],
         ]),
         const SizedBox(height: AppTheme.s3),
         SelectableText(
-          '${AuthService.demoEmails.values.join('\n')}\nPassword: ${AuthService.demoPassword}',
+          '${(AppEdition.isGrow ? [AuthService.demoEmails['farmer']!] : AuthService.demoEmails.values).join('\n')}\nPassword: ${AuthService.demoPassword}',
           style: AppTheme.caption,
         ),
       ]),

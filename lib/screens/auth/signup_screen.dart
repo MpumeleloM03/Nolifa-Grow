@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Text;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../edition.dart';
 import '../../services/auth_service.dart';
 import '../../services/region_service.dart';
 import '../../theme/app_theme.dart';
@@ -88,7 +89,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text('Join Nolifa', style: AppTheme.title1),
+                          Text('Join ${AppEdition.name}', style: AppTheme.title1),
                           const SizedBox(height: AppTheme.s2),
                           Text(
                             'Tell us who you are and we set the app up for you.',
@@ -102,16 +103,16 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                             selected: _role == 'farmer',
                             onTap: () => setState(() => _role = 'farmer'),
                           ),
-                          const SizedBox(height: AppTheme.s3),
-                          _RoleCard(
+                          if (!AppEdition.isGrow) const SizedBox(height: AppTheme.s3),
+                          if (!AppEdition.isGrow) _RoleCard(
                             icon: Icons.groups_rounded,
                             title: 'Community member',
                             line: 'I want plant and animal checks, outbreak and water alerts, and fresh food from nearby farms.',
                             selected: _role == 'community',
                             onTap: () => setState(() => _role = 'community'),
                           ),
-                          const SizedBox(height: AppTheme.s3),
-                          _RoleCard(
+                          if (!AppEdition.isGrow) const SizedBox(height: AppTheme.s3),
+                          if (!AppEdition.isGrow) _RoleCard(
                             icon: Icons.delivery_dining_rounded,
                             title: 'Driver',
                             line: 'I deliver orders from farms to homes and get paid per delivery.',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Text;
+import '../edition.dart';
 import '../theme/app_theme.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
@@ -44,7 +45,7 @@ class AboutScreen extends StatelessWidget {
 
             // App name
             Text(
-              'Nolifa Grow',
+              AppEdition.name,
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -78,8 +79,8 @@ class AboutScreen extends StatelessWidget {
 
             // What we do
             _buildSection(
-              'What Nolifa Grow Does',
-              'Nolifa Grow is an AI-powered plant disease diagnostic tool built specifically for Southern African farmers, gardeners, and agricultural students.\n\nPoint your camera at any sick plant and get an instant diagnosis in plain language — what is wrong, how serious it is, and exactly what to do about it. No agricultural knowledge required.',
+              'What ${AppEdition.name} Does',
+              AppEdition.isGrow ? 'Nolifa Grow is an AI-powered plant disease diagnostic tool built specifically for Southern African farmers, gardeners, and agricultural students.\n\nPoint your camera at any sick plant and get an instant diagnosis in plain language — what is wrong, how serious it is, and exactly what to do about it. No agricultural knowledge required.' : 'Nolifa puts the farm, delivery and the marketplace in one app. Farmers check their plants and animals, keep stock and sell to people nearby. Households buy fresh food and follow the order to the door. Drivers deliver and are paid for each delivery.\n\nOne sign-up, one backend, and a place for every role.',
             ),
 
             const SizedBox(height: 24),
@@ -87,7 +88,7 @@ class AboutScreen extends StatelessWidget {
             // How it works
             _buildSection(
               'How It Works',
-              'When you are connected to the internet, Nolifa Grow uses advanced cloud AI to analyse your plant image and identify diseases with high accuracy across hundreds of plant conditions.\n\nWhen you are offline, the app switches automatically to an on-device AI model so you always get a diagnosis even in a field with no signal.',
+              'When you are connected to the internet, ${AppEdition.name} uses advanced cloud AI to analyse your plant image and identify diseases with high accuracy across hundreds of plant conditions.\n\nWhen you are offline, the app switches automatically to an on-device AI model so you always get a diagnosis even in a field with no signal.',
             ),
 
             const SizedBox(height: 24),
