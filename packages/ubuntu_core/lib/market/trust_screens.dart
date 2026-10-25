@@ -940,7 +940,7 @@ class CaseCard extends ConsumerWidget {
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(c.title, style: AppTheme.headline),
               Text(
-                  '${c.area}  •  AI confidence ${c.aiConfidence}%${c.mine ? '  •  yours' : ''}',
+                  '${c.area}  •  ${c.aiConfidence > 0 ? 'AI confidence ${c.aiConfidence}%' : 'reported by a neighbour'}${c.mine ? '  •  yours' : ''}',
                   style: AppTheme.footnote),
             ]),
           ),
@@ -951,14 +951,17 @@ class CaseCard extends ConsumerWidget {
         Row(children: [
           Expanded(
             child: Text(
-                broadcast
-                    ? 'Public: nearby farms are being alerted.'
-                    : 'Private until ${2 - c.confirmations > 0 ? '${2 - c.confirmations} more farm${2 - c.confirmations == 1 ? '' : 's'} confirm' : 'confirmed'}.',
+                switch (c.stage) {
+                  ReportStage.vetVerified => 'Verified by ${c.verifierLabel}. Nearby farms are alerted.',
+                  ReportStage.corroborated => 'Confirmed by ${c.confirmations} farms. Nearby farms are alerted.',
+                  ReportStage.rejected => 'Checked by ${c.verifierLabel} and rejected. Removed from the map.',
+                  _ => 'Unconfirmed on the map. Alerts go out once ${2 - c.confirmations > 0 ? '${2 - c.confirmations} more farm${2 - c.confirmations == 1 ? '' : 's'} confirm' : 'confirmed'}.',
+                },
                 style: AppTheme.caption.copyWith(
                     color:
                         broadcast ? AppTheme.sprout : AppTheme.textTertiary)),
           ),
-          if (!c.mine && !broadcast)
+          if (!c.mine && !broadcast && c.stage != ReportStage.rejected)
             GestureDetector(
               onTap: () {
                 HapticFeedback.lightImpact();

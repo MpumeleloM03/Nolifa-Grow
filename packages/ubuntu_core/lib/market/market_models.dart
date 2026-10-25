@@ -545,9 +545,9 @@ enum ReportStage { submitted, aiChecked, corroborated, vetVerified, rejected }
 extension ReportStageX on ReportStage {
   String get label => switch (this) {
         ReportStage.submitted => 'Submitted',
-        ReportStage.aiChecked => 'AI checked',
+        ReportStage.aiChecked => 'On the map',
         ReportStage.corroborated => 'Farms confirmed',
-        ReportStage.vetVerified => 'Vet verified',
+        ReportStage.vetVerified => 'Verified',
         ReportStage.rejected => 'Rejected',
       };
   bool get broadcasts =>
@@ -566,6 +566,9 @@ class ReportCase {
   final String? reporterId;
   final List<String> confirmedBy;
 
+  /// Who verified or rejected it: 'vet' or 'officer' (an extension officer).
+  final String? verifierRole;
+
   const ReportCase({
     required this.id,
     required this.emoji,
@@ -577,9 +580,13 @@ class ReportCase {
     this.mine = false,
     this.reporterId,
     this.confirmedBy = const [],
+    this.verifierRole,
   });
 
-  ReportCase copyWith({ReportStage? stage, int? confirmations, List<String>? confirmedBy}) => ReportCase(
+  /// 'a vet' or 'an extension officer', for "Verified by ...".
+  String get verifierLabel => verifierRole == 'officer' ? 'an extension officer' : 'a vet';
+
+  ReportCase copyWith({ReportStage? stage, int? confirmations, List<String>? confirmedBy, String? verifierRole}) => ReportCase(
         id: id,
         emoji: emoji,
         title: title,
@@ -590,6 +597,7 @@ class ReportCase {
         mine: mine,
         reporterId: reporterId,
         confirmedBy: confirmedBy ?? this.confirmedBy,
+        verifierRole: verifierRole ?? this.verifierRole,
       );
 }
 

@@ -52,8 +52,10 @@ class AuthService {
             uid: u.id,
             name: (u.userMetadata?['name'] as String?) ?? '',
             email: u.email ?? '',
-            region: '',
-            farmType: 'both',
+            region: (u.userMetadata?['region'] as String?) ?? '',
+            // The role is also kept on the login itself, so it is right even in
+            // the moment after sign-up before the profile row is written.
+            farmType: (u.userMetadata?['farmType'] as String?) ?? 'both',
           );
       return _cached;
     });
@@ -101,7 +103,7 @@ class AuthService {
       final res = await _auth.signUp(
         email: email.trim(),
         password: password,
-        data: {'name': name.trim()},
+        data: {'name': name.trim(), 'farmType': farmType, 'region': region},
       );
       final user = res.user;
       if (user == null) throw const AuthException('Could not create the account. Try again.');
@@ -139,7 +141,6 @@ class AuthService {
     }
     final u = _auth.currentUser;
     if (u == null) return;
-    await _auth.updateUser(UserAttributes(data: {'name': name.trim()}));
     final old = (await _db.from('users').select('data').eq('uid', u.id).maybeSingle())?['data'] as Map?;
     await _db.from('users').upsert({
       'uid': u.id,
@@ -152,6 +153,8 @@ class AuthService {
         'farmType': farmType,
       },
     });
+    // Updating the login last makes the app re-read the saved profile above.
+    await _auth.updateUser(UserAttributes(data: {'name': name.trim(), 'farmType': farmType, 'region': region}));
   }
 
   /// Demo accounts the judges can open with one tap, one per role. The sign-in
@@ -166,23 +169,38 @@ class AuthService {
   /// Signs in to a demo account, creating it the first time if it is missing.
   Future<void> demoSignIn(String role) async {
     final email = demoEmails[role]!;
+    final name = switch (role) {
+      'community' => 'Lindiwe Ngcobo',
+      'driver' => 'Sipho Dlamini',
+      _ => 'Thandi Mkhize',
+    };
+    final region = role == 'community' ? 'Greater Durban' : 'KZN Midlands';
+    final farmType = role == 'farmer' ? 'both' : role;
     try {
       await signIn(email, demoPassword);
-      return;
     } on AuthException {
       // Not created yet; make it below.
+      await signUp(name: name, email: email, password: demoPassword, region: region, farmType: farmType);
+      return;
     }
-    await signUp(
-      name: switch (role) {
-        'community' => 'Lindiwe Ngcobo',
-        'driver' => 'Sipho Dlamini',
-        _ => 'Thandi Mkhize',
-      },
-      email: email,
-      password: demoPassword,
-      region: role == 'community' ? 'Greater Durban' : 'KZN Midlands',
-      farmType: role == 'farmer' ? 'both' : role,
-    );
+    // A demo account made in the dashboard, or before roles were saved, can
+    // be missing its role. Put it right so each demo opens the right app.
+    if (isLocal) return;
+    final u = _auth.currentUser;
+    if (u == null) return;
+    AppUser? saved;
+    try {
+      saved = await profile(u.id);
+    } catch (_) {}
+    if (saved?.farmType != farmType || u.userMetadata?['farmType'] != farmType) {
+      try {
+        await updateProfile(
+          name: (saved?.name.isNotEmpty ?? false) ? saved!.name : name,
+          region: (saved?.region.isNotEmpty ?? false) ? saved!.region : region,
+          farmType: farmType,
+        );
+      } catch (_) {}
+    }
   }
 
   Future<void> signOut() => isLocal ? _local.signOut() : _auth.signOut();

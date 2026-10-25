@@ -29,6 +29,7 @@ import '../theme/glass.dart';
 import '../weather/weather_card.dart';
 import '../weather/weather_service.dart';
 import '../weather/weather_threats.dart';
+import '../outbreak/outbreak_trust.dart' show TrustX;
 import 'alerts_tab.dart' show AreaOutbreak, buildAreaOutbreaks, showOutbreakDetails;
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
@@ -48,8 +49,11 @@ final alarmProvider = Provider<AlarmItems>((ref) {
   final region = ref.watch(currentUserProvider)?.region ?? '';
   final live = ref.watch(outbreaksProvider).valueOrNull ?? const <OutbreakReport>[];
   final urgent = [
-    for (final o in buildAreaOutbreaks(live, demo: ref.watch(marketProvider.select((s) => s.demoMode))))
-      if (o.severity == 'red' && o.region == region) o
+    for (final o in buildAreaOutbreaks(live,
+        demo: ref.watch(marketProvider.select((s) => s.demoMode)),
+        cases: ref.watch(marketProvider.select((s) => s.cases))))
+      // One unconfirmed report never sounds the alarm.
+      if (o.severity == 'red' && o.region == region && o.trust.alerts) o
   ];
   final toSend = ref.watch(marketProvider.select((s) => s.farmOrders.where((o) => o.status == OrderStatus.newOrder).length));
   return AlarmItems(

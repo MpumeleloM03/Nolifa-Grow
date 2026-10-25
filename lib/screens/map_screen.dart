@@ -10,6 +10,7 @@ import '../theme/app_theme.dart';
 import '../map/area_details.dart';
 import '../map/area_report.dart';
 import '../map/hex_grid.dart';
+import '../outbreak/outbreak_trust.dart';
 import '../utils/translations.dart';
 import '../utils/language_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -102,6 +103,9 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   static Color heatColor(double t) =>
       Color.lerp(const Color(0xFFF7B7B7), const Color(0xFFD40000), t.clamp(0.0, 1.0))!;
 
+  /// Unconfirmed reports: a calm slate, not alarm red.
+  static const _pendingColor = Color(0xFF6B7C93);
+
   static double heatAlpha(double t) => 0.22 + 0.62 * math.pow(t.clamp(0.0, 1.0), 0.85).toDouble();
 
   void _tap(LatLng p, Map<HexId, HexCell> cells, DateTime now) {
@@ -120,9 +124,18 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     final now = DateTime.now();
     final live = ref.watch(outbreaksProvider).valueOrNull ?? const <OutbreakReport>[];
     final demo = ref.watch(marketProvider.select((s) => s.demoMode));
-    final all = [if (demo) ...demoSightings(now), ...liveSightings(live)];
+    final cases = ref.watch(marketProvider.select((s) => s.cases));
+    final all = [if (demo) ...demoSightings(now), ...liveSightings(live, {for (final c in cases) c.id: c})];
     final cells = buildCells(_grid, all, now, only: _only);
     final maxHeat = cells.values.fold<double>(1.5, (a, c) => c.heat > a ? c.heat : a);
+
+    // A hexagon whose only reports are unconfirmed is drawn pale with an
+    // outline and a "?" badge, so nobody mistakes one report for an outbreak.
+    bool pendingOnly(HexCell c) => !c.isEmpty && c.trust == Trust.unconfirmed && c.heat / maxHeat <= 0.04;
+    final pending = [
+      for (final c in cells.values)
+        if (c.sightings.any((s) => s.trust == Trust.unconfirmed)) c
+    ];
 
     final polygons = <Polygon>[
       for (final c in cells.values)
@@ -133,7 +146,39 @@ class _MapScreenState extends ConsumerState<MapScreen> {
             color: heatColor(c.heat / maxHeat).withValues(alpha: heatAlpha(c.heat / maxHeat)),
             borderColor: c.id == _selected ? Colors.white : Colors.white.withValues(alpha: 0.25),
             borderStrokeWidth: c.id == _selected ? 3 : 0.6,
+          )
+        else if (pendingOnly(c))
+          Polygon(
+            points: _grid.cornersOf(c.id),
+            isFilled: true,
+            color: _pendingColor.withValues(alpha: 0.18),
+            borderColor: c.id == _selected ? Colors.white : _pendingColor,
+            borderStrokeWidth: c.id == _selected ? 3 : 1.6,
           ),
+    ];
+
+    final markers = <Marker>[
+      for (final c in pending)
+        Marker(
+          point: _grid.centerOf(c.id),
+          width: 26,
+          height: 26,
+          child: GestureDetector(
+            onTap: () => _tap(_grid.centerOf(c.id), cells, now),
+            child: Tooltip(
+              message: 'Unconfirmed report',
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: _pendingColor, width: 2),
+                ),
+                child: const Icon(Icons.question_mark_rounded, size: 15, color: _pendingColor),
+              ),
+            ),
+          ),
+        ),
     ];
 
     final home = RegionService.findByName(ref.watch(currentUserProvider)?.region)?.center ??
@@ -152,6 +197,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
             userAgentPackageName: 'com.nolifagrow.nolifa_grow',
           ),
           PolygonLayer(polygons: polygons),
+          MarkerLayer(markers: markers),
         ],
       ),
       Positioned(
@@ -167,6 +213,17 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               Container(width: 18, height: 10, color: heatColor(i / 4).withValues(alpha: heatAlpha(i / 4))),
             const SizedBox(width: 6),
             const Text('More', style: TextStyle(color: Colors.white70, fontSize: 10)),
+            const SizedBox(width: 10),
+            Container(
+              width: 14,
+              height: 14,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.white, shape: BoxShape.circle, border: Border.all(color: _pendingColor, width: 1.5)),
+              child: const Icon(Icons.question_mark_rounded, size: 9, color: _pendingColor),
+            ),
+            const SizedBox(width: 4),
+            const Text('Unconfirmed', style: TextStyle(color: Colors.white70, fontSize: 10)),
           ]),
         ),
       ),
@@ -234,7 +291,8 @@ class _MapScreenState extends ConsumerState<MapScreen> {
           Text(t('map_subtitle', lang), style: const TextStyle(fontSize: 11, color: Colors.white54)),
         ]),
       ),
-      body: body,
+      // Keeps the legend clear of the phone's own navigation buttons.
+      body: SafeArea(top: false, child: body),
     );
   }
 }

@@ -204,6 +204,7 @@ Map<String, dynamic> caseToJson(ReportCase c, String uid) => {
       'aiConfidence': c.aiConfidence,
       'reporterId': c.mine ? uid : c.reporterId,
       'confirmedBy': c.confirmedBy,
+      if (c.verifierRole != null) 'verifierRole': c.verifierRole,
     };
 
 ReportCase caseFromJson(Map<String, dynamic> m, String uid) => ReportCase(
@@ -217,6 +218,7 @@ ReportCase caseFromJson(Map<String, dynamic> m, String uid) => ReportCase(
       reporterId: m['reporterId'] as String?,
       confirmedBy: [for (final x in (m['confirmedBy'] as List? ?? const [])) x as String],
       mine: m['reporterId'] != null && m['reporterId'] == uid,
+      verifierRole: m['verifierRole'] as String?,
     );
 
 // --------------------------------------------------------------- ledger

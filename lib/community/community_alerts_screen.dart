@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ubuntu_core/ubuntu_core.dart' show CaseCard, Reveal, SectionTitle, marketProvider;
+import 'package:ubuntu_core/ubuntu_core.dart' show CaseCard, ReportStage, Reveal, SectionTitle, marketProvider;
+import '../outbreak/outbreak_trust.dart' show CaseVerifyButtons;
 import '../models/outbreak_report.dart';
 import '../services/auth_service.dart';
 import '../services/outbreak_service.dart';
@@ -21,10 +22,12 @@ class CommunityAlertsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final region = ref.watch(currentUserProvider)?.region ?? '';
     final live = ref.watch(outbreaksProvider).valueOrNull ?? const <OutbreakReport>[];
-    final all = buildAreaOutbreaks(live, demo: ref.watch(marketProvider.select((s) => s.demoMode)));
+    final cases = ref.watch(marketProvider.select((s) => s.cases.where((c) => c.mine || c.stage != ReportStage.rejected).toList()));
+    final all = buildAreaOutbreaks(live,
+        demo: ref.watch(marketProvider.select((s) => s.demoMode)),
+        cases: ref.watch(marketProvider.select((s) => s.cases)));
     final mine = all.where((o) => o.region == region).toList();
     final elsewhere = all.where((o) => o.region != region).take(6).toList();
-    final cases = ref.watch(marketProvider.select((s) => s.cases));
 
     return Scaffold(
       body: AppBackdrop(
@@ -49,7 +52,13 @@ class CommunityAlertsScreen extends ConsumerWidget {
                   if (cases.isNotEmpty) ...[
                     const SectionTitle('🤝', 'Neighbour reports'),
                     for (final c in cases)
-                      Padding(padding: const EdgeInsets.only(bottom: AppTheme.s3), child: CaseCard(c)),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: AppTheme.s3),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          CaseCard(c),
+                          CaseVerifyButtons(c),
+                        ]),
+                      ),
                   ],
                   SectionTitle('📍', region.isEmpty ? 'In your area' : 'In $region'),
                   if (mine.isEmpty)
