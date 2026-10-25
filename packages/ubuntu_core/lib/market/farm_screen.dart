@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'farm_art.dart';
+import 'farm_brand.dart';
 import 'farm_models.dart';
 import 'farm_widgets.dart';
 import 'market_models.dart';
@@ -25,6 +26,7 @@ class _FarmScreenState extends ConsumerState<FarmScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(farmBrandProvider);
     final s = ref.watch(marketProvider);
     final farm = s.farms.where((f) => f.id == widget.farmId).firstOrNull;
     if (farm == null) {

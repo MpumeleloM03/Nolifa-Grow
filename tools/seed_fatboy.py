@@ -29,6 +29,24 @@ call('POST', '/rest/v1/farm_applications?on_conflict=uid', [{
              'businessKind': 'company', 'sells': 'Beef, chicken and sausage, cut to order'}}], 'resolution=merge-duplicates,return=minimal')
 call('POST', '/rest/v1/seller_plans?on_conflict=uid', [{'uid': FATBOY, 'plan': 'grow'}], 'resolution=merge-duplicates,return=minimal')
 
+# Their logo and store picture, the way a farm uploads them with its application.
+def upload(path, local, mime):
+    req = urllib.request.Request(URL + '/storage/v1/object/farm-brand/' + path, data=open(local, 'rb').read(), method='POST',
+        headers={'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': mime, 'x-upsert': 'true'})
+    try:
+        urllib.request.urlopen(req, timeout=60).read()
+    except urllib.error.HTTPError as e:
+        raise SystemExit('upload %s -> %s %s' % (path, e.code, e.read().decode()[:300]))
+ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'packages', 'ubuntu_core', 'assets', 'farms')
+logo, banner = FATBOY + '/logo-fatboy.png', FATBOY + '/banner-fatboy.jpg'
+upload(logo, os.path.join(ASSETS, 'logo_fatboy.png'), 'image/png')
+upload(banner, os.path.join(ASSETS, 'banner_fatboy.jpg'), 'image/jpeg')
+call('DELETE', '/rest/v1/application_files?uid=eq.%s&kind=in.(farm_logo,farm_banner)' % FATBOY)
+call('POST', '/rest/v1/application_files', [{'uid': FATBOY, 'kind': 'farm_logo', 'path': logo}, {'uid': FATBOY, 'kind': 'farm_banner', 'path': banner}])
+call('POST', '/rest/v1/farm_profiles?on_conflict=uid', [{'uid': FATBOY, 'data': {
+    'farmName': 'Fatboy Butcheries', 'province': 'KwaZulu-Natal', 'town': 'uMhlanga', 'farmKind': 'livestock',
+    'products': [], 'practices': {}, 'registered': False, 'logo': logo, 'banner': banner}}], 'resolution=merge-duplicates,return=minimal')
+
 prods = call('GET', '/rest/v1/market_products?owner_id=eq.%s&select=id,data' % FATBOY)
 # What each product has in the warehouse: (room, kg deposited, kg left, days to use-by, bay)
 PLAN = {

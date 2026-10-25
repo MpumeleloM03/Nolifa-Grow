@@ -66,7 +66,7 @@ class _StockPageState extends ConsumerState<StockPage> {
                 DataRow(cells: [
                   DataCell(Text(l.tag ?? 'none', style: const TextStyle(fontFamily: 'monospace', fontWeight: FontWeight.w700))),
                   DataCell(Text(l.productName)),
-                  DataCell(Text(l.farmName)),
+                  DataCell(FarmTag(l.farmName)),
                   DataCell(Text(l.zone.label)),
                   DataCell(Text(l.bay ?? '-')),
                   DataCell(Text('${q(l.remaining)} ${l.unit}')),

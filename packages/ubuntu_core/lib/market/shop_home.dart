@@ -6,6 +6,7 @@ import '../theme/glass.dart';
 import '../water/water_store.dart';
 import 'alert_actions.dart';
 import 'farm_art.dart';
+import 'farm_brand.dart';
 import 'farm_models.dart';
 import 'farm_screen.dart';
 import 'farm_widgets.dart';
@@ -40,6 +41,7 @@ class _ShopHomePageState extends ConsumerState<ShopHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(farmBrandProvider);
     final s = ref.watch(marketProvider);
     final farms = groupFarms(s.products, query: _q, category: _cat);
     final active = s.myOrders.where((o) => o.status != OrderStatus.delivered).toList();
@@ -313,7 +315,7 @@ class _Slide {
             // A seller with its own photo shows it, not a stock vegetable picture.
             Positioned.fill(
               child: Image(
-                image: farm.brand != null && farmBanner(farm.name) != null ? farmBanner(farm.name)! : promoPhoto(photo),
+                image: (farm.brand != null || FarmBrands.instance.of(farm.name)?.bannerImage != null) && farmBanner(farm.name) != null ? farmBanner(farm.name)! : promoPhoto(photo),
                 fit: BoxFit.cover,
                 alignment: const Alignment(0.35, -0.2),
               ),

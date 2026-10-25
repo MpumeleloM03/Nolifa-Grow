@@ -18,6 +18,9 @@ The door functions run as the signed-in person and check who they are. Row level
 5. The driver app posts a position while the driver is online. The household and the farm see the driver on a map for that order only.
 6. The customer PIN closes the delivery and releases the money (farm, driver and Nolifa shares).
 
+## Farm logo and store picture
+A farm uploads a logo and a store picture with its application (both required; the server refuses a submit without them). They go to the public `farm-brand` bucket, in the farm's own folder. When Nolifa approves the farm, `review_application` copies them into the public `farm_profiles` row. Every phone and the back office follow that table live, so Drop shows the farm's logo and picture as soon as it is approved, and the back office stock table shows the logo beside the farm name. An approved farm can change them later in Settings (`set_farm_brand`). Farms with no picture keep the drawn badge.
+
 ## Approval and notices
 Approving a farm or a driver, a plan, a membership or a payout writes a row in `notifications`. The phone listens to that table live, shows the notice, and unlocks the paid features without a restart.
 

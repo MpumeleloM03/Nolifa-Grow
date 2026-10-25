@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'farm_art.dart';
+import 'farm_brand.dart';
 import 'farm_models.dart';
 import 'farm_screen.dart';
 import 'market_models.dart';
@@ -88,6 +89,7 @@ class FarmCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(farmBrandProvider);
     final colors = farmColors(farm.name);
     final self = farm.delivery == DeliveryMode.self;
     return GlassCard(

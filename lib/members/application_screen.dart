@@ -123,7 +123,17 @@ class _FarmApplicationState extends ConsumerState<FarmApplicationScreen> {
     }
   }
 
-  Future<void> _upload(String kind, File f) async {
+  /// The logo and store picture come from the gallery and go to the public bucket.
+  Future<void> _brandPhoto(String kind) async {
+    try {
+      final x = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 85, maxWidth: kind == 'farm_logo' ? 800 : 1800);
+      if (x != null) await _upload(kind, File(x.path), bucket: 'farm-brand');
+    } catch (e) {
+      if (mounted) setState(() => _error = 'We could not open your photos. Allow access in Settings and try again.');
+    }
+  }
+
+  Future<void> _upload(String kind, File f, {String bucket = 'verification'}) async {
     setState(() {
       _busy = true;
       _error = null;
@@ -132,7 +142,7 @@ class _FarmApplicationState extends ConsumerState<FarmApplicationScreen> {
       final db = SupabaseBoot.client;
       final uid = db.auth.currentUser!.id;
       final path = '$uid/$kind-${DateTime.now().millisecondsSinceEpoch}.jpg';
-      await db.storage.from('verification').upload(path, f, fileOptions: const FileOptions(contentType: 'image/jpeg'));
+      await db.storage.from(bucket).upload(path, f, fileOptions: const FileOptions(contentType: 'image/jpeg'));
       await db.rpc('add_application_file', params: {'p_kind': kind, 'p_path': path});
       await _loadFiles();
     } catch (e) {
@@ -181,6 +191,7 @@ class _FarmApplicationState extends ConsumerState<FarmApplicationScreen> {
       'province': 'the province', 'lat': 'the farm location', 'lng': 'the farm location', 'sizeHa': 'the farm size',
       'farmKind': 'what you farm', 'consent': 'your agreement', 'photo:id_front': 'a photo of your ID',
       'photo:selfie_with_id': 'a selfie holding your ID', 'photo:land_photo': 'a photo of your land',
+      'photo:farm_logo': 'your farm logo', 'photo:farm_banner': 'a picture for your store',
     };
     final raw = m.replaceFirst(RegExp(r'^.*Still missing: '), '').split(', ');
     final seen = <String>{};
@@ -244,7 +255,7 @@ class _FarmApplicationState extends ConsumerState<FarmApplicationScreen> {
         for (final o in all) FilterChip(label: Text(o), selected: on.contains(o), onSelected: _locked ? null : (_) => toggle(o)),
       ]);
 
-  Widget _photoRow(String kind, String title, String hint, {bool selfie = false, bool multi = false}) {
+  Widget _photoRow(String kind, String title, String hint, {bool selfie = false, bool multi = false, bool gallery = false}) {
     final n = _count(kind);
     return GlassCard(
       padding: const EdgeInsets.all(AppTheme.s4),
@@ -257,7 +268,10 @@ class _FarmApplicationState extends ConsumerState<FarmApplicationScreen> {
             Text(n > 0 ? (multi ? '$n added' : 'Added') : hint, style: AppTheme.footnote),
           ]),
         ),
-        if (!_locked) GhostButton(label: n > 0 ? (multi ? 'Add more' : 'Retake') : 'Take photo', onPressed: _busy ? null : () => _photo(kind, selfie: selfie)),
+        if (!_locked)
+          GhostButton(
+              label: n > 0 ? (multi ? 'Add more' : (gallery ? 'Change' : 'Retake')) : (gallery ? 'Choose picture' : 'Take photo'),
+              onPressed: _busy ? null : () => gallery ? _brandPhoto(kind) : _photo(kind, selfie: selfie)),
       ]),
     );
   }
@@ -381,6 +395,10 @@ class _FarmApplicationState extends ConsumerState<FarmApplicationScreen> {
                 _photoRow('selfie_with_id', 'Selfie holding your ID', 'Hold the ID next to your face so both can be seen.', selfie: true),
                 const SizedBox(height: AppTheme.s2),
                 _photoRow('land_photo', 'Your land', 'Your field, camps or buildings. More than one is better.', multi: true),
+                const SizedBox(height: AppTheme.s2),
+                _photoRow('farm_logo', 'Your farm logo', 'Buyers in Nolifa Drop see this next to your farm name. A square picture works best.', gallery: true),
+                const SizedBox(height: AppTheme.s2),
+                _photoRow('farm_banner', 'Your store picture', 'The wide picture at the top of your store in Nolifa Drop. Your products, your farm, your team.', gallery: true),
                 const SizedBox(height: AppTheme.s2),
                 _photoRow('certificate', 'Certificates and papers', 'Title deed or lease or PTO letter, brand or livestock owner registration, animal health certificate or vet letter, food safety papers if you have them.', multi: true),
                 const SizedBox(height: AppTheme.s4),

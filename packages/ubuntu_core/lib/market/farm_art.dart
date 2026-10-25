@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart' hide Text;
 import '../theme/app_theme.dart';
+import 'farm_brand.dart';
 
 import '../tr_text.dart' show Text;
 import 'package:ubuntu_core/theme/glyph.dart';
@@ -75,11 +76,15 @@ const _farmSlugs = <String, String>{
   'Fatboy Butcheries': 'fatboy',
 };
 
-ImageProvider? farmBanner(String name) => _farmSlugs[name] == null
+ImageProvider? farmBanner(String name) => FarmBrands.instance.of(name)?.bannerImage ?? _bundledBanner(name);
+
+ImageProvider? _bundledBanner(String name) => _farmSlugs[name] == null
     ? null
     : AssetImage('assets/farms/banner_${_farmSlugs[name]}.jpg', package: 'ubuntu_core');
 
-ImageProvider? farmLogoImage(String name) => _farmSlugs[name] == null
+ImageProvider? farmLogoImage(String name) => FarmBrands.instance.of(name)?.logoImage ?? _bundledLogo(name);
+
+ImageProvider? _bundledLogo(String name) => _farmSlugs[name] == null
     ? null
     : AssetImage('assets/farms/logo_${_farmSlugs[name]}.png', package: 'ubuntu_core');
 
@@ -241,4 +246,39 @@ class _LogoPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _LogoPainter old) => old.shape != shape || old.colors != colors;
+}
+
+/// A farm's logo beside its name, for lists and tables (the back office stock
+/// table, receiving). Redraws when the farm's picture arrives.
+class FarmTag extends StatelessWidget {
+  final String name;
+  final double size;
+  final TextStyle? style;
+  const FarmTag(this.name, {super.key, this.size = 28, this.style});
+
+  @override
+  Widget build(BuildContext context) => ListenableBuilder(
+        listenable: FarmBrands.instance,
+        builder: (context, _) {
+          final photo = farmLogoImage(name);
+          return Row(mainAxisSize: MainAxisSize.min, children: [
+            Container(
+              width: size,
+              height: size,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFFE3EBE6),
+                border: Border.all(color: const Color(0x22000000)),
+                image: photo == null ? null : DecorationImage(image: photo, fit: BoxFit.cover),
+              ),
+              alignment: Alignment.center,
+              child: photo == null
+                  ? Text(_monogram(name), style: TextStyle(fontSize: size * 0.38, fontWeight: FontWeight.w800, color: const Color(0xFF3F5B4D)))
+                  : null,
+            ),
+            const SizedBox(width: 10),
+            Flexible(child: Text(name, style: style, overflow: TextOverflow.ellipsis)),
+          ]);
+        },
+      );
 }

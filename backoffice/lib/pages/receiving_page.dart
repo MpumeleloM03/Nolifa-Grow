@@ -27,7 +27,7 @@ class ReceivingPage extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.sell_rounded),
             title: Text('${l.tag}  ${l.productName}'),
-            subtitle: Text('${l.farmName}, ${l.zone.label}, bay ${l.bay}'),
+            subtitle: Row(children: [FarmTag(l.farmName, size: 22), Text(',  ${l.zone.label}, bay ${l.bay}')]),
             trailing: FilledButton.icon(
               icon: const Icon(Icons.print_rounded),
               label: const Text('Print tag'),

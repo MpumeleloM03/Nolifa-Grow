@@ -12,6 +12,7 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         AppearancePicker,
         BusinessScreen,
         FarmerWarehouseScreen,
+        marketProvider,
         ProfileForm,
         Reveal,
         SectionTitle,
@@ -26,6 +27,7 @@ import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import '../water/supplier_screen.dart';
 import '../services/notices.dart';
+import '../store/farm_pictures_screen.dart';
 import '../widgets/language_toggle.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
@@ -69,7 +71,25 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
           padding: const EdgeInsets.fromLTRB(AppTheme.s6, AppTheme.s4, AppTheme.s6, 140),
           sliver: SliverList.list(children: [
             _NoticesLink(onTap: () => _push(const NoticesScreen())),
-            const SizedBox(height: AppTheme.s4),
+            const SizedBox(height: AppTheme.s3),
+            if (farmer && ref.watch(marketProvider).profile.farmName.trim().isNotEmpty) ...[
+              GlassCard(
+                onTap: () => _push(FarmPicturesScreen(farmName: ref.read(marketProvider).profile.farmName.trim())),
+                child: Row(children: [
+                  Icon(Icons.storefront_rounded, color: AppTheme.textSecondary),
+                  const SizedBox(width: AppTheme.s3),
+                  Expanded(
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text('Farm logo and store picture', style: AppTheme.headline),
+                      Text('What buyers see in Nolifa Drop', style: AppTheme.footnote),
+                    ]),
+                  ),
+                  Icon(Icons.chevron_right_rounded, color: AppTheme.textTertiary),
+                ]),
+              ),
+              const SizedBox(height: AppTheme.s3),
+            ],
+            const SizedBox(height: AppTheme.s1),
             ProfileForm(
               farmer: farmer,
               extraFields: (changed) => [

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../market/farm_brand.dart';
 import 'offline_cache.dart';
 import 'outbox.dart';
 import 'resilient.dart';
@@ -33,6 +34,7 @@ class SupabaseBoot {
       });
       SyncStatus.instance.watchConnectivity();
       OfflineOutbox.instance.start();
+      FarmBrands.instance.start();
     } catch (e) {
       ready = false;
       debugPrint('supabase: init failed, running in Local mode: $e');

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart' hide Text;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show SupabaseClient;
-import 'package:ubuntu_core/ubuntu_core.dart' show SecondFactorScreen, SupabaseBoot, friendlyError, resilientRows;
+import 'package:ubuntu_core/ubuntu_core.dart' show SecondFactorScreen, SupabaseBoot, friendlyError, resilientRows, supabaseUrl;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
@@ -119,13 +119,35 @@ class _Files extends StatelessWidget {
         builder: (_, snap) {
           final files = [for (final f in (snap.data ?? const [])) Map<String, dynamic>.from(f as Map)];
           if (files.isEmpty) return const Text('No photos.');
-          return Wrap(spacing: 8, children: [
-            for (final f in files)
+          final brand = files.where((f) => f['kind'] == 'farm_logo' || f['kind'] == 'farm_banner').toList();
+          final ids = files.where((f) => f['kind'] != 'farm_logo' && f['kind'] != 'farm_banner').toList();
+          return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            // The logo and store picture are public, so a reviewer sees them as buyers will.
+            if (brand.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Wrap(spacing: 12, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                  for (final f in brand)
+                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(f['kind'] == 'farm_logo' ? 'Farm logo' : 'Store picture', style: const TextStyle(fontSize: 12)),
+                      const SizedBox(height: 4),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(f['kind'] == 'farm_logo' ? 40 : 8),
+                        child: Image.network('$supabaseUrl/storage/v1/object/public/farm-brand/${f['path']}',
+                            width: f['kind'] == 'farm_logo' ? 80 : 220, height: 80, fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => const SizedBox(width: 80, height: 80, child: Icon(Icons.broken_image_rounded))),
+                      ),
+                    ]),
+                ]),
+              ),
+            Wrap(spacing: 8, children: [
+            for (final f in ids)
               ActionChip(
                 avatar: const Icon(Icons.image_rounded, size: 16),
                 label: Text('${f['kind']}'),
                 onPressed: () => _open('verification', f['path'] as String),
               ),
+            ]),
           ]);
         },
       );

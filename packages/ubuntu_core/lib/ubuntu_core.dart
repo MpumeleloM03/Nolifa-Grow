@@ -12,6 +12,7 @@ export 'theme/app_theme.dart';
 export 'theme/appearance.dart';
 export 'theme/glass.dart';
 export 'live/device_location.dart';
+export 'market/farm_brand.dart';
 export 'live/live_alerts.dart';
 export 'live/live_overrides.dart';
 export 'live/staff.dart';
