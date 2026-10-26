@@ -12,7 +12,7 @@ void main() {
   final url = Platform.environment['SUPABASE_URL'] ?? '', anon = Platform.environment['SUPABASE_ANON_KEY'] ?? '';
   test('list the Fatboy range', () async {
     final c = SupabaseClient(url, anon, authOptions: const AuthClientOptions(authFlowType: AuthFlowType.implicit));
-    final res = await c.auth.signInWithPassword(email: 'farmer@demo.nolifa.co.za', password: 'NolifaDemo1');
+    final res = await c.auth.signInWithPassword(email: 'all@demo.nolifa.co.za', password: 'NolifaDemo1');
     final repo = SupabaseMarketRepository(db: c);
     for (final p in fatboyRange) {
       await repo.putProduct(p.copyWith(stock: 40, ownerId: res.user!.id), res.user!.id);

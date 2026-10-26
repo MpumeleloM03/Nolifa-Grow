@@ -28,23 +28,24 @@ Nolifa Grow and its farmers edition are two builds of this repo (`lib/main.dart`
 
 | Role | Tabs | What they do |
 |---|---|---|
-| **Community member** | Diagnose, Outbreaks, Water, Shop, Me | Check a sick plant or animal for free, see and report outbreaks nearby, ask for water help, buy from nearby farms and follow the driver on a map |
+| **Community member** | Water, Shop, Me | See the water radar and real dam levels, ask for water help, buy from nearby farms and follow the driver on a map |
 | **Farmer** | Diagnose, Outbreaks, Water, Sell, Me | Scan crops, check animals, send a video to a vet, report and confirm outbreaks, manage stock and warehouse temperature, hire a truck, pack and dispatch orders |
 | **Driver** | Jobs, Roads, Earnings, Me | See packed orders, deliver, report road hazards, get paid |
 
-## Demo logins (all four apps)
+## Universal demo login (all four apps and the back office)
 
-Password for every account below: `NolifaDemo1`
+One email and one password open everything:
 
-| Role | Email | Status |
-|---|---|---|
-| Farmer (Fatboy Butcheries) | `farmer@demo.nolifa.co.za` | Verified, on the Grow plan, stock listed |
-| Community member (customer) | `community@demo.nolifa.co.za` | Ready to order |
-| Driver | `driver@demo.nolifa.co.za` | Verified, can take jobs |
+| | |
+|---|---|
+| Email | `all@demo.nolifa.co.za` |
+| Password | `NolifaDemo1` |
 
-On the sign-in screen of Nolifa Grow, the **Farmer / Community / Driver** buttons under *Try the demo* use these same accounts.
+This one account is a verified farmer (Fatboy Butcheries, on the Grow plan, stock listed), a verified driver, a customer who can order, and back office staff and certifier. Use it in Nolifa, Nolifa Grow, Nolifa Drop, Nolifa Delivery and the back office at https://nolifa-backoffice.web.app .
 
-Back office (staff web app): https://nolifa-backoffice.web.app . Staff logins are given to the judges separately because they can approve farms and drivers.
+In Nolifa and Nolifa Grow, open **Me** and use the **Farmer | Driver** tabs at the top to switch sides.
+
+Two more accounts are there for the customer view and a driver-only view (same password): `community@demo.nolifa.co.za` and `driver@demo.nolifa.co.za`. The **Farmer / Community / Driver** buttons on the sign-in screen use `all@demo.nolifa.co.za`, `community@demo.nolifa.co.za` and `driver@demo.nolifa.co.za`.
 
 These are demo accounts on a demo database. Payments run in Yoco test mode. Anything you do with them is visible to everyone using them.
 

@@ -161,7 +161,7 @@ class AuthService {
   /// screen shows the emails and password so they can also be typed.
   static const demoPassword = 'NolifaDemo1';
   static const demoEmails = {
-    'farmer': 'farmer@demo.nolifa.co.za',
+    'farmer': 'all@demo.nolifa.co.za',
     'community': 'community@demo.nolifa.co.za',
     'driver': 'driver@demo.nolifa.co.za',
   };
