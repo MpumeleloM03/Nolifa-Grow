@@ -149,7 +149,9 @@ WaterForecast forecastFromWeekly({
   double? until(double target) {
     if (thisWeek <= target) return 0;
     if (perDay >= -0.05) return null;
-    return (thisWeek - target) / -perDay;
+    // A date months away from two weekly readings is noise, not a forecast.
+    final d = (thisWeek - target) / -perDay;
+    return d > 120 ? null : d;
   }
 
   final stamp = '${reportDate.day}/${reportDate.month}';

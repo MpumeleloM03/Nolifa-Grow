@@ -77,16 +77,18 @@ class _WaterViewState extends ConsumerState<_WaterView> {
       ('community', _CommunitySection(state: s)),
       if (zone != null) ...[
         ('supply', Padding(padding: const EdgeInsets.only(top: AppTheme.s4), child: _SupplyCard(zone: zone))),
-        ('radar', _RadarSection(forecast: forecast, level: zone.level)),
+        ('radar', _RadarSection(forecast: forecast, level: zone.level, zoneId: zone.id)),
+        ('real', const RealDamLevels()),
         ('voice', _VoiceSection(state: s, zone: zone)),
-        ('source', Padding(padding: const EdgeInsets.only(top: AppTheme.s4), child: _SourceCard(state: s, zone: zone))),
       ],
       ('prepare', _PrepareSection(forecast: forecast, ticked: _ticked, onTick: _tick)),
       for (var i = 0; i < widget.extraSections.length; i++)
         ('extra-$i', Padding(padding: const EdgeInsets.only(top: AppTheme.s6), child: widget.extraSections[i])),
-      ('real', const RealDamLevels()),
+      if (zone == null) ('real', const RealDamLevels()),
       if (ref.read(waterProvider.notifier).isProvider) ('provider', const _ProviderEntry()),
       if (s.demo) ('demo', _DemoControls(state: s)),
+      // Where the numbers come from goes last.
+      if (zone != null) ('source', Padding(padding: const EdgeInsets.only(top: AppTheme.s6), child: _SourceCard(state: s, zone: zone))),
     ];
 
     return CustomScrollView(
@@ -305,28 +307,40 @@ class _SupplyCard extends StatelessWidget {
 
 // ---------------------------------------------------------------- radar
 
-class _RadarSection extends StatelessWidget {
+class _RadarSection extends ConsumerWidget {
   final WaterForecast forecast;
   final double level;
-  const _RadarSection({required this.forecast, required this.level});
+  final String zoneId;
+  const _RadarSection({required this.forecast, required this.level, required this.zoneId});
 
   @override
-  Widget build(BuildContext context) {
-    final f = forecast;
+  Widget build(BuildContext context, WidgetRef ref) {
+    // The provider's own readings need a few days to build up. Until they do,
+    // the radar uses the Department of Water and Sanitation's real weekly levels.
+    var f = forecast;
+    var now = level;
+    if (f.confidence <= 0) {
+      for (final z in ref.watch(_realLevelsProvider).valueOrNull ?? const <FeedZone>[]) {
+        if (z.zone.id == zoneId) {
+          f = z.forecast;
+          now = z.zone.level;
+        }
+      }
+    }
     final ready = f.confidence > 0;
     final empty = f.daysToEmpty;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const SectionTitle('📡', 'Water radar'),
       GlassCard(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text("Forecast from the reservoir's readings", style: AppTheme.caption),
+          Text(forecast.confidence <= 0 && f.confidence > 0 ? "Forecast from the real DWS dam readings" : "Forecast from the reservoir's readings", style: AppTheme.caption),
           const SizedBox(height: AppTheme.s2),
           Text(forecastHeadline(f), style: AppTheme.title2.copyWith(color: forecastColor(f))),
           const SizedBox(height: 2),
           Text(f.why, style: AppTheme.footnote),
           const SizedBox(height: AppTheme.s4),
           if (ready) ...[
-            WaterRadarChart(now: level, days: f.days),
+            WaterRadarChart(now: now, days: f.days),
             const SizedBox(height: AppTheme.s4),
             Row(children: [
               Expanded(
@@ -1005,8 +1019,23 @@ class _SourceCard extends StatelessWidget {
 
 final _realLevelsProvider = FutureProvider<List<FeedZone>>((ref) async {
   final feed = ref.watch(waterFeedProvider);
-  if (feed == null) return <FeedZone>[];
-  return feed.load();
+  final live = feed == null ? <FeedZone>[] : await feed.load();
+  if (live.isNotEmpty) return live;
+  // The DWS page is sometimes empty while it republishes. Nolifa's server keeps
+  // every weekly report it has fetched, so show the latest of those instead.
+  final saved = ref.read(waterProvider).zones;
+  return [
+    for (final z in saved)
+      if (z.id.startsWith('dws-') && z.readings.isNotEmpty)
+        FeedZone(
+          z,
+          forecastFromWeekly(
+            thisWeek: z.level,
+            lastWeek: z.readings.length > 1 ? z.readings[z.readings.length - 2].level : z.level,
+            reportDate: z.readings.last.at,
+          ),
+        ),
+  ];
 });
 
 /// Real reservoir levels from the Department of Water and Sanitation. The

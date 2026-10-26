@@ -21,6 +21,7 @@ import '../store/farm_water_section.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import 'alerts_tab.dart';
+import 'view_mode.dart';
 import 'welcome_back.dart';
 import 'home_tab.dart';
 import 'orders_tab.dart';
@@ -28,7 +29,7 @@ import 'settings_tab.dart';
 
 /// Nolifa after sign-in. One app, three people, each sent to what they use:
 ///
-/// * Community member: Diagnose, Outbreaks, Water, Shop, Me.
+/// * Community member: Water, Shop, Me.
 /// * Farmer: Diagnose, Outbreaks, Water, Sell, Me.
 /// * Driver: Jobs, Roads, Earnings, Me.
 ///
@@ -71,8 +72,11 @@ class _GrowShellState extends ConsumerState<GrowShell> {
         ref.read(marketProvider.notifier).updateProfile(profile.copyWith(farmName: name));
       }
     });
+    // The Me tab lets a farmer or driver switch sides; land back on Me after.
+    ref.listen<String?>(viewAsProvider, (_, __) => setState(() => _i = 99));
     final community = user?.isCommunity ?? false;
-    final driver = user?.isDriver ?? false;
+    final viewAs = community ? null : ref.watch(viewAsProvider);
+    final driver = viewAs != null ? viewAs == 'driver' : (user?.isDriver ?? false);
 
     final List<_Tab> tabs;
     final List<Widget> pages;
@@ -83,11 +87,9 @@ class _GrowShellState extends ConsumerState<GrowShell> {
       pages = const [DriverHome(), RoadAlertsScreen(), EarningsTab(), SettingsTab()];
       badges = {if (open > 0) 0: open};
     } else if (community) {
-      // Free plant and animal checks and the outbreak map protect everyone nearby.
-      tabs = const [_diagnose, _outbreaks, _water, _shop, _me];
+      // Buyers get water and the shop. Disease and outbreak tools are the farmer's.
+      tabs = const [_water, _shop, _me];
       pages = [
-        const HomeTab(),
-        const AlertsTab(),
         const WaterPage(),
         ShopHomePage(onMenu: () => openDropMenu(context)),
         const SettingsTab(),

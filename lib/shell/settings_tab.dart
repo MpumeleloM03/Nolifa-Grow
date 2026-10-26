@@ -28,6 +28,7 @@ import '../theme/glass.dart';
 import '../water/supplier_screen.dart';
 import '../members/members_service.dart' show applicationProvider;
 import '../services/notices.dart';
+import 'view_mode.dart';
 import '../store/farm_pictures_screen.dart';
 import '../widgets/language_toggle.dart';
 
@@ -53,8 +54,10 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
     final user = ref.watch(currentUserProvider);
     final regions = [for (final r in RegionService.regions) r.name];
     final region = regions.contains(_region) ? _region : null;
-    final farmer = user?.isFarmer ?? true;
-    final driver = user?.isDriver ?? false;
+    final viewAs = (user?.isCommunity ?? false) ? null : ref.watch(viewAsProvider);
+    final farmer = viewAs != null ? viewAs == 'farmer' : (user?.isFarmer ?? true);
+    final driver = viewAs != null ? viewAs == 'driver' : (user?.isDriver ?? false);
+    final canSwitch = !(user?.isCommunity ?? false);
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -71,6 +74,13 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(AppTheme.s6, AppTheme.s4, AppTheme.s6, 140),
           sliver: SliverList.list(children: [
+            if (canSwitch) ...[
+              _SideSwitch(
+                driver: driver,
+                onPick: (d) => ref.read(viewAsProvider.notifier).state = d ? 'driver' : 'farmer',
+              ),
+              const SizedBox(height: AppTheme.s4),
+            ],
             _NoticesLink(onTap: () => _push(const NoticesScreen())),
             const SizedBox(height: AppTheme.s3),
             if (farmer && _farmNameFor(ref).isNotEmpty) ...[
@@ -250,4 +260,44 @@ String _farmNameFor(WidgetRef ref) {
   if (typed.isNotEmpty) return typed;
   final app = ref.watch(applicationProvider).valueOrNull;
   return app?['status'] == 'approved' ? '${(app?['data'] as Map?)?['farmName'] ?? ''}'.trim() : '';
+}
+
+/// Farmer and Driver tabs at the top of Me: the same person, either side.
+class _SideSwitch extends StatelessWidget {
+  final bool driver;
+  final ValueChanged<bool> onPick;
+  const _SideSwitch({required this.driver, required this.onPick});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget tab(String label, IconData icon, bool on, bool d) => Expanded(
+          child: GestureDetector(
+            onTap: () {
+              HapticFeedback.selectionClick();
+              if (!on) onPick(d);
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: const EdgeInsets.symmetric(vertical: AppTheme.s3),
+              decoration: BoxDecoration(
+                color: on ? AppTheme.sprout.withValues(alpha: 0.2) : Colors.transparent,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: on ? AppTheme.sprout : Colors.transparent),
+              ),
+              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Icon(icon, size: 18, color: on ? AppTheme.sprout : AppTheme.textSecondary),
+                const SizedBox(width: 6),
+                Text(label, style: AppTheme.subhead.copyWith(fontWeight: FontWeight.w700, color: on ? AppTheme.textPrimary : AppTheme.textSecondary)),
+              ]),
+            ),
+          ),
+        );
+    return GlassCard(
+      padding: const EdgeInsets.all(4),
+      child: Row(children: [
+        tab('Farmer', Icons.agriculture_rounded, !driver, false),
+        tab('Driver', Icons.delivery_dining_rounded, driver, true),
+      ]),
+    );
+  }
 }
