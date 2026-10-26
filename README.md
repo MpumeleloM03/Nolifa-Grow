@@ -11,49 +11,85 @@ local farms to local families.
 
 > Four apps share one backend: **Nolifa** (this app, everything in one), **Nolifa Grow** (the same code as a farmers-only edition), Nolifa Drop and Nolifa Delivery. See `docs/APPS.md`.
 
-## One app, three people
+## The four apps
 
-Everyone signs in to the same app and is sent to what they use.
+One backend, four apps. Every demo login below works in all of them.
+
+| App | For | What it does |
+|---|---|---|
+| **Nolifa** | Everyone | The ecosystem in one app. Farmers, households and drivers each land on what they use. |
+| **Nolifa Grow** | Farmers | Crop and livestock health, outbreak map, water, stock, selling, truck hire. |
+| **Nolifa Drop** | Households | Buy fresh food from nearby farms, pay, follow the driver live, get a PIN for delivery. |
+| **Nolifa Delivery** | Drivers | Take jobs, navigate, report road hazards, deliver with the buyer's PIN, get paid per delivery. |
+
+Nolifa and Nolifa Grow are two builds of this repo (`lib/main.dart`, `lib/main_grow.dart`). Drop and Delivery are separate Flutter projects that use the same `packages/ubuntu_core` engine and the same Supabase project. See `docs/APPS.md`.
+
+### Who sees what in Nolifa
 
 | Role | Tabs | What they do |
 |---|---|---|
-| **Community member** | Diagnose, Outbreaks, Water, Shop, Me | Check a sick plant or animal, see outbreaks and water alerts nearby, buy fresh food from the nearest farm |
-| **Farmer** | Diagnose, Outbreaks, Water, Sell, Me | Everything above, plus selling produce and handling orders |
-| **Driver** | Jobs, Roads, Earnings, Me | Deliver orders, report flooded or blocked roads, get paid when the buyer gives the delivery PIN |
+| **Community member** | Shop, Water, Me | Buy from nearby farms, follow the order and the driver on a map, ask for water help |
+| **Farmer** | Diagnose, Outbreaks, Water, Sell, Me | Scan crops, check animals, send a video to a vet, report and confirm outbreaks, manage stock and warehouse temperature, hire a truck, pack and dispatch orders |
+| **Driver** | Jobs, Roads, Earnings, Me | See packed orders, deliver, report road hazards, get paid |
+
+## Demo logins (all four apps)
+
+Password for every account below: `NolifaDemo1`
+
+| Role | Email | Status |
+|---|---|---|
+| Farmer (Fatboy Butcheries) | `farmer@demo.nolifa.co.za` | Verified, on the Grow plan, stock listed |
+| Community member (customer) | `community@demo.nolifa.co.za` | Ready to order |
+| Driver | `driver@demo.nolifa.co.za` | Verified, can take jobs |
+
+On the sign-in screen of Nolifa, the **Farmer / Community / Driver** buttons under *Try the demo* use these same accounts.
+
+Back office (staff web app): https://nolifa-backoffice.web.app . Staff logins are given to the judges separately because they can approve farms and drivers.
+
+These are demo accounts on a demo database. Payments run in Yoco test mode. Anything you do with them is visible to everyone using them.
 
 ## What it does
 
-- **AI diagnosis.** Take a photo of a sick plant, or tick an animal's symptoms, and get the disease and what to do. A basic plant check works offline. The app is available in English and isiZulu.
-- **Live outbreak map.** Reports show by area (rounded to about 5 km), never at a farm.
-  - A new report appears straight away as *unconfirmed*.
-  - Nearby farms are alerted once **2 verified farms** confirm it.
-  - A **vet or agricultural extension officer** can verify it, or reject it so it leaves the map.
-- **Water alerts.** Real dam levels from the Department of Water and Sanitation, and how long supply will last. Households can ask for help together.
-- **7-day farm forecast.** Real weather turned into warnings for frost, heat, heavy rain and fungus.
-- **Marketplace and delivery.** Farmers sell straight to their community. Payment is held in escrow until the buyer gives the 4-digit delivery PIN.
+- **AI diagnosis.** Photograph a sick plant, or tick an animal's symptoms. You get the disease and what to do. A basic plant check works offline. English and isiZulu.
+- **Vets.** A farmer films a sick animal and a vet answers, and can book a visit.
+- **Live outbreak map.** Reports show by area (about 5 km), never at a farm. Nearby farms are alerted once 2 verified farms confirm. A vet or extension officer can verify or reject.
+- **Water.** Real dam levels (Department of Water and Sanitation), supply forecast, and help requests that reach the water provider once enough neighbours vote.
+- **Marketplace.** Farmers list stock. Buyers pay by card (Yoco) or cash. The server prices every order and holds the money until the buyer gives the delivery PIN.
+- **Warehouse and stock.** Farmers see shop stock beside warehouse stock and the live room temperature. Cold-room alarms reach the farmer.
+- **Dispatch and delivery.** The farm packs, prints the parcel label and scans it to send it out. Drivers see the job, the buyer and the farm follow the driver on a map, and the PIN closes the delivery.
+- **Truck hire.** A farm asks for a bakkie or refrigerated truck, staff quote, the farm accepts.
+- **Plans.** A farm switches plan by card and the new plan is on at once.
+- **Works with weak signal.** Lists are saved on the phone. Stock changes, water votes and outbreak reports wait on the phone and send when signal returns.
 
-## Try it
+## The backend
 
-On the sign-in screen, tap **Farmer**, **Community** or **Driver** under *Demo accounts*. The
-demo emails and password are shown on that screen.
+One Supabase project ("Nolifa Suite", Postgres + realtime + storage + Edge Functions).
+
+| Part | Where | What it does |
+|---|---|---|
+| Database rules | `supabase/migrations/` | Every table has row-level security. Orders, money, approvals and plans are checked on the server. |
+| Three doors | `drop_api`, `grow_api`, `delivery_api` | Each app talks to its own door and only sees what it needs. See `docs/APP_DOORS.md`. |
+| Live updates | Supabase realtime | Approvals, orders, driver position and temperature reach the phone without a refresh. |
+| Notices | `notifications` table | Approved, paid, packed, driver on the way, delivered, cold alarm. |
+| Payments | Edge Functions `yoco-checkout`, `yoco-webhook` | Server-priced card payments for orders, memberships and plan switches. Only Yoco's signed message can mark something paid. |
+| Staff | `backoffice/` (Flutter web, Firebase Hosting) | Approve farms and drivers, receive and store goods, post room temperatures, quote trucks, see drivers live, change plans. |
+| Tests | `supabase/tests` (pgTAP), `packages/ubuntu_core/test_live`, `tools/e2e_cloud.py` | Database rules, the live backend, and a walk through approvals and payments in the cloud. |
 
 ## Technology
 
 | Part | Built with |
 |---|---|
-| App | Flutter (Android first), Riverpod |
-| Backend | Supabase: sign-in, Postgres, row-level security, realtime, storage, Edge Functions |
-| Plant diagnosis | Plant.id API (called from the server) and an on-device TensorFlow Lite model for offline checks |
+| App | Flutter, Riverpod |
+| Backend | Supabase |
+| Plant diagnosis | Plant.id (called from the server) and an on-device TensorFlow Lite model |
 | Weather | Open-Meteo |
-| Dam levels | Department of Water and Sanitation weekly State of Dams (KZN) |
-| Maps | OpenStreetMap tiles and Nominatim |
-| Road incidents | TomTom Traffic API |
+| Dam levels | Department of Water and Sanitation State of Dams (KZN) |
+| Maps | OpenStreetMap |
+| Road incidents | TomTom Traffic |
 | Payments | Yoco |
 | Email | Resend |
 
 API keys live in Supabase Edge Function secrets, never in the app or this repository.
-Database rules and server checks are in `supabase/migrations/`. Edge Functions are in
-`supabase/functions/`.
 
 ## Run it
 
@@ -61,27 +97,26 @@ Database rules and server checks are in `supabase/migrations/`. Edge Functions a
 git clone https://github.com/MpumeleloM03/Nolifa-Grow.git
 cd Nolifa-Grow
 flutter pub get
-flutter run
+flutter run --flavor nolifa -t lib/main.dart        # Nolifa
+flutter run --flavor grow   -t lib/main_grow.dart   # Nolifa Grow
 ```
 
-To build an APK: `flutter build apk --release` (output in `build/app/outputs/flutter-apk/`).
-
-The app connects to the shared Supabase project by default. To use your own, see
-`docs/SUPABASE_SETUP.md` and run the migrations in `supabase/migrations/`.
+Builds: `flutter build apk --release --flavor nolifa -t lib/main.dart`. The app connects to the shared Supabase project by default. To use your own, see `docs/SUPABASE_SETUP.md`.
 
 ## Security and privacy
 
-- Row-level security on every table. Orders, payouts, confirmations and verification are checked on the server.
+- Row-level security on every table. Staff areas need a staff account.
 - Outbreak locations are rounded to about 5 km. Each account can send at most 20 reports a day.
-- Profiles are private, and users can delete their account from the app.
-- Data is shared with lenders or insurers only if the farmer switches it on (POPIA).
+- Profiles are private, and users can delete their account in the app.
+- Data goes to lenders or insurers only if the farmer switches it on (POPIA).
 
 ## Project layout
 
 | Folder | What is in it |
 |---|---|
 | `lib/` | The app: role-based shell, diagnosis, outbreak map, water, selling, driver screens |
-| `packages/ubuntu_core/` | Shared engine: marketplace, water, roads, delivery, translations |
-| `supabase/` | Database migrations, Edge Functions and live tests |
-| `backoffice/` | Staff web app for verification and approvals |
-| `docs/` | Setup, business model and security notes. `APP_DOORS.md` explains the three app doors, `APPS.md` the four apps |
+| `packages/ubuntu_core/` | Shared engine used by all four apps |
+| `supabase/` | Migrations, Edge Functions, database tests |
+| `backoffice/` | Staff web app |
+| `tools/` | Account, seeding and test scripts |
+| `docs/` | Setup, security and design notes |

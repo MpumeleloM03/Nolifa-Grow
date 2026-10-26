@@ -24,8 +24,9 @@ import '../theme/glass.dart';
 import '../widgets/language_toggle.dart';
 
 import 'package:ubuntu_core/tr_text.dart' show Text;
-/// The Diagnose tab: check a sick plant or animal. Farmers also get their crop
-/// tracker, herd, vets and herd care; community members get the free checks.
+/// The Diagnose tab: check a sick plant or animal. Every farmer gets the crop
+/// scanner and crop health AI as well as the herd, vets and herd care (a farm
+/// that keeps animals often grows feed too); community members get the free checks.
 /// Water and the outbreak map have their own tabs, so they are not repeated here.
 class HomeTab extends ConsumerStatefulWidget {
   const HomeTab({super.key});
@@ -97,7 +98,7 @@ class _HomeTabState extends ConsumerState<HomeTab> {
                 ]);
               },
             ),
-            if (community || (user?.growsCrops ?? true)) ...[
+            ...[
             const SizedBox(height: AppTheme.s4),
             Reveal(
               child: _ScanCard(
@@ -120,7 +121,7 @@ class _HomeTabState extends ConsumerState<HomeTab> {
               ),
             ),
             ],
-            if (community || (user?.keepsLivestock ?? true)) ...[
+            ...[
             const SizedBox(height: AppTheme.s4),
             Reveal(
               index: 1,

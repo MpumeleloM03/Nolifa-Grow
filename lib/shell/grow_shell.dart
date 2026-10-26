@@ -14,6 +14,7 @@ import 'package:ubuntu_core/ubuntu_core.dart'
         openDropMenu;
 import '../driver/driver_home.dart';
 import '../driver/earnings_tab.dart';
+import '../members/members_service.dart' show applicationProvider;
 import '../services/auth_service.dart';
 import '../services/notices.dart';
 import '../store/farm_water_section.dart';
@@ -60,6 +61,16 @@ class _GrowShellState extends ConsumerState<GrowShell> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider);
+    // The name a farm gave Nolifa is the name buyers see. Once staff approve the
+    // application, it becomes the store name if the farmer has not typed another.
+    ref.listen<AsyncValue<Map<String, dynamic>?>>(applicationProvider, (_, a) {
+      final app = a.valueOrNull;
+      final name = '${(app?['data'] as Map?)?['farmName'] ?? ''}'.trim();
+      final profile = ref.read(marketProvider).profile;
+      if (app?['status'] == 'approved' && name.isNotEmpty && profile.farmName.trim().isEmpty) {
+        ref.read(marketProvider.notifier).updateProfile(profile.copyWith(farmName: name));
+      }
+    });
     final community = user?.isCommunity ?? false;
     final driver = user?.isDriver ?? false;
 

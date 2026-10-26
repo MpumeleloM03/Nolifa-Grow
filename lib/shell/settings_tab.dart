@@ -26,6 +26,7 @@ import '../services/region_service.dart';
 import '../theme/app_theme.dart';
 import '../theme/glass.dart';
 import '../water/supplier_screen.dart';
+import '../members/members_service.dart' show applicationProvider;
 import '../services/notices.dart';
 import '../store/farm_pictures_screen.dart';
 import '../widgets/language_toggle.dart';
@@ -72,9 +73,9 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
           sliver: SliverList.list(children: [
             _NoticesLink(onTap: () => _push(const NoticesScreen())),
             const SizedBox(height: AppTheme.s3),
-            if (farmer && ref.watch(marketProvider).profile.farmName.trim().isNotEmpty) ...[
+            if (farmer && _farmNameFor(ref).isNotEmpty) ...[
               GlassCard(
-                onTap: () => _push(FarmPicturesScreen(farmName: ref.read(marketProvider).profile.farmName.trim())),
+                onTap: () => _push(FarmPicturesScreen(farmName: _farmNameFor(ref))),
                 child: Row(children: [
                   Icon(Icons.storefront_rounded, color: AppTheme.textSecondary),
                   const SizedBox(width: AppTheme.s3),
@@ -241,4 +242,12 @@ class _NoticesLink extends ConsumerWidget {
       ]),
     );
   }
+}
+
+/// The farm's public name: what the farmer typed, else what the approved application says.
+String _farmNameFor(WidgetRef ref) {
+  final typed = ref.watch(marketProvider).profile.farmName.trim();
+  if (typed.isNotEmpty) return typed;
+  final app = ref.watch(applicationProvider).valueOrNull;
+  return app?['status'] == 'approved' ? '${(app?['data'] as Map?)?['farmName'] ?? ''}'.trim() : '';
 }
