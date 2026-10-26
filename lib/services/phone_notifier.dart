@@ -12,6 +12,8 @@ class PhoneNotifier implements NoticeSender {
   static final PhoneNotifier instance = PhoneNotifier._();
 
   final _plugin = FlutterLocalNotificationsPlugin();
+  /// Set with --dart-define=QUIET_PERMISSIONS=true for recorded demos, so no system pop-up covers the app.
+  static const _quiet = bool.fromEnvironment('QUIET_PERMISSIONS');
   bool _ready = false;
   int _id = 0;
 
@@ -24,9 +26,9 @@ class PhoneNotifier implements NoticeSender {
       await _plugin.initialize(
         settings: const InitializationSettings(
           iOS: DarwinInitializationSettings(
-            requestAlertPermission: true,
-            requestBadgePermission: true,
-            requestSoundPermission: true,
+            requestAlertPermission: !_quiet,
+            requestBadgePermission: !_quiet,
+            requestSoundPermission: !_quiet,
           ),
           android: AndroidInitializationSettings('@mipmap/ic_launcher'),
         ),

@@ -162,23 +162,17 @@ class OrderCard extends ConsumerWidget {
           ),
           if (!o.selfDelivery) ...[
             const SizedBox(height: AppTheme.s2),
-            Row(children: [
-              Expanded(
-                child: GhostButton(
-                  label: 'Parcel label',
-                  icon: Icons.qr_code_2_rounded,
-                  onPressed: () => showParcelLabel(context, o),
-                ),
-              ),
-              const SizedBox(width: AppTheme.s2),
-              Expanded(
-                child: GhostButton(
-                  label: 'Scan to send out',
-                  icon: Icons.qr_code_scanner_rounded,
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ScanDispatchScreen())),
-                ),
-              ),
-            ]),
+            GhostButton(
+              label: 'Parcel label',
+              icon: Icons.qr_code_2_rounded,
+              onPressed: () => showParcelLabel(context, o),
+            ),
+            const SizedBox(height: AppTheme.s2),
+            GhostButton(
+              label: 'Scan to send out',
+              icon: Icons.qr_code_scanner_rounded,
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ScanDispatchScreen())),
+            ),
           ],
         ],
         if (!o.selfDelivery && (o.status == OrderStatus.assigned || o.status == OrderStatus.pickedUp)) ...[

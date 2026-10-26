@@ -48,12 +48,15 @@ class Batch {
 }
 
 double kmBetween(double aLat, double aLng, double bLat, double bLng) {
+  if (!(aLat.isFinite && aLng.isFinite && bLat.isFinite && bLng.isFinite)) return 0;
   const r = 6371.0;
   double rad(double d) => d * math.pi / 180;
   final dLat = rad(bLat - aLat);
   final dLng = rad(bLng - aLng);
   final h = math.pow(math.sin(dLat / 2), 2) + math.cos(rad(aLat)) * math.cos(rad(bLat)) * math.pow(math.sin(dLng / 2), 2);
-  return 2 * r * math.asin(math.sqrt(h.toDouble()));
+  // A place the app could not find has no position. Rounding can also push h a hair over 1.
+  final d = 2 * r * math.asin(math.sqrt(h.toDouble().clamp(0.0, 1.0)));
+  return d.isFinite ? d : 0;
 }
 
 /// Groups open jobs into batches. Jobs go together when they are collected
@@ -129,7 +132,7 @@ Batch _make(List<JobPoint> group, double fromLat, double fromLng) {
     pLng = s.lng;
   }
   km = double.parse(km.toStringAsFixed(1));
-  final minutes = (km / 35 * 60).round() + stops.length * 6;
+  final minutes = (km.isFinite ? (km / 35 * 60).round() : 0) + stops.length * 6;
   final ids = [for (final j in group) j.order.id]..sort();
   return Batch(ids.join('+'), group, stops, km, minutes);
 }
