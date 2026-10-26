@@ -24,4 +24,4 @@ flutter build ios --simulator --flavor grow   -t lib/main_grow.dart
 Run with `flutter run --flavor grow -t lib/main_grow.dart`. A build without `--flavor` does not work.
 
 ## Logos
-The logo kit is in `~/nolifa-logos`. Grow is the leaf pair, Drop the drop, Delivery the pin. Nolifa is one shape that is a drop above and a pin below, with the N cut out of it. Phone icons: `assets/icons/` (Android, from `flutter_launcher_icons-*.yaml`) and `ios/Runner/Assets.xcassets/AppIcon-<flavor>.appiconset` (light and dark).
+The app is called Nolifa Grow and its logo is the two-leaf mark, in both builds. Phone icons: `assets/icons/` (Android, from `flutter_launcher_icons-*.yaml`) and `ios/Runner/Assets.xcassets/AppIcon-<flavor>.appiconset` (light and dark).

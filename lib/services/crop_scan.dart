@@ -100,6 +100,15 @@ Future<CropScanResult?> captureCrop(BuildContext context, WidgetRef ref,
   if (context.mounted) Navigator.of(context, rootNavigator: true).pop();
   if (result == null) return null;
 
+  // The phone's own model only knows tomato and potato leaves, and it always
+  // picks one of its four answers. When it is not sure, say so honestly rather
+  // than show a wrong disease, and keep it off the history and the map.
+  if (result['offlineMode'] == true &&
+      (double.tryParse('${result['confidence']}') ?? 0) < kOfflineMinConfidence) {
+    if (context.mounted) await _showNotSure(context);
+    return null;
+  }
+
   final label = result['label'] as String? ?? 'Unknown';
   final info = DiseaseDatabase.getInfo(label);
   final confidence = result['confidence'] as String? ?? '0';
@@ -117,6 +126,25 @@ Future<CropScanResult?> captureCrop(BuildContext context, WidgetRef ref,
   if (addToMap) _contributeToMap(ref, label, info.severityColor);
   return CropScanResult(id, image, label, info.plainName, info.severityColor, confidence, offline);
 }
+
+/// Below this confidence (out of 100) an offline result is not shown.
+const kOfflineMinConfidence = 75.0;
+
+Future<void> _showNotSure(BuildContext context) => showDialog<void>(
+      context: context,
+      builder: (d) => AlertDialog(
+        backgroundColor: AppTheme.sheet,
+        icon: Icon(Icons.help_outline_rounded, color: AppTheme.warn, size: 36),
+        title: const Text('Not sure'),
+        content: const Text(
+          'Without signal we can only check tomato and potato leaves, and we are not sure about this one.\n\n'
+          'Try a clear, close photo of one leaf in daylight, or scan again when you have signal for the full check.',
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(d), child: const Text('OK')),
+        ],
+      ),
+    );
 
 /// The crop scanner, start to finish: capture, diagnose, add to the outbreak
 /// map and show the result. The Home tab calls this from its Open camera button.

@@ -28,13 +28,13 @@ import 'settings_tab.dart';
 
 /// Nolifa after sign-in. One app, three people, each sent to what they use:
 ///
-/// * Community member: Shop, Water, Me.
+/// * Community member: Diagnose, Outbreaks, Water, Shop, Me.
 /// * Farmer: Diagnose, Outbreaks, Water, Sell, Me.
 /// * Driver: Jobs, Roads, Earnings, Me.
 ///
-/// Diagnosis and the live outbreak map are farmer tools. A community member
-/// buys, follows water and tracks the order; they never see selling, diagnosis
-/// or driver tools, and a driver never sees the farm or the shop.
+/// Diagnosis, the live outbreak map and water each have their own tab, so
+/// everyone nearby is protected, not only farmers. A community member never
+/// sees selling or driver tools; a driver never sees the farm or the shop.
 class GrowShell extends ConsumerStatefulWidget {
   final int initialTab;
   const GrowShell({super.key, this.initialTab = 0});
@@ -83,11 +83,13 @@ class _GrowShellState extends ConsumerState<GrowShell> {
       pages = const [DriverHome(), RoadAlertsScreen(), EarningsTab(), SettingsTab()];
       badges = {if (open > 0) 0: open};
     } else if (community) {
-      // Plant and animal checks and the outbreak map are for farmers.
-      tabs = const [_shop, _water, _me];
+      // Free plant and animal checks and the outbreak map protect everyone nearby.
+      tabs = const [_diagnose, _outbreaks, _water, _shop, _me];
       pages = [
-        ShopHomePage(onMenu: () => openDropMenu(context)),
+        const HomeTab(),
+        const AlertsTab(),
         const WaterPage(),
+        ShopHomePage(onMenu: () => openDropMenu(context)),
         const SettingsTab(),
       ];
       badges = const {};

@@ -13,7 +13,7 @@ class AppEdition {
   static bool get isGrow => current == Edition.grow;
 
   /// The name on the home screen, the sign-in page and in messages.
-  static String get name => isGrow ? 'Nolifa Grow' : 'Nolifa';
+  static String get name => 'Nolifa Grow';
 
   /// Whether this build is meant for someone who signed up with [role]
   /// ('farmer', 'community' or 'driver'). Nolifa takes everyone.

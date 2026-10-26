@@ -1,4 +1,4 @@
-# Nolifa
+# Nolifa Grow
 
 **Catch it early. Keep your community fed.**
 
@@ -6,10 +6,10 @@ One app (Android and iOS) that protects farming communities in South Africa. Bui
 the Year theme *Climate resilience and essential services*.
 
 When disease or drought hits a farming community, food and water are the first things people
-lose. Nolifa catches disease early, warns everyone nearby, and keeps food moving from
+lose. Nolifa Grow catches disease early, warns everyone nearby, and keeps food moving from
 local farms to local families.
 
-> Four apps share one backend: **Nolifa** (this app, everything in one), **Nolifa Grow** (the same code as a farmers-only edition), Nolifa Drop and Nolifa Delivery. See `docs/APPS.md`.
+> Four apps share one backend: **Nolifa Grow** (this app, everything in one), a farmers-only edition of the same code, Nolifa Drop and Nolifa Delivery. See `docs/APPS.md`.
 
 ## The four apps
 
@@ -17,18 +17,18 @@ One backend, four apps. Every demo login below works in all of them.
 
 | App | For | What it does |
 |---|---|---|
-| **Nolifa** | Everyone | The ecosystem in one app. Farmers, households and drivers each land on what they use. |
-| **Nolifa Grow** | Farmers | Crop and livestock health, outbreak map, water, stock, selling, truck hire. |
+| **Nolifa Grow** | Everyone | The ecosystem in one app. Farmers, households and drivers each land on what they use. |
+| **Nolifa Grow (farmers edition)** | Farmers | Crop and livestock health, outbreak map, water, stock, selling, truck hire. |
 | **Nolifa Drop** | Households | Buy fresh food from nearby farms, pay, follow the driver live, get a PIN for delivery. |
 | **Nolifa Delivery** | Drivers | Take jobs, navigate, report road hazards, deliver with the buyer's PIN, get paid per delivery. |
 
-Nolifa and Nolifa Grow are two builds of this repo (`lib/main.dart`, `lib/main_grow.dart`). Drop and Delivery are separate Flutter projects that use the same `packages/ubuntu_core` engine and the same Supabase project. See `docs/APPS.md`.
+Nolifa Grow and its farmers edition are two builds of this repo (`lib/main.dart`, `lib/main_grow.dart`). Drop and Delivery are separate Flutter projects that use the same `packages/ubuntu_core` engine and the same Supabase project. See `docs/APPS.md`.
 
-### Who sees what in Nolifa
+### Who sees what in Nolifa Grow
 
 | Role | Tabs | What they do |
 |---|---|---|
-| **Community member** | Shop, Water, Me | Buy from nearby farms, follow the order and the driver on a map, ask for water help |
+| **Community member** | Diagnose, Outbreaks, Water, Shop, Me | Check a sick plant or animal for free, see and report outbreaks nearby, ask for water help, buy from nearby farms and follow the driver on a map |
 | **Farmer** | Diagnose, Outbreaks, Water, Sell, Me | Scan crops, check animals, send a video to a vet, report and confirm outbreaks, manage stock and warehouse temperature, hire a truck, pack and dispatch orders |
 | **Driver** | Jobs, Roads, Earnings, Me | See packed orders, deliver, report road hazards, get paid |
 
@@ -42,7 +42,7 @@ Password for every account below: `NolifaDemo1`
 | Community member (customer) | `community@demo.nolifa.co.za` | Ready to order |
 | Driver | `driver@demo.nolifa.co.za` | Verified, can take jobs |
 
-On the sign-in screen of Nolifa, the **Farmer / Community / Driver** buttons under *Try the demo* use these same accounts.
+On the sign-in screen of Nolifa Grow, the **Farmer / Community / Driver** buttons under *Try the demo* use these same accounts.
 
 Back office (staff web app): https://nolifa-backoffice.web.app . Staff logins are given to the judges separately because they can approve farms and drivers.
 
@@ -97,8 +97,8 @@ API keys live in Supabase Edge Function secrets, never in the app or this reposi
 git clone https://github.com/MpumeleloM03/Nolifa-Grow.git
 cd Nolifa-Grow
 flutter pub get
-flutter run --flavor nolifa -t lib/main.dart        # Nolifa
-flutter run --flavor grow   -t lib/main_grow.dart   # Nolifa Grow
+flutter run --flavor nolifa -t lib/main.dart        # Nolifa Grow (everyone)
+flutter run --flavor grow   -t lib/main_grow.dart   # farmers edition
 ```
 
 Builds: `flutter build apk --release --flavor nolifa -t lib/main.dart`. The app connects to the shared Supabase project by default. To use your own, see `docs/SUPABASE_SETUP.md`.

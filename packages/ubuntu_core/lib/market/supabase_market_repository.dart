@@ -78,10 +78,12 @@ class SupabaseMarketRepository implements MarketRepository {
       .map((rows) => [for (final r in rows) caseFromJson(Map<String, dynamic>.from(r['data'] as Map), uid)]);
 
   @override
+  // An outbreak report and a neighbour's confirmation matter most where the
+  // signal is worst, so both wait on the phone and send when it is back.
   Future<void> putCase(ReportCase c, String uid) =>
-      _db.from('market_cases').upsert({'id': c.id, 'data': caseToJson(c, uid)});
+      OfflineOutbox.instance.upsert('Outbreak report', 'market_cases', {'id': c.id, 'data': caseToJson(c, uid)}, client: _db);
 
   @override
   Future<void> confirmCase(String caseId, String uid) =>
-      _db.rpc('confirm_case', params: {'p_id': caseId});
+      OfflineOutbox.instance.rpc('Outbreak confirmation', 'confirm_case', {'p_id': caseId}, client: _db);
 }

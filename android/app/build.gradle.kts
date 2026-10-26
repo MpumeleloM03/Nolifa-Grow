@@ -21,13 +21,14 @@ android {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
-    // Two apps from one code base: Nolifa (everyone) and Nolifa Grow (farmers only).
+    // Two builds from one code base: Nolifa Grow for everyone (flavor "nolifa"),
+    // and a farmers-only edition (flavor "grow"). Both carry the Nolifa Grow name and leaf logo.
     flavorDimensions += "app"
     productFlavors {
         create("nolifa") {
             dimension = "app"
             applicationId = "com.nolifa.app"
-            resValue("string", "app_name", "Nolifa")
+            resValue("string", "app_name", "Nolifa Grow")
         }
         create("grow") {
             dimension = "app"

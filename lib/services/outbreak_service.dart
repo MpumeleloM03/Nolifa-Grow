@@ -18,6 +18,8 @@ class OutbreakService {
     return resilientRows(
       open: () => _db.from('outbreaks').stream(primaryKey: ['id']),
       fetch: () async => [for (final r in await _db.from('outbreaks').select()) Map<String, dynamic>.from(r)],
+      // The last map is kept on the phone, so it still shows with no signal.
+      cacheKey: '${_db.auth.currentUser?.id ?? 'anon'}:outbreaks',
     ).map((rows) => [
           for (final r in rows)
             OutbreakReport.fromMap(r['id'] as String, Map<String, dynamic>.from(r['data'] as Map)),
