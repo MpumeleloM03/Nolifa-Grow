@@ -109,7 +109,10 @@ Builds: `flutter build apk --release --flavor nolifa -t lib/main.dart`. The app 
 - Outbreak locations are rounded to about 5 km. Each account can send at most 20 reports a day.
 - Profiles are private, and users can delete their account in the app.
 - Data goes to lenders or insurers only if the farmer switches it on (POPIA).
-
+- Local offline data is encrypted at rest using iOS Keychain/ Android Keystore.
+- Delivery proof requires live-camera capture (anti-spoofing) and a 4-digits PIN with a 3-strike lockout.
+- Third-party API keys are proxied via backend, and Device Attestation blocks rogue apps.
+  
 ## Project layout
 
 | Folder | What is in it |
