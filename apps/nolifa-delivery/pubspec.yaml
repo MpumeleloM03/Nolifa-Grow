@@ -1,0 +1,33 @@
+name: nolifa_delivery
+description: "Nolifa Delivery: earn by delivering fresh food and water in your neighbourhood."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  supabase_flutter: ^2.8.0
+  ubuntu_core:
+    path: ../../packages/ubuntu_core
+
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.6.1
+  shared_preferences: ^2.3.2
+  crypto: ^3.0.7
+  url_launcher: ^6.3.1
+  image_picker: ^1.1.2
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.0
+  geolocator: ^14.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

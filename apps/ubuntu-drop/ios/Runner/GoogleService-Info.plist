@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>989124834212-9e8bnjradnc4dkuh1p1m642sapjoa4id.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.989124834212-9e8bnjradnc4dkuh1p1m642sapjoa4id</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCzl5HGVCi7yCLknfOX6XLscdAvbPk560Q</string>
+	<key>GCM_SENDER_ID</key>
+	<string>989124834212</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ubuntudrop.ubuntuDrop</string>
+	<key>PROJECT_ID</key>
+	<string>nolifa-grow-f3df9</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nolifa-grow-f3df9.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:989124834212:ios:120dd261839b1355fdc731</string>
+	<key>DATABASE_URL</key>
+	<string>https://nolifa-grow-f3df9-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>
