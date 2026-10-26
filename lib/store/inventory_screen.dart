@@ -129,7 +129,7 @@ class InventoryScreen extends ConsumerWidget {
                     ),
                   ),
                 SizedBox(
-                  height: 112,
+                  height: 132,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
@@ -197,7 +197,7 @@ class _RoomCard extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(zone.label, style: AppTheme.caption),
           Text(now == null ? 'No reading' : '${now!.c.toStringAsFixed(1)} °C', style: AppTheme.title2.copyWith(color: color)),
-          Text(now == null ? 'Should be ${zone.band}' : '${ok ? 'In range' : 'Out of range'}  •  ${zone.band}', style: AppTheme.caption),
+          Text(now == null ? 'Should be ${zone.band}' : '${ok ? 'In range' : 'Out of range'}  •  ${zone.band}', style: AppTheme.caption, maxLines: 2, overflow: TextOverflow.ellipsis),
           if (now != null) Text(_ago(now!.at), style: AppTheme.caption),
         ]),
       ),

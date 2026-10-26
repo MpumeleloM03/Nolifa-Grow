@@ -103,6 +103,9 @@ final weatherServiceProvider = Provider<WeatherService>((ref) => WeatherService(
 
 /// The forecast for the signed-in farmer's region.
 final forecastProvider = FutureProvider<Forecast>((ref) async {
+  // For recorded demos only: --dart-define=QA_DEMO_FORECAST=true shows a made-up week with a frost, a hot day
+  // and heavy rain, and the card says "Demo forecast". Shipped builds never set it.
+  if (const bool.fromEnvironment('QA_DEMO_FORECAST')) return demoForecast('Greater Durban', DateTime.now());
   final loc = await ref.watch(userLocationProvider.future);
   if (loc != null) {
     final place = await ref.watch(userPlaceProvider.future) ?? 'Near you';

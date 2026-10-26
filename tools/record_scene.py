@@ -11,7 +11,7 @@ subprocess.run(['xcrun', 'simctl', 'uninstall', dev, 'com.nolifa.app'], stderr=s
 raw = out.replace('.mp4', '.mov')
 rec = subprocess.Popen(['xcrun', 'simctl', 'io', dev, 'recordVideo', '--codec', 'h264', '--force', raw], stderr=subprocess.DEVNULL)
 t0 = time.time(); begin = None
-p = subprocess.Popen(['flutter', 'test', 'integration_test/demo_test.dart', '-d', dev, '--flavor', 'nolifa', '--dart-define=QA_SCENE=' + scene, '--dart-define=QUIET_PERMISSIONS=true'],
+p = subprocess.Popen(['flutter', 'test', 'integration_test/demo_test.dart', '-d', dev, '--flavor', 'nolifa', '--dart-define=QA_SCENE=' + scene, '--dart-define=QUIET_PERMISSIONS=true'] + os.environ.get('DEMO_DEFINES', '').split(),
                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 import threading
 last = [time.time()]
@@ -23,6 +23,8 @@ def watchdog():
 threading.Thread(target=watchdog, daemon=True).start()
 for line in p.stdout:
     last[0] = time.time()
+    if 'DEMO hook' in line:
+        subprocess.Popen(['python3', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'demo_hook.py'), line.split('DEMO hook')[1].strip()])
     if 'DEMO begin' in line and begin is None:
         begin = time.time() - t0
         subprocess.run(['xcrun', 'simctl', 'privacy', dev, 'grant', 'location', 'com.nolifa.app'], stderr=subprocess.DEVNULL)

@@ -193,7 +193,8 @@ class Pill extends StatelessWidget {
             Icon(icon, size: 13, color: color),
             const SizedBox(width: 4),
           ],
-          Text(text, style: AppTheme.caption.copyWith(color: color)),
+          // A long place name or label shortens instead of running off the card.
+          Flexible(child: Text(text, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTheme.caption.copyWith(color: color))),
         ]),
       );
 }

@@ -27,8 +27,8 @@ void main() {
     debugPrint('DEMO step $step');
     var f = find.text(text);
     if (f.evaluate().isEmpty) f = find.textContaining(text);
-    for (var i = 0; i < 8 && scrollTo && f.evaluate().isEmpty; i++) {
-      await drag(t, -450);
+    for (var i = 0; i < 26 && scrollTo && f.evaluate().isEmpty; i++) {
+      await drag(t, -450, hold: 0.25);
       f = find.textContaining(text);
     }
     if (f.evaluate().isEmpty) {
@@ -37,7 +37,9 @@ void main() {
     }
     final target = last ? f.last : f.first;
     try {
-      await t.ensureVisible(target);
+      // Bring it to the upper part of the screen, so the tab bar is not on top of it.
+      await Scrollable.ensureVisible(t.element(target), alignment: 0.3, duration: Duration.zero);
+      await t.pump();
     } catch (_) {}
     await t.tap(target, warnIfMissed: false);
     await hold(t, after);
@@ -74,58 +76,81 @@ void main() {
     debugPrint('DEMO begin');
     step = 'sign in';
     final role = switch (_scene) {
-      'order' => 'Community',
-      'drive' => 'Driver',
+      'water' || 'track' => 'Community',
+      'roads' => 'Driver',
       _ => 'Farmer',
     };
     await hold(t, 1.5);
     await tap(t, role, after: 6);
 
     switch (_scene) {
+      case 'weather':
+        await hold(t, 2.5);
+        for (var i = 0; i < 6 && find.textContaining('Weather,').evaluate().isEmpty; i++) {
+          await drag(t, -350, hold: 0.6);
+        }
+        await drag(t, -150, hold: 6);
+      case 'disease':
+        await tap(t, 'Send a video to a vet', scrollTo: true, after: 2.5);
+        await tap(t, 'Quick check while you wait', scrollTo: true, after: 2);
+        await tap(t, 'Cow', last: true, after: 1.2);
+        await tap(t, 'Blisters or sores in the mouth', after: 1);
+        await tap(t, 'Drooling / stringy saliva', after: 1);
+        await tap(t, 'Blisters between the hooves', after: 1.4);
+        for (var i = 0; i < 24 && find.textContaining('What this could be').evaluate().isEmpty; i++) {
+          await drag(t, -450, hold: 0.25);
+        }
+        await drag(t, -120, hold: 5);
+        await back(t);
+        await back(t);
+        await tap(t, 'Outbreaks', last: true, after: 3.5);
+        await tap(t, 'Report an outbreak', after: 2);
+        await tap(t, 'Livestock', last: true, after: 1.2);
+        await tap(t, 'What are you seeing?', after: 1.6);
+        await tap(t, 'Foot-and-Mouth Disease', last: true, after: 1.2);
+        await tap(t, 'Urgent', last: true, after: 1.2);
+        await tap(t, 'Send report', last: true, after: 4);
+        await hold(t, 3);
+      case 'water':
+        await tap(t, 'Water', last: true, after: 4);
+        await tap(t, 'Greater Durban', last: true, after: 2);
+        await drag(t, -420, hold: 2);
+        await drag(t, -420, hold: 2);
+        await tap(t, 'My taps are dry', after: 3);
+        await hold(t, 3);
+      case 'cold':
+        await tap(t, 'Sell', last: true, after: 2);
+        await tap(t, 'Inventory and rooms', scrollTo: true, after: 3.5);
+        debugPrint('DEMO hook cold');
+        await hold(t, 8);
+        await drag(t, 200, hold: 3);
+        await drag(t, -250, hold: 4);
+        debugPrint('DEMO hook restore');
+      case 'roads':
+        await tap(t, 'Roads', last: true, after: 4);
+        for (var i = 0; i < 6 && find.textContaining('Live traffic').evaluate().isEmpty; i++) {
+          await drag(t, -300, hold: 0.6);
+        }
+        await drag(t, -200, hold: 5);
+      case 'track':
+        await tap(t, 'Shop', last: true, after: 3);
+        final menu = find.byIcon(Icons.menu_rounded);
+        if (menu.evaluate().isNotEmpty) await t.tap(menu.first, warnIfMissed: false);
+        await hold(t, 1.5);
+        await tap(t, 'My orders', after: 2.5);
+        await tap(t, 'Driver on the way', after: 5);
+        await drag(t, -300, hold: 2);
+      case 'impact':
+        await tap(t, 'Me', last: true, after: 2);
+        await tap(t, 'Impact evidence', scrollTo: true, after: 4);
+        await drag(t, -350, hold: 3);
+      // Earlier scenes (a delivery-led cut) are kept for the record.
       case 'health':
         await tap(t, 'Diagnose', last: true, after: 2);
-        await drag(t, -350, hold: 1.5);
-        await tap(t, 'Crop health AI: my crops', after: 3);
-        await drag(t, -400, hold: 1.5);
-        await back(t);
-        await tap(t, 'Send a video to a vet', after: 3);
-        await back(t);
         await tap(t, 'Outbreaks', last: true, after: 4);
-        await drag(t, -300, hold: 2);
         await tap(t, 'Water', last: true, after: 3);
-        await drag(t, -400, hold: 1.5);
-        await tap(t, 'Sell', last: true, after: 2);
-        await tap(t, 'Inventory and rooms', scrollTo: true, after: 3);
-        await drag(t, -450, hold: 2);
-        await back(t);
-      case 'order':
-        await tap(t, 'Shop', last: true, after: 3);
-        await drag(t, -300, hold: 1);
-        await tap(t, 'Order now', after: 3);
-        await drag(t, -300, hold: 1);
-        await tap(t, 'Add', after: 1.2);
-        await tap(t, 'Checkout', after: 3);
-        await drag(t, -400, hold: 1.5);
-        await tap(t, 'Cash on delivery', scrollTo: true, after: 1.5);
-        await tap(t, 'Pay R', scrollTo: true, after: 5);
-        await hold(t, 3);
-      case 'pack':
-        await tap(t, 'Sell', last: true, after: 3);
-        await drag(t, -350, hold: 1.5);
-        await tap(t, 'Parcel label', scrollTo: true, after: 3.5);
-        await back(t);
-        await tap(t, 'Packed, request driver', scrollTo: true, after: 3);
-        await drag(t, -300, hold: 2);
-      case 'drive':
-        await hold(t, 3);
-        await tap(t, 'Go', after: 5);
-        await drag(t, -250, hold: 1.5);
-        await tap(t, 'drop', after: 3);
-        await tap(t, 'Take this batch', after: 6);
-        await drag(t, -250, hold: 3);
-        await back(t);
-        await tap(t, 'Roads', last: true, after: 3);
-        await tap(t, 'Earnings', last: true, after: 3);
+      default:
+        break;
     }
     for (final e in errors.toSet()) {
       debugPrint('DEMO ERROR $e');

@@ -192,7 +192,9 @@ class AuthService {
     try {
       saved = await profile(u.id);
     } catch (_) {}
-    if (saved?.farmType != farmType || u.userMetadata?['farmType'] != farmType) {
+    // A farmer is a farmer whatever they grow, so a demo farmer keeps the type they already have.
+    bool right(String? type) => role == 'farmer' ? (type != null && type != 'community' && type != 'driver') : type == role;
+    if (!right(saved?.farmType) || !right(u.userMetadata?['farmType'] as String?)) {
       try {
         await updateProfile(
           name: (saved?.name.isNotEmpty ?? false) ? saved!.name : name,
